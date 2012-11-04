@@ -1,0 +1,4 @@
+[[!meta title="pages tagged openwrt"]]
+
+[[!inline pages="tagged(openwrt)" actions="no" archive="yes"
+feedshow=10]]
