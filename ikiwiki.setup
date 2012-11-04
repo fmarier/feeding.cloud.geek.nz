@@ -8,7 +8,7 @@
 # Remember to re-run ikiwiki --setup any time you edit this file.
 #
 # name of the wiki
-wikiname: feedingthecloud
+wikiname: FeedingTheCloud
 # contact email for wiki
 adminemail: francois@fmarier.org
 # users who are wiki admins
@@ -42,7 +42,6 @@ add_plugins:
 - '404'
 - comments
 - blogspam
-- calendar
 - sidebar
 - ikiwikihosting
 - branchable
@@ -63,8 +62,12 @@ add_plugins:
 - testpagespec
 - version
 - theme
+- moderatedcomments
+- flattr
+- google
 # plugins to disable
-disable_plugins: []
+disable_plugins:
+- calendar
 # additional directory to search for template files
 templatedir: /usr/share/ikiwiki/templates
 # base wiki source location
@@ -72,7 +75,7 @@ underlaydir: /usr/share/ikiwiki/basewiki
 # display verbose messages?
 #verbose: 1
 # log to syslog?
-syslog: 1
+syslog: '1'
 # create output files named page/index.html?
 usedirs: '1'
 # use '!'-prefixed preprocessor directives?
@@ -84,7 +87,7 @@ discussion: '0'
 # name of Discussion pages
 discussionpage: Discussion
 # generate HTML5?
-html5: '0'
+html5: '1'
 # only send cookies over SSL connections?
 sslcookie: '0'
 # extension to use for new pages
@@ -111,7 +114,7 @@ libdir: /home/b-feedingthecloud/.ikiwiki
 ENV:
   TMPDIR: /home/b-feedingthecloud/tmp
 # time zone name
-timezone: GMT
+timezone: Pacific/Auckland
 # regexp of normally excluded files to include
 #include: ^\.htaccess$
 # regexp of files that should be skipped
@@ -133,7 +136,7 @@ branchable: '1'
 # Allow anyone to git push verified changes to this site?
 #anonpush: 0
 # Display "Branchable" link on action bar?
-branchable_action: 1
+branchable_action: '1'
 
 # git plugin
 # git hook to generate
@@ -178,7 +181,7 @@ created: '1351997051'
 # how many days to retain logs
 #log_period: 7
 # disable IPv6?
-ipv6_disabled: 0
+ipv6_disabled: '0'
 
 # inline plugin
 # enable rss feeds by default?
@@ -186,9 +189,9 @@ rss: '1'
 # enable atom feeds by default?
 atom: '1'
 # allow rss feeds to be used?
-#allowrss: 0
+allowrss: '1'
 # allow atom feeds to be used?
-#allowatom: 0
+allowatom: '1'
 # urls to ping (using XML-RPC) on feed update
 pingurl: []
 
@@ -222,7 +225,7 @@ locked_pages: '* and !postcomment(*)'
 
 # moderatedcomments plugin
 # PageSpec matching users or comment locations to moderate
-#moderate_pagespec: '*'
+moderate_pagespec: '*'
 
 # openid plugin
 # url pattern of openid realm (default is cgiurl)
@@ -265,9 +268,9 @@ langdefdir: /usr/share/highlight/langDefs
 #- es|Español
 #- de|Deutsch
 # PageSpec controlling which pages are translatable
-#po_translatable_pages: '* and !*/Discussion'
+po_translatable_pages: ''
 # internal linking behavior (default/current/negotiated)
-#po_link_to: current
+po_link_to: default
 
 ######################################################################
 # special-purpose plugins
@@ -295,8 +298,8 @@ langdefdir: /usr/share/highlight/langDefs
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
-#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, google, goto,
+#    mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -316,13 +319,9 @@ comments_pagename: comment_
 # Interpret directives in comments?
 #comments_allowdirectives: 0
 # Allow anonymous commenters to set an author name?
-#comments_allowauthor: 0
+comments_allowauthor: '1'
 # commit comments to the VCS
-comments_commit: 1
-
-# getsource plugin
-# Mime type for returned source.
-#getsource_mimetype: text/plain; charset=utf-8
+comments_commit: '1'
 
 # mirrorlist plugin
 # list of mirrors
@@ -418,16 +417,16 @@ directive_description_dir: ikiwiki/directive
 
 # aggregate plugin
 # enable aggregation to internal pages?
-#aggregateinternal: 1
+aggregateinternal: 1
 # allow aggregation to be triggered via the web?
 #aggregate_webtrigger: 0
 # cookie control
-#cookiejar:
-#  file: /home/b-feedingthecloud/.ikiwiki/cookies
+cookiejar:
+  file: /home/b-feedingthecloud/.ikiwiki/cookies
 
 # autoindex plugin
 # commit autocreated index pages
-#autoindex_commit: 1
+autoindex_commit: 1
 
 # camelcase plugin
 # list of words to not turn into links
@@ -435,7 +434,7 @@ directive_description_dir: ikiwiki/directive
 
 # flattr plugin
 # userid or user name to use by default for Flattr buttons
-#flattr_userid: joeyh
+flattr_userid: fmarier
 
 # parked plugin
 # An optional message explaining why this site is parked.
@@ -447,13 +446,13 @@ directive_description_dir: ikiwiki/directive
 
 # prettydate plugin
 # format to use to display date
-#prettydateformat: '%X, %B %o, %Y'
+prettydateformat: '%X, %B %o, %Y'
 
 # recentchanges plugin
 # name of the recentchanges page
 recentchangespage: recentchanges
 # number of changes to track
-recentchangesnum: 100
+recentchangesnum: '100'
 
 # rsync plugin
 # command to run to sync updated pages
@@ -461,7 +460,7 @@ recentchangesnum: 100
 
 # sidebar plugin
 # show sidebar page on all pages?
-global_sidebars: '0'
+global_sidebars: '1'
 
 # tag plugin
 # parent page tags are located under
@@ -469,7 +468,7 @@ tagbase: tags
 # autocreate new tag pages?
 #tag_autocreate: 1
 # commit autocreated tag pages
-tag_autocreate_commit: 1
+tag_autocreate_commit: '1'
 
 # typography plugin
 # Text::Typography attributes value
