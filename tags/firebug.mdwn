@@ -1,0 +1,4 @@
+[[!meta title="pages tagged firebug"]]
+
+[[!inline pages="tagged(firebug)" actions="no" archive="yes"
+feedshow=10]]
