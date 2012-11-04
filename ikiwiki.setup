@@ -13,7 +13,6 @@ wikiname: FeedingTheCloud
 adminemail: francois@fmarier.org
 # users who are wiki admins
 adminuser:
-- http://openid.fmarier.org/
 - https://openid.fmarier.org/
 # users who are banned from the wiki
 banned_users: []
