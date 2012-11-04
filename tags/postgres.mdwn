@@ -1,0 +1,4 @@
+[[!meta title="pages tagged postgres"]]
+
+[[!inline pages="tagged(postgres)" actions="no" archive="yes"
+feedshow=10]]
