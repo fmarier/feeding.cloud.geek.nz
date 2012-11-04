@@ -1,0 +1,4 @@
+[[!meta title="pages tagged programming"]]
+
+[[!inline pages="tagged(programming)" actions="no" archive="yes"
+feedshow=10]]
