@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="http://sjoerd.luon.net"
+ nickname="Sjoerd Simons"
+ subject=""
+ date="2010-12-20T03:18:19.390+13:00"
+ content="""
+Some small notes on your empathy section:  
+  
+* You don't mention which protocol you using, given you mention google talk i assume you  
+re using xmpp  
+  
+* On xmpp we only ever use TURN/proxy servers (Note, not STUN, that's not what STUN is for) when we can't make a direct peer-to-peer connection. In all other cases the connect will be peer to peer  
+  
+* So if you verified that it did indeed go through the google proxy server instead of direct, the actual question is why? firewalls and/or nasty NATs are the usual answer, running an upnp igd service on your routers can solve most of those issues  
+  
+* 6 seconds sound like a lot more then what a proxy server would cause. A common issue is the video encoder buffering too much, do check which video encoder empathy ended up using. If it's x264, try setting tune=zerolatency in /usr/share/empathy/element-properties  
+  
+  
+As a general remark on improving quick and dirty solutions.. Don't start them, figure out why the existing tools don't work for you, don't re-invent the wheel again.. :)
+
+
+"""]]

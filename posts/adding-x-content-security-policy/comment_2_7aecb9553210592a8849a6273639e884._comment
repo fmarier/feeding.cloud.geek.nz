@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://irukado.org"
+ nickname="Lee"
+ subject=""
+ date="2011-09-18T22:40:29.225+12:00"
+ content="""
+Django's middleware would be the best way to handle this, I think. See the X-Frame-Options middleware which sets headers to prevent clickjacking, for instance:  
+  
+https://docs.djangoproject.com/en/dev/ref/middleware/#module-django.middleware.clickjacking
+
+
+"""]]

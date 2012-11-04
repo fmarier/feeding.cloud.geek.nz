@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="http://dominiko.livejournal.com"
+ nickname="dominiko"
+ subject=""
+ date="2011-12-10T19:36:23.663+13:00"
+ content="""
+Some more png chunks can generally be removed (with caveats such as not removing copyright if it's not your image…)  
+  
+I use:  
+  
+pngcrush -q \  
+-rem alla -rem gAMA -rem cHRM -rem iCCP \   
+-rem sRGB -rem tRNS -rem bKGD -rem pHYs \  
+-rem sBIT -rem tPLT -rem hIST -rem tIME \  
+-rem tEXT -rem iTXt -rem zTXt -rem vpAg \  
+in.png out.png  
+  
+Reducing the number of colors to <= 256 distinct colors allows encoding of the image with a palette rather than RGB (often smaller except for small images).  
+  
+Image magick is also handy. It can reduce the depth (number of bits per R, G, B, alpha). It's lossy but can be acceptable. Encoding can then be more efficient after rerunning pngcruh + optipng. For example, to reduce the depth to 4 bits per RGB:  
+  
+$ convert -depth 4 in.png out.png  
+  
+Command 'pngcheck -v in.png' is also handy to see what png chunks are present in an image.
+
+
+"""]]

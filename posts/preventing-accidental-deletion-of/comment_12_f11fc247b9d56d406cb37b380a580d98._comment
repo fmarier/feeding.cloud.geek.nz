@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-09-16T04:06:00.000+12:00"
+ content="""
+While you're at it, maybe (optionally) support the XDG Trash spec too - deleting would turn it into a move to Trash, compatible with Gnome/KDE, for easy undeletion.  
+  
+Some people (not me) have been thinking about this too, see:  
+http://code.google.com/p/trash-cli/  
+  
+and this thread:  
+  
+http://lists.freedesktop.org/archives/xdg/2008-August/009792.html
+
+
+"""]]

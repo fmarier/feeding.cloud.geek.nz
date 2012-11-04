@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2010-02-09T20:23:41.623+13:00"
+ content="""
+Currently the Mahara test directory includes a bunch of stuff which drives our Hudson-based continuous integration server and would take the tarball from about 4 megs to 10 megs.  
+  
+Once we separate these things out, we can start shipping the tests with the source code.
+
+
+"""]]

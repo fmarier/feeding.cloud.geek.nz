@@ -1,0 +1,28 @@
+[[!meta title="List of Open Source Conference Management Systems"]]
+[[!meta date="2010-05-17T18:30:00.005+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Conference Management systems are web applications designed to make the lives of conference organisers easier. They usually include features such as registration, payment, paper submission and review, scheduling and publishing of announcements.  
+  
+Since [Wikipedia](http://ubuntard.com/2010/03/wikipedia-notability-and-open-source-software/) is apparently not a place for such a "[spammy list](http://en.wikipedia.org/w/index.php?title=Conference_management_system&action=historysubmit&diff=358196284&oldid=358140273)," I figured I should at least post this here:  
+<table>
+<tr><th>Name</th><th>Used by</th><th>License</th><th>Programming Language</th>
+</tr>
+<tr><td><a href="http://act.mongueurs.net/">A Conference Toolkit</a></td><td>YAPC::Eu</td><td><a href="http://www.perlfoundation.org/artistic_license_2_0">Artistic License</a></td><td><a href="http://www.perl.org/">Perl</a></td>
+</tr>
+<tr><td><a href="http://github.com/herlo/ConMan">ConMan</a></td><td><a href="http://utosc.com/">Utah Open Source Conference</a>, <a href="http://www.texaslinuxfest.org/">Texax Linux Fest</a></td><td><a href="http://www.gnu.org/licenses/gpl.html">GPL</a></td><td><a href="http://www.python.org/">Python</a> (<a href="http://www.djangoproject.com/">Django</a>)</td>
+</tr>
+<tr><td><a href="http://pkp.sfu.ca/?q=ocs">Open Conference Systems</a></td><td>various academic conferences</td><td><a href="http://www.gnu.org/licenses/gpl.html">GPL</a></td><td><a href="http://www.php.org/">PHP</a></td>
+</tr>
+<tr><td><a href="http://github.com/igal/openconferenceware">OpenConferenceWare</a></td><td><a href="http://opensourcebridge.org/">Open Source Bridge</a></td><td><a href="http://www.opensource.org/licenses/mit-license.php">MIT</a></td><td><a href="http://rubyonrails.org/">Ruby on Rails</a></td>
+</tr>
+<tr><td><a href="http://pentabarf.org/">Pentabarf</a></td><td><a href="http://www.debconf.org/">DebConf</a>, <a href="http://www.fosdem.org/">FOSDEM</a>, <a href="http://www.ccc.de/en/">CCC</a></td><td><a href="http://www.gnu.org/licenses/gpl.html">GPL</a></td><td><a href="http://rubyonrails.org/">Ruby on Rails</a></td>
+</tr>
+<tr><td><a href="http://code.google.com/p/scalereg/">SCALEreg</a></td><td><a href="http://www.socallinuxexpo.org/">SCALE</a></td><td><a href="http://www.gnu.org/licenses/gpl.html">GPL</a></td><td><a href="http://www.python.org/">Python</a> (<a href="http://www.djangoproject.com/">Django</a>)</td>
+</tr>
+<tr><td><a href="http://zookeepr.org/">Zookeepr</a></td><td><a href="http://www.linux.org.au/LCA">linux.conf.au</a></td><td><a href="http://www.gnu.org/licenses/gpl.html">GPL</a></td><td><a href="http://www.python.org/">Python</a> (<a href="http://pylonshq.com/">Pylons</a>)</td>
+</tr></table>  
+  
+If you know of any other Open Source systems, please leave a comment!
+
+
+[[!tag conference]] [[!tag catalyst]] [[!tag debian]] [[!tag nzoss]] 

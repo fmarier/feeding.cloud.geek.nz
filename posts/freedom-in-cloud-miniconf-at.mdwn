@@ -1,0 +1,26 @@
+[[!meta title="Freedom in the Cloud Miniconf at linux.conf.au 2011"]]
+[[!meta date="2010-09-25T21:02:00.003+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Jon Phillips](http://rejon.org/) and I are putting together a [Freedom in the Cloud](http://lca2011.linux.org.au/wiki/Miniconfs/FreedomInTheCloudMiniconf) Miniconf for [linux.conf.au 2011](http://lca2011.linux.org.au/).  
+  
+If you are interested in submitting a proposal (5, 25 or 45 minutes), we want to [hear from you](mailto:proposals@cloud.geek.nz)!  
+  
+The deadline is **22 October 2010**.  
+
+* * *
+
+  
+Whether or not 2011 will be known as the year of the Federated Social Web remains to be seen, but the cloud is certainly not going away and we'd like to propose a Miniconf to cater to all cloud enthusiasts.  
+  
+Specifically, we'd like to solicit proposals from two main groups. The first one is the **hard-core technical cloud engineers** who build their tech on Open Source software. The kind of people who know so much about tweaking their kernels and scaling their infrastructures that they could out-Google Google.  
+  
+Possible topics could include: cloud storage, virtualization, high availability, security, cloud performance and infrastructure management.  
+  
+The second group of people we'd like to attract are the **free network services and federated social web people**. These folks know that the growth of netbooks and smartphones has meant a great dependence on centralized network services. But as more and more computing moves into "the cloud", users and companies are losing direct control over their data and processes. They see a very high risk to businesses and individuals.  
+  
+This group would cover ways that individuals and organizations can ensure that their cloud computing is as dependable and freedom-respecting as running Open Source software on computers they own and control. They will concentrate on using Open Source, Open Data, and Open Standards to keep control in the hands of cloud computing users.  
+  
+Speakers will vary from theoretical discussions about Free network services; developers of Free and federated alternatives to popular centralized cloud services; and tutorials on how to build an Open Source cloud network that you and your business can depend on.
+
+
+[[!tag catalyst]] [[!tag nzoss]] 

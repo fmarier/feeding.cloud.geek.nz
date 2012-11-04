@@ -1,0 +1,95 @@
+[[!meta title="Installing Fallout 3 on Ubuntu Lucid"]]
+[[!meta date="2011-03-31T22:00:00.002+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Here are some notes on what I did to install Fallout 3 (Game of the year edition) on Ubuntu [Lucid](https://launchpad.net/ubuntu/lucid) using [Wine](http://winehq.com/).  
+  
+
+### Prerequisites
+
+  * use the Lucid [NVIDIA drivers](https://launchpad.net/ubuntu/+source/nvidia-graphics-drivers), the ones in the [X Updates PPA](https://edge.launchpad.net/~ubuntu-x-swat/+archive/x-updates) currently do not work
+  
+
+  * install the latest version (actually [1.3.6 is broken](http://appdb.winehq.org/objectManager.php?sClass=version&iId=14322#Comment-64482), so use [1.3.5](https://launchpad.net/~ubuntu-wine/+archive/ppa/+packages?field.name_filter=wine1.3&field.status_filter=superseded&field.series_filter=lucid) in the meantime) of Wine using the [Ubuntu Wine Team PPA](https://launchpad.net/~ubuntu-wine/+archive/ppa)
+
+  
+
+### Basic Installation
+
+  * follow the [WineHQ instructions](http://appdb.winehq.org/objectManager.php?sClass=version&iId=14322)
+  
+
+  * after installing both DVDs, apply the [patch](http://download.zenimax.com/fallout/3/patches/1.7/Fallout3_1.7_English_UK.exe)
+  
+
+  * set the appropriate performance settings for your hardware (make sure you use the same resolution as the one you use in Xorg)
+  
+
+  * click on "Data Files" and enable all of the Fallout 3 add-ons you have installed
+
+  
+
+### Performance Tweaks
+
+Change these settings in your `~/My Games/Fallout 3/FALLOUT.INI`:  
+
+
+    bUseThreadedParticleSystem=1  
+    bUseThreadedBlood=1  
+    bUseThreadedMorpher=1  
+    bUseThreadedAI=1  
+    iNumHWThreads=2  
+    iNumHavokThreads=5  
+    bDoSpecularPass=0  
+    bUseRefractionShader=0  
+    bInvalidateOlderFiles=1
+
+
+Then create a `direct3d.reg` file (replacing _512_ with the correct amount of video memory you have, in MB):
+<pre>
+Windows Registry Editor Version 5.00  
+  
+[HKEY_CURRENT_USER\SOFTWARE\Wine\Direct3D]  
+"OffscreenRenderingMode"="backbuffer"  
+"VideoMemorySize"="<i>512</i>"  
+  
+[HKEY_CURRENT_USER\Control Panel\Desktop]  
+"FontSmoothing"="2"  
+"FontSmoothingType"=dword:00000002  
+"FontSmoothingGamma"=dword:00000578  
+"FontSmoothingOrientation"=dword:00000001
+</pre>
+
+and import these settings (which come from the Wine [wiki](http://wiki.winehq.org/UsefulRegistryKeys) and its [appdb](http://appdb.winehq.org/objectManager.php?sClass=version&iId=19444)) into the registry:  
+
+
+    regedit file.reg
+
+
+  
+
+### Savegame corruption
+
+At some point, I did run into savegame corruption (mostly due to my hard disk filling up) and I created this cronjob in `/etc/cron.hourly/fallout3-savegames` to detect corrupt savegame:  
+
+
+    #!/bin/sh  
+    find /path/to/Fallout3/Savegames/ -type f -name "*.tmp" -print
+
+
+  
+
+### Installing mods
+
+If you want to install [user-contributed mods](http://www.fallout3nexus.com/) (for example, if you [can't be bothered](http://www.fallout3nexus.com/downloads/file.php?id=7546) with the lockpicking and terminal hacking [mini-games](http://fallout.wikia.com/wiki/Mini_games)), you will most likely want to install [FOMM](http://sourceforge.net/projects/fomm/).  
+  
+To do that, follow [these instructions](http://appdb.winehq.org/objectManager.php?sClass=version&iId=14322#Comment-62556) to install dotnet20 and gdiplus using [winetricks](https://launchpad.net/~ubuntu-wine/+archive/ppa/+packages?field.name_filter=winetricks&field.status_filter=&field.series_filter=lucid) otherwise you may run into [this bug](http://bugs.winehq.org/show_bug.cgi?id=23692).  
+  
+Finally, pay attention to the [order](http://amito.freehostia.com/Fallout/FO-mods-order.htm) in which your selected mods are loaded since some of the mods will overwrite files provided by another.  
+  
+
+### Hints and tips
+
+There is an incredibly dedicated community maintaining a [wiki](http://fallout.wikia.com/wiki/Portal:Fallout_3) for this game as well as all of the other "chapters" of the Fallout series. Use it wisely!
+
+
+[[!tag wine]] [[!tag ubuntu]] 

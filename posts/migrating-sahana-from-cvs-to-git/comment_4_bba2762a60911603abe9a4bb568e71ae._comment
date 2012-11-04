@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/09862886782232467681"
+ nickname="mariuz"
+ subject=""
+ date="2009-12-03T03:01:38.771+13:00"
+ content="""
+Thanks for the tips i now import the full firebird project history   
+  
+seems that git cvsimport missed some commits a few weeks ago and is better to use rsync+ cvs2git to reimport it full
+
+
+"""]]

@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://web.midg3t.net/"
+ nickname="Ted"
+ subject=""
+ date="2008-03-30T05:29:00.000+13:00"
+ content="""
+I just use ionice's -n option instead of -c. It seems to work OK.  
+  
+eg. ionice -n7 btdownloadcurses ...  
+  
+I do wish that I didn't have to consider IO scheduling priority as distinct from CPU scheduling priority. Maybe I will need to write a wrapper after all.
+
+
+"""]]

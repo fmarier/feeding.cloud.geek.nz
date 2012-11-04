@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://grep.be/"
+ nickname="Wouter Verhelst"
+ subject=""
+ date="2010-08-24T22:41:22.138+12:00"
+ content="""
+this works, but there's a better way. If you use git merge, you can specify the --squash option to tell git to merge everything as one commit.  
+  
+Of course, that only works if you're merging, not while you're still working on the same branch, like you can with rebase.
+
+
+"""]]

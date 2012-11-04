@@ -1,0 +1,204 @@
+[[!meta title="Code reviews with Gerrit and Gitorious"]]
+[[!meta date="2011-04-17T17:00:00.009+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+The [Mahara](http://mahara.org/) [project](https://launchpad.net/mahara) has just moved to mandatory code reviews for every commit that gets applied to core code.  
+  
+Here is a description of how [Gerrit Code Review](http://code.google.com/p/gerrit), the peer-review system used by [Android](http://www.android.com), was retrofitted into our existing [git](http://www.git-scm.com/) repository on [Gitorious](http://www.gitorious.org/).  
+  
+(If you want to know more about Gerrit, listen to [this FLOSS Weekly interview](http://www.twit.tv/floss118).)  
+  
+
+### Replacing existing Gitorious committers with a robot
+
+The first thing to do was to log into Gitorious and remove commit rights from everyone in the [main repository](http://www.gitorious.org/mahara/mahara). Then I created a new [maharabot](http://www.gitorious.org/~maharabot) account with a password-less SSH key (stored under `/home/gerrit/.ssh/`) and made that new account the sole committer.  
+  
+This is to ensure that nobody pushes to the repository by mistake since all of these changes would be **overwritten by Gerrit**.  
+  
+
+### Basic Gerrit installation
+
+After going through the [installation instructions](https://gerrit.googlecode.com/svn/documentation/2.1.6/install.html), I logged into the Gerrit admin interface and created a new "mahara" [project](https://gerrit.googlecode.com/svn/documentation/2.1.6/project-setup.html).  
+  
+I picked the "merge if necessary" submit action because "cherry-pick" would [disable dependency tracking](http://groups.google.com/group/repo-discuss/browse_thread/thread/aa53fe63197183af) which is quite a handy feature.  
+  
+
+### Reverse proxy using Nginx
+
+Since we wanted to offer Gerrit over HTTPS, I decided to run it behind an [Nginx](http://www.nginx.org/) proxy. This is the Nginx configuration I ended up with:  
+
+
+    server {  
+         listen 443;  
+         server_name reviews.mahara.org;  
+         add_header Strict-Transport-Security max-age=15768000;  
+      
+         ssl on;  
+         ssl_certificate  /etc/ssl/certs/reviews.mahara.org.crt;  
+         ssl_certificate_key  /etc/ssl/certs/reviews.mahara.org.pem;  
+      
+         ssl_session_timeout  5m;  
+         ssl_session_cache shared:SSL:1m;  
+      
+         ssl_protocols  TLSv1;  
+         ssl_ciphers  HIGH:!ADH;  
+         ssl_prefer_server_ciphers   on;  
+      
+         location / {  
+                 proxy_pass   http://127.0.0.1:8081;  
+                 proxy_set_header X-Forwarded-For $remote_addr;  
+                 proxy_set_header Host $host;  
+         }  
+    }
+
+
+  
+Things to note:
+
+  * An HTTP to HTTPS redirection is [not provided](https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet#Rule_-_Do_Not_Perform_Redirects_from_Non-TLS_Page_to_TLS_Login_Page).
+  
+
+  * The [HSTS](https://secure.wikimedia.org/wikipedia/en/wiki/HTTP_Strict_Transport_Security) headers indicates to modern browsers that this URL should only be accessed via HTTPS.
+  
+
+  * Only strong SSL ciphers are enabled.
+  
+
+  * Before proxying requests to Gerrit, Nginx adds a few headers to identify the origin of the request. The `Host` header in particular must be present otherwise [built-in Gerrit redirections will fail](http://code.google.com/p/gerrit/issues/detail?id=905).
+
+  
+
+### Mail setup
+
+To enable Gerrit to email reviewers and committers, I installed [Postfix](http://www.postfix.org/) and used "reviews.mahara.org" as the "System mail name".  
+  
+Then I added the following to `/home/gerrit/mahara_reviews/etc/gerrit.config`:  
+
+
+    [user]  
+     email = "gerrit@reviews.mahara.org"
+
+
+to fix the From address in outgoing emails.  
+  
+
+### Init script and cron
+
+Following the [installation instructions](https://gerrit.googlecode.com/svn/documentation/2.1.6/install.html), I created these symlinks:  
+
+
+    ln -s /home/gerrit/mahara_reviews/bin/gerrit.sh /etc/init.d/gerrit  
+    cd /etc/rc2.d && ln -s ../init.d/gerrit S19gerrit  
+    cd /etc/rc3.d && ln -s ../init.d/gerrit S19gerrit  
+    cd /etc/rc4.d && ln -s ../init.d/gerrit S19gerrit  
+    cd /etc/rc5.d && ln -s ../init.d/gerrit S19gerrit  
+    cd /etc/rc0.d && ln -s ../init.d/gerrit K21gerrit  
+    cd /etc/rc1.d && ln -s ../init.d/gerrit K21gerrit  
+    cd /etc/rc6.d && ln -s ../init.d/gerrit K21gerrit
+
+
+and put the following settings into `/etc/default/gerritcodereview`:  
+
+
+    GERRIT_SITE=/home/gerrit/mahara_reviews  
+    GERRIT_USER=gerrit  
+    GERRIT_WAR=/home/gerrit/gerrit.war
+
+
+to automatically start and stop Gerrit.  
+  
+I also added a cron job in `/etc/cron.d/gitcleanup` to ensure that the built-in git repository doesn't get bloated:
+<pre>
+MAILTO=<i>admin@example.com</i>  
+20 4 * * * gerrit GIT_DIR=/home/gerrit/mahara_reviews/git/mahara.git git gc --quiet
+</pre>
+
+  
+
+### Configuration enhancements
+
+To allow images in change requests to be displayed inside the browser, I [marked them as safe](http://gerrit.googlecode.com/svn/documentation/2.1.6/config-gerrit.html#mimetype) in `/home/gerrit/mahara_reviews/etc/gerrit.config`:  
+
+
+    [mimetype "image/*"]  
+     safe = true
+
+
+  
+Another thing I did to enhance the review experience was to enable the gitweb repository browser:  
+
+
+    apt-get install gitweb
+
+
+  
+and to make checkouts faster by enabling anonymous Git access:  
+
+
+    [gerrit]  
+      canonicalGitUrl = git://reviews.mahara.org/git/  
+    [download]  
+      scheme = ssh  
+      scheme = anon_http  
+      scheme = anon_git
+
+
+  
+which requires that you have a git daemon running and listening on port 9418:  
+
+
+    apt-get install git-daemon-run  
+    ln -s /home/gerrit/mahara_reviews/git/mahara.git /var/cache/git/  
+    touch /home/gerrit/mahara_reviews/git/mahara.git/git-daemon-export-ok
+
+
+  
+Finally, I included the Mahara branding in the header and footer of each page by [providing valid XHTML fragments](http://gerrit.googlecode.com/svn/documentation/2.1.6/config-headerfooter.html#toc0) in `/home/gerrit/mahara_reviews/etc/GerritSiteHeader.html` and `GerritSiteFooter.html`.  
+  
+
+### Initial import and replication
+
+Once Gerrit was fully working, I performed the initial code import by using my administrator account to push the exiting Gitorious branches to the internal git repository:  
+
+<pre>
+git remote add gerrit ssh://<i>username</i>@reviews.mahara.org:29418/mahara  
+git push gerrit 1.2_STABLE  
+git push gerrit 1.3_STABLE  
+git push gerrit master
+</pre>
+
+Note that I had to **temporarily disable "Require Change IDs"** in the project settings in order to import the old commits which didn't have these.  
+  
+To replicate the internal Gerrit repository back to Gitorious, I created a new `/home/gerrit/mahara_reviews/etc/replication.config` file:  
+
+
+    [remote "gitorious"]  
+     url = gitorious.org:mahara/${name}.git  
+     push = +refs/heads/*:refs/heads/*  
+     push = +refs/tags/*:refs/tags/*
+
+
+(The ${name} variable is [required](https://code.google.com/p/gerrit/issues/detail?id=896) even when you have a single project.)  
+  
+
+### Contributor instructions
+
+This is how developers can get a working checkout of our code now:  
+
+<pre>
+git clone git://gitorious.org/mahara/mahara.git  
+cd mahara  
+git remote add gerrit ssh://<i>username</i>@reviews.mahara.org:29418/mahara  
+git fetch gerrit  
+scp -p -P 29418 reviews.mahara.org:hooks/commit-msg .git/hooks/
+</pre>
+
+and this is how they can submit local changes to Gerrit:
+
+    git push gerrit HEAD:refs/for/master
+
+
+  
+Anybody can submit change requests or [comment on them](https://reviews.mahara.org) but make sure you **do not have the Cookie Pie** Firefox extension installed or you will be [unable to log into Gerrit](https://code.google.com/p/gerrit/issues/detail?id=887).
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag mahara]] [[!tag git]] [[!tag gerrit]] [[!tag programming]] [[!tag nzoss]] 

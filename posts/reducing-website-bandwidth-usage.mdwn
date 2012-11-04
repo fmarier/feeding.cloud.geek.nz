@@ -1,0 +1,35 @@
+[[!meta title="Reducing website bandwidth usage"]]
+[[!meta date="2009-10-09T18:30:00.004+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+There are lots of [excellent](https://addons.mozilla.org/en-US/firefox/addon/5369) [tools](http://code.google.com/speed/page-speed/) to help web developers optimise their websites.  
+  
+Here are two simple things you have no excuse for overlooking on your next project.  
+
+## HTML, XML, Javascript and CSS files
+
+One of the easiest ways to speed up a website (often to a surprising degree) is to turn on compression of plaintext content through facilities like [mod_deflate](http://httpd.apache.org/docs/2.2/mod/mod_deflate.html) or the [Gzip Module](http://wiki.nginx.org/NginxHttpGzipModule).  
+  
+Here's the Apache configuration file I normally use:  
+
+
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript text/xml application/x-javascript application/javascript  
+    BrowserMatch ^Mozilla/4 gzip-only-text/html  
+    BrowserMatch "MSIE 6" no-gzip dont-vary  
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip  
+    
+
+
+## Images
+
+As far as images go, the following tools will reduce file sizes through [lossless compression](http://en.wikipedia.org/wiki/Lossless_compression) (i.e. with no visual changes at all):  
+
+  * <code>[gifsicle](http://www.lcdf.org/gifsicle/) -O2 -b <i>image.gif</i></code>
+  * <code>jpegoptim -p --strip-all <i>image.jpg</i></code>
+  * <code>optipng -o7 -q <i>image.png</i></code>
+
+(An alternative to [optipng](http://optipng.sourceforge.net/) is [pngcrush](http://pmt.sourceforge.net/pngcrush/).)  
+  
+Note that the `--strip-all` argument to [jpegoptim](http://www.kokkonen.net/tjko/projects.html) will remove any [EXIF](http://en.wikipedia.org/wiki/Exif)/comments tags that may be present.
+
+
+[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag mahara]] [[!tag web]] [[!tag nzoss]] 

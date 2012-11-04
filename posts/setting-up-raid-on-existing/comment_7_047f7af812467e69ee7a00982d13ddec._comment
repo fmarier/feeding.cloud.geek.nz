@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/01434684718023087340"
+ nickname="Network23"
+ subject=""
+ date="2011-08-30T09:24:41.750+12:00"
+ content="""
+if you do that on Natty, make sure getting the grub2 common packages from oneric!!!  
+grub2 from natty has a bug, update grub2-pc packages and grub2-common  
+http://packages.ubuntu.com/de/oneiric/grub2-common  
+http://packages.ubuntu.com/de/oneiric/grub-pc  
+http://packages.ubuntu.com/de/oneiric/grub-common  
+and install grub again to /dev/sdx /dev/sdy
+
+
+"""]]

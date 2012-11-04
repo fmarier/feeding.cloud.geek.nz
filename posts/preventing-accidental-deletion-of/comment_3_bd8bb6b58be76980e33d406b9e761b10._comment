@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-06-21T06:46:00.000+12:00"
+ content="""
+Very very dangerous command  
+  
+Do in a folder  
+  
+rm -rf .*  
+  
+for me, it's a 'rm' bug because   
+  
+rm -rf *  
+  
+Do not remove dot file.  
+  
+But rm -rf .* remove .. folder !  
+  
+rm -rf .*  
+  
+And everything is remove on your disk ;-(  
+  
+I think you can a this to your tool.  
+  
+Sytoka
+
+
+"""]]

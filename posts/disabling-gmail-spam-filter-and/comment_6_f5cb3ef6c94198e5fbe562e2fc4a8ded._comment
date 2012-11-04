@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/10506377195494245136"
+ nickname="Jeremy"
+ subject=""
+ date="2011-02-23T03:49:52.522+13:00"
+ content="""
+I too have an unmanageable amount of spam in my Gmail spam folder. Having to scan a thousand messages a day for possibly 1 or 2 that isn't spam is quite annoying.  
+  
+I came upon this script to allow me to use spamassassin and still read my mail using the gmail interface.  
+  
+https://github.com/ook/isbg  
+  
+I run it on my [Gmail]/Spam folder instead of the Inbox
+
+
+"""]]

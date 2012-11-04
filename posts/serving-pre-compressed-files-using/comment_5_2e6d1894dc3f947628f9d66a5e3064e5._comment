@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/11727162716139827132"
+ nickname="kokopelle"
+ subject=""
+ date="2011-02-09T01:44:45.627+13:00"
+ content="""
+Your article served as part of the basis for my newly created offline (batch) script that creates combined, minified and gzipped JS and CSS files. Files are pre-gzipped so no server overhead for compression every time file is served. More info at http://code.google.com/p/compress/
+
+
+"""]]

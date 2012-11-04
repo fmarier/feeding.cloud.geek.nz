@@ -1,0 +1,34 @@
+[[!meta title="Restoring lost RT tickets"]]
+[[!meta date="2010-01-05T07:30:00.003+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Request Tracker](http://bestpractical.com/rt) (also know as RT), the defacto Open Source ticket tracking software, has a special status value to get rid of spam tickets: _deleted_. It does exactly what it's supposed to do, that is get rid of these tickets quickly.  
+  
+Unfortunately, it's very easy to accidentally delete a bunch of non-spam tickets via the bulk update interface. Restoring these deleted tickets is not straightforward.  
+  
+Good news: none of the lost tickets were removed from the database.  
+Bad news: you [can't search for deleted tickets](http://rt3.fsck.com/Ticket/Display.html?id=14305).  
+  
+
+## Finding the lost tickets
+
+If you have a copy of the page before you did the bulk update (perhaps in your browser cache?) then you've got all you need. Otherwise, you'll need to access the database directly to get a list of ticket IDs.  
+  
+First of all, find the user ID of the person who marked of all these tickets as deleted (42 in this example), then issue the following query:  
+
+<pre>
+ SELECT id, lastupdated, subject  
+ FROM tickets  
+WHERE status = 'deleted' AND  
+      lastupdatedby = <i>42</i>  
+ORDER BY lastupdated;
+</pre>
+
+You may want to filter some more using the `lastupdated` timestamp if you know roughly when the deletion occurred.  
+  
+
+## Restoring deleted tickets
+
+Since all of the tickets are still in the database, all you need to do is to go to each of them directly (e.g. `http://www.example.com/Ticket/Display.html?id=12345` for Ticket #12345) and change the status back to "open".
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag rt]] [[!tag ubuntu]] [[!tag nzoss]] 

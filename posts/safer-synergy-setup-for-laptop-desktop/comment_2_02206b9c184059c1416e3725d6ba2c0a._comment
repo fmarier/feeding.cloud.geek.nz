@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2009-04-02T08:43:00.000+13:00"
+ content="""
+My password was never in a paste buffer.  
+  
+The problem I'm alluding to is that of starting to type my password into a regular password field on the synergy client (my laptop).  
+  
+Then the synergyc client crashes before I'm done typing the password and so the keyboard comes back to the desktop where the IRC window is the one with the focus.  
+  
+Because all of this happens within 1 second, I never noticed and quickly pressed Enter after finishing to type my password. That's why my password ended up in the wrong window.
+
+
+"""]]

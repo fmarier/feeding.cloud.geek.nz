@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/14900007809435744780"
+ nickname="tjohansen"
+ subject=""
+ date="2012-01-19T23:41:03.334+13:00"
+ content="""
+Great guide, specially about how you play it safe, and fail check end the end.  
+  
+  
+But I had to supplement it with this guide: http://www.howtoforge.com/how-to-set-up-software-raid1-on-a-running-system-incl-grub2-configuration-ubuntu-10.04-p1  
+  
+  
+And I can add that, its also possible to make mdadm daemon send email about any fails if the happens. A nice warning system.
+
+
+"""]]

@@ -1,0 +1,221 @@
+[[!meta title="Setting up RAID on an existing Debian/Ubuntu installation"]]
+[[!meta date="2011-03-13T23:25:00.001+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I run [RAID1](https://secure.wikimedia.org/wikipedia/en/wiki/Standard_RAID_levels#RAID_1) on all of the machines I support. While such hard disk mirroring is not a replacement for having good working backups, it means that a single drive failure is not going to force me to have to spend lots of time rebuilding a machine.  
+  
+The best possible time to set this up is of course when you first install the operating system. The [Debian](http://www.debian.org/) installer will set everything up for you if you choose that option and Ubuntu has [alternate installation CDs](http://www.ubuntu.com/desktop/get-ubuntu/alternative-download#alternate) which allow you to do the same.  
+  
+This post documents the steps I followed to retrofit RAID1 into an existing Debian squeeze installation. Getting a mirrored setup after the fact.  
+  
+
+### Overview
+
+Before you start, make sure the following packages are installed:  
+
+
+    apt-get install mdadm rsync initramfs-tools
+
+
+Then go through these steps:  
+
+  1. Partition the new drive.
+  2. Create new degraded RAID arrays.
+  3. Install GRUB2 on both drives.
+  4. Copy existing data onto the new drive.
+  5. Reboot using the RAIDed drive and test system.
+  6. Wipe the original drive by adding it to the RAID array.
+  7. Test booting off of the original drive.
+  8. Resync drives.
+  9. Test booting off of the new drive.
+ 10. Reboot with the two drives and resync the array.
+
+(My instructions are mostly based on this [old tutorial](http://wiki.xtronics.com/index.php/Raid) but also on this [more recent one](http://www.howtoforge.com/how-to-set-up-software-raid1-on-a-running-system-incl-grub2-configuration-ubuntu-10.04).)  
+  
+
+### 1- Partition the new drive
+
+Once you have connected the new drive (**`/dev/sdb`**), boot into your system and use one of `cfdisk` or `fdisk` to display the partition information for the existing drive (**`/dev/sda`** on my system).  
+  
+The idea is to create partitions of the same size on the new drive. (If the new drive is bigger, leave the rest of the drive unpartitioned.)  
+  
+Partition types should all be: **`fd`** (or "linux raid autodetect").  
+  
+
+### 2- Create new degraded RAID arrays
+
+The newly partioned drive, consisting of a root and a swap partition, can be added to new RAID1 arrays using `mdadm`:  
+
+
+    mdadm --create /dev/md0 --level=1 --raid-devices=2 missing /dev/sdb1  
+    mdadm --create /dev/md1 --level=1 --raid-devices=2 missing /dev/sdb2
+
+
+and formatted like this:  
+
+
+    mkswap /dev/md1  
+    mkfs.ext4 /dev/md0
+
+
+Specify these devices explicitly in `/etc/mdadm/mdadm.conf`:  
+
+
+    DEVICE /dev/sda* /dev/sdb*
+
+
+and append the RAID arrays to the end of that file:  
+
+
+    mdadm --detail --scan >> /etc/mdadm/mdadm.conf  
+    dpkg-reconfigure mdadm
+
+
+You can check the status of your RAID arrays at any time by running this command:  
+
+
+    cat /proc/mdstat
+
+
+  
+
+### 3- Install GRUB2 on both drives
+
+The best way to ensure that [GRUB2](https://help.ubuntu.com/community/Grub2), the default bootloader in Debian and Ubuntu, is installed on both drives is to reconfigure its package:  
+
+
+    dpkg-reconfigure grub-pc
+
+
+and select both `/dev/sda` and `/dev/sdb` (but not `/dev/md0`) as installation targets.  
+  
+This should cause the init ramdisk (`/boot/initrd.img-2.6.32-5-amd64`) and the grub menu (`/boot/grub/grub.cfg`) to be rebuilt with RAID support.  
+  
+
+### 4- Copy existing data onto the new drive
+
+Copy everything that's on the existing drive onto the new one using `rsync`:  
+
+
+    mkdir /tmp/mntroot  
+    mount /dev/md0 /tmp/mntroot  
+    rsync -auHxv --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* /* /tmp/mntroot/
+
+
+  
+
+### 5- Reboot using the RAIDed drive and test system
+
+Before rebooting, open `/tmp/mntroot/etc/fstab`, and change `/dev/sda1` and `/dev/sda2` to `/dev/md0` and `/dev/md1 `respectively.
+
+  
+Then reboot and from within the GRUB menu, hit "e" to enter edit mode and make sure that you will be booting off of the new disk:  
+
+<pre>
+set root='(<b>md/0</b>)'  
+linux /boot/vmlinuz-2.6.32-5-amd64 root=<b>/dev/md0</b> ro quiet
+</pre>
+
+Once the system is up, you can check that the root partition is indeed using the RAID array by running `mount` and looking for something like:  
+
+<pre>
+<b>/dev/md0 on /</b> type ext4 (rw,noatime,errors=remount-ro)
+</pre>
+
+  
+
+### 6- Wipe the original drive by adding it to the RAID array
+
+Once you have verified that everything is working on `/dev/sdb`, it's time to change the partition types on `/dev/sda` to `fd` and to add the original drive to the degraded RAID array:  
+
+
+    mdadm /dev/md0 -a /dev/sda1  
+    mdadm /dev/md1 -a /dev/sda2
+
+
+You'll have to wait until the two partitions are fully synchronized but you can check the sync status using:  
+
+
+    watch -n1 cat /proc/mdstat
+
+
+  
+
+### 7- Test booting off of the original drive
+
+Once the sync is finished, update the boot loader menu:  
+
+
+    update-grub
+
+
+and shut the system down:  
+
+
+    shutdown -h now
+
+
+before physically disconnecting `/dev/sdb` and turning the machine back on to test booting with only `/dev/sda` present.  
+  
+After a successful boot, shut the machine down and plug the second drive back in before powering it up again.  
+  
+
+### 8- Resync drives
+
+If everything works, you should see the following after running `cat /proc/mdstat`:  
+
+
+    md0 : active raid1 sda1[1]  
+    280567040 blocks [2/1] [_U]
+
+
+indicating that the RAID array is incomplete and that the second drive is not part of it.  
+  
+To add the second drive back in and start the sync again:  
+
+<pre>
+mdadm /dev/md0 -a <b>/dev/sdb1</b>
+</pre>
+
+  
+
+### 9- Test booting off of the new drive
+
+To complete the testing, shut the machine down, pull `/dev/sda` out and try booting with `/dev/sdb` only.  
+  
+
+### 10- Reboot with the two drives and resync the array
+
+Once you are satisfied that it works, reboot with both drives plugged in and re-add the first drive to the array:  
+
+<pre>
+mdadm /dev/md0 -a <b>/dev/sda1</b>
+</pre>
+
+Your setup is now complete and fully tested.  
+  
+
+### Ongoing maintenance
+
+I recommend making sure the two RAIDed drives stay in sync by enabling periodic RAID checks. The easiest way is to enable the checks that are built into the Debian package:  
+
+
+    dpkg-reconfigure mdadm
+
+
+but you can also create a weekly or monthly cronjob which does the following:  
+
+<pre>
+echo "check" &gt; /sys/block/<b>md0</b>/md/sync_action
+</pre>
+
+Something else you should seriously consider is to install the `smartmontools` package and run weekly [SMART](https://secure.wikimedia.org/wikipedia/en/wiki/S.M.A.R.T.) checks by putting something like this in your `/etc/smartd.conf`:  
+
+
+    /dev/sda -a -d ata -o on -S on -s (S/../.././02|L/../../6/03)  
+    /dev/sdb -a -d ata -o on -S on -s (S/../.././02|L/../../6/03)
+
+
+These checks, performed by the hard disk controllers directly, could warn you of imminent failures ahead of time. Personally, when I start seeing errors in the SMART log (`smartctl -a /dev/sda`), I order a new drive straight away.
+
+
+[[!tag catalyst]] [[!tag raid]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 

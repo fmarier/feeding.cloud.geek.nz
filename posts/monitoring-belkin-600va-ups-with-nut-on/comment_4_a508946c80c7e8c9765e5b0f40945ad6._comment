@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2011-06-19T11:07:48.452+12:00"
+ content="""
+I only got it to work on Lucid using the Karmic package, which I have ported to Lucid and put in my PPA:  
+  
+https://launchpad.net/~fmarier/+archive/ppa
+
+
+"""]]

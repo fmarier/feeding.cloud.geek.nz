@@ -1,0 +1,196 @@
+[[!meta title="Using plupload inside a Django application"]]
+[[!meta date="2011-04-08T08:00:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Plupload](http://plupload.org/) is a reusable component which fully takes advantage of the file upload capabilities of your browser and its plugins. It will use HTML5, Flash and Google Gears if they are available, but otherwise, it can gracefully degrade down to HTML4 it it needs to. Here's how it can be integrated within a Django web application.  
+  
+(I have posted the [sample application](https://gitorious.org/plupload_django/plupload_django) I will refer to and you may use it [anyway you like](https://gitorious.org/plupload_django/plupload_django/blobs/master/license.txt).)  
+  
+
+### Creating a basic upload form
+
+The first step is to create a simple one-file upload form that will be used in the case where Javascript is disabled:  
+  
+
+
+    class UploadForm(forms.Form):  
+       file = forms.FileField()  
+      
+       def save(self, uploaded_file):  
+           print 'File "%s" would presumably be saved to disk now.' % uploaded_file  
+           pass  
+    
+
+
+Then you can add this form to one of your templates:  
+  
+
+
+    <form enctype="multipart/form-data" action="{% url plupload_sample.upload.views.upload_file %}" method="post">  
+    {% csrf_token %}  
+      
+    <div id="uploader">  
+     {{form.file.errors}}{{form.file}}  
+     <input type="submit" value="Upload" />  
+    </div>  
+      
+    </form>
+
+
+And create a new method to receive the form data:  
+
+
+    @csrf_protect  
+    def upload_file(request):  
+       if request.method == 'POST':  
+           form = UploadForm(request.POST, request.FILES)  
+           if form.is_valid():  
+               uploaded_file = request.FILES['file']  
+               form.save(uploaded_file)  
+      
+               return HttpResponseRedirect(reverse('plupload_sample.upload.views.upload_file'))  
+       else:  
+           form = UploadForm()  
+      
+       return render_to_response('upload_file.html', {'form': form}, context_instance=RequestContext(request))
+
+
+  
+
+### Adding Plupload to the template
+
+In order to display the right Javascript-based upload form, add the following code, based on the [official example](http://plupload.org/example_queuewidget.php), to the head of your template:  
+
+
+    <link rel="stylesheet" href="/css/plupload.queue.css" type="text/css">  
+    <script type="text/javascript" src="/js/jquery.min.js"></script>  
+    <script type="text/javascript" src="/js/plupload.full.min.js"></script>  
+    <script type="text/javascript" src="/js/jquery.plupload.queue.min.js"></script>  
+      
+    <script type="text/javascript">  
+    $(function() {  
+       $("#uploader").pluploadQueue({  
+           runtimes : 'html5,html4',  
+           url : '{% url plupload_sample.upload.views.upload_file %}',  
+           max_file_size : '1mb',  
+           chunk_size: '1mb',  
+           unique_names : false,  
+           multipart: true,  
+      
+           headers : {'X-Requested-With' : 'XMLHttpRequest', 'X-CSRFToken' : '{{csrf_token}}'},  
+       });  
+      
+       $('form').submit(function(e) {  
+           var uploader = $('#uploader').pluploadQueue();  
+      
+           // Validate number of uploaded files  
+           if (uploader.total.uploaded == 0) {  
+               // Files in queue upload them first  
+               if (uploader.files.length > 0) {  
+                   // When all files are uploaded submit form  
+                   uploader.bind('UploadProgress', function() {  
+                       if (uploader.total.uploaded == uploader.files.length)  
+                           $('form').submit();  
+                   });  
+      
+                   uploader.start();  
+               } else {  
+                   alert('You must at least upload one file.');  
+               }  
+      
+               e.preventDefault();  
+           }  
+       });  
+    });  
+    </script>
+
+
+Pay close attention to the extra headers that need to be added to ensure that the AJAX requests will pass the [Django CSRF checks](http://docs.djangoproject.com/en/1.3/ref/contrib/csrf/):  
+
+
+    X-Requested-With: XMLHttpRequest  
+    X-CSRFToken: {{csrf_token}}
+
+
+  
+
+### Adding Plupload to the view method
+
+Now in order to properly receive the files uploaded by Plupload via AJAX calls, we need to revise our upload_file() method:  
+
+<pre>
+@csrf_protect  
+def upload_file(request):  
+   if request.method == 'POST':  
+       form = UploadForm(request.POST, request.FILES)  
+       if form.is_valid():  
+           uploaded_file = request.FILES['file']  
+           form.save(uploaded_file)  
+  
+           <b>if request.is_ajax():  
+               response = HttpResponse('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}', mimetype='text/plain; charset=UTF-8')  
+               response['Expires'] = 'Mon, 1 Jan 2000 01:00:00 GMT'  
+               response['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'  
+               response['Pragma'] = 'no-cache'  
+               return response  
+           else:  
+               return HttpResponseRedirect(reverse('plupload_sample.upload.views.upload_file'))</b>  
+   else:  
+       form = UploadForm()  
+  
+   return render_to_response('upload_file.html', {'form': form}, context_instance=RequestContext(request))
+</pre>
+
+The above includes the response (which is not really documented as far as I can tell) that needs to be sent back to Plupload to make sure it knows that the file has been received successfully:  
+
+
+    {"jsonrpc" : "2.0", "result" : null, "id" : "id"}
+
+
+  
+
+### Adding support for multipart files
+
+Our solution so far works fine except when uploading large files that need to be sent in multiple chunks.  
+  
+This involves writing to a temporary file until all parts have been received:  
+
+<pre>
+@csrf_protect  
+def upload_file(request):  
+   if request.method == 'POST':  
+       form = UploadForm(request.POST, request.FILES)  
+       if form.is_valid():  
+           uploaded_file = request.FILES['file']  
+           <b>chunk = request.REQUEST.get('chunk', '0')  
+           chunks = request.REQUEST.get('chunks', '0')  
+           name = request.REQUEST.get('name', '')  
+  
+           if not name:  
+               name = uploaded_file.name  
+  
+           temp_file = '/tmp/insecure.tmp'  
+           with open(temp_file, ('wb' if chunk == '0' else 'ab')) as f:  
+               for content in uploaded_file.chunks():  
+                   f.write(content)  
+  
+           if int(chunk) + 1 &gt;= int(chunks):  
+               form.save(temp_file, name)</b>  
+  
+           if request.is_ajax():  
+               response = HttpResponse('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}', mimetype='text/plain; charset=UTF-8')  
+               response['Expires'] = 'Mon, 1 Jan 2000 01:00:00 GMT'  
+               response['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'  
+               response['Pragma'] = 'no-cache'  
+               return response  
+           else:  
+               return HttpResponseRedirect(reverse('plupload_sample.upload.views.upload_file'))  
+   else:  
+       form = UploadForm()  
+  
+   return render_to_response('upload_file.html', {'form': form}, context_instance=RequestContext(request))
+</pre>
+
+Note that I have used `/tmp/insecure.tmp` for brevity. In a real application, you do need to use a [secure mechanism](http://docs.python.org/library/tempfile.html) to create the temporary file or you would expose yourself to a [tempfile vulnerability](https://duckduckgo.com/?q=insecure+temp+file+creation).
+
+
+[[!tag plupload]] [[!tag catalyst]] [[!tag django]] [[!tag python]] [[!tag programming]] [[!tag web]] [[!tag nzoss]] 

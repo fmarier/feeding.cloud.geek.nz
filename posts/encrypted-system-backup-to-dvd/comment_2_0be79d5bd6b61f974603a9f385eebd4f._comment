@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2011-04-03T18:04:38.922+12:00"
+ content="""
+For the really paranoid you might consider doing a shred -u -z on the backup.key file. It should be unnecessary for the backup.dat but if you have the time and entropy, you could do that too.
+
+
+"""]]

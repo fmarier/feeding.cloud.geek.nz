@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/02432845679649150353"
+ nickname="Unknown"
+ subject=""
+ date="2012-02-24T10:56:24.836+13:00"
+ content="""
+Titusz: How bout using the session_id ?  
+  
+Found these in upload.php:  
+  
+die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');  
+die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');  
+die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');  
+die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+
+
+"""]]

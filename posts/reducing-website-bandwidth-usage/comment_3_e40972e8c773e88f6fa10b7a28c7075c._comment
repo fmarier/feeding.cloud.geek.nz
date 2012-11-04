@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://www.gamma.net.nz"
+ nickname="don"
+ subject=""
+ date="2009-10-13T11:34:25.606+13:00"
+ content="""
+jpegtran++  
+  
+$ sudo aptitude install libjpeg-progs
+
+
+"""]]

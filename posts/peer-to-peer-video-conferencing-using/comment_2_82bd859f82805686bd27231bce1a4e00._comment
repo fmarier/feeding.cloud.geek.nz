@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2010-12-20T09:07:49.017+13:00"
+ content="""
+Thanks for dropping by Sjoerd. I was indeed hoping to be able to use Empathy (xmpp protocol) and to avoid writing a custom script.  
+  
+I saw that the tcp/udp traffic was going through the proxy server (I can almost swear it said "STUN") in the Empathy debugging window. I tried to get it to stop using that but I couldn't find any documentation as to which ports need to be opened/forwarded through NAT routers.  
+  
+I think it was using Theora but I'll try that x264 setting.
+
+
+"""]]

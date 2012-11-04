@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/05301167746102010725"
+ nickname="dozykraut"
+ subject=""
+ date="2008-05-25T00:42:00.000+12:00"
+ content="""
+Why not start with basics:  
+1. Set a strong BIOS password  
+2. Disable (in BIOS) booting from removable media  
+3. Set a global GRUB password, so ALL options in menulist require a password.  
+  
+The ordinary thief will already pass after encountering those obstacles.  
+  
+Then encrypt your home partition.  
+  
+Regards  
+The Dozy Kraut
+
+
+"""]]

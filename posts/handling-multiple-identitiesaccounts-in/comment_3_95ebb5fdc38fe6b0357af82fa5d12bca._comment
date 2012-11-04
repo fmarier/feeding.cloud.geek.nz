@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://madduck.net/"
+ nickname="madduck"
+ subject=""
+ date="2008-04-02T21:47:00.000+13:00"
+ content="""
+If you deal a lot with profiles and templates, check out [mailplate](http://madduck.net/code/mailplate).  
+  
+Also, you can have multiple alternates lines. See [my alternates file](http://git.madduck.net/v/etc/mutt.git?a=blob;f=.mutt/alternates).
+
+
+"""]]

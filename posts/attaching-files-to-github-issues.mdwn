@@ -1,0 +1,51 @@
+[[!meta title="Attaching files to Github issues"]]
+[[!meta date="2012-06-21T15:13:00.001+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+This is a hack to work-around the lack of support for file attachments on the Github issue tracker.
+
+You can of course host your files somewhere else and link to them, but it's a bit annoying to not be able to attach files directly on a bug report because these remote files might go away in the future and make archived issues much less useful.
+
+### Hosting attachments on Github
+
+To host file attachments on Github, you could create a [new repository](https://github.com/repositories/new), but then it would clutter up your list of personal repos. A better option is to create a new [gist](https://gist.github.com):
+
+  * use the bug title as the description (ideally with the issue number too)
+  * put "temp" as the filename (it will be deleted shortly)
+  * put something like "TODO" as the file content
+
+At that point, you'll have a new [throw-away repository](https://gist.github.com/2963192/9fc72900410caa726a1cf8f7c877ce8ef205d05d) that you can clone on your local machine:
+
+<pre>
+git clone git@gist.github.com:<i>2963192</i>.git gist-<i>2963192</i>
+</pre>
+
+Once you've done that, delete the temporary file and add the one(s) you want: 
+<pre>
+git rm temp  
+git add <i>screenshot1.png</i>  
+git add <i>screenshot2.png</i>  
+...  
+git commit  
+git push
+</pre>
+
+Now, visit your [gist page](https://gist.github.com/2963192) and right-click on each attachment to get its direct URL:
+
+
+    https://gist.github.com/raw/2963192/36e1ec2c185905bbfd545a30950ba060183e30ea/grant_p-s_bug.png  
+    https://gist.github.com/raw/2963192/5f708ea14fbd75c28e5e95ee891c36894ce48f46/grant_p-s_persona_bug.png
+
+
+### Embedding remote images in Github issues
+
+Finally, to include the above images into my [bug report](https://github.com/mozilla/browserid/issues/1811), here's the [Markdown](http://daringfireball.net/projects/markdown/syntax#img) code I used:
+
+
+    ![BrowserID](https://gist.github.com/raw/2963192/36e1ec2c185905bbfd545a30950ba060183e30ea/grant_p-s_bug.png)  
+    ![Persona](https://gist.github.com/raw/2963192/5f708ea14fbd75c28e5e95ee891c36894ce48f46/grant_p-s_persona_bug.png)
+
+
+Hopefully Github will at some point listen to all of the users that have been asking for this feature. In the meantime, if you don't mind the hassle, it is possible to have issues and attachments on the same site (sort of).
+
+
+[[!tag github]] [[!tag mozilla]] 

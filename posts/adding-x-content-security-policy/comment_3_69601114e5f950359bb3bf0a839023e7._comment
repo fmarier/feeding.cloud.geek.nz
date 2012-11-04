@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://humanleg.org.uk"
+ nickname="Robert"
+ subject=""
+ date="2011-09-19T05:34:51.449+12:00"
+ content="""
+Or if you didn't want to use the middleware, you could just stick your bit of processing code in a decorator.  
+  
+There are plenty of ways to do it. None of them particularly difficult. Doing it from django is probably the best way.
+
+
+"""]]

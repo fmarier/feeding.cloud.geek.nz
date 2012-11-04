@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2008-11-01T20:19:00.000+13:00"
+ content="""
+Regular expressions are not yet supported, but that's a great idea. I've added it to my issue tracker.  
+  
+Since safe-rm is written in Perl, it shouldn't be too hard to implement either.
+
+
+"""]]

@@ -1,0 +1,44 @@
+[[!meta title="Logging kernel messages over the network using netconsole"]]
+[[!meta date="2008-07-20T18:21:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I recently had to setup netconsole in order to diagnose some [grsecurity](http://www.grsecurity.net/)-related suspend/resume problems. The idea is to have the broken machine send its kernel messages to a remote machine via the network.  
+
+As a prerequisite, the local machine (the one sending the console messages) must have the following kernel options turned on:
+
+  * `CONFIGFS_FS`
+  * `NETCONSOLE`
+  * `NETCONSOLE_DYNAMIC`
+
+(The first and last ones are required in order to be able to configure netconsole after boot, through the [configfs](http://www.mjmwired.net/kernel/Documentation/filesystems/configfs/) interface.)
+
+The remote machine should be told (using [netcat](http://netcat.sourceforge.net/)) to listen on a specific UDP port (`64001` in this example):
+
+<pre>
+netcat -l -p 64001 -u -s <i>192.168.1.1</i> 2&gt;&1 | tee /root/netconsole.log
+</pre>
+
+Then, running this script on the local machine will turn netconsole on (don't forget to customize the appropriate parameters for your environment):
+
+<pre>
+#!/bin/sh  
+modprobe configfs  
+umount /sys/kernel/config 2&gt; /dev/null  
+mount -t configfs none /sys/kernel/config  
+modprobe netconsole  
+mkdir  /sys/kernel/config/netconsole/<i>hostname</i>  
+echo "xx:xx:xx:xx:xx:xx" &gt;| /sys/kernel/config/netconsole/<i>hostname</i>/remote_mac  
+echo <i>192.168.1.1</i> &gt;| /sys/kernel/config/netconsole/<i>hostname</i>/remote_ip  
+echo 64001 &gt;| /sys/kernel/config/netconsole/<i>hostname</i>/remote_port  
+echo <i>192.168.1.2</i> &gt;| /sys/kernel/config/netconsole/<i>hostname</i>/local_ip  
+echo 64001 &gt;| /sys/kernel/config/netconsole/<i>hostname</i>/local_port  
+echo <i>eth1</i> &gt;| /sys/kernel/config/netconsole/<i>hostname</i>/dev_name  
+echo 1 &gt;| /sys/kernel/config/netconsole/<i>hostname</i>/enabled  
+dmesg -n 8
+</pre>
+
+That's all you need to start seeing messages on the remote machine's screen.  
+
+Interested readers may want to look at [other ways to configure and use netconsole](http://www.novell.com/communities/node/4753/netconsole-howto-send-kernel-boot-messages-over-ethernet).
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] 

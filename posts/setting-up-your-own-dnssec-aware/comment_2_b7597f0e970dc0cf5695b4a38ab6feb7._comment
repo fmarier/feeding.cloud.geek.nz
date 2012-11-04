@@ -1,0 +1,35 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2010-09-22T20:29:44.025+12:00"
+ content="""
+"Are there any other ways of making sure that DNSSEC is fully functional?"  
+  
+The following will give some info on dnssec. Install unbound-host, then try the following:  
+  
+$ unbound-host rhybar.cz -f /etc/unbound/root.key -v  
+  
+Output:  
+rhybar.cz has no address (BOGUS (security failure))  
+validation failure : no keys have a DS with algorithm RSASHA1 from 194.0.12.1 for key rhybar.cz. while building chain of trust  
+  
+Or:  
+$ unbound-host rhybar.cz -C /etc/unbound/unbound.conf -v  
+  
+Also:  
+  
+$ unbound-host dnssec.cz -C /etc/unbound/unbound.conf -v  
+  
+Output:  
+dnssec.cz has address 217.31.205.50 (secure)  
+dnssec.cz has IPv6 address 2001:1488:0:3::2 (secure)  
+dnssec.cz mail is handled by 10 mail.nic.cz. (secure)  
+dnssec.cz mail is handled by 15 mail4.nic.cz. (secure)  
+dnssec.cz mail is handled by 20 mx.cznic.org. (secure)  
+  
+Or:  
+  
+$ unbound-host dnssec.cz -f /etc/unbound/root.key -v
+
+
+"""]]

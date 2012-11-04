@@ -1,0 +1,187 @@
+[[!meta title="Cherry-picking a range of git commits"]]
+[[!meta date="2010-07-20T23:30:00.002+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+The `cherry-pick` command in [git](http://www.git-scm.com/) allows you to copy commits from one branch to another, one commit at a time. In order to copy more than one commit at once, you need a different approach.  
+  
+
+## Cherry-picking a single commit
+
+Say we have the following repository composed of three branches (`master`, `feature1` and `stable`):  
+  
+
+
+    $ git tree --all  
+    * d9484311 (HEAD, master) Delete test file  
+    * 4d4a0da8 Add a test file  
+    | * 5753515c (stable) Add a license  
+    | * 4b95278e Add readme file  
+    |/  
+    | * a37658bd (feature1) Add fourth file  
+    | * a7785c10 Add lines to 3rd file  
+    | * 7f545188 Add third file  
+    | * 2bca593b Add line to second file  
+    | * 0c13e436 Add second file  
+    |/  
+    * d3199755 Add a line  
+    * b58d925c Initial commit
+
+
+  
+The "git tree" command is an alias I defined in my `~/.gitconfig`:  
+  
+
+
+    [alias]  
+    tree = log --oneline --decorate --graph
+
+
+  
+To copy the license file (commit `5753515c`) to the `master` branch then we simply need to run:  
+  
+
+
+    $ git checkout master  
+    $ git cherry-pick 5753515c  
+    Finished one cherry-pick.  
+    [master 08ff7d4] Add a license  
+    1 files changed, 676 insertions(+), 0 deletions(-)  
+    create mode 100644 COPYING
+
+
+  
+and the repository now looks like this:  
+  
+
+<pre>
+$ git tree --all  
+* 08ff7d4a4 <b>(HEAD, master) Add a license</b>  
+* d94843113 Delete test file  
+* 4d4a0da88 Add a test file  
+| * 5753515c (stable) Add a license  
+| * 4b95278e Add readme file  
+|/  
+| * a37658bd (feature1) Add fourth file  
+| * a7785c10 Add lines to 3rd file  
+| * 7f545188 Add third file  
+| * 2bca593b Add line to second file  
+| * 0c13e436 Add second file  
+|/  
+* d3199755 Add a line  
+* b58d925c Initial commit
+</pre>
+
+  
+
+## Cherry-picking a range of commits  
+
+In order to only take the third file (commits `a7785c10` and `7f545188`) from the `feature1` branch and add it to the `stable` branch, I could cherry-pick each commit separately, but there is a faster way if you need to cherry-pick a large range of commits.  
+  
+First of all, let's create a new branch which ends on the last commit we want to cherry-pick:  
+  
+
+<pre>
+$ git branch tempbranch a7785c10  
+$ git tree --all  
+* 08ff7d4a (HEAD, master) Add a license  
+* d9484311 Delete test file  
+* 4d4a0da8 Add a test file  
+| * 5753515c (stable) Add a license  
+| * 4b95278e Add readme file  
+|/  
+| * a37658bd (feature1) Add fourth file  
+| * a7785c10 <b>(tempbranch)</b> Add lines to 3rd file  
+| * 7f545188 Add third file  
+| * 2bca593b Add line to second file  
+| * 0c13e436 Add second file  
+|/  
+* d3199755 Add a line  
+* b58d925c Initial commit
+</pre>
+
+  
+Now we'll rebase that temporary branch on top of the `stable` branch:  
+  
+
+<pre>
+$ git rebase --onto stable 7f545188^ tempbranch  
+First, rewinding head to replay your work on top of it...  
+Applying: Add third file  
+Applying: Add lines to 3rd file  
+$ git tree --all  
+* ec488677 <b>(HEAD, tempbranch) Add lines to 3rd file</b>  
+* a85e5281 <b>Add third file</b>  
+* 5753515c (stable) Add a license  
+* 4b95278e Add readme file  
+| * 08ff7d4a (master) Add a license  
+| * d9484311 Delete test file  
+| * 4d4a0da8 Add a test file  
+|/  
+| * a37658bd (feature1) Add fourth file  
+| * a7785c10 Add lines to 3rd file  
+| * 7f545188 Add third file  
+| * 2bca593b Add line to second file  
+| * 0c13e436 Add second file  
+|/  
+* d3199755 Add a line  
+* b58d925c Initial commit
+</pre>
+
+  
+All that's left to do is to make stable point to the top commit of `tempbranch` and delete the old branch:  
+  
+
+<pre>
+$ git checkout stable  
+Switched to branch 'stable'  
+$ git reset --hard tempbranch  
+HEAD is now at ec48867 Add lines to 3rd file  
+$ git tree --all  
+* ec488677 (HEAD, tempbranch, <b>stable</b>) Add lines to 3rd file  
+* a85e5281 Add third file  
+* 5753515c Add a license  
+* 4b95278e Add readme file  
+| * 08ff7d4a (master) Add a license  
+| * d9484311 Delete test file  
+| * 4d4a0da8 Add a test file  
+|/  
+| * a37658bd (feature1) Add fourth file  
+| * a7785c10 Add lines to 3rd file  
+| * 7f545188 Add third file  
+| * 2bca593b Add line to second file  
+| * 0c13e436 Add second file  
+|/  
+* d3199755 Add a line  
+* b58d925c Initial commit  
+$ git branch -d tempbranch  
+Deleted branch tempbranch (was ec48867).
+</pre>
+
+  
+It would be nice to be able to do it without having to use a temporary branch, but it still beats cherry-picking everything manually.  
+  
+
+## Another approach
+
+Another way to achieve this is to use the `format-patch` command to output patches for the commits you are interested in copying to another branch and then using the `am` command to apply them all to the target branch:  
+  
+
+
+    $ git format-patch 7f545188^..a7785c10  
+    0001-Add-third-file.patch  
+    0002-Add-lines-to-3rd-file.patch  
+    $ git am *.patch
+
+
+  
+
+## Update: looking forward to git 1.7.2
+
+According to a few people who were nice to point this out in a comment, version 1.7.2 of git, which is going to be released soon, will have support for this in `cherry-pick`:  
+  
+
+
+    git cherry-pick 7f545188^..a7785c10
+
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag mahara]] [[!tag git]] [[!tag nzoss]] 

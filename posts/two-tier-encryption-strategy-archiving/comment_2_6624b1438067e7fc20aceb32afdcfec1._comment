@@ -1,0 +1,43 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-04-11T13:45:00.000+12:00"
+ content="""
+Haha. (I am the loon that posted on your previous link)   
+  
+It gets even better then that for Encfs.  
+  
+I had this problem, you see. I kept my 'serious' data encrypted in encfs. However I realised that I left it mounted all the time because I got to lazy. So it's purpose is defeated.  
+  
+I figured I might as well leave it plain text and just encrypt the entire drive. I did some performance testing and I did just that.   
+  
+Now my drives on all my mobile devices are encrypted using LUKS. (and I wish Debian's installer supported LUKS...... it's just soooooooooooo much much better then old dmcrypt. Same security, much more easier to live with).  
+  
+  
+Then I realized something while reading this article.   
+  
+Security (of this type) is nothing without conveniance.   
+  
+It's the same thing as backups. Both are protecting your data, so I am not surpised the problems are so similar.   
+  
+If backups are difficult or annoying to do, then you won't do them. You may start off, but unless it's completely automated then you'll forget about it and data will get out of hand and so on and so forth.   
+  
+Same f-ing thing with encryption.   
+  
+  
+So towards that end I want to let you know about _CRYPTKEEPER_. Fantastic stuff.  
+  
+It's a Gnome applet for Encfs. Found it while going apt-cache search encfs.  
+  
+Debian ROCKS  
+Free Software ROCKS.  
+  
+Encryption with Batteries Included. Got to love this OS.   
+  
+  
+The one thing about fuse that sucks, but isn't a big deal in a single-user computer is that you have to allow access to /dev/fuse and a couple setuid root binaries. This is a "bad thing". Not the end of the world, but it is what it is.   
+  
+Maybe it can get fixed with PolicyKit and all that. Right now, though, its the best thing going forward.
+
+
+"""]]

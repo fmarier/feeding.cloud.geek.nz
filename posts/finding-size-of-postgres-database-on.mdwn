@@ -1,0 +1,15 @@
+[[!meta title="Finding the size of a Postgres database on disk"]]
+[[!meta date="2009-02-25T13:55:00.003+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Here's how to tell how much space (on disk) a Postgres database takes:  
+
+
+    SELECT pg_database.datname,  
+           pg_size_pretty(pg_database_size(pg_database.datname)) AS size  
+      FROM pg_database;
+
+
+Thanks to [Matt Clarkson](http://www.ohloh.net/p/moodle/contributors/109521695995) for the tip.
+
+
+[[!tag catalyst]] [[!tag sysadmin]] [[!tag postgres]] 

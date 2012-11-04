@@ -1,0 +1,31 @@
+[[!meta title="How to get Android OTA updates from Google on a Galaxy Nexus"]]
+[[!meta date="2012-07-15T18:49:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I got an unlocked GSM [Galaxy Nexus](https://en.wikipedia.org/wiki/Galaxy_Nexus) (GT-I9250) phone from Amazon a few months ago and I've been wondering why it was still sitting on Android 4.0.2 (Icecream Sandwich). Looking at "Settings | About phone | System updates" told me that my "system was currently up to date" despite the fact that most of my friends had been running 4.0.4 for a while on their Galaxy Nexus.
+
+It turns out that a colleague of mine, who managed to buy this phone just before [Apple got it banned in the US](http://www.fosspatents.com/2012/07/galaxy-nexus-ban-remains-in-effect-for.html), found the reason: it was set to get over-the-air (OTA) updates from Samsung, not Google. Samsung has been sitting on this one for a while, which isn't great given the [random crash+reboots](http://android.stackexchange.com/questions/17973/galaxy-nexus-suddenly-restarts) that seem to occur about once a week on 4.0.2 :(
+
+### Finding who delivers updates to your phone
+
+Apparently there is a text file somewhere on the phone that will tell you whether it is a Google-controlled or Samsung-controlled phone. If you know what file that is, please leave a comment, I couldn't find it. So I ended up temporarily installing [this application](https://play.google.com/store/apps/details?id=com.electricsheep.asi&hl=en) (warning: contains gratuitous ads) and looking at the "Brand" field.
+
+Another thing you can look for is whether or not your device is running a "yakju" firmware (see the "Product" field). If it's something like "yakjujp", then you're not with Google and [updates may not be available](http://forum.xda-developers.com/showthread.php?p=28005210) yet.
+
+### Switching to the standard Google firmware
+
+In order to get your updates from Google, you can switch to the vanilla "yakju" firmware.
+
+I followed these [painful Windows instructions](http://webtrickz.com/guide-to-update-samsung-galaxy-nexus-yakjuxw-to-android-4-0-4-and-get-future-updates-from-google/) while I really should have looked at [these ones](http://forum.xda-developers.com/showthread.php?t=1626895) instead (and ignored most of the steps given how much easier this process is on Linux).
+
+The whole procedure can be summarized like this:
+
+  1. Backup your phone.
+  2. Unlock the boot loader (which erases everything).
+  3. Reboot into [fastboot](http://source.android.com/source/building-devices.html#booting-into-fastboot-mode) (hold down Volume Up and Volume Down then press the power button).
+  4. Flash all of the different firmware images.
+  5. Reboot and reinstall/reconfigure apps.
+
+In any case, a few hours later, I ended up with a fresh install of the 4.0.4 yakju firmware and an unlocked boot loader. The only thing I haven't been able to do yet is to re-enable full disk encryption. I'm not quite sure why my phone refuses to start the encryption process...
+
+
+[[!tag android]] [[!tag nzoss]] [[!tag mozilla]] 

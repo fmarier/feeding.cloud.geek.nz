@@ -1,0 +1,46 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-04-10T19:57:00.000+12:00"
+ content="""
+I suppose so.  
+  
+It would be a interesting test to see in what ways a Linux PC is secure or vulnerable against a physical attack without the attacker rebooting or shutting down the machine.  
+  
+This is something I've played around with a bit, but only in a fairly 'i wonder if' way.   
+  
+Gnome-screen-saver does a good job of locking the screen, as that sort of thing is required in many corporate environments. Even though you can click out of it and get a login prompt.  
+  
+Just as long as you don't have the magic sysreq key enabled or are logged into one of the consoles then I expect you can be reasonably secure.  
+  
+so you'd have ot find some attack that worked on X to break gnome-screensaver or some hack surrounding buggy USB or wireless drivers (bluetooth, 802.11g etc).   
+  
+If the attacker had a big enough budget or a government type then that could lead to some james bond stuff.   
+  
+It is possible to tear apart a laptop while it's still running. I know for PCs and servers some people will have ways to splice in mobile power supplies (any half decent electrition can do it) to keep those machines running until they can get them into a some workshop or whatnot. So with laptops it would be that much easier.  
+  
+There is that DMA firewire hack for XP that people can use to get memory contents using a Linux machine. I wouldn't be surprised if something like that worked _on_ a Linux machine.  
+http://storm.net.nz/projects/16  
+  
+Motherboard traces can be tapped into also. PCI Express supports hotplug and a person may have some sort of device that can use DMA hacks.  
+  
+RAM is funny also. We all know that you need to keep power to keep RAM in good shape and useful. However lots of people don't know that RAM can keep information for a short while after it's been deactivated. So it's possible if your quick and got the right hardware that you'll be able to get most of the contents of RAM read into another machine.   
+  
+Of course all of that is a bit fantastic. People have done it in the past under controlled environments for research reasons and I wouldn't put it past NSA folks to be able to do stuff like that, but I am more worried about leaving my laptop sitting at a airport or something unattended or whatnot. I am kinda stupid like that.  
+  
+I'm hoping that the person who stole the thing would have no way of knowing the drive is encrypted and would first try to reboot the machine.   
+  
+There are probably things you can do to mitigate the risk. Something like once the machine wakes up you have 30 seconds to successfully log in before the thing shut itself off.  
+  
+Something like that.  
+  
+(If I wanted to get james-bond about everything and try to protect secrets from the soviets I suppose I'd have to have a machine specially constructed with a epoxy encased mainboard and a fusable link that gets blown unless I get my password right within 15 seconds or so. (combined with some sort of biometrics and secure key arrangement) Of course the on board drive would have to be encoded using two or three different types of encryption and be created using random 128byte-long passwords that were randomly generated and never seen by a human...)  
+  
+  
+But if you still want to do suspend-to-disk it shouldn't be difficult to do that without dumping your memory to a unencrypted partition. Initramfs has been surprisingly easy to work it, at least for me. Make sure busybox package is installed.   
+  
+  
+Kinda interesting stuff. Especially for people that would want to make a publicly available Kiosk. (being secure against physical access rather then the whole james bond thing)
+
+
+"""]]

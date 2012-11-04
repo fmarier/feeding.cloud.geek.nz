@@ -1,0 +1,37 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2010-09-22T09:18:53.650+12:00"
+ content="""
+First, Thank You for posting this. There is one more thing that needs to be done.  
+  
+After following: http://www.unbound.net/documentation/howto_anchor.html  
+  
+I was getting this error in /var/log/daemon.log:  
+  
+error: Could not open autotrust file for writing, /etc/unbound/root.key: Permission denied  
+  
+I changed the group to unbound and made it writable.  
+  
+\# cd /etc/unbound  
+\# chgrp unbound root.key  
+\# chmod g+w root.key  
+\# ls -la root.key  
+-rw-rw-r-- 1 root unbound 758 Sep 21 16:46 root.key  
+  
+After restarting unbound, no more errors. The root.key should look like the following:  
+  
+; autotrust trust anchor file  
+;;id: . 1  
+;;last_queried: 1285101992 ;;Tue Sep 21 16:46:32 2010  
+;;last_success: 1285101992 ;;Tue Sep 21 16:46:32 2010  
+;;next_probe_time: 1285141647 ;;Wed Sep 22 03:47:27 2010  
+;;query_failed: 0  
+;;query_interval: 43200  
+;;retry_time: 8640  
+. 86400 IN DNSKEY 257 3 8 AwEAAagAI......  
+  
+Again Thank You, for this post.
+
+
+"""]]

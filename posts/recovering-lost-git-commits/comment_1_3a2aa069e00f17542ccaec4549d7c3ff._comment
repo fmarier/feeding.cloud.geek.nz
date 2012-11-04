@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://glandium.org/"
+ nickname="glandium"
+ subject=""
+ date="2008-12-13T10:55:00.000+13:00"
+ content="""
+If you just need to reset to what the tip of the current branch was before you fucked up you can run git reset --hard HEAD@{1}
+
+
+"""]]

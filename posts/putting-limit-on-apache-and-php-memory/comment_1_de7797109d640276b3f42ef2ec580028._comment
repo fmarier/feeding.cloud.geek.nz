@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/02726867824497339744"
+ nickname="gebi"
+ subject=""
+ date="2012-02-21T22:25:36.173+13:00"
+ content="""
+putting apache into it's own cgroup and restrict cpu and memory to the whole cgroup.  
+Thus the limit is not applied per process but to all apache and cgi processes together.
+
+
+"""]]

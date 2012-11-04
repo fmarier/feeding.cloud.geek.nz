@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/07531712885916825866"
+ nickname="Oldarney"
+ subject=""
+ date="2011-07-08T19:40:05.982+12:00"
+ content="""
+I use it to ignore eclipse configuration files. Since the project owner uses a different configuration then I use on eclipse globally, I need to edit the project's config to match his global settings.
+
+
+"""]]

@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2010-11-03T23:16:35.376+13:00"
+ content="""
+you could look at bcache. it just uses the SSD to cache the rotating disk. everything ends up on the rotating storage, but you get very fast access. its not in the kernel yet, but its been around for a while.
+
+
+"""]]

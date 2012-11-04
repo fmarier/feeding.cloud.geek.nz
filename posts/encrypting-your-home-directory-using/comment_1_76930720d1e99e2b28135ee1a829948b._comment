@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-05-24T21:02:00.000+12:00"
+ content="""
+You forgot one important step: Wipe the temporary partition after you copied your /home content back. Otherwise a thief could still get at your old /home contents on that partition.
+
+
+"""]]

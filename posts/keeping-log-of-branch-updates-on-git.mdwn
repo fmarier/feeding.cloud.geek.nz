@@ -1,0 +1,29 @@
+[[!meta title="Keeping a log of branch updates on a git server"]]
+[[!meta date="2011-02-01T08:00:00.001+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Using a combination of bad luck and some of the more advanced [git](http://git-scm.com/) options, it is possible to mess up a [centralised repository](http://feeding.cloud.geek.nz/2008/12/setting-up-centralied-git-repository.html) by accidentally pushing a branch and overwriting the existing branch pointer (or "head") on the server.  
+  
+If you know where the head was pointing prior to that push, recovering it is a simple matter of running this on the server:  
+
+<pre>
+git update-ref /refs/heads/<i>branchname</i> <i>commit_id</i>
+</pre>
+
+However, if you don't know the previous commit ID, then you pretty much have to dig through the history using `git log`.  
+  
+
+### Enabling a server-side reflog
+
+One option to prevent this from happening is to simply enable the [reflog](http://www.kernel.org/pub/software/scm/git/docs/git-reflog.html), which is disabled by default in bare repositories, on the server.  
+  
+Simply add this to your git config file on the server:  
+
+
+    [core]  
+       logallrefupdates = true
+
+
+and then whenever a head is updated, an entry will be added to the reflog.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag git]] [[!tag nzoss]] 

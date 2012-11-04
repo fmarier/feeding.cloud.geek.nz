@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-09-20T09:35:00.000+12:00"
+ content="""
+maybe also a note about not embed libraries into your source as it is a mess for distributions.  
+  
+If the packager has to spend hours to untangle embedded libraries, they might want to do something else.
+
+
+"""]]

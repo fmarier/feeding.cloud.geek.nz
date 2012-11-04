@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-06-21T12:15:00.000+12:00"
+ content="""
+I actually would like the opt-in approach, in part because I only want this protection for interactive calls to rm, rather than those done by scripts.
+
+
+"""]]

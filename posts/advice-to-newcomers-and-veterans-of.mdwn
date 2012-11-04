@@ -1,0 +1,29 @@
+[[!meta title="Advice to newcomers and veterans of the Free and Open Source software communities"]]
+[[!meta date="2012-09-18T21:42:00.002+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+A few months ago, a collection of essays called [Open Advice](http://open-advice.org/) was released. It consists of the things that seasoned Free and Open Source developers wish they had known when they got started.
+
+The [LWN book review](https://lwn.net/Articles/481222/) is the best way to get a good feel for what it's about, but here are the notes I took while reading it:
+
+  * Write code first: a project doesn't exist before there is code for it.
+  * Listen to your initial users and prioritise their bugs / feature requests: they will tell you how to turn your pet project into something that others will want to use.
+  * Documentation is not a waste of time: at some point, someone will need to take over from you. You're not just coding for yourself.
+  * When you first come to a project, you can make valuable contributions to the project's on-ramping process and documentation (other developers can't see or have forgotten about this stuff).
+  * Many potential contributors think they're not good enough to contribute to your project: invite them to do a specific task personally.
+  * Validated backups give you the freedom to do what's needed.
+  * Writing a library is a good way to enable cross-project collaboration.
+  * For many newcomers, documentation is a gateway in the FOSS community.
+  * Real programmers virtues: laziness, patience and humility (politeness is critical).
+  * Documentation can occur in sprints.
+  * Professional writers should focus on teaching and mentoring, not writing documentation.
+  * Watching real users use your software is the best way to improve its usability.
+  * The best designs evolve slowly and get refactored over time using well-known patterns.
+  * Outsiders can inject different viewpoints into the discussion, particularly around prioritization.
+  * Community managers should be good listeners and learn from their peers.
+  * Have a willingness to accept that you can and will be wrong sometimes.
+  * Sometimes you need to walk away from a project or argument, allow a day for things to settle down and for you to get a chance to breathe.
+  * Do not ask people what they think, state that you will do something by a date pending any objections from others.
+  * Creating a community team should never assume that people will stay fully committed the whole time. They will be in for a while then disappear for longer periods and then come back.
+
+
+[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag mozilla]] 

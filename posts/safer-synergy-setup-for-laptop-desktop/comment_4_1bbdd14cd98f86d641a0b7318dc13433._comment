@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/00635581379178580591"
+ nickname="Martin"
+ subject=""
+ date="2009-04-04T21:41:00.000+13:00"
+ content="""
+hm, i encountered a few problem with your solution.   
+1.: the --no-daemon enables the DEBUG-output.   
+2.: the client restarts itself in case there is no server available - which results in 100% cpu load  
+  
+The solution:  
+/usr/bin/synergyc --no-daemon --debug FATAL --no-restart localhost  
+  
+The restarting will be done by supervise or something like:   
+\#!/bin/bash  
+while [ true ]; do  
+...  
+sleep 1  
+done
+
+
+"""]]

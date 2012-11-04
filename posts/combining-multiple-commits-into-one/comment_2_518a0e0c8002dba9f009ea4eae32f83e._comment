@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2010-08-25T03:11:02.631+12:00"
+ content="""
+git checkout -b thirdbranch firstbranch; git diff firstbranch secondbranch | patch -p1; git add -A; git commit
+
+
+"""]]

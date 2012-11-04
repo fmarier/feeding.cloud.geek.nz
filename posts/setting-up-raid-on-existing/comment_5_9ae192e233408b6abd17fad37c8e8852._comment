@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2011-08-12T12:23:13.601+12:00"
+ content="""
+I was having a bear of a time getting step 5 to work. (Kernel panics and/or /dev/md0 missing on boot and subsequently being dumped to the initramfs prompt.)   
+  
+Turned out that step 4 was doing nothing raid related for me. Which I solved with the following 2 steps.  
+  
+1) Kept the initrd generated during "dpkg-reconfigure mdadm".  
+  
+2) "grub-install --modules='raid proc_msdos ext2'" to both drives so grub could find md0. (substituting proc_msdos and ext2 with current insmod entries in you grub's menu items)
+
+
+"""]]

@@ -1,0 +1,126 @@
+[[!meta title="Combining multiple commits into one using git rebase"]]
+[[!meta date="2010-08-24T19:25:00.009+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[git rebase](http://www.kernel.org/pub/software/scm/git/docs/git-rebase.html) provides a simple way of combining multiple commits into a single one. However using rebase to squash an entire branch down to a single commit is not completely straightforward.  
+  
+
+## Squashing normal commits
+
+Using the following repository:  
+
+
+    $ git log --oneline  
+    c172641 Fix second file  
+    24f5ad2 Another file  
+    97c9d7d Add first file
+
+
+we can combine the last two commits (`c172641` and `24f5ad2`) by rebasing up to the first commit:  
+
+
+    $ git rebase -i 97c9d7d
+
+
+and specify the following commands in the interactive rebase screen:  
+
+
+    pick 24f5ad2 Another file  
+    squash c172641 Fix second file
+
+
+which will rewrite the history into this:  
+
+
+    $ git log --oneline  
+    1a9d5e4 Another file  
+    97c9d7d Add first file
+
+
+  
+
+## Rebasing the initial commit
+
+Trying to include the initial commit in the interactive rebase screen will return this error:  
+
+
+    $ git rebase -i 97c9d7d^  
+    fatal: Needed a single revision  
+    Invalid base
+
+
+and squashing the top commit in the interactive rebase screen:  
+
+
+    $ git rebase -i 97c9d7d  
+      
+    squash 24f5ad2 Another file  
+    squash c172641 Fix second file
+
+
+will return this error:  
+
+
+    Cannot 'squash' without a previous commit
+
+
+So we need to use a different approach to deal with the initial commit.  
+  
+
+## Amending the initial commit
+
+Here is an alternative to rebase which will work on commits that don't have a parent.  
+  
+Taking the previously rebased branch:  
+
+
+    $ git log --oneline  
+    1a9d5e4 Another file  
+    97c9d7d Add first file
+
+
+we can rewind the branch to the initial commit:  
+
+
+    $ git reset 97c9d7d  
+    $ git log --oneline  
+    97c9d7d Add first file
+
+
+without losing any of the changes introduced in `1a9d5e4` (shown here as uncommitted changes):  
+
+
+    $ git status  
+    # On branch master  
+    # Changed but not updated:  
+    # (use "git add ..." to update what will be committed)  
+    # (use "git checkout -- ..." to discard changes in working directory)  
+    #  
+    # modified: file1  
+    #  
+    # Untracked files:  
+    # (use "git add ..." to include in what will be committed)  
+    #  
+    # file2  
+    no changes added to commit (use "git add" and/or "git commit -a")
+
+
+Then we can reopen commit `97c9d7d` and add the changes present in the working directory:  
+
+
+    $ git add .  
+    $ gitc -a --amend -m "Initial version"
+
+
+which will finally give us a fully squashed branch:  
+
+
+    $ git log --oneline  
+    fcb85fb Initial version  
+      
+    $ git status  
+    # On branch master  
+    nothing to commit (working directory clean)
+
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag git]] [[!tag nzoss]] 

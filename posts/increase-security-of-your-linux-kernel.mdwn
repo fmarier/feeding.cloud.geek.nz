@@ -1,0 +1,23 @@
+[[!meta title="Increase the security of your Linux kernel with the grsecurity patch"]]
+[[!meta date="2008-04-08T21:44:00.013+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Wikipedia has a [pretty good explanation](http://en.wikipedia.org/wiki/Grsecurity) of what [grsecurity](http://www.grsecurity.net/) and [PaX](http://pax.grsecurity.net/) do, but in a nutshell, here's what this set of patches buys you:  
+
+  * non-executable stack
+  * address-space randomization
+  * role-based access control
+  * chroot hardening
+  * enhanced auditing
+
+If you're looking for a quick way of downloading the latest stable Linux kernel with the grsecurity patch already applied, clone this git repository (which can be [browsed here](http://git.catalyst.net.nz/gitweb?p=linux-2.6.24-grsec.git)):  
+
+> git-clone http://git.catalyst.net.nz/linux-2.6.24-grsec.git
+
+I also maintain an RSS feed (well, an Atom feed actually) keeping track of the latest grsecurity and PaX test patches:  
+
+> [http://feeds.feedburner.com/grsecurity](http://feeds.feedburner.com/grsecurity)
+
+Finally, make sure you run [paxtest](http://packages.debian.org/sid/paxtest) to make sure that the protections offered by grsecurity and PaX are properly enabled.
+
+
+[[!tag catalyst]] [[!tag sysadmin]] [[!tag security]] 

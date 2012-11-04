@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2011-10-23T14:43:22.082+13:00"
+ content="""
+Have you tried Apache's mod_headers, specifically the "Header" directive? That should allow you to eliminate headers you don't want.  
+  
+I don't know how to end up with a completely empty body and not need a one-byte response, though. If you figure it out, please consider making a follow-up post.
+
+
+"""]]

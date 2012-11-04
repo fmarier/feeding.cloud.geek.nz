@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/12581115606115342224"
+ nickname="Arnaud"
+ subject=""
+ date="2010-05-10T23:26:56.640+12:00"
+ content="""
+sadly, GPM (in fact UPower) will never talk to NUT directly. This was the way I was investigating with the nut-hal-drivers, but Richard (Hughes) doesn't want such bridges. At least, he thinks that UPower should only support standard units (the one supported by NUT's usbhid-ups driver). So you're stuck with NUT... For the GUI part, you should take a look at NUT Monitor (integrated in NUT, but still not packaged): http://www.lestat.st/informatique/projets/nut-monitor-en  
+The last release includes a notification icon.  
+  
+Arnaud  
+Linux / Unix Expert R&D - Eaton - http://www.eaton.com/mgeops  
+Network UPS Tools (NUT) Project Leader - http://www.networkupstools.org/  
+Debian Developer - http://www.debian.org  
+Free Software Developer - http://arnaud.quette.free.fr/
+
+
+"""]]

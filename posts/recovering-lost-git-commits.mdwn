@@ -1,0 +1,16 @@
+[[!meta title="Recovering lost git commits"]]
+[[!meta date="2008-12-13T10:00:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Say you just deleted a branch or did a `git reset --hard <earlier commit>` and in the process lost a commit which you intended to keep.  
+  
+Well, the good news is that unless you have run `git gc` to run a pass of garbage collection over your repo and get rid of objects which aren't linked to anymore, the objects for your lost commits should still be in the repo.  
+  
+If you remember the SHA-1 IDs then you can simply use `git cherry-pick` to apply them to the current branch. However, if you don't have these commit IDs anymore, there is still a way to get to them.  
+  
+This command will display all commits from the most recent to the oldest one:
+
+    git log -g
+
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag git]] 

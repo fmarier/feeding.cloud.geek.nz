@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="http://barak.a.pearlmutter.myopenid.com/"
+ nickname="Barak A. Pearlmutter"
+ subject=""
+ date="2011-12-05T02:32:33.645+13:00"
+ content="""
+Other options for generating PNG from SVG are:  
+  
+rsvg -w 64 -h 64 icon.svg icon.png  
+  
+convert -geometry 64x64 -depth 8 -background none icon.svg icon.png  
+  
+I'm curious as to which is best. Of course, best of all (for packaging) would be to be able to just install the SVG file and have PNG and XPM files generated automatically, in the "best" way whatever that might be, by dpkg triggers.
+
+
+"""]]

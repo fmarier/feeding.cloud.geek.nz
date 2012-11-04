@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/12687502458749931117"
+ nickname="Raja R Harinath"
+ subject=""
+ date="2010-08-25T06:38:19.905+12:00"
+ content="""
+You could also use the much simpler 'git merge --squash && git commit'  
+  
+Yes, the mechanism is different: it uses the "merge" machinery, not the "rebase" machinery. But, if it ever makes a difference, you have bigger headaches, and shouldn't be making a "squash commit" in the first place.
+
+
+"""]]

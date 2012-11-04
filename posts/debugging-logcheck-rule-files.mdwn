@@ -1,0 +1,86 @@
+[[!meta title="Debugging logcheck rule files"]]
+[[!meta date="2009-12-20T16:00:00.006+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[logcheck](http://logcheck.org/) is a neat little log file monitoring tool I use on all of my machines.  
+  
+I recently noticed however that I hadn't received any logcheck messages in a while from one of my servers. Either that was a sign that things were going really well or, more likely, that logcheck wasn't producing any output anymore.  
+  
+
+## Manually logging an error to syslog
+
+Here's what I did to force a message to be printed to the logs:  
+
+
+    logger -p kern.error This is a test
+
+
+Which I would expect to produce this logcheck notice:  
+
+
+    Dec 20 15:34:08 hostname username: This is a test
+
+
+Unfortunately, that didn't happen on the next scheduled run.  
+  
+
+## Forcing a logcheck run
+
+To rule out the following:  
+
+  * mail not getting through
+  * cron not running
+
+I ran logcheck manually:  
+
+
+    sudo -u logcheck /usr/sbin/logcheck -o -d >& logcheck.out
+
+
+Looking at the output file however, my test message still wasn't there. Either logcheck was broken or one of my rule files was swallowing everything.  
+  
+
+## Finding the broken rule file
+
+To find the broken rule, I started by ignoring rules defined in `/etc/logcheck/ignore.d.server/` and `/etc/logcheck/ignore.d.workstation/` by running logcheck in _paranoid_ mode:  
+
+<pre>
+logger -p kern.error This is a test  
+sudo -u logcheck /usr/sbin/logcheck -o -d <b>-p</b> &gt;& logcheck.out
+</pre>
+
+This worked, so I then ran logcheck in _server_ mode:  
+
+<pre>
+logger -p kern.error This is a test  
+sudo -u logcheck /usr/sbin/logcheck -o -d <b>-s</b> &gt;& logcheck.out
+</pre>
+
+Given that this also worked, it meant that the offending rule file was in `/etc/logcheck/ignore.d.workstation/`. So I moved all of my custom `local-*` rule files out of the way and ran logcheck in _workstation_ mode:  
+
+<pre>
+logger -p kern.error This is a test  
+sudo -u logcheck /usr/sbin/logcheck -o -d <b>-w</b> &gt;& logcheck.out
+</pre>
+
+Once I verified that this worked, I started to put my local files back one by one until it broke again. Then slowly removed lines from the offending file until it worked.  
+  
+
+## Solution to my problem
+
+It turns out that one of my rule files had a line like this:  
+
+<pre>
+path != NULL <b>||</b> column != NULL
+</pre>
+
+Escaping the pipe symbols with backslashes solved the problem:  
+
+<pre>
+path != NULL <b>\|\|</b> column != NULL
+</pre>
+
+  
+Maybe I should periodically print a message to syslog to make sure that logcheck is still working...
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 

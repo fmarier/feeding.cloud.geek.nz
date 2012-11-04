@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2008-10-19T10:31:00.000+13:00"
+ content="""
+I don't think that Privoxy can route HTTP traffic to different places based on URLs.  
+  
+The main uses for it are to:  
+- enhance privacy through the modification of cookies, rewriting referrers, etc.  
+- block undesirable contents entirely  
+- run Perl filters to clean up the "mostly desirable" content  
+  
+You usually run it by chaining it to a different proxy (either before or after that other one).
+
+
+"""]]

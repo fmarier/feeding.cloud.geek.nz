@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2010-07-10T13:38:52.869+12:00"
+ content="""
+In an email from Eric Wong (normalperson@yhbt.net):  
+  
+You might also want to try setting up nginx as a reverse proxy in front of Apache. That way nginx can handle keepalives and static files efficiently, and Apache can just worry about running RT as a backend. You can run fewer Apache workers this way because you no longer have a 1:1 client:process mapping.  
+  
+HTTP keepalives from idle and slow clients are often overlooked since synthetic benchmarks don't expose them as problems, but I've had great success with sticking nginx in front of other HTTP servers. Everything from various Apache/mod_{perl,php} setups, Tomcat, Mongrels and of course Unicorn[1]  
+  
+Eric  
+  
+[1] - shameless plug: http://unicorn.bogomips.org/  
+(I designed Unicorn to only run behind nginx, even though it speaks HTTP)
+
+
+"""]]

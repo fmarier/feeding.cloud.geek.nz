@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="ulrik"
+ subject=""
+ date="2008-12-14T08:32:00.000+13:00"
+ content="""
+git gc is not so dangerous! The newer versions will even let be unreferenced loose objects newer than _2_weeks_, to be on the safe side.. which means that you have a lot of time to recover your suff.
+
+
+"""]]

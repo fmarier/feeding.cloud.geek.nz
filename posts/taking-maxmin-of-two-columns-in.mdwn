@@ -1,0 +1,27 @@
+[[!meta title="Taking the max/min of two columns in PostgreSQL"]]
+[[!meta date="2010-10-11T14:00:00.002+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+As part of a database [view](http://www.postgresql.org/docs/9.0/static/sql-createview.html), I found myself wanting to get [Postgres](http://www.postgresql.org/) to display values from one of two columns, whichever was the largest.  
+  
+My first attempt was:  
+  
+
+<pre>
+SELECT id, <b>MAX</b>(column1, column2) FROM table1;
+</pre>
+
+  
+which of course didn't work because `MAX()` is an [aggregate function](http://www.postgresql.org/docs/9.0/static/functions-aggregate.html) which only takes a single parameter.  
+  
+What I was looking for instead, is something that was introduced in [8.1](http://www.postgresql.org/docs/9.0/static/release-8-1.html#AEN109656):  
+  
+
+<pre>
+SELECT id, <b>GREATEST</b>(column1, column2) FROM table1;
+</pre>
+
+  
+where `GREATEST()` (and its opposite: `LEAST()`) is a [conditional expression](http://www.postgresql.org/docs/9.0/static/functions-conditional.html).
+
+
+[[!tag catalyst]] [[!tag mahara]] [[!tag postgres]] [[!tag database]] [[!tag nzoss]] 

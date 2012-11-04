@@ -1,0 +1,19 @@
+[[!meta title="Preventing accidental deletion of important files using safe-rm"]]
+[[!meta date="2008-06-20T23:19:00.002+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Some weeks ago, I accidentally deleted half of my /usr/lib. I didn't lose anything important and was able to restore everything (thanks to my Ctrl+C'ing the process in time) but that user error did strike me as too easy to make (apparently, [I'm not alone](http://www.linux.codehelp.co.uk/serendipity/index.php?/archives/118-Another-sorry-tale-of-woe.html)). So I started thinking about how I could prevent something like that from happening again.  
+  
+I realized one thing: there is no way I would ever want to delete `/usr` or `/etc` for example. I figured that "rm" should, by default, refuse to delete certain critical directories (or files). Of course, that would be a very controversial patch to "rm" itself and the chances of this approach succeeding were pretty close to zero.  
+  
+So instead, I decided to build a wrapper around "rm" which prevents the deletion of important files by checking each one against a blacklist. Anything you add to the blacklist will not be deletable using "rm" unless you override this protection by calling "rm.real" directly.  
+  
+![](safe-rm.png)  
+  
+This tool, [safe-rm](http://www.safe-rm.org.nz), ships with a default system-wide configuration file (`/etc/safe-rm.conf`), but each user can supplement that list of "protected" directories and files by adding lines to `~/.safe-rm`.  
+  
+[Debian](http://packages.debian.org/safe-rm) and [Ubuntu](http://packages.ubuntu.com/safe-rm) packages are available from the usual places.  
+  
+There are of course [different approaches](http://gitorious.org/projects/safe-rm/repos/mainline/blobs/master/README) to preventing these kinds of problems...
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] 

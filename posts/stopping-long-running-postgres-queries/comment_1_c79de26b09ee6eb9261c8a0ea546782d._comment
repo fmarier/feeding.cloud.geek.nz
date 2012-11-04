@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/02849480732923051923"
+ nickname="Peter Eisentraut"
+ subject=""
+ date="2009-06-13T02:18:46.974+12:00"
+ content="""
+Or written in a less confusing way:  
+  
+statement_timeout = 1h
+
+
+"""]]

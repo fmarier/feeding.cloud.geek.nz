@@ -1,0 +1,30 @@
+[[!meta title="Reinstalling grub on an unbootable Debian system"]]
+[[!meta date="2009-06-07T12:00:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Fixing an unbootable computer after a failed grub installation can be a bit tricky. Here's what I ended up doing.  
+  
+First of all, boot the machine up and get access to the root partition:  
+
+  1. Get a [Debian installation CD](http://www.debian.org/distrib/) for the **same architecture** (i.e. don't use an i386 CD if your root partition is amd64). The distro version doesn't matter too much: a lenny CD will boot squeeze/sid just fine.
+  2. Boot the install CD and select **Rescue mode** under **Advanced options**.
+  3. Answer the language, keyboard and network questions any way you want and provide the decryption passphrases for any of the encrypted partitions you need to mount.
+  4. When prompted, request a shell on the root partition.
+
+If you need to upgrade the version of the [grub package](http://packages.qa.debian.org/g/grub2.html) (for example if this problem was caused by a bug which is now fixed):  
+
+  1. Make sure that the network interface is up (<tt>ifup <i>eth0</i></tt>).
+  2. Make sure that `/etc/resolv.conf` has at least one nameserver line, otherwise add one.
+  3. Install the latest version using `apt-get` or `dpkg`.
+
+Now that you have the right grub version, run the following (with the right device name for your machine):  
+
+<pre>
+grub-mkdevicemap  
+grub-install <i>/dev/hda</i>  
+update-grub
+</pre>
+
+Finally, reboot and cross your fingers :)
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag nzoss]] 

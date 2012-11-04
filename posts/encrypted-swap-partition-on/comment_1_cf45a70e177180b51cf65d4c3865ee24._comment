@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-04-03T10:46:00.000+13:00"
+ content="""
+If your writing out unencrypted memory dump to that file then that's bad news. In that memory will probably be the keys and such nessicary to decrypt your encrypted volumes.  
+  
+I think (never done it myself) a better method is to encrypt your entire harddrive first, use LVM on top of that then use a logical volume for swap. That way the lvm stuff gets decrypted first and the suspend wakeup script in your initrd should be able to access swap.  
+  
+Another method would be to encrypt swap then make sure that initrd prompts you for your swap password before the wake up scripts run.  
+  
+Shouldn't be very difficult to do either. Check out 'man initramfs-tools' for details.
+
+
+"""]]

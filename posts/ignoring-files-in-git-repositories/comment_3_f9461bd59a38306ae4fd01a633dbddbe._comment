@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Björn Steinbrink"
+ subject=""
+ date="2009-12-28T10:03:28.381+13:00"
+ content="""
+The .git/info/exclude file is useful in e.g. git-svn repos, in which you don't want a racked .gitignore file, because the next dcommit would send that file to the svn repo, which would be quite weird ;-)
+
+
+"""]]

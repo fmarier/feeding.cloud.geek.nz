@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2012-02-28T14:05:24.598+13:00"
+ content="""
+Additional to any memory limiting mechanism you put in place, you should set a limit on image resolutions. You don't want a 1 gigapixel image, do you?
+
+
+"""]]

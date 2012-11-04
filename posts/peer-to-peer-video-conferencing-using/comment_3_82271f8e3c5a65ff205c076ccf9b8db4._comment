@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://sjoerd.luon.net"
+ nickname="Sjoerd Simons"
+ subject=""
+ date="2010-12-20T12:43:19.304+13:00"
+ content="""
+STUN is one of the many tools used, it does a lot of nice tasks, just not the forwarding itself :).   
+  
+For ports to open/forward, you can't do such a thing, we allocate ports dynamically as needed (forwarding ports is alwyas just a workaround not a solution). In general if you don't explictely forbid UDP traffic things work depending on your nats behaviour. Enabling upnp igd is usually the solution for nasty nats as we can then just request them for ports dynamically..   
+  
+The best way to ensure whether you're sending direclty p2p is using tcpdump/wireshark and see where the majority of the packets go.. The empathy debug logs can be confusing if you don't know what you're looking for.
+
+
+"""]]

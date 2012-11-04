@@ -1,0 +1,43 @@
+[[!meta title="Migrating Sahana from cvs to git"]]
+[[!meta date="2009-08-04T14:41:00.010+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Here is how I migrated the [Sahana](http://www.sahana.lk/) CVS [repository](http://sourceforge.net/projects/sahana/develop) to [git](http://gitscm.org/), as part of the work that the [Sahana New Zealand Cluster](https://launchpad.net/%7Esahana-nz) is gearing up to do.  
+  
+It was actually a lot simpler than I expected!  
+
+## Simple import
+
+In a newly created directory:
+
+  1. Do the initial setup:  
+`cvs -d:pserver:anonymous@sahana.cvs.sourceforge.net:/cvsroot/sahana login`
+  2. Run the migration:  
+`git cvsimport -k -m -v -d:pserver:anonymous@sahana.cvs.sourceforge.net:/cvsroot/sahana sahana-phase2`
+  3. Wait several hours for it to finish!
+
+## Fixing the author names
+
+The only thing I didn't like from the above import was that all of the commit authors were missing full names and email addresses.  
+  
+So I grabbed the [list of Sahana project members](http://sourceforge.net/project/memberlist.php?group_id=127855) from Sourceforge and created a mappping like this in a text file:  
+
+
+    ajuonline=Ajay Kumar <ajuonline@users.sourceforge.net>  
+    akshits88=Akshit Sharma <akshits88@users.sourceforge.net>  
+    bhyde=Ben Hyde <bhyde@users.sourceforge.net>
+
+
+Then I ran the import with the `-A` parameter:  
+
+<pre>
+git cvsimport <b>-A username_map.txt</b> -k -m -v -d:pserver:anonymous@sahana.cvs.sourceforge.net:/cvsroot/sahana sahana-phase2
+</pre>
+
+## Syncing new commits
+
+To keep the git repository in sync with CVS and collect any new commits, simply run the same `git cvsimport` command again.  
+  
+My next steps will be to setup an automated sync script to keep this repository up to date with the Sourceforge one.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag git]] [[!tag ubuntu]] [[!tag nzoss]] 

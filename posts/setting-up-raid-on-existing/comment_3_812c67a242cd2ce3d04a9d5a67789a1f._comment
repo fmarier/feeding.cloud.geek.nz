@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2011-03-14T01:05:11.167+13:00"
+ content="""
+Hello, thanks for this entry. I too run raid1 on all my Debian systems so I'll add comments from my experience:  
+_If you don't set the metadata to 0.90 during raid creation you'd be better of with 1.* (I use 1.2), then using "fd" as filesystem type isn't needed anymore. All my systems run with 1.2 metadata and boot just fine without "fd" as file-system type.  
+_If you want to have "md0" "non-partitionable" (not really) raid devices you could set --auto=md to avoid messing things up if you assemble raid arrays on another system (recovery, ...etc).  
+_Lastly using the --homehost and --name bits to identify the raid devices is coming in handy when juggling with many devices and switching systems. Easier to use than the array's UUID.  
+  
+All the best.
+
+
+"""]]

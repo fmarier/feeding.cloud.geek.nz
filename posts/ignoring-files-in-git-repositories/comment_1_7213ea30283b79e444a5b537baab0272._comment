@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Oz"
+ subject=""
+ date="2009-12-27T22:34:06.206+13:00"
+ content="""
+For your information, with Git 1.6.6 (released 2009-12-24) tilde expansion (~/) works in the config file.
+
+
+"""]]

@@ -1,0 +1,31 @@
+[[!meta title="Integrating Launchpad and Gerrit Code Review"]]
+[[!meta date="2011-05-30T18:30:00.002+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+While talking about how [Mahara](http://mahara.org/) uses [Gerrit and Gitorious for code reviews](http://feeding.cloud.geek.nz/2011/04/code-reviews-with-gerrit-and-gitorious.html), I forgot to include details on how to [link bugs](http://gerrit.googlecode.com/svn/documentation/2.1.6/config-gerrit.html#commentlink) in the commit logs to our bug tracker ([Launchpad](https://bugs.launchpad.net/mahara)).  
+  
+
+### Links to Launchpad in the Gerrit review UI
+
+Turning the bug numbers in git commit messages to links was just a matter of adding this to our `etc/gerrit.config` file.  
+
+
+    [commentlink "launchpad"]  
+      match = "([Bb]ug\\s+#?)(\\d+)"  
+      link = https://bugs.launchpad.net/mahara/+bug/$2
+
+
+All mentions of a bug number like "(bug #1234)" or "bug 5678" in a commit message or Gerrit review will be converted into links to the appropriate page on Launchpad.  
+  
+
+### Updating Launchpad bugs after Gerrit merges
+
+Linking the original bug reports in Launchpad to committed code (and its review in Gerrit) was a little more complicated. It makes use of the [hooks](http://gerrit.googlecode.com/svn/documentation/2.1.6/config-hooks.html) available in Gerrit.  
+  
+The first step was to create a [new Launchpad account](https://launchpad.net/+login) for these automated updates and to confirm the email address it will be sending emails from. In our case, the account is [MaharaBot](https://launchpad.net/~dev-mahara).  
+  
+Then, we wrote a [custom hook script](http://gitorious.org/mahara/mahara-scripts/blobs/master/change-merged) (inspired by [one for JIRA](https://github.com/hobbs/jirret)) which we placed in `~/mahara_reviews/etc/gerrit.config`.  
+  
+For an example of what it sends to the bug tracker, see [bug 788457](https://bugs.launchpad.net/mahara/+bug/788457).
+
+
+[[!tag catalyst]] [[!tag launchpad]] [[!tag mahara]] [[!tag gerrit]] [[!tag ubuntu]] [[!tag nzoss]] 

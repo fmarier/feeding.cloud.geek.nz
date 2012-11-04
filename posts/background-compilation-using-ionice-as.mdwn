@@ -1,0 +1,35 @@
+[[!meta title="Background compilation using ionice as a normal user"]]
+[[!meta date="2008-03-23T17:58:00.003+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Most people know that you can run commands "in the background" on UNIX by prefixing them with "nice":  
+
+> nice run_long_script.sh
+
+What that does of course is reduce the priority of the process so that the CPU scheduler only runs it when nothing else (of a higher priority) wants to run. What it doesn't do however is run the process without any impact whatsoever on your other tasks. The reason is that the background process can still ruin the performance of your computer by monopolizing the hard disk.  
+  
+It turns out that Linux 2.6.13 or later (with the CFQ scheduler) support a tool called [ionice](http://friedcpu.wordpress.com/2007/07/17/why-arent-you-using-ionice-yet/) which is a "nice" command for I/O operations (like disk accesses). It works like this:  
+
+> ionice -c3 command
+
+The only problem is that you can only reduce the IO priority of a process as root. The reason being that if you're not careful you could have a high priority (CPU priority that is) IO-blocked by a lower-priority process.  
+  
+But if you run your compilation like this:  
+
+> sudo ionice -c3 make
+
+it will run the whole thing as root, which is probably not what you want. So you could do something like:  
+
+> sudo ionice -c3 sudo -u myusername make
+
+to run the compilation as yourself. Though one problem persists: sudo strips out your environment. So things like [distcc](http://distcc.samba.org/) and [ccache](http://ccache.samba.org/) may not work anymore.  
+  
+Here's how I solved these problems in my background compilation script for custom kernel Debian packages:  
+
+> #!/bin/bash  
+nice fakeroot make-kpkg --revision=custom.1.0 kernel_image &  
+BACKGROUND_BUILD=$!  
+sudo ionice -c3 -p $BACKGROUND_BUILD  
+wait $BACKGROUND_BUILD || exit 1  
+
+
+[[!tag catalyst]] [[!tag debian]] 

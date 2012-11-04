@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ claimedauthor="Michael"
+ subject=""
+ date="2011-04-13T08:39:53.570+12:00"
+ content="""
+Hi Francois,  
+  
+Question of the year: After the completed download I want a redirection to take place, do I have to hook in some JS event? I ask because the else statement of request.is_ajax() seems to never be executed. Unless I am doing something horribly wrong which might very well be :)  
+  
+thanks and regards,  
+Michele
+
+
+"""]]

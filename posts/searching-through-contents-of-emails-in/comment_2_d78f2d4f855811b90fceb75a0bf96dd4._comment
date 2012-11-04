@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2008-04-06T00:38:00.000+13:00"
+ content="""
+In order to run mairix, you'll need a local copy of your emails. You may want to have a look at [OfflineIMAP](http://software.complete.org/software/projects/show/offlineimap) for that.
+
+
+"""]]

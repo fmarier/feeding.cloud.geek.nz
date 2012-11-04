@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2010-11-03T07:27:12.104+13:00"
+ content="""
+You don't want to use the noop IO scheduler. Turns out that cfq helps for SSDs as well; it will automatically avoid some of the heuristics that don't make sense on SSDs, but it will still provide a number of benefits.  
+  
+And while the 20% thing might make sense for cheap SSDs, the Intel SSDs will handle remapping just fine.
+
+
+"""]]

@@ -1,0 +1,27 @@
+[[!meta title="Contributing code to Moodle"]]
+[[!meta date="2008-10-03T17:55:00.008+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+The [Moodle](http://www.moodle.org/) learning management system has one of the most vibrant and diversified communities in the [Free Software](http://www.gnu.org/philosophy/free-sw.html) world. There are lots of ways to get involved and most of them are not restricted to people with a programming background.  
+  
+If you are a web developer however, sharing your custom code with the wider Moodle community is a great way to:
+
+  * increase its **quality**,
+  * generate more **ideas**,
+  * get it **translated** into many languages,
+  * improve its **usability**,
+  * supplement its existing **documentation**,
+  * and sometimes can even get **funding** for enhancements!
+
+There are [many ways to contribute code](http://docs.moodle.org/en/Development:Guidelines_for_contributed_code) to Moodle, but if you decide that your customisations could be useful to others, then you should think about [submitting your project to the "contrib" area](http://docs.moodle.org/en/Development:contrib).  
+  
+The process is quite simple: simply announce your module or plug-in on the appropriate [Moodle discussion forum](http://moodle.org/mod/forum/view.php?id=44) and attach a [zip file](http://en.wikipedia.org/wiki/ZIP_%28file_format%29) containing:
+
+  1. source code
+  2. installation instructions
+  3. a copy of the [licence](http://www.fsf.org/licensing/licenses/gpl.html)
+  4. your contact details (email or website)
+
+Just like [starting a Free Software project](http://feeding.cloud.geek.nz/2008/09/starting-free-software-project.html), contributing code to Moodle and seeing a [community of users grow around your code](http://feeding.cloud.geek.nz/2008/09/growing-community-around-your-new-free.html) can be a highly motivating experience. Happy Moodling!
+
+
+[[!tag catalyst]] 

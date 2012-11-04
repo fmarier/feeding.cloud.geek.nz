@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/12612857680528965620"
+ nickname="Philipp Kern"
+ subject=""
+ date="2010-07-22T04:45:43.535+12:00"
+ content="""
+Now Simon already talked about interactive rebase, but another point: there's no need to rebase stable --hardly to the other branch. In fact, as the target was rebased a "git merge" will be a fast-forward, so can be done without generating a merge commit.
+
+
+"""]]

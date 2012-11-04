@@ -1,0 +1,56 @@
+[[!meta title="RequestTracker workflow with only one person using the web UI to allocate tickets to external people"]]
+[[!meta date="2011-09-07T18:30:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Here are some notes on the way I set an instance of [RequestTracker](http://bestpractical.com/rt/) up to support the following workflow:  
+
+  1. Customers use a web form which sends an email to RT.
+  2. A contact person receives all new tickets by email and uses the RT web UI to allocate it to a another person.
+  3. The person handling the ticket gets a copy of the ticket (and doesn't see any of the other tickets) via email and never has to use RT.
+
+### Groups and Queues
+
+For each product, I created the following RT groups:  
+
+  * `productname-contact`: Users receiving all emails sent to the ProductName queues
+  * `productname-support`: People who can be assigned to ProductName queues
+
+as well as a `ProductName` queue:  
+
+  * `productname-contact` is a **watcher**
+  * `productname-contact` has all of the permissions under "Group Rights"
+  * `productname-support` has all of the permissions except for AdminCC under "Group Rights"
+
+### User accounts
+
+The **contact person** (can be more than one person), responsible for allocating tickets to support people gets a full RT account with a password and is a member of the `productname-contact` group.  
+  
+The **support people**, who reply to tickets, get a limited RT account without a password (so they cannot login) and are members of the `productname-support` group.  
+
+### Forwarding the initial email
+
+In a stock RT install, this workflow works well, except for one important point: when a ticket is allocated to someone else, all they get is a "this ticket has been assigned to you" email. They have no idea what the ticket is about and since they can't login into RT and are not CCed on the emails going into that queue, that's pretty useless to them.  
+  
+The solution I found is to add a new [ForwardFirstMessage](http://requesttracker.wikia.com/wiki/ForwardFirstMessage) global template:  
+
+
+    {  
+     my $Transactions = $Ticket->Transactions;  
+     $Transactions->Limit( FIELD => 'Type', VALUE => 'Create' );  
+     my $first_message;  
+     my $CreateObj = $Transactions->First;  
+     if( $CreateObj && $CreateObj->id ) {  
+       $first_message = $CreateObj->Content;  
+     }  
+      
+     $first_message;  
+    }
+
+
+and then edit the `On Owner Change Notify Owner` global scrip to make use of that template.
+
+  
+
+With this, the person that is allocated to a ticket will receive the original email from the requestor as if it had been sent directly to their email address in the first place.
+
+
+[[!tag catalyst]] [[!tag sysadmin]] [[!tag rt]] [[!tag nzoss]] 

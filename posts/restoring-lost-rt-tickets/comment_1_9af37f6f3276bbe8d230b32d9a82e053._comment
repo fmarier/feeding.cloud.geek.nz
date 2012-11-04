@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://www.chilts.org/blog/"
+ nickname="Andy Chilton"
+ subject=""
+ date="2010-01-05T12:54:23.799+13:00"
+ content="""
+If you have the tickets in a query (ie. the WHERE clause) can't you just use that where clause in an UPDATE to set the status back.  
+  
+I presume doing it via the interface does some other housekeeping like changing the lastupdated?
+
+
+"""]]

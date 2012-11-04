@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2012-02-24T02:30:58.863+13:00"
+ content="""
+Hi!  
+  
+Instead of trying to tweak Apache, what you could do is use sbox-dtc, which is available in SID, and which I maintain. With it, you can execute any scripting language, be it PHP, Python, Ruby or Perl, then you can set limits of memory usage for your scripts, and on top, execute them in a chroot. It works pretty well! :)
+
+
+"""]]

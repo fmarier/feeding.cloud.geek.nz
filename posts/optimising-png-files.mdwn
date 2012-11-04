@@ -1,0 +1,63 @@
+[[!meta title="Optimising PNG files"]]
+[[!meta date="2011-12-04T18:30:00.001+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I have written about [using lossless optimisations techniques to reduce the size of images](http://feeding.cloud.geek.nz/2009/10/reducing-website-bandwidth-usage.html) before, but I recently learned of a few other [tools](http://developer.yahoo.com/yslow/smushit/faq.html#faq_crushtool) to further reduce the size of [PNG](http://en.wikipedia.org/wiki/Portable_Network_Graphics) images.  
+  
+
+### Basic optimisation
+
+While you could use [Smush.it](http://www.smushit.com/) to manually optimise your images, if you want a single Open Source tool you can use in your scripts, [optipng](http://optipng.sourceforge.net/) is the most effective one:  
+
+
+    optipng -o9 image.png
+
+
+  
+
+### Removing unnecessary chunks
+
+While not as effective as optipng in its basic optimisation mode, [pngcrush](http://pmt.sourceforge.net/pngcrush/) can be used remove [unnecessary chunks](http://en.wikipedia.org/wiki/Portable_Network_Graphics#Ancillary_chunks) from PNG files:  
+
+
+    pngcrush -q -rem gAMA -rem alla -rem text image.png image.crushed.png
+
+
+Depending on the software used to produce the original PNG file, this can yield significant savings so I usually start with this.  
+  
+
+### Reducing the colour palette
+
+When optimising images uploaded by users, it's not possible to know whether or not the palette size can be reduced without too much quality degradation. On the other hand, if you are optimising your own images, it might be worth trying this lossy optimisation technique.  
+  
+For example, [this image](http://cdn.libravatar.org/nobody/512.png) went from 7.2 kB to 5.2 kB after running it through [pngnq](http://pngnq.sourceforge.net/):  
+
+
+    pngnq -f -n 32 -s 3 image.png
+
+
+  
+
+### Re-compressing final image
+
+Most PNG writers use [zlib](http://zlib.net/) to compress the final output but it turns out that there are better algorithms to do this.  
+  
+Using [AdvanceCOMP](http://advancemame.sourceforge.net/comp-readme.html) I was able to bring the [same image](http://cdn.libravatar.org/nobody/512.png) as above from 5.1kB to 4.6kB:  
+
+
+    advpng -z -4 image.png
+
+
+  
+
+### When the source image is an SVG
+
+Another thing I noticed while optimising PNG files is that rendering a PNG of the right size straight from an SVG file produces a smaller result than exporting a large PNG from that same SVG and then resizing the PNG to smaller sizes.  
+  
+Here's how you can use [Inkscape](http://inkscape.org/) to generate an 80x80 PNG:  
+
+
+    inkscape --without-gui --export-width=80 --export-height=80 --export-png=80.png image.svg
+
+
+
+[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag web]] [[!tag nzoss]] 

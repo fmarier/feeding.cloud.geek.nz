@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2009-06-20T07:40:12.292+12:00"
+ content="""
+EncFS is nice for storing encrypted files, but this solution works much better if you want to run applications from your encrypted file system. For example, mutt mail can't be stored in the EncFS mount.  
+  
+EncFS seems to be maturing quickly; for now I think cryptmount is a more mature and dependable solution.
+
+
+"""]]

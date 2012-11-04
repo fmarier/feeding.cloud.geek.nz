@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://paulox.wordpress.com/"
+ nickname="paulox"
+ subject=""
+ date="2009-10-10T11:03:43.269+13:00"
+ content="""
+Try jpegtran instead jpegoptim:  
+  
+jpegtran -progressive -optimize -copy none orig.jpg > jpegtran.jpg
+
+
+"""]]

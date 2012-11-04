@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2010-08-06T17:57:09.887+12:00"
+ content="""
+In recent Git I needed to use "git log --follow -- long_deleted_file" to find my deleted file.
+
+
+"""]]

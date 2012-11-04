@@ -1,0 +1,41 @@
+[[!meta title="Proper indentation of Javascript files using js2-mode in emacs"]]
+[[!meta date="2012-05-31T17:30:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+If you use [emacs](http://www.gnu.org/software/emacs/) for Javascript or [Node.js](http://nodejs.org/) development, you should have a look at [js2-mode](https://github.com/mooz/js2-mode) (`apt-get install js2-mode` in [Debian](http://packages.debian.org/sid/js2-mode) / [Ubuntu](https://launchpad.net/ubuntu/+source/js2-mode)).
+
+In addition to providing syntax highlight, it will parse your Javascript and issue errors and warnings. (It's not as pedantic as [jslint](http://www.jslint.com/) or [jshint](http://www.jshint.com/) so you'll probably want to fix all of them before committing your files.)
+
+Unfortunately the default indentation style looks a bit crazy and adds excessive indentation to your code. Here's an example:
+
+
+      
+        navigator.id.secret.generate(identity, function (plainKey, wrappedKey) {  
+                                         var data = {wrappedKey: wrappedKey};  
+                                         $.post('/loggedin', data, function (res) {  
+                                                    $("#message").text('All done');  
+                                                }, 'json');  
+                                     }, function (error) {  
+                                         $("#message").text('ERROR: ' + error);  
+                                     });  
+    
+
+
+It turns out that [indenting Javascript properly is really hard](http://steve-yegge.blogspot.co.nz/2008_03_01_archive.html), but you can turn on a special flag which will cause the indentation to "bounce" between different strategies, starting with the most likely one.
+
+This is what I now have in my `~/.emacs`:
+
+
+    (custom-set-variables  
+     '(js2-basic-offset 2)  
+     '(js2-bounce-indent-p t)  
+    )
+
+
+You can find and configure all other options by issuing the following command:
+
+> M-x customize-group [RET] js2-mode [RET]
+
+So yes, you can have both the reasonable indentation of the standard [js-mode](http://emacswiki.org/emacs/JavaScriptMode) and the helpful warnings and errors of [js2-mode](http://emacswiki.org/emacs/Js2Mode)!
+
+
+[[!tag debian]] [[!tag programming]] [[!tag nodejs]] [[!tag emacs]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag mozilla]] 

@@ -1,0 +1,53 @@
+[[!meta title="Ideal OpenSSL configuration for Apache and nginx"]]
+[[!meta date="2011-11-15T04:00:00.001+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+After recently reading a number of [SSL/TLS](https://secure.wikimedia.org/wikipedia/en/wiki/Transport_Layer_Security)-related articles, I decided to experiment and look for the ideal OpenSSL configuration for [Apache](http://httpd.apache.org/) (using [mod_ssl](https://httpd.apache.org/docs/2.2/mod/mod_ssl.html) since I haven't tried [mod_gnutls](http://modgnutls.sourceforge.net/) yet) and [nginx](http://www.nginx.org/).  
+  
+By "ideal" I mean that this configuration needs to be **compatible** with most user agents likely to interact with my website as well as being **fast** and **secure**.  
+  
+Here is what I came up with for Apache:  
+
+
+    SSLProtocol TLSv1  
+    SSLHonorCipherOrder On  
+    SSLCipherSuite RC4-SHA:HIGH:!kEDH
+
+
+and for nginx:  
+
+
+    ssl_protocols  TLSv1;  
+    ssl_ciphers  RC4-SHA:HIGH:!kEDH;  
+    ssl_prefer_server_ciphers   on;
+
+
+  
+
+### Cipher and protocol selection
+
+In terms of choosing a cipher to use, this configuration does three things:  
+
+  * disables all weak ciphers and protocols
+  * disables [very slow ciphers](http://matt.io/technobabble/hivemind_devops_alert:_nginx_does_not_suck_at_ssl) that use ephemeral Diffie-Hellman exchanges
+  * gives priority to the [RC4 cipher](http://blog.ivanristic.com/2009/08/is-rc4-safe-for-use-in-ssl.html) to [minimize CPU usage](http://zombe.es/post/4078724716/openssl-cipher-selection) and [defend against the BEAST attack](http://www.phonefactor.com/blog/slaying-beast-mitigating-the-latest-ssltls-vulnerability.php)
+
+  
+
+### Testing tools
+
+The main tool I used while testing various configurations was the [SSL labs online tool](https://www.ssllabs.com/ssldb/analyze.html). The [CipherFox extension](https://addons.mozilla.org/en-US/firefox/addon/cipherfox/) for Firefox was also quite useful to quickly identify the selected cipher.  
+  
+Of course, you'll want to make sure that your configuration works in common browsers, but you should also test with tools like [wget](https://www.gnu.org/software/wget/), [curl](http://curl.haxx.se/) and [httping](http://www.vanheusden.com/httping/). Many of the online monitoring services are based on these.  
+  
+
+### Other considerations
+
+To increase the performance and security of your connections, you should ensure that the following features are enabled:  
+
+  * [SSL session caching](http://hezmatt.org/~mpalmer/blog/2011/06/28/ssl-session-caching-in-nginx.html) with a session store shared between all of your web servers
+  * [HSTS headers](https://secure.wikimedia.org/wikipedia/en/wiki/HTTP_Strict_Transport_Security) to let browsers know that they should always visit your site over HTTPS
+
+Note: If you have different SSL-enabled name-based vhosts on the same IP address (using [SNI](https://secure.wikimedia.org/wikipedia/en/wiki/Server_Name_Indication)), make sure that their SSL cipher and protocol settings are identical.  
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag nginx]] [[!tag ssl]] [[!tag sysadmin]] [[!tag security]] [[!tag apache]] [[!tag web]] [[!tag ubuntu]] [[!tag nzoss]] 

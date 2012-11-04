@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/12612857680528965620"
+ nickname="Philipp Kern"
+ subject=""
+ date="2008-09-20T11:02:00.000+12:00"
+ content="""
+Actually the file that describes releases is called NEWS, not ChangeLog. (And autotools also feature a "check-news" function which force you to update that file if you want to get a release tarball for a new version...)
+
+
+"""]]

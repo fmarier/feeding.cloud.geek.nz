@@ -1,0 +1,96 @@
+[[!meta title="Setting up your own DNSSEC-aware resolver using Unbound"]]
+[[!meta date="2010-09-12T18:00:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Now that the root DNS servers are [signed,](http://www.root-dnssec.org/2010/07/16/status-update-2010-07-16/) I thought it was time I started using [DNSSEC](https://secure.wikimedia.org/wikipedia/en/wiki/Dnssec) on my own PC. However, not wanting to wait for my ISP to enable it, I decided to setup a private recursive DNS resolver for myself using [Unbound](http://unbound.net/).  
+  
+
+## Installing Unbound
+
+Being already packaged in [Debian](http://packages.debian.org/source/unstable/unbound) and [Ubuntu](https://launchpad.net/ubuntu/+source/unbound), unbound is only an apt-get away:  
+
+
+    apt-get install unbound
+
+
+though if you are running [lenny](http://www.debian.org/releases/lenny/), I suggest you grab the latest [backport](http://backports.debian.org/Instructions/).  
+  
+Once unbound is installed, follow [these instructions](http://www.unbound.net/documentation/howto_anchor.html) to enable DNSSEC.  
+  
+
+## Optional settings
+
+In my `/etc/unbound/unbound.conf`, I enabled the following security options:  
+
+
+    harden-referral-path: yes  
+    use-caps-for-id: yes
+
+
+and turned on prefetching to hopefully keep in cache the sites I visit regularly:  
+
+
+    prefetch: yes  
+    prefetch-key: yes
+
+
+Finally, I also enabled statistics:  
+
+
+    extended-statistics: yes  
+    control-enable: yes  
+    control-interface: 127.0.0.1
+
+
+and ran `sudo unbound-control-setup` to generate the necessary keys.  
+  
+Once unbound is restarted (`sudo /etc/init.d/unbound restart`) stats can be queried to make sure that the DNS resolver is working:  
+
+
+    unbound-control stats
+
+
+  
+
+## Overriding DHCP settings
+
+In order to use my own unbound server for DNS lookups and not the one received via [DHCP](https://secure.wikimedia.org/wikipedia/en/wiki/Dhcp), I added this line to `/etc/dhcp/dhclient.conf`:  
+
+
+    supersede domain-name-servers 127.0.0.1;
+
+
+and restarted dhclient:  
+
+
+    sudo killall dhclient  
+    sudo killall dhclient  
+    sudo /etc/init.d/network-manager restart
+
+
+If you're not using DHCP, then you simply need to put this in your `/etc/resolv.conf`:  
+
+
+    nameserver 127.0.0.1
+
+
+  
+
+## Testing DNSSEC resolution
+
+Once everything is configured properly, the best way I found to test that this setup was actually working is to use a web browser to visit these sites:  
+
+  * [http://www.dnssec.cz/](http://www.dnssec.cz/) should show a green key
+  * [http://www.rhybar.cz/](http://www.rhybar.cz/) should not be reachable
+
+and using dig:  
+
+<pre>
+$ dig +dnssec A www.dnssec.cz | grep ad  
+;; flags: qr rd ra <b>ad</b>; QUERY: 1, ANSWER: 2, AUTHORITY: 3, ADDITIONAL: 1
+</pre>
+
+  
+Are there any other ways of making sure that DNSSEC is fully functional?
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] 

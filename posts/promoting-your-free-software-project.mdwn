@@ -1,0 +1,39 @@
+[[!meta title="Promoting your Free Software Project"]]
+[[!meta date="2008-09-18T23:46:00.004+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+After spending a considerable amount of time [releasing your Free Software project](http://feeding.cloud.geek.nz/2008/09/starting-free-software-project.html) to the public, you will probably want to make sure that it reaches as many of the people it could be useful to as possible. Here are a few tips to get you started.  
+
+## Homepage: Is this software for me?
+
+The first thing you will probably think about is to create a homepage promoting your project. There are a [lot of good tips on how to create an effective homepage](http://www.useit.com/alertbox/20020512.html), but I will focus here on the contents that you should include.  
+  
+**Screenshots** are one of the most important elements you can include on your homepage. First-time visitors will only spend a few seconds on your site before deciding whether or not the information is relevant to them. You need to be able to summarize in a few pictures what your project is all about.  
+  
+Would you be willing to read long white papers or to go through long build instructions just to find out that this software isn't going to be useful to you after all? Probably not. Make sure you can help users figure this out in a few seconds, even if [your software lacks a graphical user interface](http://code.google.com/p/safe-rm/).  
+  
+Of course you will also want to describe the project in a few words and provide links to the source code and other services you may have available.  
+
+## Hosting Choices
+
+Where to put your contents is somewhat of a personal choice but there are a few things to keep in mind.  
+  
+First of all, depending on the size of your project and its related data, the hosting site should may need a significant amount of storage and bandwidth. Furthermore, you should check whether **download statistics** are collected by your hosting provider. While not strictly necessary, it can be very motivating to watch these numbers go up!  
+  
+Free Software hosting sites like [Google Code](http://code.google.com/hosting/), [Source Forge](http://www.sourceforge.net/) and [LaunchPad](http://www.launchpad.net/) also provide different services like **bug trackers** and **source control repositories**.  
+  
+Some people prefer a distributed approach to [source control](http://git-scm.com/) and [issue tracking](http://kapiti.geek.nz/software/cil.html) to avoid trusting their master copy of the data to a third party. Setting up a separate code repository on sites like [Github](http://github.com/) or [Gitorious](http://gitorious.org/) is an option to consider.  
+  
+All of these hosting providers promote the software they host to varying degrees. Have a look around before deciding where you should park your project.  
+
+## Announcing your Release
+
+Finally, what would a website be without other sites linking to it? The obvious place to start would be the main search engines, but that in itself is unlikely to bring much traffic in the early days of your project.  
+  
+Sites dedicated to Free Software are more likely to bring visitors to your shiny new project. The most famous place for Free Software release news is [Freshmeat](http://www.freshmeat.net). Whether or not you visit this site regularly, you should know that its contents is widely read and syndicated and you should not pass on this great opportunity to [let people know about your software](http://perlbuzz.com/2009/03/how-to-write-an-announcement.html).  
+  
+Other directories that may be of interest include the [Free Software Foundation Directory](http://directory.fsf.org/) and [Ohloh](http://www.ohloh.net/) (especially if you offer a publicly available source code repository).  
+  
+Now that the word is getting out, it's time to start thinking about [supporting these new users](http://feeding.cloud.geek.nz/2008/09/growing-community-around-your-new-free.html)!
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 

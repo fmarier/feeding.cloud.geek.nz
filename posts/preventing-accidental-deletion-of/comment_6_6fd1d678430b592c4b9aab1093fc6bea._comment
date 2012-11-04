@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2008-06-21T10:13:00.000+12:00"
+ content="""
+Fil: you're right about the pre and postinst packages being unable to delete certain directories if safe-rm is protecting too many directories.  
+  
+I thought about adding apt-get hooks, but then I figured that I really didn't want a buggy maintainer script to accidentally delete some of my "protected paths" anyways :)  
+  
+Regarding the srm binary, I think it's a much better name than having to type safe-rm. Thanks for that suggestion.  
+  
+I think that the whole point of the package is to be an opt-out one as opposed to opt-in however. I was logged in as a different user (and didn't have an alias set there) where I deleted half of my important files.
+
+
+"""]]

@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2008-06-21T22:29:00.000+12:00"
+ content="""
+lethalman: I'm not sure exactly what you mean by suggesting that this package be uploaded to mentors.debian.org because it's in unstable already and it's part of the collab-maint project.  
+  
+So if you want to contribute anything, feel free to clone the git repo at http://git.debian.org/?p=collab-maint/safe-rm.git and send patches.
+
+
+"""]]

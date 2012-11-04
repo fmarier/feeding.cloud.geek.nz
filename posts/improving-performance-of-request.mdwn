@@ -1,0 +1,120 @@
+[[!meta title="Improving the performance of Request Tracker by reducing latency"]]
+[[!meta date="2010-07-09T16:30:00.001+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Request Tracker](http://bestpractical.com/rt) is a really neat support tool, but one of the common complaints I heard from people using it during a previous project was that it was pretty slow.  
+  
+There wasn't much we could do about the (overloaded) server it was running on, but I found that [enabling mod_deflate](http://feeding.cloud.geek.nz/2009/10/reducing-website-bandwidth-usage.html) really [helped](http://identi.ca/notice/5372466).  
+  
+After watching this [great video](http://developer.yahoo.net/blog/archives/2010/06/tellis_on_performance.html) though, I was inspired to look into it a bit more, focussing this time on latency.  
+  
+
+## Description of tests
+
+  * RT 3.6.7-5+lenny4
+  * Running on a Debian Lenny vserser.
+  * Server is on the LAN.
+  * Firefox 3.6.6 client (with [Firebug](https://addons.mozilla.org/en-US/firefox/addon/1843/) 1.5.0)
+
+  
+Also note that I was looking for the "best case" for each of the different configurations and so each screenshot was taken after reloading the homepage 10-20 times to maximize cache hits (thanks in large part to [mod_expires](http://httpd.apache.org/docs/2.2/mod/mod_expires.html)).  
+  
+(Is there a nice automated way of measuring average latency?)  
+  
+
+## Stock RT 3.6
+
+Using the default `apache2-modperl2` config file (as supplied by RT), here's what the homepage (logged in as root) looked like before I changed anything:  
+  
+![](rt_not_optmised.png)  
+  
+The purple section here indicates the time spent waiting for the server. This shows that the server (running [Mason](http://www.masonhq.com/) inside [mod_perl](http://perl.apache.org/)) is doing quite a bit of processing, including a lot more work than you'd expect while serving static files. It's quite impressive to see how fast the images are being served (directly by Apache) in comparison with the Javascript and the CSS files (which go through Mason).  
+  
+The reason while Javascript and CSS files have to be served by `mod_perl` is that they are in fact templates. They contain a few Mason variables which must be substituted before being served.  
+  
+Looking into it further though, all of these replacements have to do with variables defined in RT_SiteConfig.pm (mostly the install path). Here's an example:  
+
+
+    var path = "" ? "" : "/";
+
+
+which gets turned into:  
+
+
+    var path = "/rt" ? "/rt" : "/";
+
+
+So as long as these paths don't change, then there is no need to re-generate these files.  
+  
+
+## Static Javascript and CSS
+
+This next diagram was produced after configuring Apache to serve all Javascript and CSS files directly from Apache:  
+  
+![](rt_image_corners.png)  
+  
+The way I did that (without modifying any of the original files) was by saving the Javascript/CSS sent to the browser and using [mod_rewrite](http://httpd.apache.org/docs/2.2/mod/mod_rewrite.html) rules to serve these files instead of the original templated ones:  
+  
+
+
+    # Serve static files directly  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/js/ahah.js$ /var/www/rt/ahah.js  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/js/cascaded.js$ /var/www/rt/cascaded.js  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/js/class.js$ /var/www/rt/class.js  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/js/combobox.js$ /var/www/rt/combobox.js  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/js/list.js$ /var/www/rt/list.js  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/js/titlebox-state.js$ /var/www/rt/titlebox-state.js  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/js/util.js$ /var/www/rt/util.js  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/css/3.5-default/main-squished.css$ /var/www/rt/main-squished.css  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/css/print.css$ /var/www/rt/print.css  
+    RewriteRule ^/usr/share/request-tracker3.6/html/NoAuth/webrtfm.css$ /var/www/rt/webrtfm.css  
+    
+
+
+  
+Removing unnecessary images  
+  
+Finally, one thing I noticed from this last graph is that the rounded corners in the theme require a number of small images. While these don't take a whole lot of bandwidth, they do require quite a bit of back and forth between the browser and the server.  
+  
+So I replaced all of the "rounded corner" images in the `main-squished.css` file with the following CSS attributes:  
+  
+
+
+    -moz-border-radius-topleft: 8px;  
+    -moz-border-radius-topright: 8px;  
+    -moz-border-radius-bottomleft: 8px;  
+    -moz-border-radius-bottomright: 8px;  
+    -webkit-border-top-left-radius: 8px;  
+    -webkit-border-top-right-radius: 8px;  
+    -webkit-border-bottom-left-radius: 8px;  
+    -webkit-border-bottom-right-radius: 8px;
+
+
+  
+(yes, Internet Explorer users probably don't get the rounded corners... oh well)  
+  
+This eliminated a number of roundtrips and shaved off a few more milliseconds:  
+  
+![](rt_bestcase.png)  
+  
+
+## Merging CSS and Javascript files
+
+By this stage, the pages are pretty snappy so there is not much to be gained anymore, but I figured I'd try to reduce the latency a bit more by combining all Javascript files into one (and doing the same for CSS files with the exception of print.css). This is what I got:  
+  
+![](rt_fully_squished.png)  
+  
+(Note that I also took the opportunity to [minify](http://yuilibrary.com/projects/yuicompressor/) both squished files to reduce the filesize.)  
+  
+Not a huge improvement and I unfortunately had to copy quite a few Mason templates from `/usr/share/request-tracker3.6/html/` to `/usr/local/share/request-tracker3.6/html/` and then replace all of the script tags with a single one in html/Elements/Header.  
+  
+
+## Others things to look into
+
+I've stopped here, but there might be ways to further reduce the processing time on the server (hence the latency) by tuning `mod_perl`/Mason or [Postgres](http://www.postgresql.org/). The [RT wiki](http://wiki.bestpractical.com/view/PerformanceTuning) also has a few pointers.  
+  
+Replacing Apache with [Nginx](http://tnt.aufbix.org/rt) (which means moving to [FastCGI](http://wiki.bestpractical.com/view/FastCGIConfiguration)) was something I considered, but after trying it out, it turned out that it would add about 100ms of extra latency.  
+  
+Feel free to leave a comment if you've found something else that makes a big difference on your site.
+
+
+[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag sysadmin]] [[!tag rt]] [[!tag web]] [[!tag ubuntu]] [[!tag nzoss]] 

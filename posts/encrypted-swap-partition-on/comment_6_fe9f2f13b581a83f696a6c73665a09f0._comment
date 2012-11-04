@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://agnulinuxuser.blogspot.com"
+ nickname="tk"
+ subject=""
+ date="2011-12-15T19:34:40.982+13:00"
+ content="""
+I debian lenny with encrypted root and swap partitions, when booting, one is asked for root and swap passphrases. To avoid the swap passphrase, a working setup is found here: [http://agnulinuxuser.blogspot.com/2011/12/encrypting-swap-partition.html](http://agnulinuxuser.blogspot.com/2011/12/encrypting-swap-partition.html)
+
+
+"""]]

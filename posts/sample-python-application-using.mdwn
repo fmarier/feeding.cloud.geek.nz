@@ -1,0 +1,115 @@
+[[!meta title="Sample Python application using Libgearman"]]
+[[!meta date="2011-01-12T20:20:00.003+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Gearman](http://www.gearman.org/) is a distributed queue with several [language bindings](https://launchpad.net/gearman-interface).  
+  
+While Gearman has a nice [Python](http://www.python.org/) implementation ([python-gearman](http://pypi.python.org/pypi/gearman)) of the client and worker, I chose to use the libgearman bindings ([python-libgearman](http://pypi.python.org/pypi/python-libgearman)) directly since they are already packaged for [Debian](http://www.debian.org/) (as [python-gearman.libgearman](http://packages.debian.org/python-gearman.libgearman)).  
+  
+Unfortunately, these bindings are not very well documented, so here's the sample application I wished I had seen before I started.  
+  
+
+### Using the command-line tools
+
+Before diving into the Python bindings, you should make sure that you can get a quick application working on the command line (using the [gearman-tools](http://packages.debian.org/gearman-tools) package).  
+  
+Here's a very simple worker which returns verbatim the input it receives:  
+
+
+    gearman -w -f myfunction cat
+
+
+and here is the matching client:  
+
+
+    gearman -f myfunction 'test'
+
+
+You can have have a look at the [status of the queues in the server](https://groups.google.com/group/gearman/browse_thread/thread/398b3493a3eacb71/cf7691c645d826e4?lnk=gst&q=monitor#cf7691c645d826e4) by connecting to gearmand via telnet (port 4730) and issuing the `status` command.  
+  
+
+### Using the Python libgearman bindings
+
+Once your gearman setup is working (debugging is easier with the command-line tools), you can roll the gearman connection code into your application.  
+  
+Here's a simple Python worker which returns what it receives:  
+
+
+    #!/usr/bin/python  
+      
+    from gearman import libgearman  
+      
+    def work(job):  
+       workload = job.get_workload()  
+       return workload  
+      
+    gm_worker = libgearman.Worker()  
+    gm_worker.add_server('localhost')  
+    gm_worker.add_function('myfunction', work)  
+      
+    while True:  
+       gm_worker.work()
+
+
+and a matching client:  
+
+
+    #!/usr/bin/python  
+      
+    from gearman import libgearman  
+      
+    gm_client = libgearman.Client()  
+    gm_client.add_server('localhost')  
+      
+    result = gm_client.do('myfunction', 'test')  
+    print result
+
+
+This should behave in exactly the same way as the command-line examples above.  
+  
+
+### Returning job errors
+
+If you want to expose to the client errors in the processing done by the worker, modify the worker like this:  
+
+<pre>
+#!/usr/bin/python  
+  
+from gearman import libgearman  
+  
+def work(job):  
+   workload = job.get_workload()  
+   <b>if workload == 'fail':  
+       job.send_fail()</b>  
+   return workload  
+  
+gm_worker = libgearman.Worker()  
+gm_worker.add_server('localhost')  
+gm_worker.add_function('myfunction', work)  
+  
+while True:  
+   gm_worker.work()
+</pre>
+
+and the client this way:  
+
+<pre>
+#!/usr/bin/python  
+  
+from gearman import libgearman  
+  
+gm_client = libgearman.Client()  
+gm_client.add_server('localhost')  
+  
+result = gm_client.do('myfunction', '<b>fail</b>')  
+print result
+</pre>
+
+### License
+
+The above source code is released under the following terms:  
+
+> [![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)  
+To the extent possible under law, [Francois Marier](http://feeding.cloud.geek.nz/) has waived all copyright and related or neighboring rights to this sample libgearman Python application. This work is published from: New Zealand.
+
+
+[[!tag gearman]] [[!tag catalyst]] [[!tag debian]] [[!tag python]] [[!tag ubuntu]] [[!tag nzoss]] 

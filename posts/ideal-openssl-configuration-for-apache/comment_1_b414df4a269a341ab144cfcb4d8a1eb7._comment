@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2011-11-15T11:24:46.164+13:00"
+ content="""
+RC4, while avoiding the attack-flavor-of-the-day, provides relatively weak security compared to other ciphers. Consider the various guides pointing out that "ssh -c arcfour" goes faster but at the expense of some security, and thus that you should not use it on insecure networks.  
+  
+Instead, I'd suggest preferring TLSv1.2 and TLSv1.1, both of which address the BEAST attack and other problems. As far as I know, those already appear earlier in the preference list than TLSv1, though you should check that.
+
+
+"""]]

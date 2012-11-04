@@ -1,0 +1,89 @@
+[[!meta title="Reducing the number of HTTP connections used by a webapp"]]
+[[!meta date="2011-06-28T20:30:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+One of the factors affecting the speed (latency) of a web application is the [number of HTTP connections](http://developer.yahoo.com/performance/rules.html#num_http) needed to download a given page. These connections are often [reused](http://en.wikipedia.org/wiki/HTTP_persistent_connection) and some of the resources that a page needs will be downloaded in parallel, but that's not always the case (browsers will limit the number of connections they make to each web server for example) so it pays to take that into consideration while optimizing a page.  
+  
+Client-side [image maps](http://en.wikipedia.org/wiki/Image_map) can often help, but here are two other ways to reduce the number of external images a page needs.  
+  
+
+### Embed images as Base64 data
+
+Thanks to the [Data:URI scheme](http://en.wikipedia.org/wiki/Data:_URI_scheme), it is possible to embed images directly into a CSS file, as [Base64](https://secure.wikimedia.org/wikipedia/en/wiki/Base64) data.  
+  
+Of course this trick only makes sense for very small images (typically a small PNG icons) since the Base64 version encoding of a binary image will be larger than the original image (though some of that will be reclaimed when the CSS file is [gzipped](http://httpd.apache.org/docs/2.2/mod/mod_deflate.html)).  
+  
+First of all, make sure your PNG image is as small as possible using [optipng](http://optipng.sourceforge.net/):  
+
+
+    optipng -o9 image.png
+
+
+then convert it to text:  
+
+
+    base64 image.png
+
+
+and paste it into your CSS file:  
+
+
+    #object-id {  
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSU...K5CYII=');  
+    }
+
+
+Make sure that the Base64 data is all on one line otherwise it apparently [won't work](http://en.wikipedia.org/wiki/Data_URI_scheme#CSS) on old versions of Firefox.  
+  
+Note that the downside of this technique is that it doesn't work on IE7 so you might want to limit it to non-essential icons.  
+  
+
+### Use CSS sprites
+
+This second technique does work on Internet Explorer and it can be particularly good when dealing with lots of small images. After all, a small image that weighs only a few bytes could be quite large once you factor in the HTTP response headers that will come with it when it is served to browsers.  
+  
+I suggest you get started by reading this [excellent introduction](http://www.alistapart.com/articles/sprites), but the idea is to create a single image which contains all of the smaller ones. Then each element displays a different region of the same image (which is only transferred once).  
+  
+Here's what the stylesheet looks like for two side-by-side clickable images:
+
+    #sponsors {  
+      position: relative;  
+      height: 96px;  
+    }  
+      
+    #sponsors li {  
+      background-image: url("sponsors.png");  
+      height: 96px;  
+      width: 96px;  
+      list-style: none;  
+      position: absolute;  
+    }  
+      
+    #sponsors li a {  
+      height: 96px;  
+      width: 96px;  
+      display: block;  
+    }  
+      
+    #sponsor1-logo {  
+      background-position: 96px 0px;  
+      left: 0px;  
+    }  
+      
+    #sponsor2-logo {  
+      background-position: 0px 0px;  
+      left: 96px;  
+    }
+
+
+and the matching HTML fragment:
+
+      
+    <ul id="sponsors">  
+      <li id="logo1"><a href="http://example.org" title="Sponsor1"></a></li>  
+      <li id="logo2"><a href="http://example.com" title="Sponsor2"></a></li>  
+    </ul>  
+    
+
+
+
+[[!tag catalyst]] [[!tag optimisation]] [[!tag web]] [[!tag nzoss]] 

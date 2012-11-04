@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-05-24T21:24:00.000+12:00"
+ content="""
+You might want to use a different tool to remove the temporary home dir copy, e.g. wipe -r -f -q homedircopy
+
+
+"""]]

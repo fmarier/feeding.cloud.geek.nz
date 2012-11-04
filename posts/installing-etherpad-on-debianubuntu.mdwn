@@ -1,0 +1,177 @@
+[[!meta title="Installing Etherpad on Debian/Ubuntu"]]
+[[!meta date="2011-12-16T08:00:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Etherpad](http://etherpad.org/) is an excellent Open Source web application for collaborative text editing. Like Google Docs, it allows you to share documents with others through a secret URL or to set up private documents for which people need a login.
+
+  
+
+It's a little tricky to install so here's how I did it.  
+  
+
+### Build a Debian package
+
+Because the [official repository](http://apt.etherpad.org/) is not kept up to date, you must build the package yourself:
+
+  1. Grab the master branch from the official [git repository](https://github.com/ether/pad):  
+
+
+        git clone git://github.com/ether/pad.git etherpad
+
+
+  2. Build the package:  
+
+
+        dpkg-buildpackage -us -uc
+
+
+  
+Now, install some of its dependencies:  
+
+
+    apt-get install --no-install-recommends dbconfig-common python-uno mysql-server
+
+
+  
+before installing the .deb you built:  
+
+
+    dpkg -i etherpad_1.1.deb  
+    apt-get install --no-install-recommends -f
+
+
+  
+
+### Application configuration
+
+You will likely need to change a few minor things in the default configuration at `/etc/etherpad/etherpad.local.properties`:  
+
+<pre>
+useHttpsUrls = true  
+customBrandingName = ExamplePad  
+customEmailAddress = etherpad@example.com  
+topdomains = etherpad.example.com,<i>your.external.ip.address</i>,127.0.0.1,localhost,localhost.localdomain
+</pre>
+
+  
+
+### Nginx configuration
+
+If you use [Nginx](http://nginx.org/) as your web server of choice, create a vhost file in `/etc/nginx/sites-available/etherpad`:  
+
+
+    server {  
+      listen 443;  
+      server_name etherpad.example.com *.etherpad.example.com;  
+      add_header Strict-Transport-Security max-age=15768000;  
+      
+      ssl on;  
+      ssl_certificate  /etc/ssl/certs/etherpad.example.com.crt;  
+      ssl_certificate_key  /etc/ssl/certs/etherpad.example.com.pem;  
+      
+      ssl_session_timeout  5m;  
+      ssl_session_cache shared:SSL:1m;  
+      
+      ssl_protocols  TLSv1;  
+      ssl_ciphers  RC4-SHA:HIGH:!kEDH;  
+      ssl_prefer_server_ciphers   on;  
+      
+      access_log /var/log/nginx/etherpad.access.log;  
+      error_log /var/log/nginx/etherpad.error.log;  
+      
+      location / {  
+        proxy_pass http://localhost:9000/;  
+        proxy_set_header Host $host;  
+      }  
+    }
+
+
+and then enable it and restart Nginx:  
+
+
+    /etc/init.d/nginx restart
+
+
+  
+
+### Apache configuration
+
+If you prefer to use [Apache](http://httpd.apache.org/) instead, make sure that the required modules are enabled:  
+
+
+    a2enmod proxy  
+    a2enmod proxy_http
+
+
+  
+and then create a vhost file in `/etc/apache2/sites-available/etherpad`:  
+
+
+    <VirtualHost *:443>  
+       ServerName etherpad.example.com  
+       ServerAlias *.etherpad.example.com  
+      
+       SSLEngine on  
+       SSLCertificateFile /etc/apache2/ssl/etherpad.example.com.crt  
+       SSLCertificateKeyFile /etc/apache2/ssl/etherpad.example.com.pem  
+       SSLCertificateChainFile /etc/apache2/ssl/etherpad.example.com-chain.pem  
+      
+       SSLProtocol TLSv1  
+       SSLHonorCipherOrder On  
+       SSLCipherSuite RC4-SHA:HIGH:!kEDH  
+       Header add Strict-Transport-Security: "max-age=15768000"  
+      
+       <Proxy>  
+           Order deny,allow  
+           Allow from all  
+       </Proxy>  
+      
+       Alias /sitemap.xml /ep/tag/\?format=sitemap  
+       Alias /static /usr/share/etherpad/etherpad/src/static  
+      
+       ProxyPreserveHost On  
+       SetEnv proxy-sendchunked 1  
+       ProxyRequests Off  
+       ProxyPass / http://localhost:9000/  
+       ProxyPassReverse / http://localhost:9000/  
+    </VirtualHost>
+
+
+  
+before enabling that new vhost and restarting Apache:  
+
+
+    a2ensite etherpad  
+    apache2ctl configtest  
+    apache2ctl graceful
+
+
+  
+
+### DNS setup
+
+The final step is to create these two DNS entries to point to your web server:  
+
+  * *.etherpad.example.com
+  * etherpad.example.com
+
+  
+Also, as a precaution against an [OpenOffice/LibreOffice-related bug](https://github.com/ether/pad/issues/257), I suggest that you add the following entry to your web server's `/etc/hosts` file to avoid flooding your DNS resolver with bogus queries:  
+
+<pre>
+127.0.0.1 localhost.(none) localhost.(none).<i>fulldomain.example.com</i>
+</pre>
+
+where _fulldomain.example.com_ is the search base defined in `/etc/resolv.conf`.  
+  
+
+### Other useful instructions
+
+Here are the most useful pages I used while setting this up:  
+
+  * [Official installation instructions](http://code.google.com/p/etherpad/wiki/Instructions)
+  * [Ubuntu Wiki instructions](https://wiki.ubuntu.com/Etherpad)
+  * [Instructions for Debian Lenny](http://sis.bthstudent.se/2011/525/how-to-install-etherpad-on-debian-lenny/)
+  * [Nginx Configuration](http://mclear.co.uk/2010/08/11/etherpad-nginx-config/)
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] 

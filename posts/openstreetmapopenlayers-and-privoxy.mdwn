@@ -1,0 +1,90 @@
+[[!meta title="OpenStreetMap/OpenLayers and Privoxy"]]
+[[!meta date="2009-09-24T18:30:00.004+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I have been meaning to switch to [OpenStreetMap](http://www.openstreetmap.org/) for a while now, but the fact that it didn't work with [Privoxy](http://www.privoxy.org/) was holding me back. I don't enjoy surfing the web without protection and Privoxy is one of the most convenient ways of enhancing one's browsing experience on Debian and Ubuntu.  
+  
+So I decided to spend some time trying to figure out what was wrong. If you want to skip the details and just get the fix, scroll down to the bottom of this post for the solution.  
+  
+
+## Finding all affected URLs
+
+In order to get a list of all of the URLs that Privoxy filters when one visits the front page of OpenStreetMap, I did the following:  
+  
+
+  * Added "`debug 1"` to `/etc/privoxy/config`
+  
+
+  * Restarted Privoxy: `sudo /etc/init.d/privoxy restart`
+  
+
+  * Cleared Firefox cache: Tools | Clear Private Data...
+  
+
+  * Loaded www.openstreetmap.org in Firefox  
+
+  
+
+  * Copied from the Privoxy log (`/var/log/privoxy/logfile`) all requested URLs (except the image ones)
+  
+
+## Comparing the files
+
+Armed with the list of all affected URLs, I downloaded them through Privoxy using wget into a `privoxy/` directory:  
+
+<pre>
+$ http_proxy=localhost:8118 wget <i>URL</i>
+</pre>
+
+Then I downloaded the same URLs without Privoxy into a `noproxy/` directory:  
+
+<pre>
+$ http_proxy= wget <i>URL</i>
+</pre>
+
+To find identical files, I ran md5sums in each directory:  
+
+
+    md5sum *
+
+
+After deleting all identical files, I was left with:  
+
+
+    index.html  
+    OpenLayers.js?1251388304
+
+
+Which I diff'ed together:  
+
+<pre>
+colordiff -u noproxy/<i>FILE</i> privoxy/<i>FILE</i>
+</pre>
+
+The first file, `index.html` did not have any relevant changes, but I noticed in the second one that a few of these  
+
+
+    this.moveTo(this.position)
+
+
+were replaced with  
+
+
+    ''.concat(this.position)
+
+
+Searching for "`concat`" in `/etc/privoxy/`, I found that the "jumping-windows" filter was the culprit. After disabling it, all of the problems went away.  
+  
+I have filed a [bug upstream](http://sourceforge.net/tracker/?func=detail&aid=2863990&group_id=11118&atid=460288).  
+  
+
+## The Solution
+
+Here's what you need to put in your `/etc/privoxy/user.action`:  
+
+
+    {-filter{jumping-windows}}  
+    .openstreetmap.org
+
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag privoxy]] [[!tag ubuntu]] [[!tag nzoss]] 

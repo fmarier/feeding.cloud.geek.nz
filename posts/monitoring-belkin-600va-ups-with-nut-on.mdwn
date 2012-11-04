@@ -1,0 +1,75 @@
+[[!meta title="Monitoring a Belkin 600VA UPS with NUT on Debian/Ubuntu"]]
+[[!meta date="2010-04-24T16:30:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I recently bought a [Belkin 600VA UPS](http://www.belkin.com/au/IWCatProductPage.process?Product_Id=460629) (model F6S600auUSB) and here's what I had to do to setup the monitoring and automatic shutdown on Ubuntu 9.10 (karmic). (This procedure should work on recent versions of Debian as well.)  
+  
+This UPS comes with a proprietary monitoring tool (written in Java) and you can find instructions to get this working on the Ubuntu forums, but I was looking for a free solution that would integrate well with the rest of the system. So after reading this [blog post](http://blog.shadypixel.com/monitoring-a-ups-with-nut-on-debian-or-ubuntu-linux/) I decided to go with the [Network UPS Tools](http://www.networkupstools.org/) project:  
+  
+
+
+    $ apt-get install nut
+
+
+  
+Once the `nut` package is installed, I edited `/etc/nut/nut.conf` to set:  
+  
+
+
+    MODE=standalone
+
+
+  
+and created the following files:  
+  
+
+<pre>
+$ vim /nut/ups.conf  
+  
+[belkinusb]  
+driver = <b>megatec_usb</b>  
+port = auto  
+desc = "Belkin UPS, USB interface"  
+  
+$ vim /etc/nut/upsd.conf  
+  
+# MAXAGE 15  
+# LISTEN 127.0.0.1 3493  
+# MAXCONN 1024  
+  
+$ vim /etc/nut/upsd.users  
+  
+[local_mon]  
+password = <i>MYPASSWORD</i>  
+upsmon master  
+  
+$ vim /etc/nut/upsmon.conf  
+  
+MONITOR belkinusb@localhost 1 local_mon <i>MYPASSWORD</i> master  
+POWERDOWNFLAG /etc/killpower  
+SHUTDOWNCMD "/sbin/shutdown -h +0"  
+
+</pre>
+
+  
+Then all that was left to do was to restart `nut`:  
+  
+
+
+    $ /etc/init.d/nut restart
+
+
+  
+and check syslog for any errors:  
+  
+
+
+    $ tail /var/log/syslog
+
+
+  
+While `nut` is running, it will monitor the UPS and report any power problems to syslog. Once the UPS is running on battery, it will make sure the computer is safely shut down before power runs out.  
+  
+Hopefully future versions of [GNOME Power Manager](http://projects.gnome.org/gnome-power-manager/) will be able to integrate with `nut` directly and display battery information through its notification icon.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] 

@@ -1,0 +1,79 @@
+[[!meta title="Using BrowserID and Content Security Policy together"]]
+[[!meta date="2011-11-01T22:40:00.002+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+While looking into why [BrowserID](https://browserid.org/) logins on [Libravatar](https://www.libravatar.org/) didn't work on [Firefox](http://firefox.com/), I remembered that I had recently added [Content Security Policy](https://developer.mozilla.org/en/Security/CSP) headers. Here's what I had to do to make BrowserID work on a CSP-enabled site.  
+  
+
+### Create a hidden form and a login link
+
+This is what the login button looked like before CSP:  
+
+
+    <form id="browserid-form" action="/account/login_browserid" method="post">  
+    <input id="browserid-assertion" type="hidden" name="assertion" value="">  
+    <input style="display: none" type="submit">  
+    </form>  
+      
+    <a href="javascript:try_browserid()">Login with BrowserID</a>  
+      
+    <script type="text/javascript">  
+    function try_browserid() {  
+    navigator.id.getVerifiedEmail(function(assertion) {  
+        if (assertion) {  
+            document.getElementById('browserid-assertion').setAttribute('value', assertion);  
+            document.getElementById('browserid-form').submit();  
+        }  
+    });  
+    }  
+    </script>
+
+
+The hidden form is there because the assertion needs to be sent to the application via `POST` to avoid leaking it out, but otherwise the code is pretty straightforward.  
+  
+Now of course, with CSP turned ON, there are two problems:  
+
+  * links [cannot use](https://developer.mozilla.org/en/Security/CSP/Default_CSP_restrictions#javascript:.C2.A0URIs) `javascript:` URIs
+  * inline Javascript is [forbidden](https://developer.mozilla.org/en/Security/CSP/Default_CSP_restrictions#Internal_.3Cscript.3E_nodes)
+
+So we can start by converting the login link to:  
+
+
+    <a id="browserid-link" href="#">Login with BrowserID</a>  
+      
+    <script src="browserid_stuff.js" type="text/javascript">
+
+
+then moving the `try_browserid()` function to a separate file to be served from the same domain and finally hooking it up to the `try_browserid()` function using Javascript (in that same `browserid_stuff.js` file):  
+
+
+    var link = document.getElementById('browserid-link');  
+    link.onclick = try_browserid;  
+    link.addEventListener('click', try_browserid, false);
+
+
+  
+
+### Exposing the right X-Content-Security-Policy header
+
+In order to load the Javascript code from `browserid.org`, we need the following as part of the policy:  
+
+
+    script-src https://browserid.org
+
+
+but that's not enough since the BrowserID login form seems to use some sort of `<iframe>` trick and so we need to add this extra permission as well:  
+
+
+    frame-src https://browserid.org
+
+
+Here is the final policy I ended up setting (using Apache [mod_headers](http://httpd.apache.org/docs/2.2/mod/mod_headers.html)) for the Libravatar login page:  
+
+
+    <Location /account/login>  
+    Header set X-Content-Security-Policy: "default-src 'self'; frame-src 'self' https://browserid.org ; script-src 'self' https://browserid.org"  
+    </Location>
+
+
+
+[[!tag catalyst]] [[!tag security]] [[!tag web]] [[!tag browserid]] [[!tag csp]] [[!tag nzoss]] [[!tag mozilla]] 

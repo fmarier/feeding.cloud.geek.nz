@@ -1,0 +1,66 @@
+[[!meta title="Peer-to-peer video-conferencing using free software"]]
+[[!meta date="2010-12-19T19:55:00.008+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I was looking for a simple [free software](http://www.gnu.org/philosophy/free-sw.html) solution which would allow me to have a video call with someone else (I don't care about sound since I've already got that working through [Asterisk](http://www.asterisk.org/)) and I ended up writing a [Gstreamer](http://www.gstreamer.net/)-based poor man's videoconf solution because I wasn't satisfied with the other options I considered.  
+  
+
+## Empathy
+
+[Empathy](http://live.gnome.org/Empathy) was my first choice since it seems to be the preferred [GNOME](http://www.gnome.org/) communication software nowadays.  
+  
+While the quality of the video was excellent, the latency between New Zealand and Canada was unbearable: a full 6 seconds. I suspect that this is due to the fact that it runs everything through the Google Talk [STUN](https://secure.wikimedia.org/wikipedia/en/wiki/Session_Traversal_Utilities_for_NAT) server and I couldn't find how to force it to go directly from one host to the other.  
+  
+
+## Ekiga
+
+[Ekiga](http://www.ekiga.org/) was my second choice since I had used it succesfully in the past.  
+  
+It was not too bad latency-wise, but the quality of the video was not as good as Empathy (it was smaller and choppier). Also, given that it was running over [SIP](https://secure.wikimedia.org/wikipedia/en/wiki/Session_Initiation_Protocol), it was interfering with my [VoIP phone](http://wiki.snom.com/Snom300).  
+  
+
+## Direct peer-to-peer streaming
+
+Given that I wasn't gonna use the voice features of these video-conference tools, I figured that there must be an easy way to [just stream video from one peer to the other](http://www.olpcnews.com/forum/index.php?topic=1752.5;wap2). That's when I thought of looking into [Gstreamer](http://wiki.laptop.org/go/GStreamer) (`apt-get install gstreamer0.10-tools` on Debian/Ubuntu).  
+  
+To stream video from my webcam onto port 5000, I ran:  
+  
+`gst-launch v4l2src device=/dev/video0 ! videorate ! video/x-raw-yuv,width=640,height=480,framerate=6/1 ! jpegenc quality=30 ! multipartmux ! tcpserversink port=5000`  
+  
+which is the best I could do within 85 kbps (100-120 kbps is about the maximum reliable synchronous bandwidth I get between New Zealand and Canada):
+
+  * resolution of 640x480
+  * 6 frames per second
+  * jpeg quality of 30%
+
+On the other computer, I simply ran this to connect and display the remote stream:  
+  
+<code>gst-launch tcpclientsrc host=<i>stream.example.com</i> port=5000 ! multipartdemux ! jpegdec ! autovideosink</code>  
+  
+Then I swapped the roles around to also stream video the other way around. That's it: two-way peer-to-peer video link!  
+  
+
+## Small tweaks to the Gstreamer pipeline
+
+There are quite a few [plugins](http://gstreamer.freedesktop.org/documentation/plugins.html) that can be used within [Gstreamer pipelines](http://www.gstreamer.net/data/doc/gstreamer/head/manual/html/section-intro-basics-bins.html).  
+  
+If you have problems with `autovideosink` refusing to load (I did on one of the two computers), you can also install the `gstreamer0.10-sdl` package and replace `autovideosink` with `sdlvideosink`:  
+  
+<code>gst-launch tcpclientsrc host=example.com port=5000 ! multipartdemux ! jpegdec ! <b>sdlvideosink</b></code>  
+  
+Another change I had to make on one of the machines was to **flip the image** coming out of the webcam (which insists on giving me a mirror image instead of acting like a real camera):  
+  
+<code>gst-launch v4l2src device=/dev/video0 ! videorate ! video/x-raw-yuv,width=640,height=480,framerate=6/1 ! <b>videoflip method=horizontal-flip</b> ! jpegenc quality=30 ! multipartmux ! tcpserversink port=5000</code>  
+  
+
+## Possible improvements
+
+I got down to about 1-2 seconds of latency, which isn't bad considering the processing to be done and the distance bits have to travel, but I would love to further reduce this.  
+  
+Using [jpegenc](http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-good-plugins/html/gst-plugins-good-plugins-jpegenc.html) was a lot better than [theoraenc](http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-plugins/html/gst-plugins-base-plugins-theoraenc.html) which added an extra 3-4 seconds of latency. Is there a better codec I should be using?  
+  
+Another thing I thought of trying was to switch from [TCP](https://secure.wikimedia.org/wikipedia/en/wiki/Transmission_Control_Protocol) to [UDP](https://secure.wikimedia.org/wikipedia/en/wiki/User_Datagram_Protocol). I'm currently using [tcpserversink](http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-plugins/html/gst-plugins-base-plugins-tcpserversink.html) and [tcpclientsrc](http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-plugins/html/gst-plugins-base-plugins-tcpclientsrc.html) but since I don't care about having a few dropped frames, maybe I should look into the [udp](http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-good-plugins/html/gst-plugins-good-plugins-plugin-udp.html) and [rtp](http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-good-plugins/html/gst-plugins-good-plugins-plugin-rtp.html) plugins. It seems like it might help but it also seems to be quite a bit [more complicated](http://cgit.freedesktop.org/gstreamer/gst-plugins-good/tree/gst/rtp/README#n251) and I have yet to find an easy way to make use of the [RTP stack](http://gstreamer.freedesktop.org/documentation/rtp.html) in Gstreamer.  
+  
+Please feel free leave a comment if you can suggest ways of improving my quick 'n dirty solution.
+
+
+[[!tag catalyst]] [[!tag gstreamer]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 

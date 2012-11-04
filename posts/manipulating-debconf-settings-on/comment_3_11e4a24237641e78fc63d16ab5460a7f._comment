@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Grant McLean"
+ subject=""
+ date="2010-10-21T09:40:46.962+13:00"
+ content="""
+A tangential topic but ... having debconf ask for a password just seems wrong anyway. For the specific example of an application needing to know a Postgres password, I'd be inclined to manage a .pgpass file using Puppet.
+
+
+"""]]

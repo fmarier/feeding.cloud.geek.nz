@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://goddard.net.nz/"
+ nickname="Tim"
+ subject=""
+ date="2008-09-16T17:30:00.000+12:00"
+ content="""
+I know it's non-standard but I tend to type:  
+  
+rm /usr/lib/blah -rf  
+  
+By putting the -rf at the end I ensure that I can't accidentally enter the command before I've typed the full path. I've also picked up the habit of always pausing before typing the final -rf to check that it is what I plan to do.
+
+
+"""]]

@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://beeznest.wordpress.com/"
+ nickname="ywarnier"
+ subject=""
+ date="2011-01-26T10:05:01.014+13:00"
+ content="""
+Hi François. Great idea!  
+  
+What happens if you have images inside your CSS directory? As far as I can see, you treat the whole content inside the css/ and js/ directories the same way...  
+  
+I suppose there's a way to exclude certain files in the Apache configuration, but that's making it a bit more trickier. Next time I'm boosting a web application, I'll be sure to try that out.
+
+
+"""]]

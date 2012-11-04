@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/10733872926874359638"
+ nickname="Titusz"
+ subject=""
+ date="2011-06-11T01:17:12.816+12:00"
+ content="""
+Hello,  
+  
+I have been testing you django plupload integration and it works nice... could you talk a bit more about the secure temp_file issue?  
+If I simple do a  
+  
+file_obj, temp_file = tempfile.mkstemp()  
+  
+it does not work as it creates a multiple tempfiles for an upload?  
+Do you have a hint on how to go about this?  
+  
+thanks  
+Titusz
+
+
+"""]]

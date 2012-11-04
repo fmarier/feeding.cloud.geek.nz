@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/06788647521207177396"
+ nickname="Jon Dowland"
+ subject=""
+ date="2010-11-02T20:41:56.234+13:00"
+ content="""
+Regarding your RAID layout; it seems you have put some of the hottest filesystems on your slowest disks (e.g. /tmp). Why not ensure you have a robust/reliable backup solution to recover from drive failure, and run your filesystems from the SSD? If you don't already have such a solution, remember, RAID1 is NOT a backup solution.  
+  
+Regarding the 80/20 partition split. How is the drive controller to know you aren't using the last 20%? It doesn't know anything about partitions. Those sectors are still addressable by the OS, and thus could be used at any time (from the controller's POV).  
+  
+Finally it would have been interesing if you had done some performance benchmarks before and after each of the other various tweaks you applied, to see if they made any difference.
+
+
+"""]]

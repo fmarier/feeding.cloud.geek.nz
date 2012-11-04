@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2012-10-07T03:28:36.047+13:00"
+ content="""
+On ubuntu 12.04:  
+...This should cause the init ramdisk (/boot/initrd.img-2.6.32-5-amd64) and the grub menu (/boot/grub/grub.cfg) to be rebuilt with RAID support....  
+  
+IT DOES NOT.  
+  
+Helped me with some steps from the older manual http://wiki.xtronics.com/index.php/Raid  
+  
+\# mount -o bind /dev /tmp/mntroot/dev   
+\# mount -t proc none /tmp/mntroot/proc   
+\# mount -t sysfs none /tmp/mntroot/sys  
+\# chroot /mntroot  
+\# /usr/share/mdadm/mkconf > /etc/mdadm/mdadm.conf  
+\# update-initramfs -u -k all  
+\# update-grub  
+  
+updated /etc/fstab with the new UUID's (blkid /dev/md0) and installed grub first only on the raid disc (sdb) with  
+\# grub-install /dev/sdb  
+  
+Disconected the old disc (sda), the system booted from the degraded raid array.  
+  
+Hope it helps someone.  
+
+
+"""]]

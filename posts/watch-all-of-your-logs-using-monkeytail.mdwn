@@ -1,0 +1,35 @@
+[[!meta title="Watch all of your logs using monkeytail"]]
+[[!meta date="2008-06-15T22:40:00.002+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Monkeytail](http://dollyfish.net.nz/projects/monkeytail) is a neat little tool which allows web developers and sysadmins to easily watch new additions to their log files by tailing them (i.e. `tail -f`) and providing helpful vertical spacing after detecting pauses in the output.  
+  
+What makes monkeytail so useful is its ability to easily tail multiple files together, even when it involves connecting to these machines over ssh and running sudo on them. For example, you could tail all of your load-balanced servers by doing:  
+
+<pre>
+mtail @<i>webservers</i>
+</pre>
+
+where _webservers_ is an alias defined in `~/.mtailrc`:  
+
+<pre>
+&lt;group <i>webservers</i>&gt;  
+    sudo yes  
+    &lt;file&gt;  
+        filename /var/log/apache2/error.log  
+        prefix "server1: "  
+        host server1.example.com  
+    &lt;/file&gt;  
+    &lt;file&gt;  
+        filename /var/log/apache2/error.log  
+        prefix "server2: "  
+        host server2.example.com  
+    &lt;/file&gt;  
+&lt;/group&gt;
+</pre>
+
+It is [available in Debian](http://packages.debian.org/monkeytail) unstable and from its [official homepage](http://dollyfish.net.nz/projects/monkeytail).   
+  
+Kudos to [Martyn Smith](http://dollyfish.net.nz/blog) for turning this idea into a release!
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] 

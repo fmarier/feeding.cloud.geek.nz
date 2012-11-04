@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://holloway.co.nz"
+ nickname="Matthew Holloway"
+ subject=""
+ date="2011-07-04T13:06:20.983+12:00"
+ content="""
+Good article. On the new www.DoC.govt.nz we used CSS sprites (for most icons and gradients), we minified and aggregated JavaScript and CSS (so that @import statements were resolved and multiple link/script tags were combined where possible). I think they're getting to the easier stuff like http gzip soon.
+
+
+"""]]

@@ -1,0 +1,21 @@
+[[!meta title="Privoxy rules to enable Têtes à claques videos"]]
+[[!meta date="2008-08-19T20:34:00.004+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Here is the minimum number of rules I was able to add to a [Privoxy](http://www.privoxy.org/) setup to let the [Têtes à claques](http://www.tac.tv/) videos through:  
+
+
+    { -block }  
+    www.tac.tv/modules/population.php  
+    www.tac.tv/ajax/populerSlider.php  
+    .tetesaclaques.tv/ajax/populerSlider.php  
+    .tetesaclaques.tv/ajax/populerSliderIndex.php  
+    .tetesaclaques.tv/modules/population  
+    tac.ads.streamtheworld.com/crossdomain.xml  
+    tac.ads.streamtheworld.com/adxml_video.php  
+    
+
+
+The same rules may be useful to anybody wanting to watch contents delivered through `streamtheworld.com` without disabling their ad-blocking proxy entirely.
+
+
+[[!tag privoxy]] 

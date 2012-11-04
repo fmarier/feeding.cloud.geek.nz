@@ -1,0 +1,30 @@
+[[!meta title="Translating Django applications using Launchpad"]]
+[[!meta date="2011-08-02T11:58:00.004+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+One of my [Django](http://www.djangoproject.com)-based projects, [Libravatar](https://www.libravatar.org), makes use of Launchpad's interface to keep its [translations](https://translations.launchpad.net/libravatar) current. Unfortunately, the [PO file layout](https://docs.djangoproject.com/en/1.3/howto/i18n/) that Django insists on using isn't directly compatible with [the one that Launchpad needs](https://help.launchpad.net/Translations/YourProject/ImportPolicy#Sample%20directory%20layout) in order to setup [automatic import](https://help.launchpad.net/Translations/YourProject/ImportingTemplates#Enabling%20automatic%20template%20imports) of translations on a branch.  
+  
+The solution I found is to use the mandatory Launchpad layout and then create symlinks in the right places for Django.  
+  
+Here is where the Libravatar PO files are located in the [bzr repository](https://code.launchpad.net/~libravatar/libravatar/trunk):  
+
+
+    po/libravatar/de.po  
+    po/libravatar/fr.po  
+    po/libravatar/libravatar.pot
+
+
+and here are the (relative) symbolic links:  
+
+
+    libravatar/locale/de/LC_MESSAGES/django.po  
+      -> ../../../../po/libravatar/de.po  
+    libravatar/locale/en/LC_MESSAGES/django.po  
+      -> ../../../../po/libravatar/libravatar.pot  
+    libravatar/locale/fr/LC_MESSAGES/django.po  
+      -> ../../../../po/libravatar/fr.po
+
+
+Note that the "en" localization is left untranslated and used as the translation template (POT file).
+
+
+[[!tag catalyst]] [[!tag launchpad]] [[!tag django]] [[!tag ubuntu]] [[!tag nzoss]] 

@@ -1,0 +1,37 @@
+[[!meta title="Growing the community around your new Free Software Project"]]
+[[!meta date="2008-09-19T19:13:00.003+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Once your [new Free Software project](http://feeding.cloud.geek.nz/2008/09/starting-free-software-project.html) has had some traction and is gaining users, you will probably want to supplement its [initial homepage](http://feeding.cloud.geek.nz/2008/09/promoting-your-free-software-project.html) with a few extra services. However, the most important aspects of managing a Free Software community have more to do with relating to human beings.  
+
+## Social Interactions in Small Projects
+
+In the early days of your project, support requests usually only come in through personal emails to the lead developer. In order to build your community, make sure new users feel welcome:
+
+  * Be **friendly** and informal in your responses. Feel free to use the person's first name at the beginning of your emails.
+  
+
+  * Be **responsive** to feedback and request for help. Most Free Software developers are quite busy so this is about letting user know that you'll get back to them or thanking them for their suggestions/feedback. Very few people take the time to contact authors to let them know about the problems they run into. It's important to be supportive of the ones who do.  
+
+  
+
+  * Be **calm** when responding to negative feedback. It helps to take a full day to cool off before sending a reply. Thank users for writing to you, but remind them that you are not getting paid to work on this project and that you are doing this for fun in your spare time. Some users seem to forget this.
+
+But of course, remember that [the main job of a developer/maintainer is to make the software better](http://www.gnu.org/prep/maintain/maintain.html#Mail). Keep this in mind when replying to support requests and allocate your (limited) time accordingly.  
+
+## More Tools for Growing Projects
+
+As your project grows and handling user-reported issues start becoming more of a burden, consider two things: documentation and distributed support.  
+  
+The obvious place to start documentation-wise is to start collecting responses that you send to users who get in touch with you. This is the original meaning of a [FAQ](http://en.wikipedia.org/wiki/FAQ): answers to **actual questions** sent in by **actual users**. Fill your FAQ with irrelevant questions and users won't bother reading it and will email you instead.  
+  
+In addition to providing good documentation, you should also think about creating a **mailing list** or a **forum** where users can post their questions ([Google Groups](http://groups.google.com/) provides a nice blend of the two technologies). There are two main advantages to this service:
+
+  * the support load is distributed across other users of the software
+  * questions and answers are archived by search engines
+
+As your project grows even bigger, you will probably also want to look into getting a [bug tracker](http://en.wikipedia.org/wiki/Bug_tracker) and a [wiki](http://en.wikipedia.org/wiki/Wiki).  
+  
+Have a look at this excellent [online book](http://www.producingoss.com/en/index.html) for more ideas.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 

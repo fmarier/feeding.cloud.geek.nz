@@ -1,0 +1,35 @@
+[[!meta title="Manipulating debconf settings on the command line"]]
+[[!meta date="2010-10-19T07:30:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+It's not very easy to find information on how to adjust [debconf](http://kitenet.net/~joey/code/debconf/) settings after a package has been installed and configured. Most of the information out there is for Debian developers wanting to add [support for debconf](http://www.fifi.org/doc/debconf-doc/tutorial.html) in their [maintainer scripts](http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html).  
+  
+I ran into the problem of being unable to change a package's configuration options through [dpkg-reconfigure](http://manpages.debian.net/cgi-bin/man.cgi?query=dpkg-reconfigure) and I found the following commands to do it manually:  
+  
+
+<pre>
+debconf-show <i>packagename</i>
+</pre>
+
+  
+to show the list of debconf values that a package has stored,  
+  
+
+<pre>
+echo "get <i>packagename</i>/pgsql/app-pass" | debconf-communicate
+</pre>
+
+  
+to query the current value of an option in the debconf database, and  
+  
+
+<pre>
+echo "set <i>packagename</i>/pgsql/app-pass password1" | debconf-communicate
+</pre>
+
+  
+to change that value.  
+  
+I'm not convinced that this is the easiest way for system administrators to manually lookup and modify debconf options, but that's the best I could find at the time.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 

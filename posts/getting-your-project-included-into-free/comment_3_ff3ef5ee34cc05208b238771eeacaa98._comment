@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/06112454550820568630"
+ nickname="Abhishek"
+ subject=""
+ date="2008-09-21T17:09:00.000+12:00"
+ content="""
+For Arch, the packaging step is very simple, and comprises just making a [PKGBUILD](http://wiki.archlinux.org/index.php/PKGBUILD) which has a build() function to build the package. Once a PKGBUILD has been made, it can be submitted to AUR ([http://aur.archlinux.org](http://aur.archlinux.org)). If it gets enough votes (or a trusted user aka TU likes it), it'll be adopted and moved to the [community] binary repository.
+
+
+"""]]

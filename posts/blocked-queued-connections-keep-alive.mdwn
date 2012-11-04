@@ -1,0 +1,37 @@
+[[!meta title="Blocked (queued) connections, keep-alive and content-length"]]
+[[!meta date="2012-10-18T21:51:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+While trying to add gzip compression to a [custom node.js reverse proxy server](https://github.com/lloyd/awsbox-proxy-server) through connect's [compress](http://www.senchalabs.org/connect/compress.html) middleware, I ran into a really strange problem: my browser would fetch the first 5 resources without problems, then it would stall for 2 minutes before gettting the next 5 resources, stall for another 2 minutes for the next five, and so on.
+
+If I waited long enough, all of the resources would be loaded correctly and the page would look fine.
+
+This is what I saw in Firebug:
+
+![](firebug_net_blocking.png)
+
+The [Firebug documentation](https://getfirebug.com/wiki/index.php/Net_Panel#Request_Timeline) explains that the "blocking" state is the time that the browser spends waiting for a connection. Given that this was an HTTP connection (i.e. no SSL), I wasn't sure what was causing this but it looked like some kind of problem with the backend.
+
+### HTTP Keep-alive and the Content-Length header
+
+Thanks to a [brilliant co-worker](http://lloyd.io) who suggested that I check the [content-length](https://tools.ietf.org/html/rfc2616#section-14.13) headers, it turned out that the problem had to do with [persistent connections](https://en.wikipedia.org/wiki/HTTP_persistent_connection) (HTTP keep-alive) being enabled and the middleware not adjusting the length of the body after compression.
+
+In particular, what was happening is that the browser would request the first batch of resources (it appears to keep a maximum of 5 connections open at once) and receive gzipped resources tagged with the size of the original uncompressed resources.
+
+In most cases, the compressed resources are smaller than the original ones and so the browser would sit on the connection, waiting for the remaining bytes until it timed out. Hence the [fixed 2-minute delay](https://en.wikipedia.org/wiki/HTTP_persistent_connection#Use_in_web_browsers) for each batch of requests.
+
+When using a persistent connection, browsers need a way to know when a given response is done and when to request the next one. It can be done through the `content-length` header, but in the case of compression, that would mean buffering the whole resource before sending it to the client (i.e. no streaming). An alternative is for the server to return the resource using the [chunked transfer encoding](https://tools.ietf.org/html/rfc2616#section-3.6.1). This is what compress does by default.
+
+### Solution for connect.compress() and http-proxy
+
+My original goal was to enable a compression middleware inside a [simple application](https://github.com/fmarier/node-compressed-http-proxy) that proxied HTTP content using the [http-proxy](https://github.com/nodejitsu/node-http-proxy) node.js module.
+
+The http-proxy documentation [claims that it is possible](https://github.com/nodejitsu/node-http-proxy/blob/1df2b30e84f078d86e744601bd6fc59381a1c7b3/README.md#middleware) and comes with an [example program](https://github.com/nodejitsu/node-http-proxy/blob/1df2b30e84f078d86e744601bd6fc59381a1c7b3/examples/middleware/gzip-middleware.js) that didn't work for me. So I decided to replace [connect-gzip](https://github.com/nateps/connect-gzip) in that example with the standard `compress` middleware that is now bundled with [connect](http://www.senchalabs.org/connect/).
+
+Unfortunately, because of the fact that the compress middleware needs to run before the rest of the response code, it would [take a look at headers](https://github.com/senchalabs/connect/blob/7b5621b8dd4d9d82296b9b5d7bf3bea10de37a6c/lib/middleware/compress.js#L94) before they were [written out](https://github.com/nodejitsu/node-http-proxy/blob/1df2b30e84f078d86e744601bd6fc59381a1c7b3/lib/node-http-proxy/http-proxy.js#L260) and [refuse to compress anything](https://github.com/nodejitsu/node-http-proxy/issues/316).
+
+Once I [worked around this](https://github.com/fmarier/node-http-proxy/commit/5ec43a88a0dce5b3f5bd6a030f9774b9eb58c57e), I discovered that compress would [attempt to remove the `content-length` header](https://github.com/senchalabs/connect/blob/7b5621b8dd4d9d82296b9b5d7bf3bea10de37a6c/lib/middleware/compress.js#L123) from the proxied responses and switch to a chunked transfer encoding. However, because the header had not been written yet, this would have no effect and and the old content-length would stick around and break keep-alive.
+
+The fix was simple: I simply had to [make sure that compress has everything it needs](https://github.com/fmarier/node-http-proxy/commit/8c999c0f95515f0a95ef9a1d38df80cf63c445ef) from the headers before it starts compressing anything.
+
+
+[[!tag http]] [[!tag nodejs]] [[!tag web]] [[!tag nzoss]] [[!tag mozilla]] [[!tag firebug]] 

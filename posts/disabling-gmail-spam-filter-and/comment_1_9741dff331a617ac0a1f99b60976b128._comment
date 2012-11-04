@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/18293756459614704030"
+ nickname="RickyF"
+ subject=""
+ date="2008-04-30T22:27:00.000+12:00"
+ content="""
+The easier way to do this is to create a Gmail Filter.  
+  
+1. Set up a new filter.  
+  
+2. Add to the "Has the Words" field "is:spam"  
+  
+3. Click the "Next Step" button, disregard any warning messages.  
+  
+4. Check the boxes "Skip the inbox" and "Delete it".  
+  
+5. Save the filter.  
+  
+Now any items that would hit the Spam folder go directly to Trash and are automatically deleted in 30 days.  
+  
+QED
+
+
+"""]]

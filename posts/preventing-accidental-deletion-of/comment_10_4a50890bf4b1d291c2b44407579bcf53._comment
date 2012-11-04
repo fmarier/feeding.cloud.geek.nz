@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="http://www.asheesh.org/"
+ nickname="Asheesh Laroia"
+ subject=""
+ date="2008-06-23T09:25:00.000+12:00"
+ content="""
+Everyone has his own safe-rm.  
+  
+For me, this is enough to do it:  
+  
+alias rm='echo -n "YOU ARE ON " && hostname && echo Sleeping for 2 seconds... && sleep 2 && rm -v'  
+  
+It's more useful than the blacklist, actually; and if I know I really want to rm something, I \rm it.  
+  
+http://svn.asheesh.org/svn/public/conf/bashrc.safe_rm is this snippet of my bashrc.
+
+
+"""]]

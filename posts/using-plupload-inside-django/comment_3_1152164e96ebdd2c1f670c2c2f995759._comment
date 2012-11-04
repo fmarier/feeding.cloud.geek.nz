@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ claimedauthor="Michael"
+ subject=""
+ date="2011-04-14T06:28:45.400+12:00"
+ content="""
+Hi Francois,  
+  
+thanks for the hint. It wasn't too obvious to me as there's no queue_finished event, but checking the number of uploads at every FileUploaded event did it.  
+  
+thanks again and regards,  
+Michele
+
+
+"""]]

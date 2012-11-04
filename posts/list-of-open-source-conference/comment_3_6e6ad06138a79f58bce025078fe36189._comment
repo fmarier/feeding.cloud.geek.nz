@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/01596337686809335591"
+ nickname="Gunnar"
+ subject=""
+ date="2010-05-18T02:59:48.414+12:00"
+ content="""
+I started in 2003 to write «[Comas](http://www.comas-code.org)», originally as an Apache (mod_perl) module. After some four years, aiming at a much higher flexibility regarding the database schema, I rewrote it in Ruby on Rails.   
+  
+I have not done any real promotion to Comas — I know I use it on all of my Institute's activities, and know of a couple of South American conferences that have used it. My main reason for not doing any promotion is that –because of lack of time, and because my Institute's needs are covered without this module– the submission rating and scheduling interface are still non-existant — Although they are planned and should see the light soon!  
+  
+The project's website is [http://www.comas-code.org/](http://www.comas-code.org/), and the git repository can be cloned at git://github.com/gwolf/comas.git
+
+
+"""]]

@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="azhag"
+ subject=""
+ date="2012-03-13T21:38:40.177+13:00"
+ content="""
+Also you can use Grml, which ships FreeDOS. To put it on USB stick, you can use dedicated grml2usb (available in Grml and Debian), or dd.
+
+
+"""]]

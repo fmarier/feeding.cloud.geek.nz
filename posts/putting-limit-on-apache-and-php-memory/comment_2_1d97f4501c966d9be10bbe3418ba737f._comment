@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/17949807916426956802"
+ nickname="Marek"
+ subject=""
+ date="2012-02-22T00:06:46.690+13:00"
+ content="""
+@gebi: do cgroups' limits apply across e.g. suPHP or other UID-changing/CGI-spawning children of the apache httpd process?
+
+
+"""]]

@@ -1,0 +1,29 @@
+[[!meta title="Privoxy rules to unblock TV3 on-demand videos"]]
+[[!meta date="2008-10-16T09:00:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+My default [Privoxy](http://www.privoxy.org/) (a great Privacy-enhancing/ad blocking proxy) setup was blocking the on-demand section of New Zealand's TV3 sites (both [3news.co.nz](http://3news.co.nz/) and [tv3.co.nz](http://www.tv3.co.nz/)).  
+  
+Here are the minimum rules that let the [videos](http://www.tv3.co.nz/Aftershock/tabid/771/articleID/59535/cat/522/Default.aspx#video) through:  
+
+
+    { -block }  
+    .doubleclick.net/[0-9]+/DartShell.*\.swf  
+    .doubleclick.net/pfadx/DARTSHELLCONFIGXML  
+    .doubleclick.net/crossdomain.xml  
+    .doubleclick.net/pfadx/3news.co.nz  
+    .doubleclick.net/pfadx/www.tv3.co.nz  
+    
+
+
+If you are looking to unblock a different site, here's how you can do it:  
+
+  1. set `debug 1` in `/etc/privoxy/config`
+  2. restart privoxy (`sudo /etc/init.d/privoxy restart` on [Debian](http://www.debian.org))
+  3. watch the logfile for any blocked contents:
+
+
+    tail -f /var/log/privoxy/logfile | grep Blocked
+
+
+
+[[!tag catalyst]] [[!tag privoxy]] [[!tag ubuntu]] 

@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://cjwatson.livejournal.com/"
+ nickname="cjwatson"
+ subject=""
+ date="2010-10-19T21:08:02.411+13:00"
+ content="""
+This is as easy as it gets, as far as I'm aware; debconf-set-selections is different but not really any easier (do you know exactly what it does to seen flags?).  
+  
+It would be possible to write some kind of shiny interface to edit the debconf database. I think that all the people who know debconf well enough to do this have probably avoided doing so because we're afraid that then people really would start treating it like an equivalent of the Windows registry.  
+  
+If dpkg-reconfigure doesn't work, and if (more importantly) there isn't something in /etc you can edit instead of having to change values in debconf, then it's a bug in the package and should be reported as such.
+
+
+"""]]

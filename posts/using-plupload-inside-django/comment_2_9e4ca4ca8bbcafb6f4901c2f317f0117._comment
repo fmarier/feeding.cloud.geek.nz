@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2011-04-13T09:27:33.207+12:00"
+ content="""
+@Michele the else statement of "request.is_ajax()" is for when the non-Javascript version of the form is submitted.  
+  
+Redirections would indeed have to be done in Javascript.
+
+
+"""]]

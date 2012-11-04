@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/01453808734675398587"
+ nickname="Pierre"
+ subject=""
+ date="2012-02-22T03:30:03.633+13:00"
+ content="""
+hi!  
+  
+Actually the problem here is that Debian uses system's libgd, which makes GD use system alloc instead of PHP. While the bundled GD relies on php's memory API. This allows it to work inside the memory_limit settings.  
+  
+That being said, still useful to do something outside as imagemagick or any other libraries allocating memory may cause this problem as well.  
+  
+Cheers!
+
+
+"""]]

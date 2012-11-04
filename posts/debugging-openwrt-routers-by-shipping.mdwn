@@ -1,0 +1,51 @@
+[[!meta title="Debugging OpenWRT routers by shipping logs to a remote syslog server"]]
+[[!meta date="2012-01-14T21:45:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Trying to debug problems with consumer-grade routers is notoriously difficult due to a lack of decent debugging information. It's quite hard to know what's going on without at least a few good error messages.  
+  
+Here is how I made my [OpenWRT](https://openwrt.org/)-based [Gargoyle](http://gargoyle-router.org/) router send its log messages to a network server running [rsyslog](http://rsyslog.com/).  
+  
+
+### Server Configuration
+
+Given that the router (`192.168.1.1`) will be sending its log messages on UDP port 514, I started by opening that port in my firewall:  
+
+
+    iptables -A INPUT -s 192.168.1.1 -p udp --dport 514 -j ACCEPT
+
+
+Then I enabled the UDP module for rsyslog and redirected messages to a separate log file (so that it doesn't fill up `/var/log/syslog`) by putting the following (a modified version of [these instructions](http://rsyslog.com/storing-messages-from-a-remote-system-into-a-specific-file/)) in `/etc/rsyslog.d/10-gargoyle-router.conf`:  
+
+
+    $ModLoad imudp  
+    $UDPServerRun 514  
+    :fromhost-ip, isequal, "192.168.1.1" /var/log/gargoyle-router.log  
+    & ~
+
+
+The name of the file is important because this configuration snipet needs to be loaded before the directive which writes to `/var/log/syslog` for the discard statement (the "& ~" line) to [work correctly](http://lists.adiscon.net/pipermail/rsyslog/2012-January/014201.html).  
+  
+
+### Router Configuration
+
+Finally, I followed the [instructions](http://www.gargoyle-router.com/wiki/doku.php?id=remote_syslog) on the Gargoyle wiki to get the router to forward its log messages to my server (`192.168.1.2`).  
+  
+After logging into the router via ssh, I ran the following commands:  
+
+
+    uci set system.@system[0].log_ip=192.168.1.2  
+    uci set system.@system[0].conloglevel=7  
+    uci commit
+
+
+before rebooting the router.  
+  
+  
+Now whenever I have to troubleshoot network problems, I can keep a terminal open on my server and get some visibility on what the router is doing:  
+
+
+    tail -f /var/log/gargoyle-router.log
+
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag openwrt]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag gargoyle]] 

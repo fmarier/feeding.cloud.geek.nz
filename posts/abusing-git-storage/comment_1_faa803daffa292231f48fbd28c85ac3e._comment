@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/04122475678612190855"
+ nickname="ulrik"
+ subject=""
+ date="2010-03-31T14:28:54.613+13:00"
+ content="""
+There exists a very natural way to create a new empty branch / a branch without relation to the other branches.  
+  
+Simply create a new different git repository, with some files or commits. Then go back to the original repository, and fetch the branch from the new repo into this repository  
+  
+git fetch ../other-repo master:foo
+
+
+"""]]

@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/10410138316157333017"
+ nickname="map7"
+ subject=""
+ date="2012-02-28T17:51:54.870+13:00"
+ content="""
+Awesome tutorial, thank you. I used this to migrate an old Ubuntu 10.04 system with minor changes:  
+  
+- Stick with metadata 0.90 I had problems with using 1.2  
+- I didn't bother using partition type FD, I just flagged the ext4 partition as a RAID partition using gparted.  
+- Install grub-pc first, I was using grub1 on my old machine  
+- Had to fix a MAKEDEV bug  
+ln -s /sbin/MAKEDEV /dev/MAKEDEV  
+- Reconfiguring mdadm to boot degraded disks is important for the tests.
+
+
+"""]]

@@ -1,0 +1,104 @@
+[[!meta title="Encrypted system backup to DVD"]]
+[[!meta date="2011-04-03T11:30:00.006+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Inspired by [World Backup Day](http://worldbackupday.net/), I decided to take a backup of my laptop. Thanks to using a [free operating system](http://www.debian.org/) I don't have to backup any of my software, just configuration and data files, which fit on a single DVD.  
+  
+In order to avoid worrying too much about secure storage and disposal of these backups, I have decided to encrypt them using a standard [encrypted loopback filesystem](http://feeding.cloud.geek.nz/2008/04/two-tier-encryption-strategy-archiving.html).  
+  
+(Feel free to leave a comment if you can suggest an easier way of doing this.)  
+  
+
+### Cryptmount setup
+
+Install [cryptmount](http://cryptmount.sourceforge.net/):  
+
+
+    apt-get install cryptmount
+
+
+and setup two encrypted mount points in `/etc/cryptmount/cmtab`:  
+
+
+    backup {  
+      dev=/backup.dat  
+      dir=/backup  
+      fstype=ext2    fsoptions=defaults     cipher=aes  
+      
+      keyfile=/backup.key  
+      keyhash=sha1    keycipher=des3  
+    }  
+      
+    testbackup {  
+      dev=/cdrom/backup.dat  
+      dir=/backup  
+      fstype=ext2    fsoptions=defaults    cipher=aes  
+      
+      keyfile=/cdrom/backup.key  
+      keyhash=sha1    keycipher=des3  
+    }
+
+
+  
+
+### Initialize the encrypted filesystem
+
+Make sure you have at least 4.3 GB of free disk space on `/` and then run:  
+
+
+    mkdir /backup  
+    dd if=/dev/zero of=/backup.dat bs=1M count=4096  
+    cryptmount --generate-key 32 backup  
+    cryptmount --prepare backup  
+    mkfs.ext2 -m 0 /dev/mapper/backup  
+    cryptmount --release backup
+
+
+  
+
+### Burn the data to a DVD
+
+Mount the newly created partition:  
+
+
+    cryptmount backup
+
+
+and then copy the files you want to `/backup/` before unmounting that partition:  
+
+
+    cryptmount -u backup
+
+
+Finally, use your favourite DVD-burning program to burn these two files:  
+
+  * `/backup.dat`
+  * `/backup.key`
+
+  
+
+### Test your backup
+
+Before deleting these two files, test the DVD you've just burned by mounting it:  
+
+
+    mount /cdrom  
+    cryptmount testbackup
+
+
+and looking at a random sampling of the files contained in `/backup`.  
+  
+Once you are satisfied that your backup is fine, umount the DVD:  
+
+
+    cryptmount -u testbackup  
+    umount /cdrom
+
+
+and remove the temporary files:  
+
+
+    rm /backup.dat /backup.key
+
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag backup]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 

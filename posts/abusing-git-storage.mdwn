@@ -1,0 +1,65 @@
+[[!meta title="&quot;Abusing&quot; git storage"]]
+[[!meta date="2010-03-31T13:36:00.001+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+A [git](http://git-scm.com/) repository is primarily intended to store multiple branches of a single program or component. The underlying system however is much more flexible. Here are two ways to add files which are related to the project but outside the normal history.  
+
+## Storing a single file all by itself
+
+This [intermediate trick](http://andyjeffries.co.uk/articles/25-tips-for-intermediate-git-users) allows you to store a single file into a git repository without the file being in any of the branches.  
+  
+First of all, let's create a new file:  
+
+<pre>
+echo "<b>Hi</b>" &gt; <i>message.txt</i>
+</pre>
+
+and store it in git:  
+
+<pre>
+git hash-object -w <i>message.txt</i>  
+<b>b14df6442ea5a1b382985a6549b85d435376c351</b>
+</pre>
+
+At this stage, the file is stored within the git repository but there is no other way to get to it other than using the hash:  
+
+<pre>
+git cat-file blob <b>b14df6442ea5a1b382985a6549b85d435376c351</b>  
+<b>Hi</b>
+</pre>
+
+A good way to point to the stored contents is to use a tag:  
+
+<pre>
+git tag <i>message.txt</i> <b>b14df6442ea5a1b382985a6549b85d435376c351</b>
+</pre>
+
+Now you can access your file this way:  
+
+<pre>
+git cat-file blob <i>message.txt</i>  
+<b>Hi</b>
+</pre>
+
+## Creating an empty branch
+
+As seen in this [git screencast](http://www.gitcasts.com/posts/empty-branches) or in the [Git Community Book](http://book.git-scm.com/5_creating_new_empty_branches.html), you can create a branch without a parent or any initial contents:  
+
+
+    git symbolic-ref HEAD refs/heads/foo  
+    rm .git/index  
+    git clean -fdx
+
+
+To finish it off, add what you were planning on storing there and commit it:  
+
+<pre>
+git add <i>myfile</i>  
+git commit -m 'Initial commit'  
+
+</pre>
+
+  
+![](Capture.png)
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag mahara]] [[!tag git]] [[!tag nzoss]] 

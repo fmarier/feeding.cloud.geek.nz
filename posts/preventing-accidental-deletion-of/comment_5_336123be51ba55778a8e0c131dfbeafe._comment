@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="http://hands.com/~phil/"
+ nickname="fil"
+ subject=""
+ date="2008-06-21T08:46:00.000+12:00"
+ content="""
+The replacement of /bin/rm is a bad idea IMO.  
+  
+It's not as evil at aliasing rm to rm -i (which you mention as one of the alternative approaches) but it's going down a similar road.  
+  
+The first problem is that if you come to rely on this functionality, and so feel slightly safer when using rm, what happens when you're on a system where safe-rm is not installed? (this is the thing that makes the rm -i alias **totally evil** -- I'll admit that this is much less of an issue with safe-rm, as it's not like you're going to get into that habit of typing **rm ***, assuming there's a -i to save you)  
+  
+Secondly, what happens when a pre/postinst comes along that really needs to delete something that you thought should never be deleted?  
+  
+The correct thing to do IMO, if you want to do this is not to replace rm, but to add, say "srm" and get into the habit of using that. That way, when it's not installed you instantly get alerted to the fact that you have no safety net by the:  
+  
+phil@perdix:~$ srm  
+bash: srm: command not found  
+  
+Then, if people want to train themselves to be shot in the foot, they're at liberty to alias rm to srm -i if they feel the need without damaging the system for other admins ;-)
+
+
+"""]]

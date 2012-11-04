@@ -1,0 +1,71 @@
+[[!meta title="RAID1 alternative for SSD drives"]]
+[[!meta date="2010-11-02T20:10:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I recently added a [solid-state drive](http://www.intel.com/design/flash/nand/value/overview.htm) to my desktop computer to take advantage of the performance boost rumored to come with these drives. For reliability reasons, I've always tried to use software [RAID1](http://en.wikipedia.org/wiki/Raid1#RAID_1) to avoid having to reinstall my machine from backups should a hard drive fail. While this strategy is fairly cheap with regular hard drives, it's not really workable with SSD drives which are still an order of magnitude more expensive.  
+  
+The strategy I settled on is this one:
+
+  * continue to have all partitions (`/`, `/home` and `/data`) on my RAID1 hard drives,
+  * put another copy of the root partition (`/`) on the SSD drive, and
+  * leave my `/tmp` and swap partitions in [RAID0](http://en.wikipedia.org/wiki/RAID0#RAID_0) arrays on my rotational hard drives to reduce the number of writes on the SSD.
+  
+
+This setup has the benefit of using a very small SSD to speed up the main partition while keeping all important data on the larger mirrored drives.  
+  
+
+## Resetting the SSD
+
+The first thing I did, given that I purchased a second-hand drive, was to **completely erase the drive** and mark all sectors as empty using an [ATA secure erase](http://en.wikipedia.org/wiki/Write_amplification#Secure_erase). Because SSDs have a tendency to get slower as data is added to them, it is necessary to clear the drive in a way that will let the controller know that every byte is now free to be used again.  
+  
+There is a lot of advice on the web on how to do this and many tutorials refer to an old piece of software called [Secure Erase](http://cmrr.ucsd.edu/people/Hughes/SecureErase.shtml). There is a much better solution on Linux: [issuing the commands directly using **hdparm**](https://ata.wiki.kernel.org/index.php/ATA_Secure_Erase).  
+  
+
+## Partitioning the SSD
+
+Once the drive is empty, it's time to create partitions on it. I'm not sure how important it is to **align the partitions to the SSD erase block size** on newer drives, but I decided to follow [Ted Ts'o's instructions](http://thunk.org/tytso/blog/2009/02/20/aligning-filesystems-to-an-ssds-erase-block-size/) anyways.  
+  
+Another thing I did is leave **20% of the drive unpartitioned**. I've often read that SSDs are faster the more free space they have so I figured that limiting myself to 80% of the drive should help the drive maintain its peak performance over time. In fact, I've heard that extra unused unpartitionable space is one of the main differences between the [value](http://www.intel.com/design/flash/nand/value/overview.htm) and [extreme](http://www.intel.com/design/flash/nand/extreme/index.htm) series of Intel SSDs. I'd love to see an official confirmation of this from Intel of course!  
+  
+
+## Keeping the RAID1 array in sync with the SSD
+
+Once I added the solid-state drive to my computer and copied my root partition on it, I adjusted my `fstab` and [grub](http://en.wikipedia.org/wiki/GNU_GRUB) settings to boot from that drive. I also setup the following cron job (running twice daily) to keep a copy of my root partition on the old RAID1 drives (mounted on `/mnt`):  
+
+
+    nice ionice -c3 rsync -aHx --delete --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/home/* --exclude=/mnt/* --exclude=/lost+found/* --exclude=/data/* /* /mnt/
+
+
+  
+
+## Tuning the SSD
+
+Finally, after reading this [excellent LWN article](http://lwn.net/Articles/408428/), I decided to tune the SSD drive (`/dev/sda`) by adjusting three things:  
+  
+
+  
+
+  * Add the `discard` mount option (also know as ATA [TRIM](http://en.wikipedia.org/wiki/TRIM) and introduced in the 2.6.33 Linux kernel) to the root partition in `/etc/fstab`:
+<pre>
+    /dev/<i>sda1</i>  /  ext4  <b>discard</b>,errors=remount-ro,noatime  0  1
+</pre>
+
+  
+
+  * Use the `noop` IO scheduler by adding these lines to `/etc/rc.local`:
+<pre>
+    echo noop &gt; /sys/block/<i>sda</i>/queue/scheduler  
+    echo 1 &gt; /sys/block/<i>sda</i>/queue/iosched/fifo_batch
+</pre>
+
+  
+
+  * Turn off [entropy gathering](http://www.entropykey.co.uk/) (for kernels 2.6.36 or later) by adding this line to `/etc/rc.local`:
+<pre>
+    echo 0 &gt; /sys/block/<i>sda</i>/queue/add_random
+</pre>
+
+  
+Is there anything else I should be doing to make sure I get the most out of my SSD?
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 

@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/09131376861666358136"
+ nickname="John Wesorick"
+ subject=""
+ date="2011-06-25T06:46:07.260+12:00"
+ content="""
+Great how to! On Ubuntu I needed to create /etc/sys before it would boot using the degraded RAID, and substitute sd*2 with sd*5 everywhere. Thanks for the help!  
+  
+FYI, an easy way to copy the partitions initially is:  
+sfdisk -d /dev/sda > partition.txt  
+sfdisk --force /dev/sdb < partition.txt
+
+
+"""]]

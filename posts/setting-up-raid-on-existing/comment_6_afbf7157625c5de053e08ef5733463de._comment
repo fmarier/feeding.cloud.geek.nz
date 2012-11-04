@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/03750892265544439203"
+ nickname="Yost"
+ subject=""
+ date="2011-08-18T14:44:51.444+12:00"
+ content="""
+On step 7 (Natty 64Bit) update-grub gives me the following error: /usr/sbin/grub-probe: error: no such disk. in reference to the /dev/md0
+
+
+"""]]

@@ -1,0 +1,47 @@
+[[!meta title="Encrypting your home directory using LUKS on Debian/Ubuntu"]]
+[[!meta date="2008-05-24T19:47:00.004+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Laptops are easily lost or stolen and in order to protect your emails, web passwords, encryption keys, etc., you should really think about encrypting (at least) your home directory.  
+  
+If you happen to have `/home` on a separate partition already (`/dev/hda5` in this example), then it's a really easy process:  
+
+  1. Copy your home directory to a temporary directory on a different partition:  
+
+
+        mkdir /homebackup  
+        cp -a /home/* /homebackup
+
+
+  2. Encrypt your home partition:  
+
+
+        umount /home  
+        cryptsetup -h sha256 -c aes-cbc-essiv:sha256 -s 256 luksFormat /dev/hda5  
+        cryptsetup luksOpen /dev/hda5 chome  
+        mkfs.ext3 -m 0 /dev/mapper/chome
+
+
+  3. Add this line to `/etc/crypttab`:  
+
+
+        chome    /dev/hda5    none    luks,timeout=30
+
+
+  4. Set the home partition to this in `/etc/fstab`:  
+
+
+        /dev/mapper/chome /home ext3 nodev,nosuid,relatime 0 2
+
+
+  5. Copy your home data back into the encrypted partition:  
+
+
+        mount /home  
+        cp -a /homebackup/* /home  
+        rm -rf /homebackup
+
+
+That's it. Now to fully secure your laptop against theft, you should think about an [encrypted backup strategy](http://packages.debian.org/sid/duplicity) for your data...
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] 

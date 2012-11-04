@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2009-08-04T18:19:59.584+12:00"
+ content="""
+It was mentioned to me elsewhere that you can _really_ speed up the initial import if you fetch the real cvs repository (as in, the files in cvs.sf.net) via rsync and then sync your git repo with that copy, since cvsimport needs to fetch each commit one by one.
+
+
+"""]]

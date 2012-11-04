@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/07283190347559096435"
+ nickname="Robe"
+ subject=""
+ date="2009-05-31T12:25:02.947+12:00"
+ content="""
+The [PostgreSQL wiki](http://wiki.postgresql.org/wiki/Performance_Optimization) has an abundance of further information on this topic.  
+  
+As rule of thumb:  
+  
+If you're CPU-bound (backends consuming all available CPU) you need to reduce the complexity and/or amount of the queries hitting the database.  
+  
+If you're disk-bound (backends waiting for disk IO)  
+  
+on writes:  
+  
+Get a RAID-Controller with battery backed write cache  
+  
+on reads:  
+  
+You need to either increase your RAM to match the size of your working set or reduce the size of the working set.  
+  
+Most often people mix [OLTP](http://en.wikipedia.org/wiki/OLTP) (live/fresh/regularly used) and [DWH](http://en.wikipedia.org/wiki/Data_warehouse) (old/not regularly used/historical) data which causes the working set to grow indefinitely. Partitioning/Archiving historical data usually fixes these issues.
+
+
+"""]]

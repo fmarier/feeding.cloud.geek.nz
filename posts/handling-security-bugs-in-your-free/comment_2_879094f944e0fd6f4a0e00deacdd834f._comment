@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2009-03-20T13:40:00.000+13:00"
+ content="""
+The embargo date is the date before which none of the involved parties will publicly release any details about that vulnerability.  
+  
+So for example the upstream developer will not commit a fix to a public source control system and the Debian maintainer will not upload updated packages before that date.
+
+
+"""]]

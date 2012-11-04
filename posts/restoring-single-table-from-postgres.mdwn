@@ -1,0 +1,30 @@
+[[!meta title="Restoring a single table from a Postgres database or backup"]]
+[[!meta date="2010-06-09T17:15:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+After dropping and restoring a very large database a few times just to refresh the data in a single table, I thought that there must be an easier way to do this. I was right, you can restore a single table.  
+  
+If you are starting with a live database, you can simply use pg_dump to [backup only one table](http://blog.endpoint.com/2010/04/restoring-individual-table-data-from.html):  
+
+<pre>
+pg_dump --data-only --table=<i>tablename</i> <i>sourcedb</i> &gt; onetable.pg
+</pre>
+
+  
+which you can then restore in the other database:  
+
+<pre>
+psql <i>destdb</i> &lt; onetable.pg
+</pre>
+
+  
+But even if all you've got is a full dump of the source database, you can still restore that single table by simply [extracting it out](http://www.question-defense.com/2008/11/13/restore-one-table-with-psql-from-a-pg_dump-postgresql-backup) of the large dump first:  
+
+<pre>
+pg_restore --data-only --table=<i>tablename</i> <i>fulldump.pg</i> &gt; onetable.pg
+</pre>
+
+  
+before restoring it as shown above, using `psql`.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag postgres]] [[!tag nzoss]] 

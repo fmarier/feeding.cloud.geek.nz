@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ claimedauthor="Björn Steinbrink"
+ subject=""
+ date="2010-07-21T05:08:01.908+12:00"
+ content="""
+And with git v1.7.2 you'll be able to use:  
+  
+git cherry-pick 7f545188^..a7785c10  
+  
+:-)
+
+
+"""]]

@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/10471234837140977994"
+ nickname="Matt"
+ subject=""
+ date="2008-06-21T08:44:00.000+12:00"
+ content="""
+This is an unfortunate error to make, but no, you're definitely not alone. One time I accidently deleted half of the CEO's home directory on the file server.   
+  
+(Bonus question: If you're trying to get rid of all the hidden files in a directory, is "rm -rf .*" a bad idea?)   
+  
+Anyway, it wouldn't be too difficult* to write a shell-replacement for 'rm' which makes an inode-based copy into a .trash directory before deleting, which the user can then empty out at their leisure. I suppose moving the file to the user's .trash directory would suffice too, although speed and disk space become a problem when more than one partitions are involved. As an aside, is there a non-trivial way to determine the current mountpoint's root from pwd? Oh well. Glad you caught this before it got out of hand, and take solace in the fact that you're definitely not the only person to do it.   
+  
+\* - implementation is left as an exercise to the reader
+
+
+"""]]

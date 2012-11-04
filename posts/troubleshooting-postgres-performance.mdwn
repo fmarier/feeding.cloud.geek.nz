@@ -1,0 +1,100 @@
+[[!meta title="Troubleshooting Postgres Performance Problems"]]
+[[!meta date="2009-05-30T17:00:00.004+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+There are [great](http://momjian.us/main/writings/pgsql/hw_performance/index.html) [resources](http://www.varlena.com/GeneralBits/Tidbits/perf.html) to help tune [PostgresQL](http://www.postgresql.org/) for performance, but say you've got a Postgres database which suddenly becomes very slow. How can you figure out what's going on?  
+
+## General system state
+
+A slow database server will typically be running out of:  
+
+  * cpu,
+  * memory or
+  * disk.
+
+So the first thing you should do is to get an overview of the system state using common UNIX tools such as:  
+
+  * `top` (press **c** to see the full command line): look at CPU and memory usage
+  * `iostat -x -m 5`: look at i/o wait and service time
+
+If you notice that memory is exhausted, you could play with the following `postgresql.conf` settings:  
+
+
+    shared_buffers  
+    work_mem  
+    effective_cache_size
+
+
+If you see a lot of I/O, then try adjusting these settings:  
+
+
+    checkpoint_segments  
+    autovacuum_naptime  
+    wal_buffers  
+    
+
+
+## Finding slow queries  
+
+On the database side, start by determining whether:  
+
+  * there is one large query holding up all of the resources or
+  * the number of queries is the main problem.  
+
+To do this, make sure that the following setting is turned on in your `postgresql.conf`:
+
+    stats_command_string = on
+
+
+Then fire up <tt>psql <i>dbname</i></tt> and look at the currently executing queries:
+
+    SELECT usename, current_query, query_start  
+    FROM pg_stat_activity;
+
+
+(You can also add the `procid` column to the query if you want to map a query to the process ID you see in `top`.)  
+  
+If you can't get anything useful out of `pg_stat_activity`, you may want to enable **slow query logging** by adding this to your `postgresql.conf`:
+
+    log_min_duration_statement = 100
+
+
+(All queries which take more than 100 ms to execute will be printed to the main Postgres log file.)  
+
+## Examining a particular query
+
+Once you have identified a slow query, you can time it by running this command before executing the query manually:  
+
+
+    \timing
+
+
+To get an idea of where Postgres spends its time when executing that query, look at the query plan:  
+
+
+    EXPLAIN your_query;
+
+
+The numbers you see there are estimates. To run the query and get actual numbers, use this instead:
+<pre>
+EXPLAIN ANALYZE <i>your_query</i>;
+</pre>
+
+If you still can't figure out why a certain query takes so long, have a look at the ratio between live and dead rows in the relevant tables:
+<pre>
+ANALYZE VERBOSE <i>tablename</i>;
+</pre>
+
+Having too many dead rows is often a sign of insufficient vacuuming. You might want to **turn autovacuum on** if it isn't already, or to make it a bit more aggressive by tweaking these settings:
+
+    autovacuum_vacuum_scale_factor  
+    autovacuum_analyze_scale_factor  
+    
+
+
+  
+Troubleshooting database performance is a bit of a black art, many thanks to Mark Kirkwood for sharing his Postgres wisdom with me.  
+  
+If there's anything else you have successfully used to find the cause of your performance woes, please feel free to leave a comment.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag mahara]] [[!tag sysadmin]] [[!tag postgres]] [[!tag ubuntu]] [[!tag nzoss]] 

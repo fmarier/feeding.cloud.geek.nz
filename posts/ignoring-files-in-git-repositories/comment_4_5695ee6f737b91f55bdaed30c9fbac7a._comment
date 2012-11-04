@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://wo.uter.be/"
+ nickname="wo"
+ subject=""
+ date="2009-12-28T13:41:34.340+13:00"
+ content="""
+I guess if you're using VPATH builds in your git export, using .git/info/exclude could be useful...
+
+
+"""]]

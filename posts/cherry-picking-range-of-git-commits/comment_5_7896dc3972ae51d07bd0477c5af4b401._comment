@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://m.jakstys.lt"
+ nickname="Motiejus Jakštys"
+ subject=""
+ date="2011-01-22T05:47:37.538+13:00"
+ content="""
+For any older git:  
+  
+git rev-list ^f545188 master --reverse | git cherry-pick --stdin
+
+
+"""]]

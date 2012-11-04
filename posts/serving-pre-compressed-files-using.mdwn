@@ -1,0 +1,79 @@
+[[!meta title="Serving pre-compressed files using Apache"]]
+[[!meta date="2011-01-25T17:00:00.007+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+The easiest way to compress the data that is being served to the visitors of your web application is to make use of [mod_deflate](http://httpd.apache.org/docs/2.2/mod/mod_deflate.html). Once you have enabled that module and provided it with a [suitable](http://feeding.cloud.geek.nz/2009/10/reducing-website-bandwidth-usage.html) configuration file, it will compress all releant files on the fly as it is serving them.  
+  
+Given that I was already going to minify my Javascript and CSS files ahead of time (i.e. not using [mod_pagespeed](https://code.google.com/p/modpagespeed/)), I figured that there must be a way for me to serve gzipped files directly.  
+  
+
+### "Compiling" Static Files
+
+I decided to treat my [web application](http://www.launchpad.net/libravatar) like a c program. After all, it starts as readable source code and ends up as an unreadable binary file.  
+  
+So I created a Makefile to minify and compress all CSS and Javascript files using [YUI Compressor](http://developer.yahoo.com/yui/compressor/) and `gzip`:  
+  
+
+
+    all: build  
+      
+    build:  
+         find static/css -type f -name "[^.]*.css" -execdir yui-compressor -o {}.css {} \;  
+         find static/js -type f -name "[^.]*.js"  -execdir yui-compressor -o {}.js {} \;  
+         cd static/css && for f in *.css.css ; do gzip -c $$f > `basename $$f .css`.gz ; done  
+         cd static/js && for f in *.js.js ; do gzip -c $$f > `basename $$f .js`.gz ; done  
+      
+    clean:  
+         find static/css -name "*.css.css" -delete  
+         find static/js -name "*.js.js" -delete  
+         find static/css -name "*.css.gz" -delete  
+         find static/js -name "*.js.gz" -delete  
+         find -name "*.pyc" -delete
+
+
+  
+This leaves the original files intact and adds minified `.css.css` and `.js.js` files as well as minified and compressed `.css.gz` and `.js.gz` files.  
+  
+
+### How browsers advertise gzip support
+
+The nice thing about serving compressed content to browsers is that browsers that support receiving gzipped content (almost all of them nowadays) include the following HTTP header in their requests:  
+
+
+    Accept-Encoding = gzip,deflate
+
+
+(Incidently, if you want to test what non-gzipped enable browsers see, just browse to `about:config` and remove what's in the `network.http.accept-encoding` variable.)  
+  
+
+### Serving compressed files to clients
+
+To serve different files to different browsers, all that's needed is to enable [Multiviews](http://httpd.apache.org/docs/2.2/content-negotiation.html#multiviews) in our Apache configuration (as suggested on the [Apache mailing list](http://mail-archives.apache.org/mod_mbox/httpd-users/200404.mbox/%3CPine.WNT.4.58.0404231258350.2104@HEC-4949%3E)):  
+  
+
+
+    <Directory /var/www/static/css>  
+     AddEncoding gzip gz  
+     ForceType text/css  
+     Options +Multiviews  
+     SetEnv force-no-vary  
+     Header set Cache-Control "private"  
+    </Directory>  
+      
+    <Directory /var/www/static/js>  
+     AddEncoding gzip gz  
+     ForceType text/javascript  
+     Options +Multiviews  
+     SetEnv force-no-vary  
+     Header set Cache-Control "private"  
+    </Directory>
+
+
+  
+The `ForceType` directive is there to force the mimetype (as described in this [solution](http://perfectionlabstips.wordpress.com/2008/12/30/serving-gzipped-gz-files-as-compressed-css-javascript-html-content/)) and to make sure that browsers (including Firefox) don't download the files to disk.  
+  
+As for the `SetEnv` directive, it turns out that on Internet Explorer, most files with a Vary header (added by Apache) [are not cached](https://code.google.com/speed/page-speed/docs/caching.html#LeverageBrowserCaching) and so we must make sure it gets [stripped out](http://httpd.apache.org/docs/current/env.html#force-no-vary) before the response goes out.  
+  
+Finally, the `Cache-Control` headers are set to `private` to [prevent intermediate/transparent proxies from caching](https://code.google.com/speed/page-speed/docs/caching.html#LeverageProxyCaching) our CSS and Javascript files, while allowing browsers to do so. If intermediate proxies start caching compressed content, they may incorrectly serve it to clients without gzip support.
+
+
+[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag nzoss]] 

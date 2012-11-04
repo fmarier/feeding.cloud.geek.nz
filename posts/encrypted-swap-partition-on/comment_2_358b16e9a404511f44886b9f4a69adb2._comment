@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://users.student.lth.se/f04us/"
+ nickname="ulrik"
+ subject=""
+ date="2008-04-07T23:06:00.000+12:00"
+ content="""
+I could live with dropping suspend to disk using only suspend to ram.  
+  
+But suspend to ram is not safe is it? As any number of bugs could let a cracker in I guess..
+
+
+"""]]

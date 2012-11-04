@@ -1,0 +1,96 @@
+[[!meta title="Querying deleted content in git"]]
+[[!meta date="2010-07-04T21:02:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+If you have removed a file (or part of a file) from git, it's not immediately obvious how to query its history. Here are two ways to deal with deleted content in git.  
+  
+
+## Commit history of a deleted file
+
+If we take the following two files:  
+
+
+    $ ls  
+    file1  file2
+
+
+  
+and then decide to delete one of them:  
+
+
+    $ git rm file2  
+    rm 'file2'  
+    $ git commit -m "Delete a file"  
+    [deletefile 87fadb9] Delete a file  
+    1 files changed, 0 insertions(+), 1 deletions(-)  
+    delete mode 100644 file2
+
+
+  
+To see the commit history of that file, you can't do it the usual way:  
+
+
+    $ git log file2  
+    fatal: ambiguous argument 'file2': unknown revision or path not in the working tree.  
+    Use '--' to separate paths from revisions
+
+
+  
+Instead, you need to do this:  
+
+
+    $ git log -- file2
+
+
+  
+
+## Finding the commit that deleted a line
+
+Finding the commit that deleted a line is slightly more complicated. Unfortunately, we can't really use `git blame` for that. All we can do with `git blame` is to find the last commit which contained the deleted line.  
+  
+So if we add the following file:  
+
+
+    $ cat file3  
+    one  
+    two  
+    three  
+    $ git add file3  
+    $ git commit -a -m "Add a third file"  
+    [master e62ace6] Add a third file  
+    1 files changed, 3 insertions(+), 0 deletions(-)  
+    create mode 100644 file3
+
+
+  
+and remove the second line:  
+
+
+    $ cat file3  
+    one  
+    three  
+    $ git commit -a -m "Remove a line"  
+    [removeline f3eb691] Remove a line  
+    1 files changed, 0 insertions(+), 1 deletions(-)
+
+
+  
+then we can use `git blame` see what was the last revision to contain each line:  
+
+<pre>
+$ git blame --reverse HEAD^..HEAD file3  
+f3eb691d (Francois 2010-07-04  1) one  
+^<b>e62ace6</b> (Francois 2010-07-04  2) two  
+f3eb691d (Francois 2010-07-04  3) three
+</pre>
+
+  
+Finding the commit that deleted that file requires using `git log` to search for the text contained on that deleted line:  
+
+<pre>
+$ git log --oneline -S'<i>two</i>' file3  
+<b>f3eb691</b> Remove a line  
+e62ace6 Add a third file
+</pre>
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag git]] [[!tag nzoss]] 

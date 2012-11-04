@@ -1,0 +1,21 @@
+[[!meta title="Setting the default git branch in a bare repository"]]
+[[!meta date="2008-12-04T21:31:00.005+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+A bare repository in git does not include a checkout. So in order to set the default branch that users will get after they clone, you cannot use <tt>git-checkout <i>mybranch</i></tt>.  
+  
+Instead, if you want the default branch to be something other than `master`, you need to do this:  
+
+<pre>
+git symbolic-ref HEAD refs/heads/<i>mybranch</i>
+</pre>
+
+Which will update the `HEAD` file in your repository so that it contains:  
+
+<pre>
+ref: refs/heads/<i>mybranch</i>
+</pre>
+
+This is well documented in the [`git-symbolic-ref` manpage](http://www.kernel.org/pub/software/scm/git/docs/git-symbolic-ref.html) but it's not necessarily the first place you'd think of looking.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag git]] 

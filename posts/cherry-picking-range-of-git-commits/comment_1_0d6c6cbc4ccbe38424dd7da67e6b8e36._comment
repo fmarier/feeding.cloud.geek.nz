@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="https://launchpad.net/~rhonda"
+ nickname="rhonda"
+ subject=""
+ date="2010-07-21T00:58:22.401+12:00"
+ content="""
+You have a mistake in your alias that got me confused at first: It's not "--pretty=oneline" but it's "--oneline" instead (or "--pretty=oneline --abbrev-commit"). Otherwise you'll get the full commit IDs which are rather unhandy.  
+  
+Thanks for this helpful article, and even more for the useful alias. :)  
+  
+Enjoy!
+
+
+"""]]

@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ claimedauthor="Jan Hudec"
+ subject=""
+ date="2008-12-13T22:59:00.000+13:00"
+ content="""
+This feature is brough to you by the reflog. Git gc will trucate the reflog to 90 days by default (can be changed or turned off) and commits referenced by reflog will not be pruned until the reflog itself is truncated.  
+  
+Note, that the reflog keeps complete history of the ref, so this way you can ask what state your branch was before a pull, rebase, n days ago etc.
+
+
+"""]]

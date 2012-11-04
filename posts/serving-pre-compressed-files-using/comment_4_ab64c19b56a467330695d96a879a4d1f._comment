@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2011-01-26T21:46:52.138+13:00"
+ content="""
+@ywarnier If you want to mix CSS files and images in the same directory, you should probably use a Location directive instead of Directory in your Apache config.
+
+
+"""]]

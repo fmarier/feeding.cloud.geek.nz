@@ -1,0 +1,95 @@
+[[!meta title="Handling email-based events safely"]]
+[[!meta date="2010-06-14T17:20:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Mahara.org users have recently witnessed the unfortunate effects of a bug in the Mahara event handling: the Mahara cron job got stuck in an email loop and kept on sending the [same forum post](http://mahara.org/interaction/forum/topic.php?id=1882) over and over again.  
+  
+Here is what the affected code used to look like (edited for clarity):  
+  
+
+
+    db_begin();  
+    $activities = get_records('activity_queue');  
+    foreach ($activities as $activity) {  
+      handle_activity($activity);  
+    }  
+    delete_records('activity_queue');  
+    db_commit();
+
+
+  
+  
+One of the problems with this code was that if the `handle_activity()` function threw an exception, it would interfere with the processing of the entire queue. So [it got fixed](http://gitorious.org/mahara/mahara/commit/823ab3168aed5ae0e4de27139d56b50c0ab0787c) in the following way:  
+  
+
+<pre>
+db_begin();  
+$activities = get_records('activity_queue');  
+foreach ($activities as $activity) {  
+  <b>try {</b>  
+      handle_activity($activity);  
+  <b>}  
+  catch (MaharaException $e) {  
+      log_debug($e-&gt;getMessage());  
+  }</b>  
+}  
+delete_records('activity_queue');  
+db_commit();
+</pre>
+
+  
+  
+Much better. However, there was still a problem with the code: the whole queue processing is contained within a transaction. This means that should any of the SQL statements fail at any point, the exception would be caught but the SQL statements would all be rolled back at the end by the database.  
+  
+Now the idea of a transaction is good: we want activity handling to either succeed entirely or be rolled back. But the fact that some activities cannot be handled should not interfere with other activities. So this has [been fixed](http://gitorious.org/mahara/mahara/commit/d08395ac1308727dd45396083f454c47605c0604) by moving the transaction to the inside of the loop:  
+  
+
+<pre>
+$activities = get_records('activity_queue');  
+foreach ($activities as $activity) {  
+  <b>db_begin();</b>  
+  try {  
+      handle_activity($activity);  
+  }  
+  catch (MaharaException $e) {  
+      log_debug($e-&gt;getMessage());  
+  }  
+  <b>db_commit();</b>  
+}  
+delete_records('activity_queue');
+</pre>
+
+  
+  
+So individual activites are allowed to fail and get rolled back, but they will not affect other activites. But there was still one remaining problem: what if we encounter an error we cannot catch? For example, what would happen if PHP were to segfault or run out of memory while the activity queue is being processed?  
+  
+Well, in that case, it turns out that Mahara will never reach the `delete_records()` call and the activity queue will never be cleared. Which means that on the next cron run, all of the activities will be handled again, even the ones that were successfully handled already (i.e. emails will be sent over and over again).  
+  
+The way we [fixed this problem](http://gitorious.org/mahara/mahara/commit/d736fd6c0c99cb998af56979b12ceab60ed101ee) was by moving the `delete_records()` from the end of the function to the beginning of the loop:  
+  
+
+<pre>
+$activities = get_records('activity_queue');  
+foreach ($activities as $activity) {  
+  <b>delete_records('activity_queue', 'id', $activity-&gt;id);</b>  
+  
+  db_begin();  
+  try {  
+      handle_activity($activity);  
+  }  
+  catch (MaharaException $e) {  
+      log_debug($e-&gt;getMessage());  
+  }  
+  db_commit();  
+}
+</pre>
+
+  
+  
+Each activity is removed from the queue **before** it is processed.  
+  
+Unfortunately, there is a downside to this modification: should an activity handler fail for whatever reason, no further attempts will be made. This means that some notifications could be lost if an unexpected error occurs.  
+  
+However, given that some of the activity handlers send emails out into the world and that it is not possible to "un-send" them, this is the only way we can guarantee that no duplicate emails will be sent. Of course, if you notice that certain notifications are lost because of a bug in Mahara, [let us know](https://bugs.launchpad.net/mahara/+filebug) and we'll fix it!
+
+
+[[!tag catalyst]] [[!tag mahara]] [[!tag programming]] 

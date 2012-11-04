@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/00794330422541732420"
+ nickname="kbro"
+ subject=""
+ date="2010-07-22T22:34:44.034+12:00"
+ content="""
+The initialisation of the bare remote repo is actually slightly easier than you suggest. Instead of doing "git init" to create your local workspace, do "git clone /tmp/myrepo.git". This will complain "warning: You appear to have cloned an empty repository" but your local repo will be set up as a slave (i.e. "git remote -v show" shows /tmp/myrepo.git as origin). This means you can commit to your local master branch, then "git push origin master" and everything will work as expected. Git even sets up the local master branch as a tracker for origin/master. Magic!
+
+
+"""]]

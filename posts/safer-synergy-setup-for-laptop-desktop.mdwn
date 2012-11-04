@@ -1,0 +1,72 @@
+[[!meta title="Safer synergy setup for laptop-desktop keyboard sharing"]]
+[[!meta date="2009-04-01T23:39:00.006+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Synergy](http://synergy2.sourceforge.net/) is a very useful piece of software for anybody wanting to share a mouse and keyboard between two networked computers.  
+  
+Here is the setup I use to:
+
+  * **encrypt** the key presses sent over the network from the synergy client to the server and
+  * automatically **restart** the synergy client when it crashes.
+
+  
+First of all, I've got the following `~/.synergy.conf` on both of my laptop and desktop machines:  
+
+<pre>
+section: screens  
+<i>mylaptop</i>:  
+<i>mydesktop</i>:  
+end  
+section: links  
+<i>mylaptop</i>:  
+  right = <i>mydesktop</i>  
+<i>mydesktop</i>:  
+  left = <i>mylaptop</i>  
+end  
+section: options  
+keystroke(alt+shift+space) = switchInDirection(left)  
+keystroke(alt+space) = switchInDirection(right)  
+end
+</pre>
+
+  
+With this, I am ready to start the server on my desktop machine:  
+
+
+    synergys -a localhost
+
+
+Now, in order to encrypt the synergy client/server traffic, I create an ssh tunnel between the two machines:  
+
+<pre>
+ssh -f -N -L localhost:24800:localhost:24800 <i>mydesktop</i>
+</pre>
+
+Then I start the synergy client on my laptop. However, some [recent problems](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=520008) have convinced me to have a more robust alternative to simply starting the client like this:  
+
+
+    synergyc localhost
+
+
+As recommended by a few helpful people on #debian-devel, I decided to use the `supervise` tool (part of the [daemontools](http://packages.debian.org/search?keywords=daemontools) package) to automatically restart the synergy client if it crashes. Here is how I do it:  
+
+
+    supervise ~/.synergyc &
+
+
+This command refers to a `~/.synergyc` directory containing a single `run` script. That shell script consists of:  
+
+
+    #!/bin/sh  
+    xset r rate 500 30  
+    /usr/bin/synergyc --no-daemon localhost
+
+
+  
+(The `xset` call is necessary since `synergyc` crashes seem to reset the repeat flag of X for some reason...)  
+  
+The only problem I still need to fix in my setup is the potential password leak in the next few seconds after the synergy client crashes. Such a crash has already caused me to accidentally type my laptop password into a desktop IRC window the other day :(  
+  
+Ideally, I would like the synergy server to [swallow the first second or two of keyboard input](http://sourceforge.net/tracker/?func=detail&aid=2722766&group_id=59275&atid=490467) after its client suddenly drops out. This could eliminate quite a few embarrassing _wrong windows_.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] 

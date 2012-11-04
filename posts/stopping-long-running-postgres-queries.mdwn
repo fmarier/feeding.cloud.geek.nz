@@ -1,0 +1,24 @@
+[[!meta title="Stopping long-running Postgres queries"]]
+[[!meta date="2009-06-12T07:00:00.001+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+As part of [troubleshooting performance problems](http://feeding.cloud.geek.nz/2009/05/troubleshooting-postgres-performance.html) in PostgreSQL, you may need to terminate a query which is taking a long time to run.  
+  
+To do this, find the Postgres process which is currently executing the query:
+
+    SELECT procpid, current_query, query_start  
+    FROM pg_stat_activity;
+
+
+The `procpid` column displays the Operating System's process ID that can then be used to send the `INT` signal which will cause Postgres to roll the query back and move on to the next one:
+<pre>
+kill -INT <i>procpid</i>
+</pre>
+
+If this happens regularly, you can also tell Postgres to **kill any query which takes longer than a given number of milliseconds** (say 1 hour) by using [this setting](http://www.postgresql.org/docs/8.3/static/runtime-config-client.html#GUC-STATEMENT-TIMEOUT):
+<pre>
+statement_timeout = <i>3600000  
+</i>
+</pre>
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag postgres]] [[!tag nzoss]] 

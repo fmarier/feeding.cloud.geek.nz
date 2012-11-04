@@ -1,0 +1,61 @@
+[[!meta title="3 ways to improve your source control history"]]
+[[!meta date="2009-07-29T23:52:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+A few weeks ago, Linus Torvalds wrote a [blog post](http://torvalds-family.blogspot.com/2009/06/happiness-is-warm-scm.html) talking about how happy he was with the way that the last Linux merge window was going. Especially given how flexible distributed source control systems are and how long it takes before developers understand [how to use them properly](http://www.mail-archive.com/dri-devel@lists.sourceforge.net/msg39091.html).  
+  
+Most Free Software projects collaborate with external contributors through the use of [patches](http://feeding.cloud.geek.nz/2009/06/writing-perfect-patch.html) and with project members through **shared source control** systems. Keeping a clean source control history in this case can:
+
+  * ease maintenance of the codebase (especially when merging between multiple active branches) and
+  * facilitate collaboration with other developers who need to quickly grasp what your changes are all about.
+
+Here are three things I've put in practice in a few recent projects.  
+
+## Reduce the noise on the main branch
+
+If you use your source control system in a traditional centralised way, make sure that the main branch has as little noise as possible:
+
+  * use **feature branches** when developing new functionality (i.e. use one branch per feature)
+  * **rebase** into a small number of commits instead of merging directly into the main branch (or use something like `git cherry-pick -n` on your commits) 
+
+It will then be much easier to **port these changes across to a different version** and to **revisit the changes several months later**.  
+
+## Make each commit a logical unit
+
+Ideally, the main branch should be **fully usable at any point in its history**. For example, if a refactoring commit breaks an existing feature, it should also include any necessary fixes. _Progress_ and _fixup_ commits belong to private branches and should be cleaned up before the code is published on a public repository.  
+  
+A commit shouldn't be too small, but at the same time, it shouldn't be too large. Before pushing a large commit, ask yourself whether or not it could be broken down into **smaller or more meaningful units**. Introducing a new feature through a number of smaller self-contained units often makes a branch's history much more readable.  
+
+## Write meaningful commit messages
+
+A commit message will typically be seen along with its patch. Therefore the ideal commit message will include everything which is not immediatly obvious from the code changes:
+
+  * A short **description of the new feature** it introduces (or how to **reproduce the bug** it fixes)
+  * Links to **related commits** (e.g. "Fix bug introduced in COMMIT_ID")
+  * **Bug numbers** related to this commit
+  * The **main area** of the code (or _subsystem_) that this commit touches (as part of the short description, so that it's easily _grep_able)
+
+Here's an example of a good commit message from version 2.6.29 of the Linux kernel:  
+
+
+    commit 4869fdea77052c480c54b9e66a927ba036eab29e  
+    Author: Mikulas Patocka <mpatocka@redhat.com>  
+    Date:   Mon Jun 22 10:08:02 2009 +0100  
+      
+    dm mpath: validate table argument count  
+      
+    commit 0e0497c0c017664994819f4602dc07fd95896c52 upstream.  
+      
+    The parser reads the argument count as a number but doesn't check that  
+    sufficient arguments are supplied. This command triggers the bug:  
+      
+    dmsetup create mpath --table "0 `blockdev --getsize /dev/mapper/cr0`  
+     multipath 0 0 2 1 round-robin 1000 0 1 1 /dev/mapper/cr0  
+     round-robin 0 1 1 /dev/mapper/cr1 1000"  
+    kernel BUG at drivers/md/dm-mpath.c:530!  
+    
+
+
+Good commits and useful source control histories are great ways of documenting your code. If there are other conventions or practices you've found useful in your use of source control systems, please leave a comment!
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag mahara]] [[!tag git]] [[!tag ubuntu]] [[!tag nzoss]] 

@@ -1,0 +1,29 @@
+[[!meta title="Excluding files from git archive exports using gitattributes"]]
+[[!meta date="2010-02-09T16:45:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[git archive](http://www.kernel.org/pub/software/scm/git/docs/git-archive.html) provides an easy way of producing a tarball directly from a project's git branch.  
+  
+For example, this is what we use to build the [Mahara](http://www.mahara.org) tarballs:  
+
+
+    git archive --format=tar --prefix=mahara-${VERSION}/ ${RELEASETAG} | bzip2 -9 > ${CURRENTDIR}/mahara-${RELEASE}.tar.bz2
+
+
+If you do this however, you end up with the entire contents of the git branch, including potentially undesirable files like `.gitignore`.  
+  
+There is an easy, though not very well-documented, way of specifying files to exclude from such exports: [gitattributes](http://www.kernel.org/pub/software/scm/git/docs/gitattributes.html).  
+  
+This is what the Mahara `.gitattributes` file looks like:  
+
+<pre>
+/test <b>export-ignore</b>  
+.gitattributes <b>export-ignore</b>  
+.gitignore <b>export-ignore</b>
+</pre>
+
+With this file in the root directory of our repository, tarballs we generate using `git archive` no longer contain the [selenium](http://www.seleniumhq.org) tests or the git config files.  
+  
+If you start playing with this feature however, make sure you **commit the `.gitattributes` file to your repository before running `git archive`**. Otherwise the settings will not be picked up by `git archive`.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag mahara]] [[!tag git]] [[!tag nzoss]] 

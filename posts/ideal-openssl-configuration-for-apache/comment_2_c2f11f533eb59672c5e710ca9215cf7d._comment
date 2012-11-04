@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François Marier"
+ subject=""
+ date="2011-11-15T11:53:48.596+13:00"
+ content="""
+@anonymous While it would be nice to be able to switch to TLS 1.2 or 1.1, browser support is not there yet so most clients would simply downgrade to TLS 1.0, hence the need to have a strong TLS 1.0 config.  
+  
+Also, TLS 1.1 requires either a pretty recent version of OpenSSL (not yet in many popular distros) or the use of mod_gnutls.
+
+
+"""]]

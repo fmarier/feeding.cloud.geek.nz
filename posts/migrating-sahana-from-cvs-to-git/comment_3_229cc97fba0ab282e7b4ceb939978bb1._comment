@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="http://www.fbriere.net/"
+ nickname="Frédéric Brière"
+ subject=""
+ date="2009-08-17T12:45:25.869+12:00"
+ content="""
+BTW, cvs2git can be a bitch sometimes (though it was much worse when I first used it, compared to now), so I jotted down some notes the last time I had to import something. Here they are, tentatively adapted to your project name:  
+  
+# Copy the CVS directory  
+rsync -av rsync://sahana.cvs.sourceforge.net/cvsroot/sahana/sahana-phase2 .  
+rsync -av rsync://sahana.cvs.sourceforge.net/cvsroot/sahana/CVSROOT .  
+  
+# Checkout the latest cvs2svn (empty password, just press Enter)  
+svn co --username=guest http://cvs2svn.tigris.org/svn/cvs2svn/trunk cvs2svn-trunk  
+# Apply the attached patch to turn off keyword expansion (sigh)  
+patch -p0 -d cvs2svn-trunk < cvs2git.patch  
+  
+# Dump the CVS history in a format ready for git-fast-import  
+cd cvs2svn-trunk  
+./cvs2git --blobfile ../cvs2git.blob --dumpfile ../cvs2git.dump \  
+--username '(no author)' --fallback-encoding utf-8 ../sahana-phase2  
+  
+# Create and fill the Git repo  
+mkdir ../sahana  
+cd ../sahana  
+git init  
+cat ../cvs2git.{blob,dump} | git fast-import
+
+
+"""]]

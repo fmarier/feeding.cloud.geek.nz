@@ -1,0 +1,22 @@
+[[!meta title="Three Firefox extensions to enhance SSL security"]]
+[[!meta date="2011-10-03T21:57:00.007+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+There has been a lot of [talk](http://www.youtube.com/watch?v=Z7Wl2FW2TcA) recently questioning the [trust authorities](https://freedom-to-tinker.com/blog/felten/mozilla-debates-whether-trust-chinese-ca) that underpin the [SSL/TLS](https://secure.wikimedia.org/wikipedia/en/wiki/Transport_Layer_Security) world. After [a few](http://www.theregister.co.uk/2011/06/21/startssl_security_breach/) [high-profile](http://www.f-secure.com/weblog/archives/00002128.html) [incidents](http://blog.gerv.net/2011/09/diginotar-compromise/), it is clear that there is [something wrong with this structure](https://freedom-to-tinker.com/blog/sjs/web-security-trust-models).  
+  
+While some people have suggested that [DNSSEC might solve this problem](https://freedom-to-tinker.com/blog/sjs/major-internet-milestone-dnssec-and-ssl), here are three Firefox add-ons that can be used today to enhance the security of HTTPS:  
+
+  
+
+  * [Certificate Patrol](https://addons.mozilla.org/en-US/firefox/addon/certificate-patrol/) applies the "trust on first use" principle familiar to most [ssh](https://secure.wikimedia.org/wikipedia/en/wiki/Secure_Shell) users. It keeps track of the certificates you get for the sites you visit and displays a warning if important elements (e.g. the certificate authority) change.
+  
+
+  * [Perspectives](https://addons.mozilla.org/en-US/firefox/addon/perspectives/) uses a network of certificate notaries to issue a warning when you encounter a certificate that is different from what other Perspectives users see.
+  
+
+  * [Monkeysphere](https://addons.mozilla.org/en-US/firefox/addon/monkeysphere/) takes advantage of the PGP/GPG [web-of-trust](https://secure.wikimedia.org/wikipedia/en/wiki/Web_of_trust) to verify the authenticity of certificates.
+
+  
+Unlike the [Convergence](http://convergence.io/) approach which completely takes over certificate handling, all three of the above add-ons can be used together.
+
+
+[[!tag firefox]] [[!tag catalyst]] [[!tag debian]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag mozilla]] 

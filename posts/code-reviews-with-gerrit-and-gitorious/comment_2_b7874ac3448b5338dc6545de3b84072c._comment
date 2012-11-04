@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2011-04-23T11:22:35.144+12:00"
+ content="""
+@KaiHendry  
+  
+Now that we live in a post-[Firesheep](http://codebutler.com/firesheep?c=1) World, I tend to default to https unless I'm building a public website without logins. (And according to Google, the overhead of running SSL is [much lower](http://www.imperialviolet.org/2010/06/25/overclocking-ssl.html) than people think.)  
+  
+While Gerrit does look a bit big, I found that it's actually quite useful, even in a very small team.
+
+
+"""]]

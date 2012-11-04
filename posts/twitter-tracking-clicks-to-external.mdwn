@@ -1,0 +1,57 @@
+[[!meta title="Twitter tracking clicks to external sites"]]
+[[!meta date="2009-09-09T23:48:00.003+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Lately, while using the Twitter web interface with Javascript turned on, I've been redirected to a [Privoxy](http://www.privoxy.org/) error page whenever I click on an external link:  
+
+> Request for blocked URL  
+  
+Your request for <code>http://twitter.com/link_click_count?url=http%3A%2F%2Fexample.com&linkType=web&<b>tweetId=1234567890</b>&<b>userId=12345678</b>&authenticity_token=f5920ebf56bfa111c54bb9f86814cafa76de00fa</code> was blocked.  
+  
+Block reason: Path matches generic block pattern.
+
+Looking a little closer at the blocked URL, I noticed that **for every external link you click, Twitter logs the destination URL, the originating tweet and your user ID**.  
+  
+So what can you do to opt out of this tracking?  
+
+## Disable Javascript
+
+This is by far the easiest solution. You can simply install an extension like [Noscript](http://www.noscript.net/) and use Twitter with Javascript turned off. That's what I do most of the time since the website is mostly usable without it.  
+  
+A very fortunate side-effect of using Twitter without Javascript is that you can avoid a number of the [worms](http://dcortesi.com/2009/04/11/twitter-stalkdaily-worm-postmortem/) which propagate through that service from time to time.  
+
+## Use Privoxy to disable the link counter
+
+For those times when I have to enable Javascript on the site, I use [Privoxy](http://www.privoxy.org/), a great privacy-enhancing web proxy, to alter the Javascript code executed when clicking on external links. This effectively disables the extra tracking and takes me directly to the intended URL.  
+  
+First of all, make sure you have this line in your `/etc/privoxy/config`:  
+
+
+    filterfile user.filter
+
+
+then, add this filter to `/etc/privoxy/user.filter`:  
+
+
+    FILTER: twitter-link-count Disable the Twitter link tracker  
+    s@{var A=\$\("\#content a\.tweet-url"\);A\.live\("mousedown",twttr\.countClick\)}@{}@ig
+
+
+and finally turn this filter on for the affected URLs (`/etc/privoxy/user.action`):  
+
+
+    { +force-text-mode +filter{twitter-link-count} }  
+    .twimg.com/.*/javascripts/front.js
+
+
+## Switch to Identica
+
+If you want to avoid similar privacy problems in the future, you can also switch to an Open platform which respects [your basic freedoms](http://www.gnu.org/philosophy/free-sw.html).  
+  
+The main contestant in this space is [Identica](http://www.identi.ca/). It's a great alternative to Twitter and has a lot of interesting features (like groups and [XMPP](http://en.wikipedia.org/wiki/Xmpp) integration) which are not yet available on Twitter.  
+  
+The [StatusNet](http://status.net/wiki/) developers have kindly released their source code under the [AGPL](http://www.gnu.org/licenses/agpl.html) and their goal is to build the most open micro-blogging system out there.  
+  
+So go over there now and [claim your username](https://identi.ca/main/register)!
+
+
+[[!tag catalyst]] [[!tag privoxy]] [[!tag nzoss]] 

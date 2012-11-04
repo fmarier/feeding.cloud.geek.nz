@@ -1,0 +1,43 @@
+[[!meta title="Browsing privacy and ad blocking on Android"]]
+[[!meta date="2012-06-11T19:15:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+On the desktop, I usually rely on [Privoxy](http://privoxy.org) to strip out ads, tracking resources and other privacy-invading elements. So I was looking for an equivalent solution on Android.
+
+### Firefox 10
+
+With the current version of [Firefox for Android](https://play.google.com/store/apps/details?id=org.mozilla.firefox), you can simply install the [Adblock Plus](https://addons.mozilla.org/en-US/mobile/addon/adblock-plus/) extension and it will filter most undesirable elements from webpages.
+
+Unfortunately, that extension is not yet available for the latest [Firefox Beta](https://play.google.com/store/apps/details?id=org.mozilla.firefox_beta), so I had to find another solution.
+
+### Android Adblock
+
+It turns out that there is an [Open Source proxy](https://code.google.com/p/andblock/) similar to Privoxy (though much more limited in functionality) available for Android: [Adblock](https://play.google.com/store/apps/details?id=de.ub0r.android.adBlock) (also available on the [F-Droid](http://f-droid.org) Free Software market).
+
+However, its default configuration really doesn't block much and so you'll probably want to import a new blocklist as soon as you install it. I used a combination of the [Easylist](https://easylist-downloads.adblockplus.org/easylist.txt) and [EasyPrivacy](https://easylist-downloads.adblockplus.org/easyprivacy.txt) blocklists.
+
+### Configuring Fennec to use a proxy
+
+Unlike its desktop cousin, Firefox for Android (also called Fennec) doesn't expose proxy settings in the user interface. Instead, you have to open the [about:config](about:config) page and configure the following settings manually:
+
+
+      
+    network.proxy.http = localhost  
+    network.proxy.http_port = 8080  
+    network.proxy.ssl = localhost  
+    network.proxy.ssl_port = 8080  
+    network.proxy.type = 1  
+    
+
+
+Once you're done, test your connection by going into the AdBlock application and turning the proxy off. Then switch back to Firefox and go to a new website. You should get an error message telling you that the proxy is blocking connections. That means it's successfully using your proxy to talk to other websites and not connecting to them directly.
+
+(It might also be possible to set this up in the default Android browser or in the Chrome for Android Beta, but I haven't been able to find how. Feel free to leave a comment if you know how it's done.)
+
+### Bonus tips
+
+While you're at it, I highly recommend you turn on the [Do Not Track](http://dnt.mozilla.org/) feature in Firefox. Some large sites (like [Twitter](https://twitter.com/twitter/statuses/203133041160364033)) have recently committed to turning off individual tracking on web requests which contain this new privacy header.
+
+Also, if you want to help move the mobile web away from a [WebKit](http://www.webkit.org/) monoculture (remember how bad the [Internet Explorer 6](http://saveie6.com/) monoculture was for the web?), then please consider joining the [Mobile Testdrivers](https://wiki.mozilla.org/Mobile/Testdrivers_Program) team and help us make Firefox rock on Android!
+
+
+[[!tag firefox]] [[!tag debian]] [[!tag web]] [[!tag privoxy]] [[!tag android]] [[!tag privacy]] [[!tag nzoss]] [[!tag mozilla]] 

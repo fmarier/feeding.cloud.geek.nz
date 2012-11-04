@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="http://fmarier.org"
+ nickname="François"
+ subject=""
+ date="2011-01-26T21:44:26.995+13:00"
+ content="""
+@Jan Thanks for catching that. It turns out that the anchor on that link was pointing to the wrong section.  
+  
+The link should have been:  
+  
+https://code.google.com/speed/page-speed/docs/caching.html#LeverageBrowserCaching  
+  
+which says:  
+  
+"Internet Explorer does not cache any resources that are served with the Vary header and any fields but Accept-Encoding and User-Agent. To ensure these resources are cached by IE, make sure to strip out any other fields from the Vary header, or remove the Vary header altogether if possible."
+
+
+"""]]

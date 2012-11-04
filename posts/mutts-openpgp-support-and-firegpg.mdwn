@@ -1,0 +1,35 @@
+[[!meta title="mutt's OpenPGP support and FireGPG"]]
+[[!meta date="2008-10-13T15:51:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[mutt](http://www.mutt.org/) has excellent [OpenPGP](http://tools.ietf.org/html/rfc4880) and [GPG](http://www.gnupg.org/) support. However different clients send GnuPG encrypted/signed data in different ways. Lots of people seem to be using [FireGPG](http://getfiregpg.org/) these days so that they can use GnuPG within the GMail/Hotmail/Yahoo! web clients.  
+  
+Here's the [procmail](http://www.procmail.org/) rule I used to convert almost all incoming emails to the OpenPGP/MIME format:  
+
+
+    :0  
+    * !^Content-Type: multipart/  
+    * !^Content-Type: application/pgp  
+    {  
+     :0 fBw  
+     * ^-----BEGIN PGP MESSAGE-----  
+     * ^-----END PGP MESSAGE-----  
+     | formail \  
+         -i "Content-Type: application/pgp; format=text; x-action=encrypt"  
+      
+     :0 fBw  
+     * ^-----BEGIN PGP SIGNED MESSAGE-----  
+     * ^-----BEGIN PGP SIGNATURE-----  
+     * ^-----END PGP SIGNATURE-----  
+     | formail \  
+         -i "Content-Type: application/pgp; format=text; x-action=sign"  
+    }
+
+
+However, this didn't actually work with FireGPG and the way that it puts encrypted messages inline. I eventually [found out](https://help.launchpad.net/ReadingOpenPgpMail) that putting this in my `~/.muttrc` would fix it:  
+
+
+    set pgp_auto_decode=yes
+
+
+
+[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] 

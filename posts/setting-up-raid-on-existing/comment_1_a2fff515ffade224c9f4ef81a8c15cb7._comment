@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www-public.it-sudparis.eu/~berger_o/"
+ nickname="obergix"
+ subject=""
+ date="2011-03-13T23:55:21.730+13:00"
+ content="""
+Why do you use rsync, and don't directly setup the active mirror letting the RAID driver let the duplication ?
+
+
+"""]]

@@ -1,0 +1,18 @@
+[[!meta title="Using Wikia Search in Firefox and vimperator"]]
+[[!meta date="2009-01-13T18:22:00.001+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Wikia search](http://search.wikia.com/) is a new project from Jimmy Wales, founder of [Wikipedia](http://www.wikipedia.org/). As discussed on the [second autonomo.us podcast](http://autonomo.us/2008/11/autonomous-podcast-episode-2-interview-with-jimmy-wales-of-wikia/), his objective is to create a Free Network Service for Web search: an alternative search engine compatible with the [Franklin Street Statement](http://autonomo.us/2008/07/franklin-street-statement/).  
+  
+To add Wikia Search to your [Firefox](http://www.getfirefox.com/) search bar:  
+
+  * visit [this page](http://people.debian.org/%7Efrancois/wikia_search/install.html) (with **Javascript turned on**)
+
+If you use [vimperator](http://vimperator.org/trac/wiki/Vimperator) to reduce the amount of mousing involved in your daily web browsing, put this in your `~/.vimperatorrc` to make Wikia your default search plugin:
+
+    :set defsearch=wikia
+
+
+Please [let me know](mailto:francois@cloud.geek.nz) if this stops working, I'll update the search extension.
+
+
+[[!tag firefox]] [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 

@@ -1,0 +1,65 @@
+[[!meta title="Getting your project included into Free Software distributions"]]
+[[!meta date="2008-09-20T09:00:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+After releasing a new Free Software project to the world, you may be interested to see it included by the main Linux or Free Software distributions. After all this is the easiest way for end-users to download and install your software.  
+  
+Here are a couple of [technical details](http://lwn.net/Articles/277132/) that will increase the chances that your project will be picked up by a distribution.  
+
+## Can I distribute this software?
+
+The first question that a distribution maintainer will need to answer is this one: can my distribution legally distribute this piece of software?  
+  
+There are two ways you can help here:
+
+  * Make your [chosen license](http://feeding.cloud.geek.nz/2008/05/choosing-right-license-for-your-new.html) clearly visible (normally in a file called `COPYING` or `LICENSE`).
+  
+
+  * Include a [clear copyright statement](http://www.fsf.org/licensing/licenses/gpl-howto.html) in your documentation (inside `README` for example).
+
+Once your software has past this check, the next question will be of course: does it actually work?  
+
+## Will it work on my distro?
+
+To answer this question, the maintainer will have to install the software and figure out all of the external dependencies that need to be installed at the same time.  
+  
+Therefore, your tarball should include:
+
+  * all of the steps (and exact commands) that are necessary to install your software on a standard Free Software distribution
+  
+
+  * a list of the external libraries and tools that your software requires to run
+
+## What's changed?
+
+Another element that can make life easier for the maintainers of your software in downstream distributions is to include indications of what changes from one release to the next.  
+  
+One important detail is to use a [sane versioning system](http://mako.cc/projects/howto/FreeSoftwareProjectManagement-HOWTO.html#CHOOSEVERSIONING). In a nutshell, this means:
+
+  * Version numbers should always be increasing (e.g. in normal ASCII sorting, 1.0pre1 comes after 1.0).
+  
+
+  * **Any change to the contents** of the tarball should trigger a version bump.
+  
+
+  * The difference in version numbers from one version to the next should give an indication of the magnitude (minor v. major) of the change.
+
+Another thing that you should include is a changelog (normally in a file called `Changes` or `ChangeLog`). This document will be used by maintainers to decide when to upgrade to a new version and to figure out which bugs may be fixed by the new version. It should contain:
+
+  * release date
+  * version number
+  * summary of the changes since the last version
+
+Finally, to make sure that distro maintainers don't miss new releases of your software, make sure you sign your project up on [Freshmeat](http://www.freshmeat.net) and **announce new releases** there.  
+
+## Proposing your Package to Distros
+
+On Debian, the main way that users and upstream developers can suggest packages for inclusion in the archive is through the [Debian Bug Tracking system](http://www.debian.org/Bugs/Reporting). Bugs are filled against the special [wnpp](http://bugs.debian.org/wnpp) (Work-needed and Prospective Packages) pseudo-package and are titled something like `RFP: superfoo -- bringing more foo to the desktop` where RFP stands for "Request For Package".  
+  
+Alternatively, if you are a Debian/Ubuntu user, you may also want to [build and maintain the package yourself](http://www.debian.org/doc/maint-guide/). In which case, you will need to [find a sponsor](http://people.debian.org/~mpalmer/debian-mentors_FAQ.html#sponsored_packages).  
+  
+Other distributions have different procedures. Feel free to leave a comment explaining what these may be.  
+  
+More detailed information on [getting packaged for Debian](http://wiki.debian.org/GettingPackaged) is available on the Debian wiki.
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 

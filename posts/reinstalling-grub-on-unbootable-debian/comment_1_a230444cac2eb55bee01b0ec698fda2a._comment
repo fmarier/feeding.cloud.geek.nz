@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ claimedauthor="Jim"
+ subject=""
+ date="2009-06-09T06:11:56.908+12:00"
+ content="""
+The method I use is to boot another copy of Grub from somewhere (bootable CD, USB stick, or network boot -- it's easy to boot grub from any of these). Then, from the prompt, something like  
+  
+root (hd0,0)  
+setup (hd0)  
+reboot  
+  
+is all you need to install grub onto the disk.  
+  
+Or, if you'd rather just boot into the system and fix it from there, I use something like  
+  
+configfile (hd0,0)/boot/grub/menu.lst  
+<press escape>
+
+
+"""]]

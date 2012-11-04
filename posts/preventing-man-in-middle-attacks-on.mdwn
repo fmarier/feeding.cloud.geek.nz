@@ -1,0 +1,67 @@
+[[!meta title="Preventing man-in-the-middle attacks on fetchmail and postfix"]]
+[[!meta date="2010-05-01T09:00:00.002+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Recent attacks against the DNS infrastructure have exposed the limitations of relying on TLS/SSL certificates for securing connections on the Internet.  
+  
+Given that typical mail servers don't rotate their keys very often, it's not too cumbersome to hardcode their fingerprints and prevent your mail software from connecting to them should the certificate change. This is similar to how most people use ssh: assume that the certificate is valid on the first connection, but be careful if the certificate changes afterwards.  
+  
+
+## Fetchmail
+
+Here's how to specify a certificate for a POP/IMAP server (Gmail in this example).  
+  
+First of all, you need to download the server certificate:  
+  
+
+
+    openssl s_client -connect pop.gmail.com:995 -showcerts  
+    openssl s_client -connect imap.gmail.com:993 -showcerts
+
+
+  
+Then copy the output of that command to a file, say `gmail.out`, and extract its md5 fingerprint:  
+  
+
+<pre>
+openssl x509 -fingerprint -<b>md5</b> -noout -in <i>gmail.out</i>
+</pre>
+
+  
+Once you have the fingerprint, add it to your `~/.fetchmailrc`:  
+  
+
+<pre>
+poll pop.gmail.com protocol pop3 user "<i>remoteusername</i>" is "<i>localusername</i>" password "<i>mypassword</i>" fetchall ssl sslproto ssl3 sslfingerprint "<i>12:34:AB:CD:56:78:EF:12:34:AB:CD:56:78:EF:12:34</i>"
+</pre>
+
+  
+
+## Postfix
+
+Similarly, to detect changes to the certificate on your outgoing mail server (used as a smarthost on your local postfix instance), extract its sha1 fingerprint:  
+  
+
+<pre>
+openssl s_client -connect <i>mail.yourisp.net</i>:465 -showcerts  
+openssl x509 -fingerprint <b>-sha1</b> -noout -in <i>isp.out</i>
+</pre>
+
+  
+Then add the fingerprint to `/etc/postfix/main.cf`:  
+  
+
+<pre>
+relayhost = <i>mail.isp.net</i>  
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd  
+smtp_sasl_auth_enable = yes  
+smtp_sasl_security_options = noanonymous  
+smtp_tls_security_level = fingerprint  
+smtp_tls_mandatory_ciphers = high  
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3  
+smtp_tls_fingerprint_digest = <b>sha1</b>  
+smtp_tls_fingerprint_cert_match =  
+   <i>12:34:AB:CD:56:78:EF:90:12:AB:CD:34:56:EF:78:90:AB:CD:12:34</i>
+</pre>
+
+
+[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] 

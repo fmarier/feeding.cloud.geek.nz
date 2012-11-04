@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2008-04-11T08:49:00.000+12:00"
+ content="""
+A practial solution to the problem is encfs. It is fuse based and works on top of a existing filesystem. The files are not encrypted in a big block file, but in separated files, so you needn't reserve space prior using. The usage of encfs is very easier than that of cryptmount. The speed could be a little slower. No root access is needed.
+
+
+"""]]

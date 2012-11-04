@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/17178613673298541423"
+ nickname="Rogério"
+ subject=""
+ date="2011-04-03T14:26:18.877+12:00"
+ content="""
+It would be better if you didn't use /dev/zero to create the backing "media" (your backup.dat file).  
+  
+To get better protection (since you are encrypting things anyway), you should use /dev/urandom (not /dev/random, as this will block).  
+  
+Of course, you can always feed the entropy pool as simply as doing random stuff on your desktop (the usual sources) and using the package randomsound, while you listen to some music to be used as entropy.
+
+
+"""]]

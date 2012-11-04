@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://zgp.org/~dmarti/"
+ nickname="Don Marti"
+ subject=""
+ date="2010-06-20T13:51:18.356+12:00"
+ content="""
+Another item to check (Firebug or Web Developer Extension are useful) is the HTTP Expires: header. Setting a long "Expires" helps minimize traffic from repeat visits: [more info](http://zgp.org/~dmarti/www/image-tweaks/)
+
+
+"""]]

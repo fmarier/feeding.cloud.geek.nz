@@ -1,0 +1,52 @@
+[[!meta title="Writing the perfect patch"]]
+[[!meta date="2009-06-30T23:00:00.001+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Other people [have written](http://userweb.kernel.org/%7Eakpm/stuff/tpp.txt) and [talked (in Lecture 3)](http://cs.anu.edu.au/students/comp8440/lectures.php) about writing the perfect patch for a Free Software project. The goal there is to **increase the likelihood that a patch will be accepted** by the project developers.  
+  
+Integrating and testing patches takes time and so reducing that burden is essential when interacting with busy maintainers. Especially if they're volunteers.  
+  
+Here's what I try to keep in mind when preparing a patch.  
+
+## Use the right options to `diff`
+
+These two options should always be part of your call to the `diff` command:
+
+  * **-u**: use the most common patch format, unidiff.
+  * **-p**: include the name of the function that's being changed.
+
+and this one can be useful if the output seems unnecessarily large:
+
+  * **-d**: try hard to find a smaller set of changes.
+
+## Minimize the number of changes
+
+You need to draw attention to the changes that you're proposing and remove all other potential distractions:
+
+  * **Follow the coding style of the original file.** Your changes must fully blend in or they are likely to be rejected.
+  * **Do not re-indent existing code.** This will make it look like you modified every line.
+  * **Pay attention to whitespace changes.** In particular: end-of-line characters, trailing spaces and tab-versus-space differences. Use the `dos2unix` or `unix2dos` commands if you need to.
+  * **Gratuitous refactoring of existing code.** Unless the refactoring makes your change smaller or easier to understand, keep it for another patch.
+
+Of course all of the above would be acceptable patches **on their own**, just not combined with other types of changes.  
+
+## Only one logical change at a time
+
+Patches often need to be broken up into a series of logical changes to avoid these two extremes:
+
+  * the **gigantic patch** which adds a number of features and fixes a couple of bugs but scares everybody
+  * a **series of interdependent patches** which all relate to the same change and must all be applied together
+
+It's a bit of a balancing act, but a good rule of thumb is:
+
+  * to have **one patch per feature or bug** and
+  * to try to find the smallest (yet meaningful) change which can be applied on its own.
+
+## It's not just about the patch
+
+Your patch can be really good, but the email (or the bug tracker update) announcing it should also contain:
+
+  * a good **description** of the problem it solves and how it solves it
+  * the output of **`diffstat`** to give an idea of the size of the change
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag mahara]] [[!tag ubuntu]] [[!tag nzoss]] 

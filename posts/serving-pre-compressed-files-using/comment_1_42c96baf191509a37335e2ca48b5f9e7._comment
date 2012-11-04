@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ claimedauthor="Jan Hudec"
+ subject=""
+ date="2011-01-26T03:13:39.097+13:00"
+ content="""
+I am sorry, but however I read the link you claim to support that Vary header should be removed (https://code.google.com/speed/page-speed/docs/caching.html#LeverageProxyCaching), it claims you should leave the Vary in place and use Cache-Control: public.  
+  
+It says IE does not cache resources with Vary anything _BUT_ Accept-Encoding (and User-Agent) -- and Apache would be adding Vary: Accept-Encoding. So IE will, at least according to that page, cache properly. Plus the page says all proxies in common use _DO_ understand Vary: Accept-Encoding and can match it to client Accept-Encoding, so you want Cache-Control: public than.  
+  
+Even worse, according to the apache documentation force-no-vary implies force-response-1.0 and you don't want that performance killer (it implies no keepalive). Apache will automatically use it when talking to known-broken user agents.
+
+
+"""]]

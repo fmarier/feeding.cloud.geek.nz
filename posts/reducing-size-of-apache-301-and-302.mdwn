@@ -1,0 +1,94 @@
+[[!meta title="Reducing the size of Apache 301 and 302 responses"]]
+[[!meta date="2011-10-23T12:50:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Looking through the [Libravatar](https://www.libravatar.org/) access logs, I found that most of the traffic we currently serve consists of 302 redirects to Gravatar. Optimising that path is therefore very important.  
+  
+While Apache allows admins to provide [custom error pages](https://httpd.apache.org/docs/2.2/mod/core.html#errordocument) for things like 404 or 500, it's not quite that straightforward for 30x return codes.  
+  
+
+### Standard 301 / 302 responses
+
+By default, Apache (and most web servers out there) returns a fairly large HTML page along with a 30x redirection. Try it for yourself by disabling automatic redirections in Firefox (Preferences | Advanced | General | Accessibility) or by installing the [Request Policy](https://addons.mozilla.org/en-US/firefox/addon/requestpolicy/?src=search) add-on.  
+  
+The 302 responses sent by Libravatar looked like this:  
+
+
+    $ curl -i http://cdn.libravatar.org/avatar/12345678901234567890123456789012  
+    HTTP/1.1 302 Found  
+    Date: Wed, 21 Sep 2011 01:51:52 GMT  
+    Server: Apache  
+    Cache-Control: max-age=86400  
+    Location: http://www.gravatar.com/avatar/12345678901234567890123456789012.jpg?r=g&s=80&d=http://cdn.libravatar.org/nobody/80.png  
+    Vary: Accept-Encoding  
+    Content-Length: 310  
+    Content-Type: text/html; charset=iso-8859-1  
+      
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">  
+    <html><head>  
+    <title>302 Found</title>  
+    </head><body>  
+    <h1>Found</h1>  
+    <p>The document has moved <a href="http://www.gravatar.com/avatar/12345678901234567890123456789012.jpg?r=g&s=80&d=http://cdn.libravatar.org/nobody/80.png">here</a>.</p>  
+    </body></html>  
+    
+
+
+As you can see, the body of the response is just as large as the headers and isn't really necessary.  
+  
+
+### Body-less 301 responses
+
+After reading about the [ErrorDocument directive](https://httpd.apache.org/docs/2.2/custom-error.html), I created an empty file called `302` in the root of the web server and included this directive in my vhost configuration file:  
+
+
+    ErrorDocument 302 /302
+
+
+which made the responses look like this:  
+
+
+    $ curl -i http://example.com/redir  
+    HTTP/1.1 302 Found  
+    Date: Wed, 21 Sep 2011 03:39:26 GMT  
+    Server: Apache  
+    Last-Modified: Wed, 21 Sep 2011 03:39:17 GMT  
+    ETag: "8024d-0-4ad6b52201036"  
+    Accept-Ranges: bytes  
+    Content-Length: 0  
+    Content-Type: text/plain  
+      
+    
+
+
+This one does have a completely empty body, however, there's an important problem with this solution: the `Location` header is missing! Not much point in reducing the size of the redirect if it's no longer working.  
+  
+
+### Custom 302 response page
+
+The next thing I tried (and ended up settling on) is this:  
+
+
+    ErrorDocument 302 " "
+
+
+which results in a 1-byte response (a single space) in the body:  
+
+
+    $ curl -i http://example.com/redir  
+    HTTP/1.1 302 Found  
+    Date: Wed, 21 Sep 2011 03:37:50 GMT  
+    Server: Apache  
+    Location: http://www.example.com  
+    Vary: Accept-Encoding  
+    Content-Length: 1  
+    Content-Type: text/html; charset=iso-8859-1  
+      
+    
+
+
+There is still a little bit of unnecessary information in this response (character set, `Vary` and `Server` headers), but it's a major improvement over the original.  
+  
+If you know of any other ways to reduce this further, please leave a comment!
+
+
+[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag sysadmin]] [[!tag apache]] [[!tag nzoss]] 

@@ -1,0 +1,46 @@
+[[!meta title="Two-tier encryption strategy: Archiving your files inside an encrypted loopback partition"]]
+[[!meta date="2008-04-10T16:53:00.001+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Even with a fully encrypted system (root and [swap](http://feeding.cloud.geek.nz/2008/03/encrypted-swap-partition-on.html) partitions), your data is still vulnerable while your computer is on. That's why [Bruce Schneier](http://www.schneier.com/blog/) recommends a [two-tier encryption strategy](http://www.wired.com/politics/security/commentary/securitymatters/2007/11/securitymatters_1129).  
+  
+The idea is that infrequently used files are moved to a separate partition, encrypted with a different key. That way, the bulk of your data files is protected even if your laptop is [hijacked](http://www.schneier.com/blog/archives/2008/02/hotplug_1.html) or if an intruder manages to steal some files while your main partition is decrypted.  
+  
+On Debian and Ubuntu, a secure archive area can be created easily using an encrypted loopback partition and the `cryptmount` package.  
+  
+Add this to `/etc/cryptmount/cmtab`:  
+
+> **archives** {  
+dev=**/home/username/.archives**  
+dir=**/home/username/archives**  
+fstype=ext3 fsoptions=defaults cipher=aes  
+  
+keyfile=**/home/username/.archives.key**  
+keyhash=sha1 keycipher=des3  
+}
+
+Create the key and the 512 MB loopback partition:  
+
+> sudo cryptmount --generate-key 32 **archives**  
+dd if=/dev/zero of=**.archives** bs=1M count=512  
+mkdir **archives**  
+sudo cryptmount --prepare **archives**  
+sudo mkfs.ext3 -m 0 /dev/mapper/**archives**  
+sudo cryptmount --release **archives**  
+
+Fix the permissions so that you can write to this partition with your normal user account:  
+
+> cryptmount **archives**  
+cd **archives**  
+sudo chown **username:username** .  
+cryptmount -u archives  
+
+Then you can mount and umount that partition using:  
+
+> cryptmount archives
+
+and  
+
+> cryptmount -u archives
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] 

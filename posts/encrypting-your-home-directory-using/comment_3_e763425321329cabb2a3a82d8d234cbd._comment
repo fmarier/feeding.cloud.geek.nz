@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/17642321912779274665"
+ nickname="jak"
+ subject=""
+ date="2008-05-24T21:34:00.000+12:00"
+ content="""
+You might want to use cp -a /homebackup/{.*,*} /home to also copy dot-files.
+
+
+"""]]

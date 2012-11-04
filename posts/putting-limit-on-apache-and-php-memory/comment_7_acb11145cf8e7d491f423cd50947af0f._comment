@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/02726867824497339744"
+ nickname="gebi"
+ subject=""
+ date="2012-02-28T21:31:14.536+13:00"
+ content="""
+@Marek:  
+yes sure, as soon as a process is in a cgroup (EVERY child or process it starts) also ends up in the same cgroup without any race possible (by the kernel).  
+  
+Thus even double fork or any other child which was ever started by apache is put into the same cgroup where you put your initscript in the beginning.  
+e.g with echo $$ >/sys/fs/cgroup/apache  
+  
+on stop of apache you just do a  
+kill -9 of all tasks in /sys/fs/cgroup/apache/tasks and there will _never_ be any dangling cgi or other processes.  
+  
+you can restrict cpu and memory but also devices easily.  
+  
+hint: the cgroup-bin is IMHO *completly* broken (and that by design), but thats another story.  
+cgroups can also be used with simple mkdir/echo/rmdir/...  
+  
+seems my first answer got lost somehow...
+
+
+"""]]

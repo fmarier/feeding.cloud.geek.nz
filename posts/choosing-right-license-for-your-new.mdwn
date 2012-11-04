@@ -1,0 +1,52 @@
+[[!meta title="Choosing the right license for your new Free Software/Open Source project"]]
+[[!meta date="2008-05-26T12:00:00.002+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Writing the software is only one component of a successful Free Software project. If you want to build a community around your pet project, there are a number of important things you need to do but which typically fall outside of the "coding" job. One of these tasks is choosing a license.  
+  
+A license choice is very personal since it involves putting in writing the permissions and protections that you want to give with respect to your code. However, your choice of license will have a number of implications.  
+
+> "A license can ruin a perfectly good piece of software"  
+
+> 
+> - Jon Stevens
+
+Whenever possible, try to avoid:  
+
+  1. writing your own license
+  2. choosing a license which is [incompatible with the GPL](http://www.dwheeler.com/essays/gpl-compatible.html)
+
+To make sure that your project can be included in a Free Software distribution like [Debian ](http://www.debian.org)and to make your code most useful to other people, it is highly recommended that you choose a standard license. Common ones include the [GPL](http://www.fsf.org/licensing/licenses/gpl.html), [LGPL](http://www.fsf.org/licensing/licenses/lgpl.html), the [Modified BSD license ](http://www.xfree86.org/3.3.6/COPYRIGHT2.html#5)and the [Apache license](http://www.apache.org/licenses/LICENSE-2.0). You can find a more [exhaustive list](http://www.fsf.org/licensing/licenses/) on the Free Software Foundation website.  
+  
+Common licenses are well understood by the community and have stood the test of time. Their compatibility with other licenses are also much clearer. This is important if you'd like your code to be reused inside other projects, but also if you want to include code from other sources inside yours.  
+  
+The standard licenses are also more likely to make sense in different countries. The latest version of the [GPL](http://www.fsf.org/licensing/licenses/gpl.html), for example, was reviewed by [lawyers from all over the World](http://gplv3.fsf.org/discussion-committees/). Whatever you come up with is unlikely to have this level of scrutiny. If you think that the existing licenses don't fit your needs, please write to [licensing@fsf.org](mailto:licensing@fsf.org) to discuss your specific situation and avoid practical problems.  
+  
+So take the time to familiarize yourself with common licenses and then decide for yourself what protections you want to give to your code. Then, add the following to your tarball before you publish your source code online:  
+
+  1. a copy of the license
+  2. a clear copyright statement in a file like README  
+
+Here's an sample copyright statement for a piece of software under the latest version of the GNU General Public License:  
+
+> [Email-Reminder](http://www.email-reminder.org.nz/) - Receive emails for events like birthdays and anniversaries  
+Copyright (C) 2004-2008 by Francois Marier (fmarier@gmail.com)  
+  
+This program is free software: you can redistribute it and/or modify  
+it under the terms of the GNU General Public License as published by  
+the Free Software Foundation, either version 3 of the License, or  
+(at your option) any later version.  
+  
+This program is distributed in the hope that it will be useful,  
+but WITHOUT ANY WARRANTY; without even the implied warranty of  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the  
+GNU General Public License for more details.  
+  
+You should have received a copy of the GNU General Public License  
+along with this program. If not, see http://www.gnu.org/licenses/.
+
+This helps distributors and contributors by explicitly stating the license version as well as the name and contact details of the copyright holder.  
+  
+Next up: some tips and ideas about [what to provide along with your source code](http://feeding.cloud.geek.nz/2008/09/promoting-your-free-software-project.html)
+
+
+[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 

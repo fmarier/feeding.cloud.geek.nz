@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ claimedauthor="Anonymous"
+ subject=""
+ date="2010-11-02T21:26:21.612+13:00"
+ content="""
+I don't think leaving 20 percent free helps -- you're using the wrong concept of "free". The SSD will use that space anyway through remapping everytime you write to it, until it has used all erase blocks and has to start erasing for writes.
+
+
+"""]]

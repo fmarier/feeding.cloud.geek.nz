@@ -1,0 +1,18 @@
+[[!meta title="Privoxy rules to unblock TVNZ on-demand videos"]]
+[[!meta date="2010-05-07T08:00:00.001+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+My default [Privoxy](http://www.privoxy.org/) (a great Privacy-enhancing/ad blocking proxy) setup was blocking the on-demand section of TVNZ.  
+  
+It was however quite easy to fix:  
+
+
+    { -block }  
+    tvnz.co.nz/stylesheets/tvnz/lib/js/  
+    .2mdn.net/instream/
+
+
+  
+TV3 can also be [unblocked](http://feeding.cloud.geek.nz/2008/10/privoxy-rules-to-unblock-tv3-on-demand.html) in a similar way.
+
+
+[[!tag privoxy]] 

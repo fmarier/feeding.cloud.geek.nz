@@ -1,0 +1,42 @@
+[[!meta title="Dumping the contents of localstorage in HTML5 webapps"]]
+[[!meta date="2012-07-03T22:33:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[Localstorage](https://developer.mozilla.org/en/DOM/Storage#localStorage) is a particularly useful part of HTML 5 which allows websites to store [small amounts of data](http://dev-test.nemikor.com/web-storage/support-test/) inside a user's browser in a place that is only accessible to that site. In many ways, it's an extension of the idea behind [cookies](https://en.wikipedia.org/wiki/HTTP_cookie).
+
+While debugging a [LIFDed](http://www.open-mike.org/entry/lifding-the-web) web application, I tried to do something that should have been simple: dumping all of the data that a site has in localstorage. Unfortunately it wasn't all that straightforward.
+
+### Cookie persistence and localstorage
+
+Before you do anything else, make sure that persistent cookies are enabled. In Firefox, that means: 
+
+> Edit | Preferences | Privacy | History | Keep until: they expire
+
+If you don't do this, then the localstorage database on disk will always be empty as I imagine the data is simply kept in a data structure in memory.
+
+However, if you don't like the idea of persistent cookies for privacy reasons, you can still tell Firefox to clear cookies when it shut downs. Simply select "Clear history when Firefox closes" and then click the Settings button next to it. Localstorage will work as expected until the browser is closed.
+
+### Reading the contents of localstorage
+
+While there is an addon for this ([Foundstone HTML5 Local Storage Explorer](https://addons.mozilla.org/en-US/firefox/addon/foundstone-html5-local-storage/)), it's [proprietary](https://addons.mozilla.org/en-US/firefox/addon/foundstone-html5-local-storage/license/1.1) and there is an easy alternative if you're not scared of the command-line: 
+
+  1. go into your Firefox profile directory (`~/.mozilla/firefox/xxxxxx.default/`)
+  2. open the database using sqlite3 (`apt-get install sqlite3` on Debian):  
+
+
+        sqlite3 webappsstore.sqlite
+
+
+  3. dump everything that's in this database:  
+
+
+        > .dump webappsstore2
+
+
+  4. or only show the strings from a given origin (e.g. _`http://127.0.0.1:8000`_):  
+
+
+        > SELECT key, value FROM webappsstore2 WHERE scope = '1.0.0.721.:http:8000';
+
+
+
+[[!tag html5]] [[!tag web]] [[!tag nzoss]] [[!tag mozilla]] 

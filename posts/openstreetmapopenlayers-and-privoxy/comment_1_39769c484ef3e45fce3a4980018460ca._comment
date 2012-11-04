@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ claimedauthor="Robert Hart"
+ subject=""
+ date="2009-09-25T03:45:14.268+12:00"
+ content="""
+Surely the whole "To find identical files..." bit is irrelevant. you can just do   
+colordiff -u noproxy privoxy  
+?
+
+
+"""]]

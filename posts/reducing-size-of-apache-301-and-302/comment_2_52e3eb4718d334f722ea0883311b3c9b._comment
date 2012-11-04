@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="http://john.choffee.co.uk/"
+ nickname="choffee"
+ subject=""
+ date="2011-10-25T22:09:10.372+13:00"
+ content="""
+Is the content of the page required for screen readers or something similar? Interesting that the setting to turn off automatic redirects is in the accessibility section.  
+  
+I would be a little worried that I had broken something else by removing the content that some software may be expecting.  
+  
+I may be totally wrong and it's just left over from a time when browsers did not support that header.
+
+
+"""]]

@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="http://blog.incase.de"
+ nickname="Sven Mueller"
+ subject=""
+ date="2010-10-19T09:30:30.258+13:00"
+ content="""
+I would use   
+  
+debconf-get-selections | grep application > file  
+  
+and edit the file, then use  
+  
+debconf-set-selections < file  
+  
+to load the changed settings.
+
+
+"""]]

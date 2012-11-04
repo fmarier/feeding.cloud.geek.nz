@@ -1,0 +1,57 @@
+[[!meta title="Setting up a centralized git repository"]]
+[[!meta date="2008-12-09T19:00:00.002+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+A lot of people want to setup a shared repository to allow a team of developers to publish their code on a server. This centralized approach is the model behind CVS/Subversion-style, but is also one of the many workflows supported by [git](http://git.or.cz/).  
+  
+Setting up such a repository in git involves a few simple steps. For simplicity's sake, I will assume that:
+
+  * you have sorted out the UNIX permissions issues (e.g. putting all developers in a common group and adjusting permissions on the appropriate directories)
+  * and that the repository is located on the same machine (replace `/tmp/myrepo.git` by `ssh://hostname/repo.git` if you need to access a different machine).
+
+First of all, you need to **create the bare repository** where your users will push their changes and pull in updates:
+
+    mkdir /tmp/myrepo.git  
+    cd /tmp/myrepo.git  
+    git --bare init --shared
+
+
+_A bare repository in git is one that doesn't have an associated code checkout. It's essentially like the `.git` subdirectory of a normal repository._  
+  
+Then you need to **create a normal repository** from which you will push to the central one you just created:
+
+    mkdir /tmp/myrepo1  
+    cd /tmp/myrepo1  
+    git init
+
+
+You can't push yet because this local repository is completely empty (hence there is nothing to push). So let's **create an initial commit**:
+
+    touch test  
+    git add test  
+    git commit
+
+
+Now, you can **push your commit** to the central repository:
+
+    git push /tmp/myrepo.git master
+
+
+Other developers can **clone the shared code** using the usual command:
+
+    cd /tmp  
+    git clone /tmp/myrepo.git myrepo2
+
+
+If you want to be able to track the central repository (i.e. use "git pull" and "git push" directly), you will need your local `master` branch to track the remote branch.  
+  
+To do this, you can either throw away your local repo and clone again or simply run the following:
+
+    git remote add origin /tmp/myrepo.git  
+    git config branch.master.remote origin  
+    git config branch.master.merge refs/heads/master
+
+
+That's it. If you want a longer explanation however, have a look at Aaron Toponce's [tutorial](http://pthree.org/2008/11/28/setup-a-git-repository/) or see the Debian [Alioth instructions](http://wiki.debian.org/Alioth/Git).
+
+
+[[!tag catalyst]] [[!tag git]] 
