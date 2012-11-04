@@ -1,0 +1,4 @@
+[[!meta title="pages tagged wine"]]
+
+[[!inline pages="tagged(wine)" actions="no" archive="yes"
+feedshow=10]]
