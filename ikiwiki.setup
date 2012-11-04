@@ -10,10 +10,10 @@
 # name of the wiki
 wikiname: feedingthecloud
 # contact email for wiki
-adminemail: admin@branchable.com
+adminemail: francois@fmarier.org
 # users who are wiki admins
 adminuser:
-- http://none/
+- http://openid.fmarier.org/
 # users who are banned from the wiki
 banned_users: []
 # where the source of the wiki is located
@@ -72,21 +72,21 @@ underlaydir: /usr/share/ikiwiki/basewiki
 # display verbose messages?
 #verbose: 1
 # log to syslog?
-syslog: '1'
+syslog: 1
 # create output files named page/index.html?
-usedirs: 1
+usedirs: '1'
 # use '!'-prefixed preprocessor directives?
-prefix_directives: 1
+prefix_directives: '1'
 # use page/index.mdwn source files
-indexpages: 0
+indexpages: '0'
 # enable Discussion pages?
 discussion: '0'
 # name of Discussion pages
 discussionpage: Discussion
 # generate HTML5?
-html5: 0
+html5: '0'
 # only send cookies over SSL connections?
-sslcookie: 0
+sslcookie: '0'
 # extension to use for new pages
 default_pageext: mdwn
 # extension to use for html files
@@ -98,7 +98,7 @@ timeformat: '%c'
 # put user pages below specified page
 userdir: ''
 # how many backlinks to show before hiding excess (0 to show all)
-numbacklinks: 10
+numbacklinks: '10'
 # attempt to hardlink source files? (optimisation for large files)
 hardlink: '1'
 # force ikiwiki to use a particular umask (keywords public, group or private, or a number)
@@ -119,7 +119,7 @@ timezone: GMT
 # specifies the characters that are allowed in source filenames
 wiki_file_chars: -[:alnum:]+/.:_
 # allow symlinks in the path leading to the srcdir (potentially insecure)
-allow_symlinks_before_srcdir: 0
+allow_symlinks_before_srcdir: '0'
 
 ######################################################################
 # core plugins
@@ -133,7 +133,7 @@ branchable: '1'
 # Allow anyone to git push verified changes to this site?
 #anonpush: 0
 # Display "Branchable" link on action bar?
-#branchable_action: 1
+branchable_action: 1
 
 # git plugin
 # git hook to generate
@@ -152,9 +152,9 @@ historyurl: http://source.feedingthecloud.branchable.com/?p=source.git;a=history
 # gitweb url to show a diff ([[file]], [[sha1_to]], [[sha1_from]], [[sha1_commit]], and [[sha1_parent]] substituted)
 diffurl: http://source.feedingthecloud.branchable.com/?p=source.git;a=blobdiff;f=[[file]];h=[[sha1_to]];hp=[[sha1_from]];hb=[[sha1_commit]];hpb=[[sha1_parent]]
 # where to pull and push changes (set to empty string to disable)
-#gitorigin_branch: origin
+gitorigin_branch: origin
 # branch that the wiki is stored in
-#gitmaster_branch: master
+gitmaster_branch: master
 
 # gitpush plugin
 # git repository urls that changes are pushed to
@@ -178,7 +178,7 @@ created: '1351997051'
 # how many days to retain logs
 #log_period: 7
 # disable IPv6?
-#ipv6_disabled: 1
+ipv6_disabled: 0
 
 # inline plugin
 # enable rss feeds by default?
@@ -190,7 +190,7 @@ atom: '1'
 # allow atom feeds to be used?
 #allowatom: 0
 # urls to ping (using XML-RPC) on feed update
-#pingurl: http://rpc.technorati.com/rpc/ping
+pingurl: []
 
 ######################################################################
 # auth plugins
@@ -246,9 +246,9 @@ openid_cgiurl: http://feedingthecloud.branchable.com/ikiwiki.cgi
 # types of source files to syntax highlight
 tohighlight: .c .h .cpp .pl .py Makefile:make
 # location of highlight's filetypes.conf
-#filetypes_conf: /etc/highlight/filetypes.conf
+filetypes_conf: /etc/highlight/filetypes.conf
 # location of highlight's langDefs directory
-#langdefdir: /usr/share/highlight/langDefs
+langdefdir: /usr/share/highlight/langDefs
 
 # mdwn plugin
 # enable multimarkdown features?
@@ -310,15 +310,15 @@ virus_checker: clamdscan -
 # PageSpec of pages where comments are allowed
 comments_pagespec: posts/* and !*/Discussion
 # PageSpec of pages where posting new comments is not allowed
-#comments_closed_pagespec: blog/controversial or blog/flamewar
+comments_closed_pagespec: ''
 # Base name for comments, e.g. "comment_" for pages like "sandbox/comment_12"
-#comments_pagename: ''
+comments_pagename: comment_
 # Interpret directives in comments?
 #comments_allowdirectives: 0
 # Allow anonymous commenters to set an author name?
 #comments_allowauthor: 0
 # commit comments to the VCS
-#comments_commit: 1
+comments_commit: 1
 
 # getsource plugin
 # Mime type for returned source.
@@ -332,16 +332,17 @@ comments_pagespec: posts/* and !*/Discussion
 
 # repolist plugin
 # URIs of repositories containing the wiki's source
-#repositories:
-#- svn://svn.example.org/wiki/trunk
+repositories:
+- ssh://b-feedingthecloud@feedingthecloud.branchable.com/
+- git://feedingthecloud.branchable.com/
 
 # search plugin
 # path to the omega cgi program
-#omega_cgi: /usr/lib/cgi-bin/omega/omega
+omega_cgi: /usr/lib/cgi-bin/omega/omega
 
 # theme plugin
 # name of theme to enable
-#theme: actiontabs
+theme: actiontabs
 
 # websetup plugin
 # list of plugins that cannot be enabled/disabled via the web interface
@@ -381,7 +382,7 @@ archive_pagespec: page(posts/*) and !*/Discussion
 
 # listdirectives plugin
 # directory in srcdir that contains directive descriptions
-#directive_description_dir: ikiwiki/directive
+directive_description_dir: ikiwiki/directive
 
 # teximg plugin
 # Should teximg use dvipng to render, or dvips and convert?
@@ -450,9 +451,9 @@ archive_pagespec: page(posts/*) and !*/Discussion
 
 # recentchanges plugin
 # name of the recentchanges page
-#recentchangespage: recentchanges
+recentchangespage: recentchanges
 # number of changes to track
-#recentchangesnum: 100
+recentchangesnum: 100
 
 # rsync plugin
 # command to run to sync updated pages
@@ -468,7 +469,7 @@ tagbase: tags
 # autocreate new tag pages?
 #tag_autocreate: 1
 # commit autocreated tag pages
-#tag_autocreate_commit: 1
+tag_autocreate_commit: 1
 
 # typography plugin
 # Text::Typography attributes value
