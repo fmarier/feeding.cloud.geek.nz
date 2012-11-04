@@ -1,0 +1,4 @@
+[[!meta title="pages tagged libravatar"]]
+
+[[!inline pages="tagged(libravatar)" actions="no" archive="yes"
+feedshow=10]]
