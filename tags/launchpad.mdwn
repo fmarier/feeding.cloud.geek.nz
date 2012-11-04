@@ -1,0 +1,4 @@
+[[!meta title="pages tagged launchpad"]]
+
+[[!inline pages="tagged(launchpad)" actions="no" archive="yes"
+feedshow=10]]
