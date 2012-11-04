@@ -1,10 +1,27 @@
-[[!if test="enabled(calendar)" then="""
-[[!calendar pages="page(./posts/*) and !*/Discussion"]]
-"""]]
+# Subscribe to this blog
 
-[[Recent Comments|comments]]
+<a href="http://feeds.cloud.geek.nz/FeedingTheCloud"><img src="/feed-icon.png" height="32" width="32" align="left">Subscribe in a reader</a>
+[Subscribe by Email](http://www.feedburner.com/fb/a/emailverifySubmit?feedId=1839853&loc=en_US)
+
+[[!flattr url="http://feeding.cloud.geek.nz" button="compact"]]
+
+# About me
+
+<a href="http://fmarier.org"><img src="http://cdn.libravatar.org/avatar/0110e86fdb31486c22dd381326d99de9?domain=fmarier.org&s=80" width="80" height="80">
+
+**François Marier**</a>
+<br>Free and Open Source software developer
+<br>
+<br>[Twitter](https://twitter.com/fmarier) / [Identica](http://identi.ca/fmarier)
+<br>[Linked In](http://linkedin.com/in/fmarier)
+
+# More from this blog
 
 [[Archives]]
 
+[[Recent Comments|comments]]
+
 [[Tags]]:
-[[!pagestats style="list" pages="./tags/*" among="./posts/*"]]
+[[!pagestats pages="./tags/* and !tags/debian and !tags/catalyst and !tags/mozilla and !tags/ubuntu and !tags/nzoss and !tags/sysadmin and !tags/mahara" among="./posts/*"]]
+
+<br><center><a href="http://affiliates.mozilla.org/link/banner/25220"><img src="https://affiliates.mozilla.org/media/uploads/banners/cc854bf8135e2a772ee053d743e463eb96a294cc.png"></a></center>

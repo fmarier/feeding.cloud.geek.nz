@@ -1,0 +1,62 @@
+/* ikiwiki local style sheet */
+body, .pageheader .actions ul li {
+  background-color: #EEEECC;
+}
+
+a {
+  color: #5187bd;
+}
+
+code, pre {
+  background-color: #ddddbe;
+}
+
+.pageheader, .pagefooter {
+  border: none;
+  background-color: #335577;
+  color: white;
+}
+
+.pageheader a, .pagefooter a {
+  color: #6db6ff;
+}
+
+#footer, #pageinfo {
+  margin: 0;
+}
+
+.sidebar {
+  background-color: #558866;
+  width: 220px;
+  color: white !important;
+}
+
+.sidebar a {
+  color: #99f5b7;
+}
+
+.sidebar img {
+  margin: 0 10px 0 0;
+}
+
+.blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions {
+  display: none;
+}
+
+#pagebody {
+  width: 800px;
+}
+
+.inlinepage {
+  padding: 0.5em 0;
+}
+
+.pageheader .actions ul li a {
+  color: black;
+}
+
+.pagecloud {
+  color: white !important;
+  border: none;
+  background: none;
+}
