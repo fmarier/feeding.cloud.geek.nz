@@ -14,6 +14,7 @@ adminemail: francois@fmarier.org
 # users who are wiki admins
 adminuser:
 - http://openid.fmarier.org/
+- https://openid.fmarier.org/
 # users who are banned from the wiki
 banned_users: []
 # where the source of the wiki is located
@@ -417,7 +418,7 @@ directive_description_dir: ikiwiki/directive
 
 # aggregate plugin
 # enable aggregation to internal pages?
-aggregateinternal: 1
+aggregateinternal: '1'
 # allow aggregation to be triggered via the web?
 #aggregate_webtrigger: 0
 # cookie control
@@ -426,7 +427,7 @@ cookiejar:
 
 # autoindex plugin
 # commit autocreated index pages
-autoindex_commit: 1
+autoindex_commit: '1'
 
 # camelcase plugin
 # list of words to not turn into links
