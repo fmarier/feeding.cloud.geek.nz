@@ -1,0 +1,4 @@
+[[!meta title="pages tagged rt"]]
+
+[[!inline pages="tagged(rt)" actions="no" archive="yes"
+feedshow=10]]
