@@ -1,0 +1,4 @@
+[[!meta title="pages tagged conference"]]
+
+[[!inline pages="tagged(conference)" actions="no" archive="yes"
+feedshow=10]]
