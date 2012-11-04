@@ -1,0 +1,4 @@
+[[!meta title="pages tagged mahara"]]
+
+[[!inline pages="tagged(mahara)" actions="no" archive="yes"
+feedshow=10]]
