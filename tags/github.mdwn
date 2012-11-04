@@ -1,0 +1,4 @@
+[[!meta title="pages tagged github"]]
+
+[[!inline pages="tagged(github)" actions="no" archive="yes"
+feedshow=10]]
