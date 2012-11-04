@@ -67,6 +67,7 @@ add_plugins:
 - google
 - calendar
 - headinganchors
+- gitpush
 # plugins to disable
 disable_plugins: []
 # additional directory to search for template files
@@ -162,7 +163,8 @@ gitmaster_branch: master
 
 # gitpush plugin
 # git repository urls that changes are pushed to
-#git_push_to: []
+git_push_to:
+- git@gitorious.org:fmarier-org/feedingthecloud.git
 
 # htmlscrubber plugin
 # PageSpec specifying pages not to scrub
