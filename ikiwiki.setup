@@ -65,9 +65,10 @@ add_plugins:
 - moderatedcomments
 - flattr
 - google
-# plugins to disable
-disable_plugins:
 - calendar
+- headinganchors
+# plugins to disable
+disable_plugins: []
 # additional directory to search for template files
 templatedir: /usr/share/ikiwiki/templates
 # base wiki source location
