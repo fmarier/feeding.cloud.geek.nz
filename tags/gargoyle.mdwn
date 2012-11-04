@@ -1,0 +1,4 @@
+[[!meta title="pages tagged gargoyle"]]
+
+[[!inline pages="tagged(gargoyle)" actions="no" archive="yes"
+feedshow=10]]
