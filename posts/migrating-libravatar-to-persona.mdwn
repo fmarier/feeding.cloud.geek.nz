@@ -57,7 +57,7 @@ In any case, despite these hacks, I got it all working in the end which is why I
 
 The most visible feature that the new API brings (as [options to `request()`](https://gitorious.org/libravatar/libravatar/commit/bccf97a3709dec79d6ac6d7848c9f8851f31f19f)) is the [ability to add your name and logo](http://identity.mozilla.com/post/27122712140/new-feature-adding-your-websites-name-and-logo-to-the) to the Persona popup window:
 
-![](persona_branded_popup.png)
+![](/posts/migrating-libravatar-to-persona/persona_branded_popup.png)
 
 The second feature [I tried to enable](https://gitorious.org/libravatar/libravatar/commit/984e51875b215156b4b85d465bfd0b17ef3c9628) on Libravatar is the new [redirectTo](http://identity.mozilla.com/post/27914354400/improvements-to-the-first-time-sign-up-flow) `request()` option. Unfortunately, I had to [revert this change](https://gitorious.org/libravatar/libravatar/commit/b6d5919f9aaa31f8ba40deecec64aeafb5189632) since in our case, going straight to the profile page causes the [@login_required](https://docs.djangoproject.com/en/1.2/topics/auth/#the-login-required-decorator) Django decorator to run before the `onlogin` callback has a chance to set the session cookie.
 

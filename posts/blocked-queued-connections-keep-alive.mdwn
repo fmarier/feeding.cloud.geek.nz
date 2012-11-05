@@ -7,7 +7,7 @@ If I waited long enough, all of the resources would be loaded correctly and the 
 
 This is what I saw in Firebug:
 
-![](firebug_net_blocking.png)
+![](/posts/blocked-queued-connections-keep-alive/firebug_net_blocking.png)
 
 The [Firebug documentation](https://getfirebug.com/wiki/index.php/Net_Panel#Request_Timeline) explains that the "blocking" state is the time that the browser spends waiting for a connection. Given that this was an HTTP connection (i.e. no SSL), I wasn't sure what was causing this but it looked like some kind of problem with the backend.
 

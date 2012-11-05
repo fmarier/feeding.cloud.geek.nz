@@ -25,7 +25,7 @@ Also note that I was looking for the "best case" for each of the different confi
 
 Using the default `apache2-modperl2` config file (as supplied by RT), here's what the homepage (logged in as root) looked like before I changed anything:  
   
-![](rt_not_optmised.png)  
+![](/posts/improving-performance-of-request/rt_not_optmised.png)  
   
 The purple section here indicates the time spent waiting for the server. This shows that the server (running [Mason](http://www.masonhq.com/) inside [mod_perl](http://perl.apache.org/)) is doing quite a bit of processing, including a lot more work than you'd expect while serving static files. It's quite impressive to see how fast the images are being served (directly by Apache) in comparison with the Javascript and the CSS files (which go through Mason).  
   
@@ -50,7 +50,7 @@ So as long as these paths don't change, then there is no need to re-generate the
 
 This next diagram was produced after configuring Apache to serve all Javascript and CSS files directly from Apache:  
   
-![](rt_image_corners.png)  
+![](/posts/improving-performance-of-request/rt_image_corners.png)  
   
 The way I did that (without modifying any of the original files) was by saving the Javascript/CSS sent to the browser and using [mod_rewrite](http://httpd.apache.org/docs/2.2/mod/mod_rewrite.html) rules to serve these files instead of the original templated ones:  
   
@@ -94,14 +94,14 @@ So I replaced all of the "rounded corner" images in the `main-squished.css` file
   
 This eliminated a number of roundtrips and shaved off a few more milliseconds:  
   
-![](rt_bestcase.png)  
+![](/posts/improving-performance-of-request/rt_bestcase.png)  
   
 
 ## Merging CSS and Javascript files
 
 By this stage, the pages are pretty snappy so there is not much to be gained anymore, but I figured I'd try to reduce the latency a bit more by combining all Javascript files into one (and doing the same for CSS files with the exception of print.css). This is what I got:  
   
-![](rt_fully_squished.png)  
+![](/posts/improving-performance-of-request/rt_fully_squished.png)  
   
 (Note that I also took the opportunity to [minify](http://yuilibrary.com/projects/yuicompressor/) both squished files to reduce the filesize.)  
   

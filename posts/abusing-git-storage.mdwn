@@ -59,7 +59,7 @@ git commit -m 'Initial commit'
 </pre>
 
   
-![](Capture.png)
+![](/posts/abusing-git-storage/Capture.png)
 
 
 [[!tag catalyst]] [[!tag debian]] [[!tag mahara]] [[!tag git]] [[!tag nzoss]] 
