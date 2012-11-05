@@ -175,7 +175,7 @@ htmlscrubber_skip: '* and !comment(*) and !*/Discussion'
 # list of urls that alias to the main url
 #urlalias: []
 # openid of primary site owner
-owner: http://openid.fmarier.org/
+owner: https://openid.fmarier.org/
 # optional hostname of site this one was branched from
 #parent: ''
 # internal hostname of this site
