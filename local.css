@@ -1,6 +1,7 @@
 /* ikiwiki local style sheet */
 body, .pageheader .actions ul li {
   background-color: #EEEED9;
+  text-rendering: optimizeLegibility;
 }
 
 a {
