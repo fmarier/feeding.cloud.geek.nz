@@ -14,16 +14,13 @@ Here are the minimum rules that let the [videos](http://www.tv3.co.nz/Aftershock
     .doubleclick.net/pfadx/www.tv3.co.nz  
     
 
-
 If you are looking to unblock a different site, here's how you can do it:  
 
   1. set `debug 1` in `/etc/privoxy/config`
   2. restart privoxy (`sudo /etc/init.d/privoxy restart` on [Debian](http://www.debian.org))
   3. watch the logfile for any blocked contents:
 
-
-    tail -f /var/log/privoxy/logfile | grep Blocked
-
+        tail -f /var/log/privoxy/logfile | grep Blocked
 
 
 [[!tag catalyst]] [[!tag privoxy]] [[!tag ubuntu]] 
