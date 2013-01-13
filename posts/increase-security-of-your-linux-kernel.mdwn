@@ -11,7 +11,7 @@ Wikipedia has a [pretty good explanation](http://en.wikipedia.org/wiki/Grsecurit
 
 If you're looking for a quick way of downloading the latest stable Linux kernel with the grsecurity patch already applied, clone this git repository (which can be [browsed here](http://git.catalyst.net.nz/gitweb?p=linux-2.6.24-grsec.git)):  
 
-> git-clone http://git.catalyst.net.nz/linux-2.6.24-grsec.git
+    git-clone http://git.catalyst.net.nz/linux-2.6.24-grsec.git
 
 I also maintain an RSS feed (well, an Atom feed actually) keeping track of the latest grsecurity and PaX test patches:  
 
