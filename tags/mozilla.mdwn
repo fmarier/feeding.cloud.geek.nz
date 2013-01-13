@@ -1,4 +1,4 @@
 [[!meta title="pages tagged mozilla"]]
 
 [[!inline pages="tagged(mozilla)" actions="no" archive="yes"
-feedshow=10]]
+feedshow=10 feedpages=created_after(posts/prefetching-resources-to-prime-browser/)]]
