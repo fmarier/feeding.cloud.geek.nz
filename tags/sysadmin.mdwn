@@ -1,4 +1,4 @@
 [[!meta title="pages tagged sysadmin"]]
 
 [[!inline pages="tagged(sysadmin)" actions="no" archive="yes"
-feedshow=10]]
+feedshow=10 feedpages=created_after(posts/debugging-openwrt-routers-by-shipping)]]

@@ -1,4 +1,4 @@
 [[!meta title="pages tagged postgres"]]
 
 [[!inline pages="tagged(postgres)" actions="no" archive="yes"
-feedshow=10]]
+feedshow=10 feedpages=created_after(posts/restoring-single-table-from-postgres)]]

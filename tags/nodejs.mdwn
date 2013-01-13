@@ -1,4 +1,4 @@
 [[!meta title="pages tagged nodejs"]]
 
 [[!inline pages="tagged(nodejs)" actions="no" archive="yes"
-feedshow=10 feedpages=created_after(posts/blocked-queued-connections-keep-alive)]]
+feedshow=10 feedpages=created_after(posts/proper-indentation-of-javascript-files)]]
