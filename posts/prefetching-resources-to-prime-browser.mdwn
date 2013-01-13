@@ -1,0 +1,77 @@
+[[!meta title="Prefetching resources to prime the browser cache for the next page"]]
+[[!meta date="2012-11-27T12:52:00.001+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+One of the great ways to reduce the perceived load time of pages on your site is to prefetch resources that will be needed while users are busy reading or interacting with the current page.
+
+There are a few ways to ensure that the browser will already have a page in its cache when users visit them. In this particular case, I wanted improve the load time of the [Persona](https://login.persona.org/) dialog while users are busy looking at the third-party site they want to login into.
+
+### Hidden images and iframes
+
+The classic way that many image galleries used to prefetch the "next" image in a series was to include it on the current page as a tiny 1x1 pixel image.
+
+Ignoring the fact that this is now usually blocked because it looks like a [web bug](https://en.wikipedia.org/wiki/Web_bug) (2x2 is the way to go now), the problem with this technique is that the browser now has to pull two images at once, which, for slower connections, means that the load time for the initial page will be longer.
+
+A variant of this technique, with the same problem, is to load the next page in a hidden [iframe](https://developer.mozilla.org/en-US/docs/HTML/Element/iframe):
+
+
+      
+    <iframe style="display: none" src="/prefetch.html"></iframe>  
+    
+
+
+### XHR fetch after the page load
+
+A more modern version of the hidden image technique is to use an [XHR](https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest) request to download the resources to the cache once the page has finished loading.
+
+It looks like this:
+
+
+      
+    <script>  
+    window.onload = function () {  
+      var xhr = new XMLHttpRequest();  
+      xhr.open('GET', '/css/styles.css', false);  
+      xhr.send(null);  
+    };  
+    </script>  
+    
+
+
+The main downside of this solution is that you can only prefetch resources on the same server because of browsers' [same-origin restrictions](https://developer.mozilla.org/en-US/docs/Same_origin_policy_for_JavaScript) (unless you can use [HTTP access controls (CORS)](https://developer.mozilla.org/en-US/docs/HTTP_access_control)). In the case of Persona though, I wanted third-party sites to trigger the prefetching of resources available from a different host: `login.persona.org`.
+
+### HTML5's prefetch links
+
+HTML5 has defined a [prefetch relation type](http://www.whatwg.org/specs/web-apps/current-work/#link-type-prefetch) for links and similar tags. All you need to do to use it is to put something like this in your page head:
+
+
+      
+    <link rel="prefetch" href="/img/background.jpg">  
+    <link rel="prefetch" href="/css/styles.css">  
+    <link rel="prefetch" href="/js/navigation.js">  
+    
+
+
+These [prefetching hints](https://developer.mozilla.org/en-US/docs/Link_prefetching_FAQ) work on HTTPS pages and across domains, but only get loaded when the browser is idle and believes that the network can handle it. In other words, with the exception of a few extra bytes added to the HTML, these hints will not affect the loading time of the page they are on.
+
+Prefetching **will not parse HTML or execute Javascript** though (i.e. it's not recursive). So if you want to put a page and all of its resources into the cache ahead of time, you'll need to have link tags for each child resource in the page head.
+
+While this [has been implemented in Chrome](https://code.google.com/p/chromium/issues/detail?id=13505), it got [disabled](https://code.google.com/p/chromium/issues/detail?id=107897) when they added support for the non-standard [prerender](https://developers.google.com/chrome/whitepapers/prerender) relation type. So right now, you may need to use both. Note that either of these relations include DNS resolution, which makes [dns-prefetch](https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching) relations unnecessary.
+
+### Dynamic list of resources to prefetch
+
+If you're trying to use prefetch links to get other sites to pre-cache your resources, you're essentially limited to a static list of resources that doesn't change. Unfortunately, that's not how modern sites work. Many sites now host each version of a static file on a unique (e.g. versioned or timestamped) URL with very long [expire headers](http://developer.yahoo.com/performance/rules.html#expires).
+
+Ideally, we would give the browser a list of resources to prefetch. While that feature doesn't exist yet, we can approximate it by **loading a hidden iframe containing the necessary prefetch links**. That way, third-party sites can hardcode the iframe on their pages and you can update the list of resources to prefetch anytime you want.
+
+The great thing about the way Persona works is that we already use an iframe as a [commnication channel](https://github.com/mozilla/jschannel) between the site and the code on `login.persona.org`. So all I had to do in the end was to [add prefetch links to that existing iframe](https://github.com/fmarier/browserid/commit/fec98808fec87abf86d81d7448a5a59e51b20f8f). The result of this is that every site using the [Observer API](http://identity.mozilla.com/post/28513408358/a-new-api-for-persona) gets the benefit of prefetching without having to change anything!
+
+### Testing
+
+If you want to make sure that your prefetching works:
+
+  1. Clear your browser cache.
+  2. Load the page that has prefetch links.
+  3. Take a look at the contents of your cache ([about:cache](about:cache) in Firefox and [chrome://cache/](chrome://cache/) in Chrome) and look for the resources that should be prefetched.
+
+
+[[!tag firefox]] [[!tag optimisation]] [[!tag html5]] [[!tag web]] [[!tag browserid]] [[!tag nzoss]] [[!tag mozilla]] 

@@ -1,0 +1,51 @@
+[[!meta title="Keeping GMail in a separate browser profile"]]
+[[!meta date="2012-12-20T19:34:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+I wanted to be able to use the GMail web interface on my work machine, but for [privacy reasons](https://en.wikipedia.org/wiki/Filter_bubble), I prefer not to be logged into my Google Account on my main browser.
+
+Here's how I make use of a [somewhat hidden Firefox feature](https://support.mozilla.org/en-US/kb/profile-manager-create-and-remove-firefox-profiles) to move GMail to a separate browser profile.
+
+### Creating a separate profile
+
+The idea behing browser profiles is simple: each profile has separate history, settings, bookmarks, cookies, etc.
+
+To create a new one, simply start Firefox with this option:
+
+
+    firefox -ProfileManager
+
+
+to display a dialog which allows you to create new profiles:
+
+![](/posts/keeping-gmail-in-separate-browser/firefox_profile_manager.png)
+
+Once you've created a new "GMail" profile, you can start it up from the profile manager or directly from the command-line:
+
+
+    firefox -no-remote -P GMail
+
+
+(The `-no-remote` option ensures that a new browser process is created for it.)
+
+To make this easier, I put the command above in a tiny `gmail` shell script that lives in my `~/bin/` directory. I can use it to start my "GMail browser" by simply typing `gmail`.
+
+### Tuning privacy settings for 2-step authentication
+
+While I initially kept that browser profile in [private browsing mode](https://support.mozilla.org/en-US/kb/private-browsing-browse-web-without-saving-info), this was forcing me to enter my [2-factor authentication](https://support.google.com/accounts/bin/answer.py?hl=en&answer=180744) credentials every time I started the browser. So to avoid having to use [Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2) (or its [Firefox OS cousin](https://marketplace.firefox.com/app/gauth-authenticator/)) every day, I ended up switching to custom privacy settings and enabling all cookies:
+
+![](/posts/keeping-gmail-in-separate-browser/firefox_privacy_settings.png)
+
+It turns out however that there is a [Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/selectivecookiedelete/) which can selectively delete unwanted cookies while keeping useful ones.
+
+Once that add-on is installed and the browser restarted, simply add `accounts.google.com` to the whitelist and set it to clear cookies when the browser is closed:
+
+![](/posts/keeping-gmail-in-separate-browser/selectivecookiedelete_settings.png)
+
+Then log into GMail and tick the "Trust this computer" checkbox at the 2-factor prompt:
+
+![](/posts/keeping-gmail-in-separate-browser/2step_auth_prompt.png)
+
+With these settings, your browsing history will be cleared and you will be logged out of GMail every time you close your browser but will still be able to skip the 2-factor step on that device.
+
+
+[[!tag firefox]] [[!tag debian]] [[!tag ubuntu]] [[!tag privacy]] [[!tag nzoss]] [[!tag mozilla]] 

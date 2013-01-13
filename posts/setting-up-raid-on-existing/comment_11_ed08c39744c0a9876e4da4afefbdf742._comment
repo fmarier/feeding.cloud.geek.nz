@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.blogger.com/profile/16902794739331575365"
+ nickname="automaticgiant"
+ subject=""
+ date="2012-11-23T05:27:20.582+13:00"
+ content="""
+if you're not worried about losing swap data in case of drive failure (ideally you won't be using any swap space for performance reasons) you can just tell linux to use a swap partition on each drive with same priority and it should automatically stripe the data to give you more swap space and performance and less overhead.
+
+
+"""]]
