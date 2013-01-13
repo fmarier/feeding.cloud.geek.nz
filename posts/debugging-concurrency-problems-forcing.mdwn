@@ -5,7 +5,7 @@ Multi-threading can cause [hard-to-diagnose problems](http://radar.oreilly.com/a
   
 Here's a quick way to find out if the segfaults you are experiencing might be due to some concurrency/locking problem: force the application to run on a single CPU using schedtool (part of the schedtool package on Debian/Ubuntu).  
 
-> schedtool -a 0 -e applicationname
+    schedtool -a 0 -e applicationname
 
 This is just one example of what you can do with the [CPU Affinity](http://www.linuxjournal.com/article/6799) controls on Linux.
 
