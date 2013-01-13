@@ -5,7 +5,7 @@ If you are managing a Free Software project, you may eventually be confronted wi
   
 Some people describe this approach as [responsible disclosure](http://en.wikipedia.org/wiki/Responsible_disclosure). It boils down to this:  
 
-> if the vulnerability is not publicly known, warn the vendors first and give them some time to fix it before making the details public.
+> <i>if the vulnerability is not publicly known, warn the vendors first and give them some time to fix it before making the details public.</i>
 
 If the vulnerability is already public knowledge, then you can focus on fixing it as soon as possible and maybe let reporters know about [a better way to report their findings](http://oss-security.openwall.org/wiki/disclosure/researcher).  
 
