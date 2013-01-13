@@ -32,7 +32,7 @@ A commit message will typically be seen along with its patch. Therefore the idea
   * A short **description of the new feature** it introduces (or how to **reproduce the bug** it fixes)
   * Links to **related commits** (e.g. "Fix bug introduced in COMMIT_ID")
   * **Bug numbers** related to this commit
-  * The **main area** of the code (or _subsystem_) that this commit touches (as part of the short description, so that it's easily _grep_able)
+  * The **main area** of the code (or _subsystem_) that this commit touches (as part of the short description, so that it's easily <i>grep</i>able)
 
 Here's an example of a good commit message from version 2.6.29 of the Linux kernel:  
 
