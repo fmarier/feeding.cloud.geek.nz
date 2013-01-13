@@ -1,4 +1,4 @@
 [[!meta title="pages tagged python"]]
 
 [[!inline pages="tagged(python)" actions="no" archive="yes"
-feedshow=10 feedpages=created_after(posts/sample-python-application-using)]]
+feedshow=10 feedpages=created_after(posts/using-plupload-inside-django)]]
