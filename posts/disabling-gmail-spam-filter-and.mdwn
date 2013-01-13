@@ -9,8 +9,8 @@ The solution came just as I was looking at switching to a different email provid
   
 Using [fetchmail](http://fetchmail.berlios.de/), I can now download my received and sent mail using POP and then download (and purge) the contents of my spam folder. Here are the relevant lines of my `~/.fetchmailrc`:  
 
-> poll pop.gmail.com protocol pop3 user "fmarier@gmail.com" is "francois" password "" fetchall ssl  
-poll imap.gmail.com protocol imap user "fmarier@gmail.com" is "francois" password "" folder "[Gmail]/Spam" fetchall ssl  
+    poll pop.gmail.com protocol pop3 user "fmarier@gmail.com" is "francois" password "" fetchall ssl
+    poll imap.gmail.com protocol imap user "fmarier@gmail.com" is "francois" password "" folder "[Gmail]/Spam" fetchall ssl
 
 I can then run all of my mail through my own [SpamAssassin](http://spamassassin.apache.org/) filter (to which I added these [excellent custom rules](http://www.rulesemporium.com/)) and sort my mail in one of three folders:  
 
@@ -20,19 +20,19 @@ I can then run all of my mail through my own [SpamAssassin](http://spamassassin.
 
 This is done using [procmail](http://www.procmail.org/) with the following bit in my `~/.procmailrc`:  
 
-> # Use spamassassin to check for spam  
-# (only check messages < 400kB so that it doesn't choke) :0fw:/etc/mail/spamc.lock  
-* < 409600  
-| /usr/bin/spamc  
-  
-# Throw away messages with a score of > 12.0  
-:0:  
-* ^X-Spam-Level: \*\*\*\*\*\*\*\*\*\*\*\*  
-/dev/null  
-  
-:0:  
-* ^X-Spam-Status: Yes  
-/home/francois/mail/spam  
-
+    # Use spamassassin to check for spam
+    # (only check messages < 400kB so that it doesn't choke)
+    :0fw:/etc/mail/spamc.lock
+    * < 409600
+    | /usr/bin/spamc
+    
+    # Throw away messages with a score of > 12.0
+    :0:
+    * ^X-Spam-Level: \*\*\*\*\*\*\*\*\*\*\*\*
+    /dev/null
+    
+    :0:
+    * ^X-Spam-Status: Yes
+    /home/francois/mail/spam
 
 [[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] 
