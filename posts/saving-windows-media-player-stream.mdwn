@@ -5,15 +5,15 @@ The Gentoo folks have a [great howto](http://gentoo-wiki.com/HOWTO_Rip_Streams_W
   
 Here's the gist of it:  
 
-> mplayer -noframedrop -playlist "<url>" -dumpstream -dumpfile <file>
+     mplayer -noframedrop -playlist "<url>" -dumpstream -dumpfile <file>
 
 For example, saving the third video on this [Radio-Canada page](http://www.radio-canada.ca/television/3600_secondes_d_extase/espace_video/index.asp?date=3/1/2008) (Espace video) for later viewing:  
 
-> mplayer -noframedrop -dumpstream -dumpfile file.asf -playlist http://www.radio-canada.ca/Medianet/2008/CBFT/3600SecondesDextase200803011900_4.asx  
+    mplayer -noframedrop -dumpstream -dumpfile file.asf -playlist http://www.radio-canada.ca/Medianet/2008/CBFT/3600SecondesDextase200803011900_4.asx
 
 which can then, of course, be converted to MPEG4 using mencoder:  
 
-> mencoder -o file.avi -ovc lavc -lavcopts vbitrate=16000 -oac mp3lame file.asf
+    mencoder -o file.avi -ovc lavc -lavcopts vbitrate=16000 -oac mp3lame file.asf
 
 
 [[!tag ubuntu]] 
