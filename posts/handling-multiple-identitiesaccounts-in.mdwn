@@ -7,37 +7,37 @@ Since [mutt](http://wiki.mutt.org/) seems to be [all the rage](http://she.geek.n
   
 Here is how I handle two user accounts. Let's start off by listing both of these addresses so that mutt can recognize emails using these as being sent by me:  
 
-> alternates "(fmarier@gmail\.com)|(francois@debian\.org)"
+    alternates "(fmarier@gmail\.com)|(francois@debian\.org)"
 
 Now this is to allow me to change the From address within the editor, in case I forgot to set the right one before pressing 'm':  
 
-> set use_from
+    set use_from
 
 Here are the two settings that I'm going to change when switching to a different identity (from address and status bar display).  
 
-> # default profile  
-set from="fmarier@gmail.com"  
-set status_format="-%r-fmarier@gmail.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---"  
+    # default profile
+    set from="fmarier@gmail.com"
+    set status_format="-%r-fmarier@gmail.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---"
 
 Here are the macros I use to switch from one account to the next (bound to ESC-1 and ESC-2):  
 
-> macro index \e1 ":set from=fmarier@gmail.com\n:set status_format=\"-%r-fmarier@gmail.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to fmarier@gmail.com"  
-macro index \e2 ":set from=francois@debian.org\n:set status_format=\"-%r-francois@debian.org: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to francois@debian.org"  
+    macro index \e1 ":set from=fmarier@gmail.com\n:set status_format=\"-%r-fmarier@gmail.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to fmarier@gmail.com"
+    macro index \e2 ":set from=francois@debian.org\n:set status_format=\"-%r-francois@debian.org: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to francois@debian.org"
 
 And this is the code that uses these macros to switch to the right identity automatically:  
 
-> folder-hook =inbox 'push \e1oi'  
-folder-hook =debian-inbox 'push \e2oi'  
+    folder-hook =inbox 'push \e1oi'
+    folder-hook =debian-inbox 'push \e2oi'
 
 (The 'oi' part at the end is there to restore the default sort order.)  
   
 Finally, I've got this convenient shortcut which allows me to switch to my inbox quickly and to go from one inbox to the next:  
 
-> macro index I "c=inbox\n" "Switch to inbox"  
-folder-hook =inbox 'macro index I "c=debian-inbox\n" "Switch to debian-inbox"'  
-folder-hook =debian-inbox 'macro index I "c=inbox\n" "Switch to inbox"'
+    macro index I "c=inbox\n" "Switch to inbox"
+    folder-hook =inbox 'macro index I "c=debian-inbox\n" "Switch to debian-inbox"'
+    folder-hook =debian-inbox 'macro index I "c=inbox\n" "Switch to inbox"'
 
-Next up: indexing your emails using mairix.
+Next up: [[indexing your emails using mairix|posts/searching-through-contents-of-emails-in/]].
 
 
 [[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 
