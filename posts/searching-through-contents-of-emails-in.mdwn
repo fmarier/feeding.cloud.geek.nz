@@ -1,43 +1,43 @@
 [[!meta title="Searching through the contents of emails in mutt"]]
 [[!meta date="2008-04-05T23:30:00.000+13:00"]]
 [[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
-Mutt has a built-in feature for search the body of emails in the current mailbox (see ESC-b) but it's also possible to make this extremely fast by [plugging-in external tools](http://wiki.mutt.org/?UserStory/SearchingMail). Here's a quick description of my [mairix](http://www.rpcurnow.force9.co.uk/mairix/) setup.  
+Mutt has a built-in feature for search the body of emails in the current mailbox (see `ESC-b`) but it's also possible to make this extremely fast by [plugging-in external tools](http://wiki.mutt.org/?UserStory/SearchingMail). Here's a quick description of my [mairix](http://www.rpcurnow.force9.co.uk/mairix/) setup.  
   
 After installing the package,  
 
-> apt-get install mairix
+    apt-get install mairix
 
 create a .mairixrc in your home directory containing something like:  
 
-> base=/home/username/Mail  
-maildir=inbox:archives*:sent*  
-mbox=debian*:jokes  
-mfolder=search  
-database=/home/username/Mail/.mairix_database  
+    base=/home/username/Mail
+    maildir=inbox:archives*:sent*
+    mbox=debian*:jokes
+    mfolder=search
+    database=/home/username/Mail/.mairix_database
 
-(This assumes that you store your mail in ~/Mail and that you want the search results in a new ~/Mail/search maildir folder.)  
+(This assumes that you store your mail in `~/Mail` and that you want the search results in a new `~/Mail/search` maildir folder.)
   
 Then you need to run mairix once to index all of your emails:  
 
-> mairix  
+    mairix
 
 which you will of course want to run regularly. I created this cronjob in /etc/cron.d/mairix-username:  
 
-> 17,37,57 * * * * username /usr/bin/on_ac_power && /usr/bin/mairix
+    17,37,57 * * * * username /usr/bin/on_ac_power && /usr/bin/mairix
 
 (To avoid waking up the hard drive needlessly, I prefer to restrict the indexing runs for when I'm running on AC power. Take that out if you're not running it on a laptop.)  
   
-Finally, the last bit of setup is in ~/.muttrc:  
+Finally, the last bit of setup is in `~/.muttrc`:  
 
-> macro index \eb 'c=search'<enter><shell-escape>'mairix ' 'Enter Mairix search term'  
+    macro index \eb 'c=search'<enter><shell-escape>'mairix ' 'Enter Mairix search term'
 
-which makes mairix take over the ESC-b shortcut.  
+which makes mairix take over the `ESC-b` shortcut.
   
-If you use GPG, you should also add this to your ~/.muttrc to make sure that mairix can see all of your messages by saving them as clear text:  
+If you use GPG, you should also add this to your `~/.muttrc` to make sure that mairix can see all of your messages by saving them as clear text:  
 
-> set fcc_clear=yes  
-bind index s decrypt-save  
-bind pager s decrypt-save  
+    set fcc_clear=yes
+    bind index s decrypt-save
+    bind pager s decrypt-save
 
 
 [[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 
