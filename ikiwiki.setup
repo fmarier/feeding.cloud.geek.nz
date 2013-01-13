@@ -21,9 +21,9 @@ srcdir: /home/b-feedingthecloud/source
 # where to build the wiki
 destdir: /home/b-feedingthecloud/public_html
 # base url to the wiki
-url: http://feedingthecloud.branchable.com
+url: http://feeding.cloud.geek.nz
 # url to the ikiwiki.cgi
-cgiurl: http://feedingthecloud.branchable.com/ikiwiki.cgi
+cgiurl: http://feeding.cloud.geek.nz/ikiwiki.cgi
 # filename of cgi wrapper to generate
 cgi_wrapper: /var/www/b-feedingthecloud/ikiwiki.cgi
 # mode for cgi_wrapper (can safely be made suid)
@@ -78,7 +78,7 @@ underlaydir: /usr/share/ikiwiki/basewiki
 # display verbose messages?
 #verbose: 1
 # log to syslog?
-syslog: '1'
+syslog: 1
 # create output files named page/index.html?
 usedirs: '1'
 # use '!'-prefixed preprocessor directives?
@@ -173,7 +173,10 @@ htmlscrubber_skip: '* and !comment(*) and !*/Discussion'
 
 # ikiwikihosting plugin
 # list of urls that alias to the main url
-#urlalias: []
+urlalias:
+- http://feedingthecloud.branchable.com/
+- http://feedingthecloud.branchable.com/
+- http://www.feeding.cloud.geek.nz/
 # openid of primary site owner
 owner: https://openid.fmarier.org/
 # optional hostname of site this one was branched from
@@ -302,8 +305,8 @@ po_link_to: default
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, google, goto,
-#    mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
+#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -326,6 +329,10 @@ comments_pagename: comment_
 comments_allowauthor: '1'
 # commit comments to the VCS
 comments_commit: '1'
+
+# getsource plugin
+# Mime type for returned source.
+#getsource_mimetype: text/plain; charset=utf-8
 
 # mirrorlist plugin
 # list of mirrors
