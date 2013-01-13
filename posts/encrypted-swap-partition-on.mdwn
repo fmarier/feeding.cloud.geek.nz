@@ -5,30 +5,30 @@ The swap partition can hold a lot of unencrypted confidential information and th
   
 Encrypting a swap partition however is slightly tricky if one wants to also support suspend-to-disk (also called hibernation). Here's a procedure that worked for me on both Debian Lenny and Ubuntu 7.10 (Gutsy Gibbon):  
   
-0- Install the cryptsetup package:  
+1. Install the cryptsetup package:  
 
-> apt-get install cryptsetup  
+        apt-get install cryptsetup
 
-1- Setup the encrypted partition as root:  
+1. Setup the encrypted partition as root:  
 
-> swapoff -a  
-cryptsetup -h sha256 -c aes-cbc-essiv:sha256 -s 256 luksFormat /dev/hda2  
-cryptsetup luksOpen /dev/hda2 cswap  
-mkswap /dev/mapper/cswap  
+        swapoff -a
+        cryptsetup -h sha256 -c aes-cbc-essiv:sha256 -s 256 luksFormat /dev/hda2
+        cryptsetup luksOpen /dev/hda2 cswap
+        mkswap /dev/mapper/cswap
 
-2- Add this line to /etc/crypttab:  
+2. Add this line to /etc/crypttab:  
 
-> cswap /dev/hda2 none swap,luks,timeout=30  
+        cswap /dev/hda2 none swap,luks,timeout=30
 
-3- Set the swap partition to be this in /etc/fstab:  
+3. Set the swap partition to be this in /etc/fstab:  
 
-> /dev/mapper/cswap none swap sw 0 0
+        /dev/mapper/cswap none swap sw 0 0
 
-4- Configure uswsusp to use **/dev/mapper/cswap** and **write unencrypted data**  
+4. Configure uswsusp to use **/dev/mapper/cswap** and **write unencrypted data**  
 
-> dpkg-reconfigure -plow uswsusp
+        dpkg-reconfigure -plow uswsusp
 
-You will of course want to replace /dev/hda2 with the partition that currently holds your unencrypted swap.  
+You will of course want to replace `/dev/hda2` with the partition that currently holds your unencrypted swap.  
   
 (This is loosely based on a similar [procedure for Ubuntu 6.10](http://www.c3l.de/linux/howto-completly-encrypted-harddisk-including-suspend-to-encrypted-disk-with-ubuntu-6.10-edgy-eft.html).)
 
