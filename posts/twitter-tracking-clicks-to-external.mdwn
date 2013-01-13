@@ -3,11 +3,13 @@
 [[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
 Lately, while using the Twitter web interface with Javascript turned on, I've been redirected to a [Privoxy](http://www.privoxy.org/) error page whenever I click on an external link:  
 
-> Request for blocked URL  
-  
-Your request for <code>http://twitter.com/link_click_count?url=http%3A%2F%2Fexample.com&linkType=web&<b>tweetId=1234567890</b>&<b>userId=12345678</b>&authenticity_token=f5920ebf56bfa111c54bb9f86814cafa76de00fa</code> was blocked.  
-  
-Block reason: Path matches generic block pattern.
+<blockquote><code>
+Request for blocked URL
+
+<br><br>Your request for <code>http://twitter.com/link_click_count?url=http%3A%2F%2Fexample.com&linkType=web&<b>tweetId=1234567890</b>&<b>userId=12345678</b>&authenticity_token=f5920ebf56bfa111c54bb9f86814cafa76de00fa</code> was blocked.  
+
+<br><br>Block reason: Path matches generic block pattern.
+</code></blockquote>
 
 Looking a little closer at the blocked URL, I noticed that **for every external link you click, Twitter logs the destination URL, the originating tweet and your user ID**.  
   
