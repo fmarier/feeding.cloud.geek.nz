@@ -5,9 +5,8 @@
   
 Of course, Debian has a solution:  
 
-> apt-get install rlwrap  
-rlwrap sqlplus  
-
+    apt-get install rlwrap
+    rlwrap sqlplus
   
 You may also find it useful if, for some reason, you need to use the [dash](http://en.wikipedia.org/wiki/Debian_Almquist_shell) shell interactively.
 
