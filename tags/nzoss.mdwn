@@ -1,4 +1,4 @@
 [[!meta title="pages tagged nzoss"]]
 
 [[!inline pages="tagged(nzoss)" actions="no" archive="yes"
-feedshow=10]]
+feedshow=10 feedpages=created_after(posts/prefetching-resources-to-prime-browser)]]

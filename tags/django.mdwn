@@ -1,4 +1,4 @@
 [[!meta title="pages tagged django"]]
 
 [[!inline pages="tagged(django)" actions="no" archive="yes"
-feedshow=10]]
+feedshow=10 feedpages=created_after(posts/migrating-libravatar-to-persona)]]

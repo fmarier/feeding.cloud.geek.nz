@@ -1,4 +1,4 @@
 [[!meta title="pages tagged debian"]]
 
 [[!inline pages="tagged(debian)" actions="no" archive="yes"
-feedshow=10]]
+feedshow=10 feedpages=created_after(posts/advice-to-newcomers-and-veterans-of)]]
