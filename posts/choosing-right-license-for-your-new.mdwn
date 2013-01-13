@@ -5,10 +5,7 @@ Writing the software is only one component of a successful Free Software project
   
 A license choice is very personal since it involves putting in writing the permissions and protections that you want to give with respect to your code. However, your choice of license will have a number of implications.  
 
-> "A license can ruin a perfectly good piece of software"  
-
-> 
-> - Jon Stevens
+<blockquote><i>"A license can ruin a perfectly good piece of software" - Jon Stevens</i></blockquote>
 
 Whenever possible, try to avoid:  
 
@@ -28,21 +25,21 @@ So take the time to familiarize yourself with common licenses and then decide fo
 
 Here's an sample copyright statement for a piece of software under the latest version of the GNU General Public License:  
 
-> [Email-Reminder](http://www.email-reminder.org.nz/) - Receive emails for events like birthdays and anniversaries  
-Copyright (C) 2004-2008 by Francois Marier (fmarier@gmail.com)  
-  
-This program is free software: you can redistribute it and/or modify  
-it under the terms of the GNU General Public License as published by  
-the Free Software Foundation, either version 3 of the License, or  
-(at your option) any later version.  
-  
-This program is distributed in the hope that it will be useful,  
-but WITHOUT ANY WARRANTY; without even the implied warranty of  
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the  
-GNU General Public License for more details.  
-  
-You should have received a copy of the GNU General Public License  
-along with this program. If not, see http://www.gnu.org/licenses/.
+    Email-Reminder - Receive emails for events like birthdays and anniversaries
+    Copyright (C) 2004-2008 by Francois Marier (francois@email-reminder.org.nz)
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see http://www.gnu.org/licenses/.
 
 This helps distributors and contributors by explicitly stating the license version as well as the name and contact details of the copyright holder.  
   
