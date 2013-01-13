@@ -5,10 +5,9 @@ I recently added a [solid-state drive](http://www.intel.com/design/flash/nand/va
   
 The strategy I settled on is this one:
 
-  * continue to have all partitions (`/`, `/home` and `/data`) on my RAID1 hard drives,
-  * put another copy of the root partition (`/`) on the SSD drive, and
-  * leave my `/tmp` and swap partitions in [RAID0](http://en.wikipedia.org/wiki/RAID0#RAID_0) arrays on my rotational hard drives to reduce the number of writes on the SSD.
-  
+* continue to have all partitions (`/`, `/home` and `/data`) on my RAID1 hard drives,
+* put another copy of the root partition (`/`) on the SSD drive, and
+* leave my `/tmp` and swap partitions in [RAID0](http://en.wikipedia.org/wiki/RAID0#RAID_0) arrays on my rotational hard drives to reduce the number of writes on the SSD.  
 
 This setup has the benefit of using a very small SSD to speed up the main partition while keeping all important data on the larger mirrored drives.  
   
@@ -40,30 +39,20 @@ Once I added the solid-state drive to my computer and copied my root partition o
 ## Tuning the SSD
 
 Finally, after reading this [excellent LWN article](http://lwn.net/Articles/408428/), I decided to tune the SSD drive (`/dev/sda`) by adjusting three things:  
-  
 
-  
 
-  * Add the `discard` mount option (also know as ATA [TRIM](http://en.wikipedia.org/wiki/TRIM) and introduced in the 2.6.33 Linux kernel) to the root partition in `/etc/fstab`:
-<pre>
-    /dev/<i>sda1</i>  /  ext4  <b>discard</b>,errors=remount-ro,noatime  0  1
-</pre>
+* Add the `discard` mount option (also know as ATA [TRIM](http://en.wikipedia.org/wiki/TRIM) and introduced in the 2.6.33 Linux kernel) to the root partition in `/etc/fstab`:
 
-  
+      /dev/<i>sda1</i>  /  ext4  <b>discard</b>,errors=remount-ro,noatime  0  1
 
-  * Use the `noop` IO scheduler by adding these lines to `/etc/rc.local`:
-<pre>
-    echo noop &gt; /sys/block/<i>sda</i>/queue/scheduler  
-    echo 1 &gt; /sys/block/<i>sda</i>/queue/iosched/fifo_batch
-</pre>
+* Use the `noop` IO scheduler by adding these lines to `/etc/rc.local`:
 
-  
+      echo noop &gt; /sys/block/<i>sda</i>/queue/scheduler
+      echo 1 &gt; /sys/block/<i>sda</i>/queue/iosched/fifo_batch
 
-  * Turn off [entropy gathering](http://www.entropykey.co.uk/) (for kernels 2.6.36 or later) by adding this line to `/etc/rc.local`:
-<pre>
-    echo 0 &gt; /sys/block/<i>sda</i>/queue/add_random
-</pre>
+* Turn off [entropy gathering](http://www.entropykey.co.uk/) (for kernels 2.6.36 or later) by adding this line to `/etc/rc.local`:
 
+      echo 0 &gt; /sys/block/<i>sda</i>/queue/add_random
   
 Is there anything else I should be doing to make sure I get the most out of my SSD?
 
