@@ -1,0 +1,131 @@
+[[!meta title="Moving from Blogger to Ikiwiki and Branchable"]]
+[[!meta date="2013-01-16T22:30:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+In order to move my blog to a
+[free-as-in-freedom](http://www.gnu.org/philosophy/free-sw.html) platform
+and support the great work that [Joey](http://joeyh.name/) (of
+[git-annex](http://git-annex.branchable.com/) fame) and
+[Lars](http://liw.fi) (of [GTD for hackers](http://gtdfh.branchable.com/) fame) have
+put into their service, I decided to convert my Blogger blog to
+[Ikiwiki](http://ikiwiki.info) and host it on
+[Branchable](http://www.branchable.com).
+
+While the [Ikiwiki tips](http://ikiwiki.info/tips/convert_blogger_blogs_to_ikiwiki/)
+page points to some
+[old instructions](http://algebraicthunk.net/~dburrows/blog/entry/howto-convert-your-blogger-or-blogspot-blog-to-ikiwiki/),
+they weren't particularly useful to me. Here are the steps I followed.
+
+# Exporting posts and comments from Blogger
+
+Thanks to Google
+[letting people export their own data from their services](http://www.dataliberation.org/),
+I was able to get a full dump (posts, comments and metadata) of my blog in
+[Atom](https://en.wikipedia.org/wiki/Atom_(standard)) format.
+
+To do this, go into "Settings | Other" then look under "Blog tools" for the
+"Export blog" link.
+
+![](/posts/moving-from-blogger-to-ikiwiki-and-branchable/blogger_export.png)
+
+# Converting HTML posts to Markdown
+
+Converting posts from HTML to
+[Markdown](https://en.wikipedia.org/wiki/Markdown) involved a few steps:
+
+1. **Converting the post content** using a small
+[conversion library](https://github.com/aaronsw/html2text) to which I added
+[a few hacks](https://github.com/fmarier/blogger2ikiwiki/blob/master/html2text.py).
+2. **Creating the file hierarchy** that ikiwiki requires.
+3. **Downloading images** from Blogger and fixing their paths in the article
+text.
+4. **Extracting comments** and linking them to the right posts.
+
+The
+[Python script](https://github.com/fmarier/blogger2ikiwiki/blob/master/html2text.py)
+I wrote to do all of the above will hopefully be a good starting point for
+anybody wanting to migrate to Ikiwiki.
+
+# Maintaining old URLs
+
+In order to make sure I wouldn't break any existing links pointing to my
+blog on Blogger, I got the above Python script to output a list of
+[Apache redirect](https://httpd.apache.org/docs/current/mod/mod_alias.html#redirect)
+rules and then found out that I could simply
+[email these rules to Joey and Lars](http://www.branchable.com/forum/Is_it_possible_to_set_up_Apache_aliases_for_my_blog__63__/)
+to get them added to my blog.
+
+My rules look like this:
+
+    # Main feed
+    Redirect permanent /feeds/posts/default http://feeding.cloud.geek.nz/index.rss
+    
+    # Tagged feeds
+    Redirect permanent /feeds/posts/default/-/debian http://feeding.cloud.geek.nz/tags/debian/index.rss
+    Redirect permanent /search/label/debian http://feeding.cloud.geek.nz/tags/debian
+    
+    # Articles
+    Redirect permanent /2012/12/keeping-gmail-in-separate-browser.html http://feeding.cloud.geek.nz/posts/keeping-gmail-in-separate-browser/
+    Redirect permanent /2012/11/prefetching-resources-to-prime-browser.html http://feeding.cloud.geek.nz/posts/prefetching-resources-to-prime-browser/
+
+# Collecting analytics
+
+Since I am no longer using Google Analytics on my blog, I decided to take
+advantage of the
+[access log download feature](http://www.branchable.com/tips/viewing_your_log/)
+that Joey recently added to Branchable.
+
+Every night, I download my blog's access log and then process it using
+[awstats](http://awstats.sourceforge.net/). Here is the cron job I use:
+
+    #!/bin/bash
+    
+    BASEDIR=/home/francois/documents/branchable-logs
+    LOGDIR=/var/log/feedingthecloud
+    
+    # Download the current access log
+    LANG=C LC_PAPER= ssh -oIdentityFile=$BASEDIR/branchable-logbot b-feedingthecloud@feedingthecloud.branchable.com logdump > $LOGDIR/access.log
+
+It uses a separate SSH key I added through the Branchable control panel and
+outputs to a file that gets overwritten every day.
+
+Next, I installed the
+[awstats Debian package](http://packages.debian.org/sid/awstats), and
+configured it like this:
+
+    $ cat /etc/awstats/awstats.conf.local
+    SiteDomain=feedingthecloud.branchable.com
+    LogType=W
+    LogFormat=1
+    LogFile="/var/log/feedingthecloud/access.log"
+
+Even if you're not interested in analytics, I recommend you keep an eye on
+the 404 errors for a little while after the move. This has helped me catch a
+critical redirection I had forgotten.
+
+# Limiting Planet feeds
+
+One of the most common things that happen right after someone migrates to a
+new blogging platform is the flooding of any aggregator that subscribes to
+their blog. The usual cause being the change in post identifiers.
+
+Unsurprisingly, Ikiwiki already had a
+[few ways to avoid this problem](http://www.branchable.com/forum/Way_to_limit_the_number_of_posts_in_a_feed__63__/). I
+chose to simply
+[modify each tagged feed](https://gitorious.org/fmarier-org/feedingthecloud/commit/903c65607f1120ca540bd30489ae1fb84c162b0f)
+and limit them to the posts added after the move to Branchable.
+
+# Switching DNS
+
+Having always hosted my blog on a domain I own, all I needed to do to
+move over to the new platform without an outage was to change my `CNAME` to
+point to `feedingthecloud.branchable.com`.
+
+I've kept the Blogger blog alive and listening on `feeding.cloud.geek.nz` to
+ensure that clients using a broken DNS resolver (which caches records for
+longer than requested via the record's
+[TTL](http://en.wikipedia.org/wiki/Time_to_live#DNS_records)) continue to
+see the old posts.
+
+[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]]
+
