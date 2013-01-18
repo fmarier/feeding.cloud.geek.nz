@@ -21,7 +21,7 @@ they weren't particularly useful to me. Here are the steps I followed.
 Thanks to Google
 [letting people export their own data from their services](http://www.dataliberation.org/),
 I was able to get a full dump (posts, comments and metadata) of my blog in
-[Atom](https://en.wikipedia.org/wiki/Atom_(standard)) format.
+[Atom](https://en.wikipedia.org/wiki/Atom_(standard\)) format.
 
 To do this, go into "Settings | Other" then look under "Blog tools" for the
 "Export blog" link.
