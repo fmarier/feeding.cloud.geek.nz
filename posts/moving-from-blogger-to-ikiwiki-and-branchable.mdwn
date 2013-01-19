@@ -57,12 +57,12 @@ to get them added to my blog.
 
 My rules look like this:
 
-    # Main feed
-    Redirect permanent /feeds/posts/default http://feeding.cloud.geek.nz/index.rss
-    
     # Tagged feeds
     Redirect permanent /feeds/posts/default/-/debian http://feeding.cloud.geek.nz/tags/debian/index.rss
     Redirect permanent /search/label/debian http://feeding.cloud.geek.nz/tags/debian
+    
+    # Main feed (needs to come after the tagged feeds)
+    Redirect permanent /feeds/posts/default http://feeding.cloud.geek.nz/index.rss
     
     # Articles
     Redirect permanent /2012/12/keeping-gmail-in-separate-browser.html http://feeding.cloud.geek.nz/posts/keeping-gmail-in-separate-browser/
