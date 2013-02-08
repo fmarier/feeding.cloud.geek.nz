@@ -7,7 +7,7 @@
 
 # About me
 
-<a href="http://fmarier.org"><img src="http://cdn.libravatar.org/avatar/0110e86fdb31486c22dd381326d99de9?domain=fmarier.org&s=80" width="80" height="80">
+<a href="http://fmarier.org"><img src="http://cdn.libravatar.org/avatar/0110e86fdb31486c22dd381326d99de9?s=80" width="80" height="80">
 
 **François Marier**</a>
 <br>Free and Open Source software developer
