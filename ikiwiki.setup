@@ -68,6 +68,7 @@ add_plugins:
 - headinganchors
 - gitpush
 - notifyemail
+- anonok
 # plugins to disable
 disable_plugins:
 - google
@@ -211,7 +212,7 @@ pingurl: []
 
 # anonok plugin
 # PageSpec to limit which pages anonymous users can edit
-#anonok_pagespec: '*/discussion'
+anonok_pagespec: postcomment(*)
 
 # blogspam plugin
 # PageSpec of pages to check for spam
