@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="https://openid.fmarier.org/"
+ nickname="fmarier"
+ subject="OCSP recommendations from the NSA"
+ date="2013-02-17T23:12:20Z"
+ content="""
+The NSA [recommends](http://www.nsa.gov/ia/_files/factsheets/ADF-2012-1202_Defending_Against_Compromised_Certificates.pdf) these Firefox settings (browse to <tt>about:config</tt> to set them):
+
+    security.OCSP.enabled = 1
+    security.OCSP.require = true
+"""]]

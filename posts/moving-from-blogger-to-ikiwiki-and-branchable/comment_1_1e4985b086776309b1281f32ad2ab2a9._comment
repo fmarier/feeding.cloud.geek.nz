@@ -1,0 +1,68 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawmZriTGyRP3RH7wUzOT0Q2VLiqiY5UarKU"
+ nickname="Lisandro Damián Nicanor"
+ subject="AttributeError: 'NoneType' object has no attribute 'find'"
+ date="2013-02-11T18:01:02Z"
+ content="""
+After replacing some variables in run.sh and blogger2ikiwiki.py:
+
+    $ ./run.sh 
+    Traceback (most recent call last):
+      File \"../blogger2ikiwiki.py\", line 365, in <module>
+        (filename, post, permalink) = print_post(entry, tags)
+      File \"../blogger2ikiwiki.py\", line 246, in print_post
+        filename = extract_filename(permalink)
+      File \"../blogger2ikiwiki.py\", line 233, in extract_filename
+        components = urlparse(permalink)
+      File \"/usr/lib/python2.7/urlparse.py\", line 140, in urlparse
+        tuple = urlsplit(url, scheme, allow_fragments)
+      File \"/usr/lib/python2.7/urlparse.py\", line 179, in urlsplit
+        i = url.find(':')
+    AttributeError: 'NoneType' object has no attribute 'find'
+
+Git diff shows:
+
+    diff --git a/blogger2ikiwiki.py b/blogger2ikiwiki.py
+    index 69cb1df..069dc2c 100755
+    --- a/blogger2ikiwiki.py
+    +++ b/blogger2ikiwiki.py
+    @@ -29,16 +29,16 @@ from html2text import html2text
+    
+    
+     # Change this to point to the name of your Blogger export file
+    -ATOM_BACKUP_FILENAME = '../feedingthecloud.xml'
+    +ATOM_BACKUP_FILENAME = '/home/lisandro/tmp/blogger/pm.xml'
+    
+    -LICENSE_LINK = '[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)'
+    +LICENSE_LINK = '[Creative Commons Attribution-Share Alike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0/)'
+    
+    -AUTHOR_URL_REPLACEMENTS = {'http://www.blogger.com/profile/15799633745688818389': 'http://fmarier.org'}
+    +AUTHOR_URL_REPLACEMENTS = {'http://www.blogger.com/profile/09966442884730426878': 'http://perezmeyer.com.ar'}
+    
+     # Must include the trailing slash!
+    -BLOG_URL = 'http://feeding.cloud.geek.nz/'
+    +BLOG_URL = 'http://localhost/blog/'
+    
+    -TAGGED_FEEDS = ['debian', 'mozilla', 'nzoss', 'ubuntu', 'postgres', 'sysadmin', 'django', 'python', 'nodejs']
+    +TAGGED_FEEDS = ['kde', 'qt']
+    
+    
+     def get_author_name(entry):
+    diff --git a/run.sh b/run.sh
+    index a368639..737b8f1 100755
+    --- a/run.sh
+    +++ b/run.sh
+    @@ -2,8 +2,8 @@
+     #
+     # Quickly re-convert the blog and commit to a local test instance of ikiwiki
+    
+    -SCRIPT_DIR=~/devel/remote/blogger2ikiwiki
+    -BLOG_DIR=~/ikiwiki/FeedingtheCloud
+    +SCRIPT_DIR=/home/lisandro/tmp/blogger/blogger2ikiwiki
+    +BLOG_DIR=/home/lisandro/blog
+    
+     cd $SCRIPT_DIR && rm -rf temp/
+     mkdir -p temp/
+
+Clearly my python-foo is too low :-/ What can I be missing?
+"""]]
