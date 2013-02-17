@@ -67,6 +67,7 @@ add_plugins:
 - calendar
 - headinganchors
 - gitpush
+- notifyemail
 # plugins to disable
 disable_plugins:
 - google
@@ -78,7 +79,7 @@ underlaydir: /usr/share/ikiwiki/basewiki
 # display verbose messages?
 #verbose: 1
 # log to syslog?
-syslog: 1
+syslog: '1'
 # create output files named page/index.html?
 usedirs: '1'
 # use '!'-prefixed preprocessor directives?
@@ -305,8 +306,8 @@ po_link_to: default
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
-#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, google, goto,
+#    mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -329,10 +330,6 @@ comments_pagename: comment_
 comments_allowauthor: '1'
 # commit comments to the VCS
 comments_commit: '1'
-
-# getsource plugin
-# Mime type for returned source.
-#getsource_mimetype: text/plain; charset=utf-8
 
 # mirrorlist plugin
 # list of mirrors
@@ -421,9 +418,9 @@ directive_description_dir: ikiwiki/directive
 #   (aggregate, autoindex, brokenlinks, camelcase, ddate, embed, favicon,
 #    filecheck, flattr, goodstuff, htmlbalance, localstyle, missingsite,
 #    notifyemail, pagetemplate, parked, pingee, pinger, prettydate,
-#    recentchanges, recentchangesdiff, relativedate, rsync, sidebar,
-#    smiley, sortnaturally, tag, testpagespec, trail, transient,
-#    typography, underlay)
+#    recentchangesdiff, relativedate, rsync, sidebar, smiley,
+#    sortnaturally, tag, testpagespec, trail, transient, typography,
+#    underlay)
 ######################################################################
 
 # aggregate plugin
@@ -458,12 +455,6 @@ flattr_userid: fmarier
 # prettydate plugin
 # format to use to display date
 prettydateformat: '%X, %B %o, %Y'
-
-# recentchanges plugin
-# name of the recentchanges page
-recentchangespage: recentchanges
-# number of changes to track
-recentchangesnum: '100'
 
 # rsync plugin
 # command to run to sync updated pages
