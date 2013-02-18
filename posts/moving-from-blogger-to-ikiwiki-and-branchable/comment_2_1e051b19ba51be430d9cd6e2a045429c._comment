@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="https://openid.fmarier.org/"
+ nickname="fmarier"
+ subject="Re: AttributeError: 'NoneType' object has no attribute 'find'"
+ date="2013-02-18T01:19:47Z"
+ content="""
+Lissandro: it looks like the permalink that's in that particular post is not a valid URL.
+
+You could try to find out why by adding a print statement just above [line 233 in blogger2ikiwiki.py](https://github.com/fmarier/blogger2ikiwiki/blob/master/blogger2ikiwiki.py#L233).
+"""]]
