@@ -1,0 +1,70 @@
+[[!meta title="Doing a fresh Debian/Ubuntu install without having to reconfigure everything"]]
+[[!meta date="2013-02-22T22:30:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+Taking advantage of a new hard drive, I decided to reinstall my Ubuntu (Precise 12.04.2) laptop from scratch so that I could easily enable full-disk encryption (a requirement for Mozilla work laptops). Reinstalling and reconfiguring everything takes a bit of time though, so here's the procedure I followed to keep the configuration to a minimum.
+
+# Install Ubuntu/Debian on the new drive
+
+While full-disk encryption is [built into the graphical installer as of Ubuntu 12.10](https://www.eff.org/deeplinks/2012/11/privacy-ubuntu-1210-full-disk-encryption), it's only available through the [alternate install CD](http://mirror.anl.gov/pub/ubuntu-iso/DVDs/ubuntu/12.04.2/release/) in 12.04 and earlier.
+
+Using that CD, install Ubuntu on the new drive, making sure you select the "Encrypted LVM" option when you get to the partitioning step. (The procedure is the same if you use a Debian CD.)
+
+To make things easy, the first user you create should match exactly the one from your previous installation.
+
+# Copy your home directory
+
+Once the OS is installed on the new drive, plug the old one back in (in an external enclosure if you need to) and mount its root partition as a read-only drive on `/mnt`.
+
+Then log in as root (not just using sudo, actually login using the root user) and copy your home directory on the new drive:
+
+    rm -rf /home/*
+    cp -a /mnt/home/* /home/
+
+Then you should be able to log in as your regular user.
+
+# Reinstall all packages
+
+The next step is to reinstall all of the packages you had installed on the old OS. But first of all, let's avoid having to answer all of the debconf questions we've already answered in the past:
+
+    rm -rf /var/cache/debconf
+    cp -a /mnt/var/cache/debconf /var/cache/
+
+and set the debconf priority to the one you usually use (`medium` in my case):
+
+    dpkg-reconfigure debconf
+
+Next, make sure you have access to all of the necessary repositories:
+
+    cp -a /mnt/etc/apt/sources.list /etc/apt/
+    cp -a /mnt/etc/apt/sources.list.d/* /etc/apt/sources.list.d/
+    apt-get update
+
+## Getting and setting the list of installed packages
+
+To get a list of the packages that were installed on the old drive, use dpkg on the old install:
+
+    mount -o remount /dev/XXXX /mnt
+    chroot /mnt
+    dpkg --get-selections > /packages
+    exit
+    mount -o remount -r /dev/XXXX /mnt
+
+Use that list on the new install to reinstall everything:
+
+    dpkg --set-selections < /mnt/packages
+    apt-get dselect-upgrade
+
+## Selectively copy configuration files over
+
+Finally, once all packages are installed, you can selectively copy the config files from the old drive (in `/mnt/etc`) to the new (`/etc/`). In particular, make sure you include these ones:
+
+    cp -a /mnt/etc/alternatives/ /mnt/etc/default/ /etc/
+
+(I chose not to just overwrite all config files with the old ones because I wanted to get rid of any cruft that had accumulated there and suspected that there might be some slight differences due to the fresh install of the distro.)
+
+# Reboot
+
+Once that's done, you should really give that box a restart to ensure that all service are using the right config files, but otherwise, that's it. Your personal data and config are back, all of your packages are installed and configured the way they were, and everything is fully encrypted!
+
+[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag security]] [[!tag mozilla]]
