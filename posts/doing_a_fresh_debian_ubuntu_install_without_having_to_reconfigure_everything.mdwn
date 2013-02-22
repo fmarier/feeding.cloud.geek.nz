@@ -2,7 +2,9 @@
 [[!meta date="2013-02-22T22:30:00.000+13:00"]]
 [[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
 
-Taking advantage of a new hard drive, I decided to reinstall my Ubuntu (Precise 12.04.2) laptop from scratch so that I could easily enable full-disk encryption (a requirement for Mozilla work laptops). Reinstalling and reconfiguring everything takes a bit of time though, so here's the procedure I followed to keep the configuration to a minimum.
+Taking advantage of a new hard drive, I decided to reinstall my Ubuntu (Precise 12.04.2) laptop from scratch so that I could easily enable full-disk encryption (a requirement for Mozilla work laptops).
+
+Reinstalling and reconfiguring everything takes a bit of time though, so here's the procedure I followed to keep the configuration to a minimum.
 
 # Install Ubuntu/Debian on the new drive
 
@@ -44,11 +46,11 @@ Next, make sure you have access to all of the necessary repositories:
 
 To get a list of the packages that were installed on the old drive, use dpkg on the old install:
 
-    mount -o remount /dev/XXXX /mnt
+    mount -o remount,rw /mnt
     chroot /mnt
     dpkg --get-selections > /packages
     exit
-    mount -o remount -r /dev/XXXX /mnt
+    mount -o remount,ro -r /mnt
 
 Use that list on the new install to reinstall everything:
 
