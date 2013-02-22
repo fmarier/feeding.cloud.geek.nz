@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="49.128.1.203"
+ subject="NUT Karmic > Lucid Port"
+ date="2013-02-19T23:20:27Z"
+ content="""
+Hi, I was using the Karmic > Lucid port of NUT which helped my server recognize my Belkin UPS.
+
+I notice the NUT package is no longer available in your PPA. Do you know where I can find it? (or was the megatec_usb issue finally fixed in Lucid?)
+
+Do you know if the Belkin UPS works ok with Precise?
+
+Thanks in advance!
+"""]]
