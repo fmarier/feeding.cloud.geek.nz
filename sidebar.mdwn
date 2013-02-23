@@ -3,7 +3,7 @@
 <a href="http://feeds.cloud.geek.nz/FeedingTheCloud"><img src="/feed-icon.png" height="32" width="32" align="left">Subscribe in a reader</a>
 [Subscribe by Email](http://www.feedburner.com/fb/a/emailverifySubmit?feedId=1839853&loc=en_US)
 
-<br><br><a href="http://flattr.com/thing/311291/Feeding-the-Cloud"><img src="flattr_button.png" border="0"></a>
+<br><a href="http://flattr.com/thing/311291/Feeding-the-Cloud"><img src="flattr_button.png" border="0"></a>
 
 # About me
 
