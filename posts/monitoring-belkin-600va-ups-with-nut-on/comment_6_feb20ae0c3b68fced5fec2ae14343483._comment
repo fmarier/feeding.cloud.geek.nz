@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="https://openid.fmarier.org/"
+ nickname="fmarier"
+ subject="Re: NUT Karmic > Lucid Port"
+ date="2013-02-22T12:10:51Z"
+ content="""
+On Precise, that UPS works out of the box, but it's now using the `blazer_usb` driver.
+
+Here's my new `/etc/nut/ups.conf`:
+
+    [belkinusb]
+        driver = blazer_usb
+        port = auto
+        desc = \"Belkin UPS, USB interface\"
+
+"""]]
