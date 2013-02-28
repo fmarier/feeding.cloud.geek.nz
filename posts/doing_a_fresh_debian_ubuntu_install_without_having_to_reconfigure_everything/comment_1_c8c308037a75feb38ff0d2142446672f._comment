@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="216.17.153.62"
+ claimedauthor="Bob Proulx"
+ subject="extended_states for autoremove"
+ date="2013-02-25T19:17:10Z"
+ content="""
+Good article!
+
+IIRC I don't think dselect-upgrade marks the /var/lib/apt/extended_states the same as in the original.  Therefore it is probably a good idea to observe that file and use apt-mark to set the current state of packages the same as the previous state.  So that apt autoremove functionality continues to be available.  When top level packages are removed this will enable apt to know that dependent packages can be offered for removal with autoremove.
+"""]]
