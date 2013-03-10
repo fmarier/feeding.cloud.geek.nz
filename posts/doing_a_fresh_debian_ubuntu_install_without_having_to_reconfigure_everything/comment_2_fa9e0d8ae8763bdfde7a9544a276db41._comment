@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="82.150.208.41"
+ claimedauthor="gregoa"
+ subject="apt-clone"
+ date="2013-03-07T10:15:36Z"
+ content="""
+apt-clone is also a nice tool to transfer the list of installed packages (and their auto-state!) between machines.
+"""]]
