@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="84.248.66.131"
+ claimedauthor="Timo Juhani Lindfors"
+ subject="why all the --exclude's?"
+ date="2013-04-01T08:26:09Z"
+ content="""
+Hmm, why do you need all of those \"--exclude\" options? Shouldn't \"-x\" be enough to ensure that e.g. /sys is not copied?
+
+Also, is there some particular reason why you are not using \"--numeric-ids\"?
+
+
+"""]]
