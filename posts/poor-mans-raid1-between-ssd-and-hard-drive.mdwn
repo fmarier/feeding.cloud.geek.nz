@@ -1,0 +1,114 @@
+[[!meta title="Poor man's RAID1 between an SSD and a hard drive"]]
+[[!meta date="2013-03-31T23:20:00.000-04:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+After
+[moving from a hard drive to an SSD](http://feeding.cloud.geek.nz/posts/doing_a_fresh_debian_ubuntu_install_without_having_to_reconfigure_everything/)
+on my work laptop, I decided to keep the hard drive spinning and use it as a
+backup for the SSD.
+
+With the following setup, I can pull the SSD out of my laptop and it should
+still boot up normally with all of my data on the hard drive.
+
+# Manually setting up an encrypted root partition
+
+Before setting up the synchronization between the two drives, I had to
+replicate the partition setup.
+
+I used `fdisk`, `cfdisk` and `gparted` to create the following partitions:
+
+       Device Boot      Start         End      Blocks   Id  System
+    /dev/sdb1   *        2048      499711      248832   83  Linux
+    /dev/sdb2          501760   500117503   249807872    5  Extended
+    /dev/sdb5          503808   500117503   249806848   83  Linux
+
+and then loosely followed
+[these instructions](http://linux.derkeiler.com/Mailing-Lists/Debian/2007-08/msg01240.html)
+to create an encrypted root partition on `/dev/sdb5`:
+
+    $ cryptsetup luksFormat /dev/sdb5
+    $ cryptsetup luksOpen /dev/sdb5 sdb5_crypt
+    $ pvcreate /dev/mapper/sdb5_crypt
+    $ vgcreate akranes2 /dev/mapper/sdb5_crypt
+    $ vgchange -a y akranes2
+    $ lvcreate -L247329718272B -nroot akranes2
+    $ lvcreate -L8468299776B -nswap_1 akranes2
+    $ mkfs.ext4 /dev/akranes2/root
+
+Finally, I added the new encrypted partition to the list of drives to bring up
+at boot time by looking up its UUID:
+
+    $ cryptsetup luksUUID sdb5_crypt
+
+and creating a new entry for it in `/etc/crypttab`.
+
+# Copying the boot partition
+
+Setting up the boot partition was much easier because it's not
+encrypted. All that was needed was to format it and then copy the files
+over:
+
+    $ mkfs.ext2 /dev/sdb1
+    $ mount /dev/sdb1 /mnt/boot
+    $ cp -a /boot/* /mnt/boot/
+
+The only other thing to remember is to install grub on the boot loader of
+that drive. On modern Debian systems, that's usually just a matter of
+running `dpkg-reconfigure grub-pc` and adding the second drive (`/dev/sdb`
+in my case) to the list of drives to install grub on.
+
+# Sync scripts
+
+To keep the contents of the SSD and the hard drive in sync, I set up a
+regular rsync of the root and boot partitions using the following mount
+points (as defined in `/etc/fstab`):
+
+    /dev/mapper/akranes-root /           ext4    noatime,discard,errors=remount-ro 0       1
+    /dev/mapper/akranes2-root /mnt/root  ext4    noatime,errors=remount-ro         0       2
+    UUID=0b9109d0-... /boot              ext2    defaults                          0       2
+    UUID=6e6f05fb-... /mnt/boot          ext2    defaults                          0       2
+
+I use this script (`/usr/local/sbin/ssd_boot_backup`) for syncing the boot
+partition:
+
+    #!/bin/sh
+    if [ ! -e /mnt/boot/hdd.mounted ] ; then
+        echo "The rotating hard drive is not mounted in /mnt/boot."
+        exit 1
+    fi
+    if [ ! -e /boot/ssd.mounted ] ; then
+        echo "The ssd is not the boot partition"
+        exit 1
+    fi
+    nice ionice -c3 rsync -aHx --delete --exclude=/ssd.mounted --exclude=/lost+found/* /boot/* /mnt/boot/
+
+and a similar one (`/usr/local/sbin/ssd_root_backup`) for the root
+partition:
+
+    #!/bin/sh
+    if [ ! -e /mnt/root/hdd.mounted ] ; then
+        echo "The rotating hard drive is not mounted in /mnt/root."
+        exit 1
+    fi
+    if [ ! -e /ssd.mounted ] ; then
+        echo "The ssd is not the root partition"
+        exit 1
+    fi
+    nice ionice -c3 rsync -aHx --delete --exclude=/dev/* --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/boot/* --exclude=/mnt/* --exclude=/lost+found/* --exclude=/media/* --exclude=/var/tmp/* --exclude=/ssd.mounted --exclude=/var/lib/lightdm/.gvfs --exclude=/home/francois/.gvfs /* /mnt/root/
+
+To ensure that each drive is properly mounted before the scripts run, I
+created empty `ssd.mounted` files in the root directory of each of the
+partitions on the SSD, and empty `hdd.mounted` files in the root directory
+of the hard drive partitions.
+
+# Cron jobs
+
+The sync scripts are run every couple of hours through this crontab:
+
+    10 */4 * * *                root    /usr/local/sbin/ssd_boot_backup
+    20 0,4,8,12,16,20 * * *     root    /usr/local/sbin/ssd_root_backup
+    20 2,6,10,14,18,22 * * *    root    /usr/bin/on_ac_power && /usr/local/sbin/ssd_root_backup
+
+which includes a reduced frequency while running on battery to avoid
+spinning the hard drive up too much.
+
+[[!tag debian]] [[!tag nzoss]]
