@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawkDKXe-NIjOtmYhWeVuzvJKVyXvwe6qs8g"
+ nickname="Andre"
+ subject="Why don't you use a real raid1?"
+ date="2013-04-01T22:22:16Z"
+ content="""
+Is there any specific reason to not use a real raid1 with mdadm for mirroring? It would work as well as your current setup, and provide the same benefits without using a second encryption.
+"""]]
