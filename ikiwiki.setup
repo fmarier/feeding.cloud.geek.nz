@@ -137,11 +137,11 @@ allow_symlinks_before_srcdir: '0'
 
 # branchable plugin
 # Allow anyone to branch, check out, and copy this site?
-branchable: '1'
+branchable: 0
 # Allow anyone to git push verified changes to this site?
 #anonpush: 0
 # Display "Branchable" link on action bar?
-branchable_action: '1'
+branchable_action: 0
 
 # git plugin
 # git hook to generate
