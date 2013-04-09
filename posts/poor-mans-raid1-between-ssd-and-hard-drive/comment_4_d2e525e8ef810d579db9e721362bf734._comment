@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="https://openid.fmarier.org/"
+ nickname="fmarier"
+ subject="Re: Why don't you use a real raid1?"
+ date="2013-04-01T23:01:04Z"
+ content="""
+I didn't try a real RAID1 setup, but I suspect that I might lose some of the performance advantages of having an SSD if I/O is blocked on the rotating drive.
+
+Also, from a power usage point of view, it would mean that the hard drive needs to be spinning all the time, as opposed to every couple of hours.
+"""]]
