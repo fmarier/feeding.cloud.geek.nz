@@ -79,7 +79,7 @@ partition:
         echo "The ssd is not the boot partition"
         exit 1
     fi
-    nice ionice -c3 rsync -aHx --delete --exclude=/ssd.mounted --exclude=/lost+found/* /boot/* /mnt/boot/
+    nice ionice -c3 rsync -aHx --delete --exclude=/ssd.mounted --exclude=/lost+found/* /boot /mnt
 
 and a similar one (`/usr/local/sbin/ssd_root_backup`) for the root
 partition:
