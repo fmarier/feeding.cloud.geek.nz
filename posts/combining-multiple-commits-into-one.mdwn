@@ -108,7 +108,7 @@ Then we can reopen commit `97c9d7d` and add the changes present in the working d
 
 
     $ git add .  
-    $ gitc -a --amend -m "Initial version"
+    $ git commit -a --amend -m "Initial version"
 
 
 which will finally give us a fully squashed branch:  
@@ -123,4 +123,4 @@ which will finally give us a fully squashed branch:
 
 
 
-[[!tag catalyst]] [[!tag debian]] [[!tag git]] [[!tag nzoss]] 
+[[!tag catalyst]] [[!tag debian]] [[!tag git]] [[!tag nzoss]]
