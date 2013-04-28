@@ -61,7 +61,7 @@ At the time, a patch for this wasn't available, so I had to work around that
 bug in the following way:
 
 * find `pak.zip` inside the game directory (`/opt/torchlight/pak.zip` on my machine)
-* unpack this file using `unzip` (or my favourite: `[aunpack](http://www.nongnu.org/atool/)`)
+* unpack this file using `unzip` (or my favourite: [`aunpack`](http://www.nongnu.org/atool/))
 * find the offending texture (`media/particles/textures/trail/trail37.dds` as per the error message above)
 * copy a similar one (I picked `trail36.dds` in the same directory) on top of it
 * zip up the modified directory and replace the original `pak.zip` with this one
