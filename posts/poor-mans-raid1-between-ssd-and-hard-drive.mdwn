@@ -1,5 +1,5 @@
 [[!meta title="Poor man's RAID1 between an SSD and a hard drive"]]
-[[!meta date="2013-03-31T23:20:00.000-04:00"]]
+[[!meta date="2013-03-30T23:20:00.000-04:00"]]
 [[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
 After
 [moving from a hard drive to an SSD](http://feeding.cloud.geek.nz/posts/doing_a_fresh_debian_ubuntu_install_without_having_to_reconfigure_everything/)
