@@ -1,0 +1,74 @@
+[[!meta title="Work-around for Torchlight crashing with an Ogre exception on Linux"]]
+[[!meta date="2013-04-29T10:00:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+This will hopefully be useful to some of those who have purchased the
+Linux version of the [Torchlight](http://www.torchlightgame.com/) game as
+part of the [6th Humble Indie Bundle](http://blog.humblebundle.com/post/31786414109/introducing-humble-indie-bundle-6).
+
+While crawling some late dungeon levels, the game crashed with the following
+error message on the command line:
+
+    *-*-* OGRE Initialising
+    *-*-* Version 1.6.5 (Shoggoth)
+    terminate called after throwing an instance of 'Ogre::RenderingAPIException'
+      what():  OGRE EXCEPTION(3:RenderingAPIException): Zero sized texture surface on texture MEDIA/PARTICLES/TEXTURES/TRAIL/TRAIL37.DDS face 0 mipmap 2. Probably,
+    the GL driver refused to create the texture. in GLTexture::_createSurfaceList at ../../../../RenderSystems/GL/src/OgreGLTexture.cpp (line 405)
+    Error: signal: 6
+
+    ./Torchlight.bin.x86_64(_ZN10LinuxUtils13crash_handlerEi+0x25)[0x17eb6f5]
+    /lib/x86_64-linux-gnu/libc.so.6(+0x364a0)[0x7f3b1e20b4a0]
+    /lib/x86_64-linux-gnu/libc.so.6(gsignal+0x35)[0x7f3b1e20b425]
+    /lib/x86_64-linux-gnu/libc.so.6(abort+0x17b)[0x7f3b1e20eb8b]
+    /usr/lib/x86_64-linux-gnu/libstdc++.so.6(_ZN9__gnu_cxx27__verbose_terminate_handlerEv+0x11d)[0x7f3b1eb5d69d]
+    /usr/lib/x86_64-linux-gnu/libstdc++.so.6(+0xb5846)[0x7f3b1eb5b846]
+    /usr/lib/x86_64-linux-gnu/libstdc++.so.6(+0xb5873)[0x7f3b1eb5b873]
+    /usr/lib/x86_64-linux-gnu/libstdc++.so.6(__cxa_rethrow+0x46)[0x7f3b1eb5b9b6]
+    /opt/torchlight/lib64/libOgreMain-1.6.5.so(_ZN4Ogre8Resource4loadEb+0x38d)[0x7f3b218a6dad]
+    /opt/torchlight/lib64/libOgreMain-1.6.5.so(_ZN4Ogre15ResourceManager4loadERKSsS2_bPNS_20ManualResourceLoaderEPKSt3mapISsSsSt4lessISsESaISt4pairIS1_SsEEE+0x91)[0x7f3b218b5381]
+    ./Torchlight.bin.x86_64(_ZN16ParticleUniverse17ParticleTechnique15setMaterialNameERKSs+0xc2)[0x176d936]
+    ./Torchlight.bin.x86_64(_ZN20CParticleTechWrapper21createTextureMaterialEv+0x903)[0xfbbc1f]
+    ./Torchlight.bin.x86_64(_ZN30CParticleTechWrapperDescriptor29DescriptorObjectHasBeenInitedEP17CEditorBaseObject+0x1c)[0xa2b090]
+    ./Torchlight.bin.x86_64(_ZN12CEditorScene20loadCompressedLayoutER9CFileInfoP10TArrayListIP17CEditorBaseObjectEx+0x963)[0xab4919]
+    ./Torchlight.bin.x86_64(_ZN12CEditorScene9loadSceneESbIwSt11char_traitsIwESaIwEEbP10TArrayListIP17CEditorBaseObjectExbP13CTimerStatics+0x2ac)[0xab0bfa]
+    ./Torchlight.bin.x86_64(_ZN7CLayout14loadLayoutFileERKSbIwSt11char_traitsIwESaIwEEbP13CTimerStaticsbbj+0x6c6)[0xf02ad8]
+    ./Torchlight.bin.x86_64(_ZN18CParticlePreloader12LoadParticleESbIwSt11char_traitsIwESaIwEES3_+0x25b)[0xfaf349]
+    ./Torchlight.bin.x86_64(_ZN18CParticlePreloader12LoadParticleESbIwSt11char_traitsIwESaIwEE+0xdd)[0xfaed1b]
+    ./Torchlight.bin.x86_64[0xf02041]
+    ./Torchlight.bin.x86_64(_ZN7CLayout14loadLayoutFileERKSbIwSt11char_traitsIwESaIwEEbP13CTimerStaticsbbj+0x265)[0xf02677]
+    ./Torchlight.bin.x86_64(_ZN17CLayoutDescriptor18Set_loadLayoutFileEP17CEditorBaseObjectP14UNIONDATA16BITj+0x7c)[0x855992]
+    ./Torchlight.bin.x86_64(_ZN15CDescriptorProp15setDataOnObjectEP17CEditorBaseObjectPK14UNIONDATA32BITj+0x17a)[0xa55fe0]
+    ./Torchlight.bin.x86_64(_ZN15CDescriptorProp7setDataEPK14UNIONDATA32BITjP17CEditorBaseObject+0x59)[0xa55d09]
+    ./Torchlight.bin.x86_64(_ZN11CDescriptor24loadObjectFromBinaryFileER11COgreReaderP17CEditorBaseObjectR28CDescriptorLoadConfiguration+0x36f)[0xa42107]
+    ./Torchlight.bin.x86_64(_Z26loadObjectByCompressedFileP12CEditorSceneR28CDescriptorLoadConfigurationR11COgreReaderP17CEditorBaseObjectb+0x122)[0xab39f2]
+    ./Torchlight.bin.x86_64(_ZN12CEditorScene20loadCompressedLayoutER9CFileInfoP10TArrayListIP17CEditorBaseObjectEx+0x3b3)[0xab4369]
+    ./Torchlight.bin.x86_64(_ZN12CEditorScene9loadSceneESbIwSt11char_traitsIwESaIwEEbP10TArrayListIP17CEditorBaseObjectExbP13CTimerStatics+0x2ac)[0xab0bfa]
+    ./Torchlight.bin.x86_64(_ZN7CLayout14loadLayoutFileERKSbIwSt11char_traitsIwESaIwEEbP13CTimerStaticsbbj+0x6c6)[0xf02ad8]
+    ./Torchlight.bin.x86_64(_ZN11CSkillEventC2EP6CSkillP14CSkillPropertyP16CResourceManagerP10CDataGroup+0x19a3)[0x1344eeb]
+    ./Torchlight.bin.x86_64(_ZN14CSkillPropertyC1EP6CSkillP16CResourceManagerPS_P10CDataGroupj+0x34ff)[0x1386e4f]
+    ./Torchlight.bin.x86_64(_ZN6CSkillC2EP16CResourceManagerP10CDataGroup+0x5e9)[0x1319c2d]
+    ./Torchlight.bin.x86_64(_ZN12CSkillParser8getSkillEP16CResourceManagerRKSbIwSt11char_traitsIwESaIwEE+0xf3)[0x1375f9d]
+    ./Torchlight.bin.x86_64(_ZN13CSkillManager8addSkillERKSbIwSt11char_traitsIwESaIwEEb+0xe6)[0x1363f7e]
+    ./Torchlight.bin.x86_64(_ZN9CBaseUnit14addSkillByNameERKSbIwSt11char_traitsIwESaIwEEb+0x9c)[0xbf53c4]
+    ./Torchlight.bin.x86_64(_ZN9CBaseUnit8unitInitEP10CDataGroupb+0x13fc)[0xbf756c]
+    ./Torchlight.bin.x86_64(_ZN10CCharacter8unitInitEP10CDataGroupb+0x63)[0xc29de5]
+    ./Torchlight.bin.x86_64(_ZN8CMonster8unitInitEP10CDataGroupb+0x2f)[0xd4ae41]
+    ./Torchlight.bin.x86_64(_ZN10CCharacter16convertCharacterESbIwSt11char_traitsIwESaIwEEb+0x873)[0xc29241]
+    ./Torchlight.bin.x86_64(_ZN10CCharacter18createNewCharacterESbIwSt11char_traitsIwESaIwEE+0x1cf)[0xc2897d]
+    ./Torchlight.bin.x86_64(_ZN18CMonsterDescriptor22Set_createNewCharacterEP17CEditorBaseObjectP14UNIONDATA16BITj+0x5f)[0x8955ed]
+
+At the time, a patch for this wasn't available, so I had to work around that
+bug in the following way:
+
+* find `pak.zip` inside the game directory (`/opt/torchlight/pak.zip` on my machine)
+* unpack this file using `unzip` (or my favourite: `[aunpack](http://www.nongnu.org/atool/)`)
+* find the offending texture (`media/particles/textures/trail/trail37.dds` as per the error message above)
+* copy a similar one (I picked `trail36.dds` in the same directory) on top of it
+* zip up the modified directory and replace the original `pak.zip` with this one
+
+In theory, this hack could cause some visual glitches, but I didn't actually
+notice anything and was quite happy to be able to rescue my game.
+
+(I ran into this bug on an Ubuntu 12.04 Precise laptop using an Intel GPU.)
+
+[[!tag gaming]]
