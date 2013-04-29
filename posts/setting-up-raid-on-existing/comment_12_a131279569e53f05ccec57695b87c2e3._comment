@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ ip="173.70.212.117"
+ subject="needed polish"
+ date="2013-04-29T15:40:43Z"
+ content="""
+Agree w/ previous comment; Helped me to add ' --metadata=0.90' when creating arrays and rather than specify '/dev/mdX' in places (e.g. fstab or grub menu) better to use the UUID (i.e. obtained via 'sudo tune2fs -l /dev/md0').  Finally, I've enabled 'user_xattr' on my filesystem... thus it was wise to add -X to the rsync.
+"""]]
