@@ -80,7 +80,7 @@ underlaydir: /usr/share/ikiwiki/basewiki
 # display verbose messages?
 #verbose: 1
 # log to syslog?
-syslog: '1'
+syslog: 1
 # create output files named page/index.html?
 usedirs: '1'
 # use '!'-prefixed preprocessor directives?
@@ -139,7 +139,7 @@ allow_symlinks_before_srcdir: '0'
 # Allow anyone to branch, check out, and copy this site?
 branchable: '1'
 # Allow anyone to git push verified changes to this site?
-anonpush: 0
+anonpush: '0'
 # Display "Branchable" link on action bar?
 branchable_action: '0'
 
@@ -177,8 +177,9 @@ htmlscrubber_skip: '* and !comment(*) and !*/Discussion'
 # list of urls that alias to the main url
 urlalias:
 - http://feedingthecloud.branchable.com/
-- http://feedingthecloud.branchable.com/
+- http://feeds.cloud.geek.nz/
 - http://www.feeding.cloud.geek.nz/
+- http://feedingthecloud.branchable.com/
 # openid of primary site owner
 owner: https://openid.fmarier.org/
 # optional hostname of site this one was branched from
@@ -307,8 +308,8 @@ po_link_to: default
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, google, goto,
-#    mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
+#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -332,6 +333,10 @@ comments_allowauthor: '1'
 # commit comments to the VCS
 comments_commit: '1'
 
+# getsource plugin
+# Mime type for returned source.
+#getsource_mimetype: text/plain; charset=utf-8
+
 # mirrorlist plugin
 # list of mirrors
 #mirrorlist: {}
@@ -342,6 +347,7 @@ comments_commit: '1'
 # URIs of repositories containing the wiki's source
 repositories:
 - ssh://b-feedingthecloud@feedingthecloud.branchable.com/
+- git://feedingthecloud.branchable.com/
 
 # search plugin
 # path to the omega cgi program
@@ -418,9 +424,9 @@ directive_description_dir: ikiwiki/directive
 #   (aggregate, autoindex, brokenlinks, camelcase, ddate, embed, favicon,
 #    filecheck, flattr, goodstuff, htmlbalance, localstyle, missingsite,
 #    notifyemail, pagetemplate, parked, pingee, pinger, prettydate,
-#    recentchangesdiff, relativedate, rsync, sidebar, smiley,
-#    sortnaturally, tag, testpagespec, trail, transient, typography,
-#    underlay)
+#    recentchanges, recentchangesdiff, relativedate, rsync, sidebar,
+#    smiley, sortnaturally, tag, testpagespec, trail, transient,
+#    typography, underlay)
 ######################################################################
 
 # aggregate plugin
@@ -455,6 +461,12 @@ flattr_userid: fmarier
 # prettydate plugin
 # format to use to display date
 prettydateformat: '%X, %B %o, %Y'
+
+# recentchanges plugin
+# name of the recentchanges page
+#recentchangespage: recentchanges
+# number of changes to track
+#recentchangesnum: 100
 
 # rsync plugin
 # command to run to sync updated pages
