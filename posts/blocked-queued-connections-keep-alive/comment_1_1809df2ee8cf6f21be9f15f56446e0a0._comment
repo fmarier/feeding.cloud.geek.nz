@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="98.237.178.231"
+ subject="Brilliant"
+ date="2013-05-13T19:21:44Z"
+ content="""
+Incorrect Content-Length headers for compressed resources on Keep-Alive connections causes the connection to hang until the timeout expires.
+
+This is exactly what was happening to me--thanks for the writeup.
+"""]]
