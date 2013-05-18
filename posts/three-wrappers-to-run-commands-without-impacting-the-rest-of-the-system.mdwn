@@ -1,0 +1,71 @@
+[[!meta title="Three wrappers to run commands without impacting the rest of the system"]]
+[[!meta date="2013-05-18T18:14:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+Most UNIX users have heard of the
+[nice](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/nice.html)
+utility used to run a command with a lower priority to make sure that it
+only runs when nothing more important is trying to get a hold of the CPU:
+
+    nice long_running_script.sh
+
+That's only dealing with part of the problem though because the CPU is not
+all there is. A low priority command could still be interfering with other
+tasks by stealing valuable I/O cycles (e.g. accessing the hard
+drive).
+
+# Prioritizing I/O
+
+Another Linux command, [ionice](http://linux.die.net/man/1/ionice), allows
+users to set the I/O priority to be lower than all other processes.
+
+Here's how to make sure that a script doesn't get to do any I/O unless the
+resource it wants to use is idle:
+
+    sudo ionice -c3 hammer_disk.sh
+
+The above only works as root, but the following is a pretty good
+approximation that works for non-root users as well:
+
+    ionice -n7 hammer_disk.sh
+
+You may think that running a command with both `nice` and `ionice` would have
+absolutely no impact on other tasks running on the same machine, but there is one
+more aspect to consider, at least on machines with limited memory: the disk cache.
+
+# Polluting the disk cache
+
+If you run a command (for example a program that goes through the entire
+file system checking various things, you will find that the kernel will
+start pulling more files into its cache and expunge cache entries used by
+other processes. This can have a very significant impact on a system as
+useful portions of memory are swapped out.
+
+For example, on my laptop, the nightly
+[debsums](http://packages.debian.org/sid/debsums),
+[rkhunter](http://packages.debian.org/sid/rkhunter) and
+[tiger](http://packages.debian.org/sid/tiger) cron jobs essentially clear my
+disk cache of useful entries and force the system to slowly page everything
+back into memory as I unlock my screen saver in the morning.
+
+Thankfully, there is now a solution for this in Debian: the
+[nocache](http://packages.debian.org/sid/nocache) package.
+
+This is what my long-running cron jobs now look like:
+
+    nocache ionice -c3 nice long_running.sh
+
+# Turning off disk syncs
+
+Another relatively unknown tool, which I would certainly not recommend for
+all cron jobs but is nevertheless related to I/O, is
+[eatmydata](http://packages.debian.org/sid/eatmydata).
+
+If you wrap it around a command, it will run without bothering to
+periodically make sure that it flushes any changes to disk. This can speed
+things up significantly but it should obviously not be used for anything
+that has important side effects or that cannot be re-run in case of failure.
+
+After all, its name is very appropriate. It will eat your data!
+
+[[!tag debian]] [[!tag sysadmin]] [[!tag nzoss]]
