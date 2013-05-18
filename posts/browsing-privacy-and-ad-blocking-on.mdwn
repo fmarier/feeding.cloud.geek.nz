@@ -17,7 +17,7 @@ However, its default configuration really doesn't block much and so you'll proba
 
 ### Configuring Fennec to use a proxy
 
-Unlike its desktop cousin, Firefox for Android (also called Fennec) doesn't expose proxy settings in the user interface. Instead, you have to open the [about:config](about:config) page and configure the following settings manually:
+Unlike its desktop cousin, Firefox for Android (also called Fennec) doesn't expose proxy settings in the user interface. Instead, you have to open the `about:config` page and configure the following settings manually:
 
 
       

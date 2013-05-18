@@ -71,7 +71,7 @@ If you want to make sure that your prefetching works:
 
   1. Clear your browser cache.
   2. Load the page that has prefetch links.
-  3. Take a look at the contents of your cache ([about:cache](about:cache) in Firefox and [chrome://cache/](chrome://cache/) in Chrome) and look for the resources that should be prefetched.
+  3. Take a look at the contents of your cache (`about:cache` in Firefox and `chrome://cache/` in Chrome) and look for the resources that should be prefetched.
 
 
 [[!tag firefox]] [[!tag optimisation]] [[!tag html5]] [[!tag web]] [[!tag browserid]] [[!tag nzoss]] [[!tag mozilla]] 
