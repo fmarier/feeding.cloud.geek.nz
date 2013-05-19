@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="89.0.175.106"
+ claimedauthor="Helmut Grohne"
+ subject="Scheduling classes"
+ date="2013-05-18T13:26:08Z"
+ content="""
+Also consider the scheduling class. Two classes are relevant here `SCHED_BATCH` and `SCHED_IDLE`. Both turn off interactivity boosting and therefore tend to allocate larger chunks of CPU time to your processes. In addition the `SCHED_IDLE` class prioritizes every process outside this class higher at all times, so such a process can be blocked for extensive periods of time by a concurrent processes.
+
+For changing these settings there are the `chrt` and `schedtool` commands. While `chrt` is available on almost all systems, `schedtool` is a bit easier to use:
+
+    schedtool {-B or -D} {$PID or -e $COMMAND}
+"""]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="46.249.65.21"
+ claimedauthor="Djadala"
+ subject="ionice works only with the CFQ I/O scheduler"
+ date="2013-05-18T07:21:13Z"
+ content="""
+please mention that ionice works only if I/O scheduler is CFQ
+"""]]
