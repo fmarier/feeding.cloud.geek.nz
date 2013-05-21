@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ ip="187.59.181.40"
+ subject="What about memory?"
+ date="2013-05-21T01:59:50Z"
+ content="""
+Nothing to hold back programs from using too much main memory? There could be a command that tells the system to make that programs page the most likely to be swapped out of memory and be the first one to kill by OOM killer.
+"""]]
