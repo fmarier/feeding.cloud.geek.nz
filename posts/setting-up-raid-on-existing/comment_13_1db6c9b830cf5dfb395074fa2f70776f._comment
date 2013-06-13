@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ ip="82.119.15.107"
+ claimedauthor="Jörg Maschtaler"
+ subject="Changes needed for Ubuntu 12.04 (to avoid the message &quot;no such disk&quot;)"
+ date="2013-06-13T13:55:10Z"
+ content="""
+Hi,
+
+first of all: Thank you for this manual.
+
+In Step 5 (Reboot using the RAIDed drive and test system) there has to be an enhancement.
+
+Before \"set root=..:\" you have to add the following two lines
+
+
+    insmod raid
+    insmod mdraid1x
+
+so that the whole change is looking like
+
+    insmod raid
+    insmod mdraid1x
+    set root='(md/0)'  
+    linux /boot/vmlinuz-2.6.32-5-amd64 root=/dev/md0 ro quiet
+
+cheers
+"""]]
