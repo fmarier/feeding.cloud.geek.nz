@@ -1,38 +1,38 @@
 [[!meta title="IndieAuth as a Persona Identity Provider"]]
-[[!meta date="2013-06-29T20:00:00.000-05:00"]]
+[[!meta date="2013-06-29T20:30:00.000-04:00"]]
 [[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
 Two weeks ago, I attended [Indie Web Camp](http://indiewebcamp.com) and had lots of interesting
 [Persona](https://login.persona.org) conversations. As part of an
-[IndieAuth Jam session](TODO: etherpad), a few of us explored the idea of adding
-non-[OAuth](TODO: wikipedia page)-based authentication mechanisms to
+[Auth Jam session](http://indiewebcamp.com/2013/Auth_Jam_Session), a few of us explored the idea of adding
+non-[OAuth](https://en.wikipedia.org/wiki/OAuth)-based authentication mechanisms to
 [IndieAuth](https://indieauth.com).
 
-While [Aaron](http://aaronparecki.com) and [Austin](TODO: homepage) got SMS and Persona
-working as IndieAuth [providers](TODO: github repo, providers directory)
-during one of the Sunday hack sessions, I wanted to explore the idea of
-IndieAuth as a [Persona identity provider](TODO: mdn docs on IdPs).
+While [Aaron](http://aaronparecki.com) and [Austin](http://ozten.com) got
+[SMS](https://github.com/aaronpk/IndieAuth/commit/1e5581b2a91b4d455be1310f833026a8c343ec71) and [Persona](https://github.com/aaronpk/IndieAuth/commit/2dd7d58e26b65af53ea0a3c8659e1779dcb7be41) working as IndieAuth providers during one of the Sunday hack
+sessions, I wanted to explore the idea of IndieAuth (an implementation of
+[RelMeAuth](http://microformats.org/wiki/RelMeAuth)) as a
+[Persona identity provider](https://developer.mozilla.org/en-US/docs/Mozilla/Persona/Implementing_a_Persona_IdP).
 
 # Using IndieAuth on any Persona-enabled site
 
 The goal of this effort was to allow Indie Web developers to use their
 preferred email address with Persona and have IndieAuth authenticate them
-using any supported IndieAuth provider (e.g. [Twitter](TODO: Twitter auth
-docs) or [Github](TODO: Github auth docs)).
+using any supported IndieAuth provider (e.g. [Twitter](https://dev.twitter.com/docs/auth/implementing-sign-twitter) or [Github](http://developer.github.com/guides/basics-of-authentication/)).
 
 This work will help bridge the gap between these two projects and allow
 IndieAuth developers to log into more website using their
-[hard-earned credentials](TODO: how to setup IndieAuth).
+[hard-earned credentials](http://indiewebcamp.com/How_to_set_up_IndieAuth_on_your_own_domain).
 
 # User setup
 
 In order to take advantage of this, users have to:
 
-1. Serve a [support document](TODO: MDN) on their *email* domain declaring
+1. Serve a [support document](https://developer.mozilla.org/en-US/docs/Mozilla/Persona/.well-known-browserid) on their *email* domain declaring
 `indieauth.com` as the authority for their domain.
-2. Include a [`rel="me"`](TODO: microformat page) link for their preferred
+2. Include a [`rel="me"`](http://microformats.org/wiki/rel-me) link for their preferred
 email address on their *personal* domain.
 3. Advertise their *personal* domain on their *email* domain via
-[WebFinger](TODO: new spec).
+[WebFinger](https://tools.ietf.org/html/draft-ietf-appsawg-webfinger).
 
 For example, Aaron would use the following support document at
 `https://parecki.com/.well-known/browserid`:
@@ -49,12 +49,12 @@ pointing to his preferred email address, `aaron@parecki.com`:
 Finally, because his *email* domain (`parecki.com`) is different from his
 *personal* domain (`aaronparecki.com`), they would need to be linked
 together via WebFinger. Thankfully, he found a clever way to do this with
-[a simple Apache rewrite rule and some static files](TODO: Aaron's gist).
+[a simple Apache rewrite rule and some static files](https://gist.github.com/aaronpk/5846789).
 
 # Implementation
 
 Aaron and I worked out the the details of how this will work and wrote a
-[walkthrough](TODO: my github repo) to illustrate it.
+[walkthrough](https://github.com/fmarier/indieauth-personaidp-spec) to illustrate it.
 
 The gist of it is that Persona will ask IndieAuth to certify an email
 address and IndieAuth will convert that email address to a personal domain
