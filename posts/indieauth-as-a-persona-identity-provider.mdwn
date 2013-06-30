@@ -1,0 +1,64 @@
+[[!meta title="IndieAuth as a Persona Identity Provider"]]
+[[!meta date="2013-06-29T20:00:00.000-05:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+Two weeks ago, I attended [Indie Web Camp](http://indiewebcamp.com) and had lots of interesting
+[Persona](https://login.persona.org) conversations. As part of an
+[IndieAuth Jam session](TODO: etherpad), a few of us explored the idea of adding
+non-[OAuth](TODO: wikipedia page)-based authentication mechanisms to
+[IndieAuth](https://indieauth.com).
+
+While [Aaron](http://aaronparecki.com) and [Austin](TODO: homepage) got SMS and Persona
+working as IndieAuth [providers](TODO: github repo, providers directory)
+during one of the Sunday hack sessions, I wanted to explore the idea of
+IndieAuth as a [Persona identity provider](TODO: mdn docs on IdPs).
+
+# Using IndieAuth on any Persona-enabled site
+
+The goal of this effort was to allow Indie Web developers to use their
+preferred email address with Persona and have IndieAuth authenticate them
+using any supported IndieAuth provider (e.g. [Twitter](TODO: Twitter auth
+docs) or [Github](TODO: Github auth docs)).
+
+This work will help bridge the gap between these two projects and allow
+IndieAuth developers to log into more website using their
+[hard-earned credentials](TODO: how to setup IndieAuth).
+
+# User setup
+
+In order to take advantage of this, users have to:
+
+1. Serve a [support document](TODO: MDN) on their *email* domain declaring
+`indieauth.com` as the authority for their domain.
+2. Include a [`rel="me"`](TODO: microformat page) link for their preferred
+email address on their *personal* domain.
+3. Advertise their *personal* domain on their *email* domain via
+[WebFinger](TODO: new spec).
+
+For example, Aaron would use the following support document at
+`https://parecki.com/.well-known/browserid`:
+
+    {
+        "authority": "indieauth.com"
+    }
+
+Then he would ensure that there is a `rel="me"` link on `aaronparecki.com`
+pointing to his preferred email address, `aaron@parecki.com`:
+
+    <a href="mailto:aaron@parecki.com" rel="me">Email me</a>
+
+Finally, because his *email* domain (`parecki.com`) is different from his
+*personal* domain (`aaronparecki.com`), they would need to be linked
+together via WebFinger. Thankfully, he found a clever way to do this with
+[a simple Apache rewrite rule and some static files](TODO: Aaron's gist).
+
+# Implementation
+
+Aaron and I worked out the the details of how this will work and wrote a
+[walkthrough](TODO: my github repo) to illustrate it.
+
+The gist of it is that Persona will ask IndieAuth to certify an email
+address and IndieAuth will convert that email address to a personal domain
+(using WebFinger) before authenticating the user with one of the IndieAuth
+providers enabled on that domain.
+
+[[!tag indieweb]] [[!tag browserid]] [[!tag web]] [[!tag nzoss]] [[!tag mozilla]]
