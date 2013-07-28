@@ -1,0 +1,97 @@
+[[!meta title="FISL for foreigners HOWTO"]]
+[[!meta date="2013-07-28T20:40:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+[FISL](http://fisl.softwarelivre.org/) (pronounced *FIZZ lay* by the locals)
+is a large Free and Open Source software gathering in
+[Porto Alegre, Brazil](http://en.wikivoyage.org/wiki/Porto_Alegre). While
+the primary audience of that conference is the Latin America "libre
+software" community, a number of overseas speakers also participate in that
+conference. This is my contribution to them: a short guide for international
+guests visiting the *Fórum Internacional do Software Livre*.
+
+# Planning
+
+Before you fly out, make sure you look up the
+[visa requirements](https://en.wikipedia.org/wiki/Visa_policy_of_Brazil) for
+your country of citizenship. Many western countries will require a visa and
+you will need to visit the local Brazillian embassy ahead of time to get
+one.
+
+Next, have a look at the list of
+[recommended immunizations](http://wwwnc.cdc.gov/travel/destinations/traveler/none/brazil). As
+with most destinations, it is recommended that your routine
+immunizations be up to date, but there are also other specialized ones such
+as
+[Yellow Fever](http://wwwnc.cdc.gov/travel/yellowbook/2012/chapter-3-infectious-diseases-related-to-travel/yellow-fever-and-malaria-information-by-country/brazil#5441)
+that are recommended by the Brazillian government. You should therefore
+visit a travel clinic a few weeks ahead of time.
+
+Other than that, I suggest reading up on
+[the country](http://en.wikivoyage.org/wiki/Brazil) and keeping an eye
+[on](http://travel.gc.ca/destinations/brazil)
+[the](http://travel.state.gov/travel/cis_pa_tw/cis/cis_1072.html)
+[various](https://www.gov.uk/foreign-travel-advice/brazil)
+[travel](http://www.smartraveller.gov.au/zw-cgi/view/Advice/Brazil)
+[advisories](http://www.safetravel.govt.nz/destinations/brazil.shtml).
+
+# Arrival
+
+You will be flying at the [Porto Alegre airport](http://www.infraero.gov.br/index.php/us/airports/rio-grande-do-sul/salgado-filho-international-airport.html). If
+you need to exchange overseas money for
+[Brazilian Reals](http://en.wikipedia.org/wiki/Brazilian_real), you can do
+that there.
+
+You'll probably also want to pick up a power adapter at the airport if you
+intend to charge your laptop while you're in the country :) Brazil has both
+127V and 220V outlets using
+[Type N sockets](http://en.wikipedia.org/wiki/AC_power_plugs_and_sockets#IEC_60906-1_.28Brazilian_NBR.C2.A014136.29_.28Type_N.29).
+
+Privacy note: using the free airport wifi will require giving your Passport
+details as part of the registration process.
+
+# Language
+
+If you don't speak Portuguese, expect a few challenges since most
+of the people you'll meet (including taxi drivers, many airport workers,
+some hotel staff) won't speak English. I highly recommend getting a
+[phrase book](http://www.amazon.com/dp/1740597311/) before you leave and
+printing paper maps of where you are planning to go (to show to
+taxi drivers when you get lost).
+
+Native Spanish speakers seem to get by speaking Spanish to Portuguese
+speakers and understanding enough Portuguese to hold a conversation. I
+wouldn't count on it unless your Spanish is quite good though.
+
+Also, the official conference blog posts get eventually translated to English,
+but there is a delay, so you may want to subscribe to the Portuguese feed and use
+[Google Translate](http://translate.google.com) to keep up with FISL news
+before you get there.
+
+# The conference
+
+FISL is a large conference and it has a very "decentralized" feel to
+it. From the outside, it looks like it's organized by an army of volunteers
+where everyone is taking care of some portion of it without a whole lot of
+top-down direction. It seems to work quite well!
+
+What this means for you as a foreign speaker however is that you're unlikely
+to be provided with a lot of information or help finding your way around the
+conference (i.e. no "speaker liaison"). There is a separate registration
+desk for speakers but that's about all of the attention you'll receive
+before you deliver your talk. So make sure you know where to go and show up
+in your assigned room early to speak with the person introducing you.
+
+If your talk is in English, it will be live-transated by an
+interpreter. It's therefore a good idea to speak a bit more slowly and to
+pause a bit more.
+
+Other than that, the organizers make an effort to schedule an English talk
+in each timeslot so non-Portuguese speakers should still be able to get a
+lot out of the conference.
+
+
+FISL was a lot of fun for me and I hope that some of these tips will help
+you enjoy the biggest FLOSS gathering in the southern hemisphere!
+
+[[!tag conference]] [[!tag debian]] [[!tag nzoss]]
