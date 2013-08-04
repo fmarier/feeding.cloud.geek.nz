@@ -54,9 +54,7 @@ I traced my problems down to this error message when I sent input to the worker:
     gearman: gearman_client_run_tasks : connect_poll(Connection refused)
     getsockopt() failed -> libgearman/connection.cc:104
 
-It turns out that it is [a known bug](https://bugs.launchpad.net/gearmand/+bug/1047154) that was fixed upstream but still affects Debian wheezy and some versions of Ubuntu.
-
-The bug report is pretty unhelpful since the work-around is hidden away in the comments of this ["invalid" answer](https://answers.launchpad.net/gearmand/+question/196397): be explicit about the hostname and port number in both gearman calls.
+It turns out that it is [a known bug](https://bugs.launchpad.net/gearmand/+bug/1047154) that was fixed upstream but still affects Debian wheezy and some versions of Ubuntu. The bug report is pretty unhelpful since the work-around is hidden away in the comments of this ["invalid" answer](https://answers.launchpad.net/gearmand/+question/196397): be explicit about the hostname and port number in both gearman calls.
 
 So I was able to make it work like this:
 
