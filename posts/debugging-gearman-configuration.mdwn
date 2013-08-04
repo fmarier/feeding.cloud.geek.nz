@@ -1,0 +1,68 @@
+[[!meta title="Debugging Gearman configuration"]]
+[[!meta date="2013-08-04T21:10:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+[Gearman](http://www.gearman.org) is a queuing system that [has been in Debian](http://packages.debian.org/search?keywords=gearman-job-server) for a long time and is quite reliable.
+
+I ran into problems however when upgrading a server from Debian squeeze to wheezy however. Here's how I debugged my Gearman setup.
+
+# Log verbosity
+
+First of all, I started by increasing the verbosity level of the daemon by adding `--verbose=INFO` to `/etc/default/gearman-job-server` (the possible values of the `verbose` option are in the [libgearman documentation](http://gearman.info/libgearman/gearman_verbose_t.html)) and restarting the daemon:
+
+    /etc/init.d/gearman-job-server restart
+
+I opened a second terminal to keep an eye on the logs:
+
+    tail -f /var/log/gearman-job-server/gearman.log
+
+# Listing available workers
+
+Next, I registered a very simple worker:
+
+    gearman -w -f mytest cat
+
+and made sure it was connected properly by telneting into the Gearman process:
+
+    telnet localhost 4730
+
+and listing all currently connected workers using the `workers` command (one of the commands available in the [Gearman TEXT protocol](http://gearman.info/protocol/text.html)).
+
+There should be an entry similar to this one:
+
+    30 127.0.0.1 - : mytest
+
+Because there are no `exit` or `quit` commands in the TEXT protocol, you need to terminate the telnet connection like this:
+
+1. Press Return
+2. Press Ctrl + ]
+3. Press Return
+4. Type `quit` at the telnet prompt and press Return.
+
+Finally, I sent some input to the simple worker I setup earlier:
+
+    echo "hi there" | gearman -f mytest
+
+and got my input repeated on the terminal:
+
+    hi there
+
+# Gearman bug
+
+I traced my problems down to this error message when I sent input to the worker:
+
+    gearman: gearman_client_run_tasks : connect_poll(Connection refused)
+    getsockopt() failed -> libgearman/connection.cc:104
+
+It turns out that it is [a known bug](https://bugs.launchpad.net/gearmand/+bug/1047154) that was fixed upstream but still affects Debian wheezy and some versions of Ubuntu.
+
+The bug report is pretty unhelpful since the work-around is hidden away in the comments of this ["invalid" answer](https://answers.launchpad.net/gearmand/+question/196397): be explicit about the hostname and port number in both gearman calls.
+
+So I was able to make it work like this:
+
+    gearman -w -h 127.0.0.1 -p 4730 -f mytest cat    
+    echo "hi there" | gearman -h 127.0.0.1 -p 4730 -f mytest
+
+where the hostname matches **exactly** what's in `/etc/default/gearman-job-server`.
+
+[[!tag gearman]] [[!tag debian]] [[!tag nzoss]]
