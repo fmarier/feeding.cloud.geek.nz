@@ -60,4 +60,4 @@ Here's how you can use [Inkscape](http://inkscape.org/) to generate an 80x80 PNG
 
 
 
-[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag web]] [[!tag nzoss]] 
+[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag web]] [[!tag nzoss]] [[!tag libravatar]]

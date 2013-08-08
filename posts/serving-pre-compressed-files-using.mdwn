@@ -76,4 +76,4 @@ As for the `SetEnv` directive, it turns out that on Internet Explorer, most file
 Finally, the `Cache-Control` headers are set to `private` to [prevent intermediate/transparent proxies from caching](https://code.google.com/speed/page-speed/docs/caching.html#LeverageProxyCaching) our CSS and Javascript files, while allowing browsers to do so. If intermediate proxies start caching compressed content, they may incorrectly serve it to clients without gzip support.
 
 
-[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag nzoss]] 
+[[!tag catalyst]] [[!tag optimisation]] [[!tag debian]] [[!tag nzoss]] [[!tag libravatar]]

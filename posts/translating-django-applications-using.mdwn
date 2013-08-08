@@ -27,4 +27,4 @@ and here are the (relative) symbolic links:
 Note that the "en" localization is left untranslated and used as the translation template (POT file).
 
 
-[[!tag catalyst]] [[!tag launchpad]] [[!tag django]] [[!tag ubuntu]] [[!tag nzoss]] 
+[[!tag catalyst]] [[!tag launchpad]] [[!tag django]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag libravatar]]

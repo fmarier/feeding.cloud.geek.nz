@@ -59,4 +59,4 @@ If you are interested in Content Security Policy, you may also want to look into
 It's also worth mentioning the excellent [Request Policy](https://addons.mozilla.org/en-US/firefox/addon/requestpolicy/) extension which solves the same problem by letting users whitelist the cross-site requests they want to allow.
 
 
-[[!tag catalyst]] [[!tag django]] [[!tag debian]] [[!tag python]] [[!tag security]] [[!tag web]] [[!tag csp]] [[!tag nzoss]] [[!tag mozilla]] 
+[[!tag catalyst]] [[!tag django]] [[!tag debian]] [[!tag python]] [[!tag security]] [[!tag web]] [[!tag csp]] [[!tag nzoss]] [[!tag mozilla]] [[!tag libravatar]]

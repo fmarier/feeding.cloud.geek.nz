@@ -76,4 +76,4 @@ Here is the final policy I ended up setting (using Apache [mod_headers](http://h
 
 
 
-[[!tag catalyst]] [[!tag security]] [[!tag web]] [[!tag browserid]] [[!tag csp]] [[!tag nzoss]] [[!tag mozilla]] 
+[[!tag catalyst]] [[!tag security]] [[!tag web]] [[!tag browserid]] [[!tag csp]] [[!tag nzoss]] [[!tag mozilla]] [[!tag libravatar]]
