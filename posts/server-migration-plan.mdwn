@@ -1,0 +1,152 @@
+[[!meta title="Server Migration Plan"]]
+[[!meta date="2013-08-09T00:20:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+I recently had to migrate the main [Libravatar](https://www.libravatar.org) server to a new virtual
+machine. In order to minimize risk and downtime, I decided to write a
+[migration plan](http://zoompf.com/2013/08/you-need-a-website-migration-plan)
+ahead of time.
+
+I am sharing this plan here in case it gives any ideas to others who have to
+go through a similar process.
+
+# Prepare DNS
+
+* Change the TTL on the DNS entry for `libravatar.org` to 3600 seconds.
+* Remove the mirrors I don't control from the DNS load balancer (`cdn` and `seccdn`).
+* Remove the main server from `cdn` and `seccdn` in DNS.
+
+# Preparing the new server
+
+* [Setup the new server](http://wiki.libravatar.org/setup_instructions/).
+* Copy the database from the old site and restore it.
+* Copy `/var/lib/libravatar` from the old site.
+* Hack my local `/etc/hosts` file to point to the new server's IP address:
+
+        xxx.xxx.xxx.xxx www.libravatar.org stats.libravatar.org cdn.libravatar.org
+
+* Test all functionality on the new site.
+
+# Preparing the old server
+
+* Prepare a static "under migration" Apache config in `/etc/apache2/sites-enables.static/`:
+
+        <VirtualHost *:80>
+            RewriteEngine On
+            RewriteRule ^ https://www.libravatar.org [redirect=301,last]
+        </VirtualHost>
+
+        <VirtualHost *:443>
+            SSLEngine on
+            SSLProtocol TLSv1
+            SSLHonorCipherOrder On
+            SSLCipherSuite RC4-SHA:HIGH:!kEDH
+        
+            SSLCertificateFile /etc/libravatar/www.crt
+            SSLCertificateKeyFile /etc/libravatar/www.pem
+            SSLCertificateChainFile /etc/libravatar/www-chain.pem
+        
+            RewriteEngine On
+            RewriteRule ^ /var/www/migration.html [last]
+        
+            <Directory /var/www>
+                Allow from all
+                Options -Indexes
+            </Directory>
+        </VirtualHost>
+
+* Put this static file in /var/www/migration.html:
+
+        <html>
+        <body>
+        <p>We are migrating to a new server. See you soon!</p>
+        <p>- <a href="http://identi.ca/libravatar">@libravatar</a></p>
+        </body>
+        </html>
+
+* Enable the rewrite module:
+
+        a2enmod rewrite
+
+* Prepare an Apache config proxying to the new server in `/etc/apache2/sites-enabled.proxy/`:
+
+        <VirtualHost *:80>
+            RewriteEngine On
+            RewriteRule ^ https://www.libravatar.org [redirect=301,last]
+        </VirtualHost>
+        
+        <VirtualHost *:443>
+            SSLEngine on
+            SSLProtocol TLSv1
+            SSLHonorCipherOrder On
+            SSLCipherSuite RC4-SHA:HIGH:!kEDH
+        
+            SSLCertificateFile /etc/libravatar/www.crt
+            SSLCertificateKeyFile /etc/libravatar/www.pem
+            SSLCertificateChainFile /etc/libravatar/www-chain.pem
+        
+            SSLProxyEngine on
+            ProxyPass / https://www.libravatar.org/
+            ProxyPassReverse / https://www.libravatar.org/
+        </VirtualHost>
+
+* Enable the proxy-related modules for Apache:
+
+        a2enmod proxy
+        a2enmod proxy_connect
+        a2enmod proxy_http
+
+# Migrating servers
+
+* [Tweet](https://twitter.com/libravatar/status/364659172983308288) and [dent](https://identi.ca/libravatar/note/UFBI9ne8SsOftkYlSKPHQQ) about the upcoming migration.
+
+* Enable the static file config on the old server (disabling the Django app).
+
+* Copy the database from the old server and restore it on the new server.
+* Copy `/var/lib/libravatar` from the old server to the new one.
+
+# Disable mirror sync
+
+* Log into each mirror and comment out the sync cron jobs in `/etc/cron.d/libravatar-slave`.
+* Make sure mirrors are no longer able to connect to the old server by deleting `/var/lib/libravatar/master/.ssh/authorized_keys` on the old server.
+
+# Testing the main site
+
+* Hack my local `/etc/hosts` file to point to the new server's IP address:
+
+        xxx.xxx.xxx.xxx www.libravatar.org stats.libravatar.org cdn.libravatar.org
+
+* Test all functionality on the new site.
+* If testing is successful, update DNS to point to the new server with a short TTL (in case we need to revert).
+
+* Enable the proxy config on the old server.
+* Hack my local `/etc/hosts` file to point to the old server's IP address.
+* Test basic functionality going through the proxy.
+* Remove local `/etc/hosts/` hacks.
+
+# Re-enable mirror sync
+
+* Build a new `libravatar-slave` package with an updated `known_hosts` file for the new server.
+* Log into each server I control and update that package.
+* Test the connection to the master (hacking `/etc/hosts` on the mirror if needed):
+
+        sudo -u libravatar-slave ssh libravatar-master@0.cdn.libravatar.org
+
+* Uncomment the sync cron jobs in `/etc/cron.d/libravatar-slave`.
+* An hour later, make sure that new images are copied over and that the TLS certs are still working.
+* Remove `/etc/hosts` hacks from all mirrors.
+
+# Post migration steps
+
+* [Tweet](https://twitter.com/libravatar/status/364685629918949376) and [dent](https://identi.ca/libravatar/note/wIyaqgYjSu-ig_FDXLI8rA) about the fact that the migration was successful.
+* Send a test email to the support address included in the tweet/dent.
+
+* Take a backup of config files and data on the old server in case I forgot to copy something to the new one.
+
+* Get in touch with mirror owners to tell them to update `libravatar-slave` package and test ssh configuration.
+* Add third-party controlled mirrors back to the DNS load-balancer once they are up to date.
+
+* A few days later, change the TTL for the main site back to 43200 seconds.
+* A week later, kill the proxy on the old server by shutting it down.
+
+[[!tag libravatar]] [[!tag debian]] [[!tag nzoss]]
