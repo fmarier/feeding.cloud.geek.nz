@@ -23,7 +23,7 @@ go through a similar process.
 * Copy `/var/lib/libravatar` from the old site.
 * Hack my local `/etc/hosts` file to point to the new server's IP address:
 
-        xxx.xxx.xxx.xxx www.libravatar.org stats.libravatar.org cdn.libravatar.org
+      xxx.xxx.xxx.xxx www.libravatar.org stats.libravatar.org cdn.libravatar.org
 
 * Test all functionality on the new site.
 
@@ -31,70 +31,70 @@ go through a similar process.
 
 * Prepare a static "under migration" Apache config in `/etc/apache2/sites-enables.static/`:
 
-        <VirtualHost *:80>
-            RewriteEngine On
-            RewriteRule ^ https://www.libravatar.org [redirect=301,last]
-        </VirtualHost>
+      <VirtualHost *:80>
+          RewriteEngine On
+          RewriteRule ^ https://www.libravatar.org [redirect=301,last]
+      </VirtualHost>
 
-        <VirtualHost *:443>
-            SSLEngine on
-            SSLProtocol TLSv1
-            SSLHonorCipherOrder On
-            SSLCipherSuite RC4-SHA:HIGH:!kEDH
-        
-            SSLCertificateFile /etc/libravatar/www.crt
-            SSLCertificateKeyFile /etc/libravatar/www.pem
-            SSLCertificateChainFile /etc/libravatar/www-chain.pem
-        
-            RewriteEngine On
-            RewriteRule ^ /var/www/migration.html [last]
-        
-            <Directory /var/www>
-                Allow from all
-                Options -Indexes
-            </Directory>
-        </VirtualHost>
+      <VirtualHost *:443>
+          SSLEngine on
+          SSLProtocol TLSv1
+          SSLHonorCipherOrder On
+          SSLCipherSuite RC4-SHA:HIGH:!kEDH
+      
+          SSLCertificateFile /etc/libravatar/www.crt
+          SSLCertificateKeyFile /etc/libravatar/www.pem
+          SSLCertificateChainFile /etc/libravatar/www-chain.pem
+      
+          RewriteEngine On
+          RewriteRule ^ /var/www/migration.html [last]
+      
+          <Directory /var/www>
+              Allow from all
+              Options -Indexes
+          </Directory>
+      </VirtualHost>
 
 * Put this static file in /var/www/migration.html:
 
-        <html>
-        <body>
-        <p>We are migrating to a new server. See you soon!</p>
-        <p>- <a href="http://identi.ca/libravatar">@libravatar</a></p>
-        </body>
-        </html>
+      <html>
+      <body>
+      <p>We are migrating to a new server. See you soon!</p>
+      <p>- <a href="http://identi.ca/libravatar">@libravatar</a></p>
+      </body>
+      </html>
 
 * Enable the rewrite module:
 
-        a2enmod rewrite
+      a2enmod rewrite
 
 * Prepare an Apache config proxying to the new server in `/etc/apache2/sites-enabled.proxy/`:
 
-        <VirtualHost *:80>
-            RewriteEngine On
-            RewriteRule ^ https://www.libravatar.org [redirect=301,last]
-        </VirtualHost>
-        
-        <VirtualHost *:443>
-            SSLEngine on
-            SSLProtocol TLSv1
-            SSLHonorCipherOrder On
-            SSLCipherSuite RC4-SHA:HIGH:!kEDH
-        
-            SSLCertificateFile /etc/libravatar/www.crt
-            SSLCertificateKeyFile /etc/libravatar/www.pem
-            SSLCertificateChainFile /etc/libravatar/www-chain.pem
-        
-            SSLProxyEngine on
-            ProxyPass / https://www.libravatar.org/
-            ProxyPassReverse / https://www.libravatar.org/
-        </VirtualHost>
+      <VirtualHost *:80>
+          RewriteEngine On
+          RewriteRule ^ https://www.libravatar.org [redirect=301,last]
+      </VirtualHost>
+      
+      <VirtualHost *:443>
+          SSLEngine on
+          SSLProtocol TLSv1
+          SSLHonorCipherOrder On
+          SSLCipherSuite RC4-SHA:HIGH:!kEDH
+      
+          SSLCertificateFile /etc/libravatar/www.crt
+          SSLCertificateKeyFile /etc/libravatar/www.pem
+          SSLCertificateChainFile /etc/libravatar/www-chain.pem
+      
+          SSLProxyEngine on
+          ProxyPass / https://www.libravatar.org/
+          ProxyPassReverse / https://www.libravatar.org/
+      </VirtualHost>
 
 * Enable the proxy-related modules for Apache:
 
-        a2enmod proxy
-        a2enmod proxy_connect
-        a2enmod proxy_http
+      a2enmod proxy
+      a2enmod proxy_connect
+      a2enmod proxy_http
 
 # Migrating servers
 
@@ -114,7 +114,7 @@ go through a similar process.
 
 * Hack my local `/etc/hosts` file to point to the new server's IP address:
 
-        xxx.xxx.xxx.xxx www.libravatar.org stats.libravatar.org cdn.libravatar.org
+      xxx.xxx.xxx.xxx www.libravatar.org stats.libravatar.org cdn.libravatar.org
 
 * Test all functionality on the new site.
 * If testing is successful, update DNS to point to the new server with a short TTL (in case we need to revert).
@@ -130,7 +130,7 @@ go through a similar process.
 * Log into each server I control and update that package.
 * Test the connection to the master (hacking `/etc/hosts` on the mirror if needed):
 
-        sudo -u libravatar-slave ssh libravatar-master@0.cdn.libravatar.org
+      sudo -u libravatar-slave ssh libravatar-master@0.cdn.libravatar.org
 
 * Uncomment the sync cron jobs in `/etc/cron.d/libravatar-slave`.
 * An hour later, make sure that new images are copied over and that the TLS certs are still working.
