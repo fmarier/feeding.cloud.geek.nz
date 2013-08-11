@@ -1,0 +1,89 @@
+[[!meta title="How many Australasian banks use HSTS?"]]
+[[!meta date="2013-08-12T00:00:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+[HTTP Strict Transport Security](https://developer.mozilla.org/docs/Security/HTTP_Strict_Transport_Security)
+is a simple mechanism that secure sites can use to protect their users
+against an [sslstrip](http://www.thoughtcrime.org/software/sslstrip/)-style
+HTTPS-to-HTTP downgrade attack.
+
+# Typical attack
+
+The typical HTTPS-to-HTTP downgrade attack looks like this:
+
+1. victim connects to a compromised wifi access point
+2. victim connects to bank.com using attacker's DNS resolver
+3. attacker directs victim to a local server proxying the bank.com homepage
+4. victim clicks on "online banking" link as usual not noticing that it's an
+HTTP link instead of the usual HTTPS link
+5. attacker mounts a
+[man-in-the-middle](https://en.wikipedia.org/wiki/Man-in-the-middle_attack)
+attack over that HTTP online banking login page
+6. victim leaks credentials to attacker
+
+# What HSTS does
+
+The fix is simple: let the browser know that it should never connect to the
+online banking site over plain HTTP. It should automatically upgrade to an
+encrypted HTTPS connection.
+
+How should a site let the browser know? By including an HTTP header in its
+responses:
+
+    Strict-Transport-Security: max-age=10886400
+
+It works in Chrome, Firefox and Opera. Other browsers don't benefit from
+this protection, but it also doesn't interfere with anything on those other
+browsers. So anybody with an HTTPS-only site should make use of this.
+
+# How many banks use it?
+
+Given how easy it is to implement (and the fact that it's been in
+browsers since Chrome 4 and Firefox 4), how many of the Australasian banks
+actually make use of it? After all, almost all of the documentation
+explaining the motivation behind HSTS uses online banking as an example.
+
+Here are all of the New Zealand banks I tested:
+
+[[!table class="border" data="""
+ASB | <https://fnc.asbbank.co.nz/1/User/LogOn> | **YES!**
+ANZ | <https://secure.anz.co.nz/IBCS/pgLogin> | no
+BNZ | <https://www.bnz.co.nz/ib/app/login> | no
+HSBC | <https://www.hsbc.co.nz/1/2/HUB_IDV2/IDV_EPP?__IWCountry=&__IWLang=en&__Destination=HUB_IDV_CUSTOMER_MIGRATION&__menuType=__REGISTRATION&__registrationType=PIB-Registration> | no
+Kiwibank | <https://www.ib.kiwibank.co.nz/> | no
+Rabobank | <https://secure1.rabodirect.co.nz/exp/authenticationDGPEN.jsp> | no
+TSB | <https://homebank.tsbbank.co.nz/online/> | no
+Westpac | <https://sec.westpac.co.nz/IOLB/Login.jsp> | no
+"""]]
+
+and the Australian banks I looked at:
+
+[[!table class="border" data="""
+ANZ | <https://www.anz.com/INETBANK/bankmain.asp> | no
+Bank of China | <https://ebs.boc.cn/BocnetClient/LoginFrameAbroad.do?_locale=en_US> | no
+Bank of Melbourne | <https://ibanking.bankofmelbourne.com.au/ibank/loginPage.action> | no
+Bankwest | <https://ibs.bankwest.com.au/BWLogin/rib.aspx> | no
+Bendigobank | <https://www.bendigobank.com.au/banking/BBLIBanking/> | no
+Bank of Queensland | <https://www.ib.boq.com.au/boqbl> | no
+Citibank | <https://www.citibank.com.au/AUGCB/JSO/signon/DisplayUsernameSignon.do> | no
+Commonwealth Bank | <https://www.my.commbank.com.au/netbank/Logon/Logon.aspx> | no
+Heritage Bank | <https://online.hbs.net.au/hbsv47/ntv471.asp?wci=entry> | no
+HSBC | <https://www.hsbc.com.au/1/2/HUB_IDV2/IDV_EPP?__IWCountry=US&__IWLang=en&__Destination=HUB_IDV_CUSTOMER_MIGRATION&__menuType=__REGISTRATION&__registrationType=PIB-Registration> | no
+Mebank | <https://ib.mebank.com.au/ME> | no
+NAB | <https://ib.nab.com.au/nabib/index.jsp> | no
+Rabobank | <https://secure.rabodirect.com.au/exp/policyenforcer/pages/loginB2CDGPEN.jsf?login> | no
+St. George | <https://ibanking.stgeorge.com.au/ibank/loginPage.action> | no
+Suncorp Bank | <https://internetbanking.suncorpbank.com.au/> | no
+Westpac | <https://online.westpac.com.au/esis/Login/SrvPage> | no
+"""]]
+
+## Conclusion
+
+So, well done ASB! Not only do you stand out from your peers, but you also
+allowed New Zealand to beat Australia in terms of HSTS coverage :)
+
+Here's the script I used to generate these results:
+<https://github.com/fmarier/hsts-check>. Feel free to leave a comment or
+email me if I missed an Australasia-based banking site.
+
+[[!tag nzoss]] [[!tag security]] [[!tag ssl]] [[!tag web]]
