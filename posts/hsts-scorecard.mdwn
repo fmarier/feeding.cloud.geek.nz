@@ -46,10 +46,11 @@ explaining the motivation behind HSTS uses online banking as an example.
 Here are all of the New Zealand banks I tested:
 
 [[!table class="border" data="""
+Bank | Online Banking URL | Header?
 ASB | <https://fnc.asbbank.co.nz/1/User/LogOn> | **YES!**
 ANZ | <https://secure.anz.co.nz/IBCS/pgLogin> | no
 BNZ | <https://www.bnz.co.nz/ib/app/login> | no
-HSBC | <https://www.hsbc.co.nz/1/2/HUB_IDV2/IDV_EPP?__IWCountry=&__IWLang=en&__Destination=HUB_IDV_CUSTOMER_MIGRATION&__menuType=__REGISTRATION&__registrationType=PIB-Registration> | no
+HSBC | [https://www.hsbc.co.nz/1/2/HUB_IDV2/IDV_EPP...](https://www.hsbc.co.nz/1/2/HUB_IDV2/IDV_EPP?__IWCountry=&__IWLang=en&__Destination=HUB_IDV_CUSTOMER_MIGRATION&__menuType=__REGISTRATION&__registrationType=PIB-Registration) | no
 Kiwibank | <https://www.ib.kiwibank.co.nz/> | no
 Rabobank | <https://secure1.rabodirect.co.nz/exp/authenticationDGPEN.jsp> | no
 TSB | <https://homebank.tsbbank.co.nz/online/> | no
@@ -59,6 +60,7 @@ Westpac | <https://sec.westpac.co.nz/IOLB/Login.jsp> | no
 and the Australian banks I looked at:
 
 [[!table class="border" data="""
+Bank | Online Banking URL | Header?
 ANZ | <https://www.anz.com/INETBANK/bankmain.asp> | no
 Bank of China | <https://ebs.boc.cn/BocnetClient/LoginFrameAbroad.do?_locale=en_US> | no
 Bank of Melbourne | <https://ibanking.bankofmelbourne.com.au/ibank/loginPage.action> | no
@@ -68,7 +70,7 @@ Bank of Queensland | <https://www.ib.boq.com.au/boqbl> | no
 Citibank | <https://www.citibank.com.au/AUGCB/JSO/signon/DisplayUsernameSignon.do> | no
 Commonwealth Bank | <https://www.my.commbank.com.au/netbank/Logon/Logon.aspx> | no
 Heritage Bank | <https://online.hbs.net.au/hbsv47/ntv471.asp?wci=entry> | no
-HSBC | <https://www.hsbc.com.au/1/2/HUB_IDV2/IDV_EPP?__IWCountry=US&__IWLang=en&__Destination=HUB_IDV_CUSTOMER_MIGRATION&__menuType=__REGISTRATION&__registrationType=PIB-Registration> | no
+HSBC | [https://www.hsbc.com.au/1/2/HUB_IDV2/IDV_EPP...](https://www.hsbc.com.au/1/2/HUB_IDV2/IDV_EPP?__IWCountry=US&__IWLang=en&__Destination=HUB_IDV_CUSTOMER_MIGRATION&__menuType=__REGISTRATION&__registrationType=PIB-Registration) | no
 Mebank | <https://ib.mebank.com.au/ME> | no
 NAB | <https://ib.nab.com.au/nabib/index.jsp> | no
 Rabobank | <https://secure.rabodirect.com.au/exp/policyenforcer/pages/loginB2CDGPEN.jsf?login> | no
