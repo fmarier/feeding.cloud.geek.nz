@@ -47,7 +47,7 @@ Here are all of the New Zealand banks I tested:
 
 [[!table class="border" data="""
 Bank | Online Banking URL | Header?
-ASB | <https://fnc.asbbank.co.nz/1/User/LogOn> | **YES!**
+ASB | <https://fnc.asbbank.co.nz/1/User/LogOn> | YES!
 ANZ | <https://secure.anz.co.nz/IBCS/pgLogin> | no
 BNZ | <https://www.bnz.co.nz/ib/app/login> | no
 HSBC | [https://www.hsbc.co.nz/1/2/HUB_IDV2/IDV_EPP...](https://www.hsbc.co.nz/1/2/HUB_IDV2/IDV_EPP?__IWCountry=&__IWLang=en&__Destination=HUB_IDV_CUSTOMER_MIGRATION&__menuType=__REGISTRATION&__registrationType=PIB-Registration) | no
