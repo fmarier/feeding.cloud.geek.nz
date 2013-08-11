@@ -49,10 +49,12 @@ Here are all of the New Zealand banks I tested:
 Bank | Online Banking URL | Header?
 ASB | <https://fnc.asbbank.co.nz/1/User/LogOn> | YES!
 ANZ | <https://secure.anz.co.nz/IBCS/pgLogin> | no
+BankDirect | <https://vault.bankdirect.co.nz/default.asp> | no
 BNZ | <https://www.bnz.co.nz/ib/app/login> | no
 HSBC | [https://www.hsbc.co.nz/1/2/HUB_IDV2/IDV_EPP...](https://www.hsbc.co.nz/1/2/HUB_IDV2/IDV_EPP?__IWCountry=&__IWLang=en&__Destination=HUB_IDV_CUSTOMER_MIGRATION&__menuType=__REGISTRATION&__registrationType=PIB-Registration) | no
 Kiwibank | <https://www.ib.kiwibank.co.nz/> | no
 Rabobank | <https://secure1.rabodirect.co.nz/exp/authenticationDGPEN.jsp> | no
+SBS | <https://sbsbanking.sbs.net.nz/secure/> | no
 TSB | <https://homebank.tsbbank.co.nz/online/> | no
 Westpac | <https://sec.westpac.co.nz/IOLB/Login.jsp> | no
 """]]
