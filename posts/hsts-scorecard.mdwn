@@ -21,6 +21,8 @@ HTTP link instead of the usual HTTPS link
 attack over that HTTP online banking login page
 6. victim leaks credentials to attacker
 
+You can watch a [short video demo](https://www.youtube.com/watch?v=Q1hnHbBb_bA) of this attack, but if you don't want to set any of this up on your server, it turns out you can buy a [little USB device](http://hakshop.myshopify.com/products/wifi-pineapple) that [does it all for you](http://hakinthebox.blogspot.co.nz/2012/06/you-just-cant-trust-wireless-covertly.html).
+
 # What HSTS does
 
 The fix is simple: let the browser know that it should never connect to the
