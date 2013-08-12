@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="212.159.111.211"
+ claimedauthor="Tim Hunt"
+ url="http://tjhunt.blogspot.co.uk"
+ subject="...but if the attacker is doing a man-in-the-middle ..."
+ date="2013-08-12T07:49:15Z"
+ content="""
+Why don't they just strip-out the Strict-Transport-Security header?
+
+Ah! I see. That is why the form of the header is Strict-Transport-Security: max-age=10886400. So that if you once log in to your bank on one trusted network, you are then protected everywhere else in future.
+"""]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawnd08ztTcYfBOeNMQUVBTYc7fxqlq3qraM"
+ nickname="Adam"
+ subject="Another idea?"
+ date="2013-08-12T07:43:28Z"
+ content="""
+Another idea might be a browser plugin that caches IP addresses for visited sites - separate from the DNS cache on the computer - and warns the user if a site suddenly resolves to a different IP address than it usually does. Likewise if a site is usually accessed by HTTPS and one time it redirects to an HTTP version of itself, WARN THE USER! \"This site has always in the past been secure. Now it's not. Something is wrong here. Go no further!!!\" (Or else build this functionality straight into the browser?)
+"""]]
