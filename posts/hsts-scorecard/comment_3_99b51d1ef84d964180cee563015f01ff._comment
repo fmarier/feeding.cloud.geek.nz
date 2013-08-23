@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="101.173.213.68"
+ claimedauthor="Aj"
+ subject="Ssl issues "
+ date="2013-08-23T01:51:07Z"
+ content="""
+Given that some Australian banks are still supporting ssl 2.0 I'm not overly surprised they're a bit far behind. See ssllabs where at least westpac get rated an F in their analysis. 
+"""]]
