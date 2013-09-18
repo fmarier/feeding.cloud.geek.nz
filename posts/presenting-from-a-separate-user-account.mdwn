@@ -1,0 +1,108 @@
+[[!meta title="Presenting from a separate user account"]]
+[[!meta date="2013-09-18T13:04:00.000+08:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+While I suspect that professional speakers have separate presentation
+laptops that they use only to give talks, I don't do this often enough to
+justify the hassle and cost of a separate machine. However, I do use a
+separate user account to present from.
+
+It allows me to focus on my presentation and not stress out about running
+into configuration problems or exposing private information. But mostly, I
+think it's about removing anything that could be distracting for the
+audience.
+
+The great thing of having a separate user for this is that you can do whatever
+you want in your normal account and still know that the other account is ready
+to go and configured for presenting on a big screen.
+
+# Basics
+
+The user account I use when giving talks is called `presenter` and it has
+the same password as my main user account, just to keep things
+simple. However, it doesn't need to belong to any of the UNIX groups that my
+main user account belongs to.
+
+In terms of configuration, it looks like this:
+
+* power management and screen saver are turned off
+* all sound effects are turned off
+* window manager set to the default one (as opposed to a [weird tiling one](http://awesome.naquadah.org/))
+* desktop notifications are turned off
+
+Of course, this user account only has the software I need while
+presenting. You won't find an instant messaging, IRC or Twitter client
+running on there.
+
+The desktop only has the icons I need for the presentation: slides and
+backup videos (in case the network is down and/or prevents me from doing a
+live demo).
+
+# Web browsers
+
+While I usually have my presentations in PDF format (for maximum
+compatibility, you never know when you'll have to borrow someone else's
+laptop), I use web browsers (different ones to show that my demos work with
+all of them) all the time for demos.
+
+Each browser:
+
+* clears everything (cookies, history, cache, etc.) at the end of the session
+* has the site I want to demo as the homepage
+* only contains add-ons or extensions I need for the demos
+* has the minimal number of toolbars and doesn't have any bookmarks
+* has search suggestions turned off
+* never asks to remember passwords
+
+# Terminal and editors
+
+Some of my demos may feature coding demos and running scripts, which is why
+I have my terminal and editor set to:
+
+* a large font size
+* a color scheme with lots of contrast
+
+It's all about making sure that the audience can see everything and follow
+along easily.
+
+Also, if you have the [sl](http://packages.debian.org/stable/sl) package installed system-wide, you'll
+probably want to put the following in your `~/.bashrc`:
+
+    alias sl="ls"
+    alias LS="ls"
+
+# Rehearsal
+
+It's very important to **rehearse the whole presentation using this
+account** to make sure that you have everything you need and that you are
+comfortable with the configuration (for example, the large font size).
+
+If you have access to a projector or a digital TV, try connecting your
+laptop to it. This will ensure that you know how to change the **resolution
+of the external monitor** and to turn **mirroring** ON and OFF ahead of time
+(especially important if you never use the default window manager or desktop
+environment). I keep a shortcut to the display settings in the sidebar.
+
+# Localization
+
+Another thing I like to do is to set my **operating system and browser
+locales** to the one where I am giving a talk, assuming that it is a western
+language I can understand to some extent.
+
+It probably doesn't make a big difference, but I think it's a nice touch and
+a few people have commented on this in the past. My theory is that it might
+be less distracting to the audience if they are shown the browser UI and
+menus they see every day. I'd love to have other people's thoughts on this
+point though.
+
+Also, pay attention to the **timezone** since it could be another source of
+distraction as audience members try to guess what timezone your computer is
+set to.
+
+# Anything else?
+
+If you also use a separate account for your presentations, I'd be curious to
+know whether there are other things you've customised. If there's anything I
+missed, please leave a comment!
+
+[[!tag debian]] [[!tag publicspeaking]] [[!tag nzoss]] [[!tag mozilla]]
