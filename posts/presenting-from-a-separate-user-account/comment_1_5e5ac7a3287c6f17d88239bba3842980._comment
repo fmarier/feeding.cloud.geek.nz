@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="118.90.23.4"
+ claimedauthor="Olly Betts"
+ url="http://survex.com/~olly/"
+ subject="Check your disk free space"
+ date="2013-09-19T18:47:09Z"
+ content="""
+It's prudent to check your disk free space too - running out of disk space in the middle of a demo is embarrassing.  Also, some desktops pop up distracting warnings when disk space is getting low.
+"""]]
