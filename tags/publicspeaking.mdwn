@@ -1,0 +1,4 @@
+[[!meta title="pages tagged publicspeaking"]]
+
+[[!inline pages="tagged(publicspeaking)" actions="no" archive="yes"
+feedshow=10]]
