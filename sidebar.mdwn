@@ -3,9 +3,9 @@
 <a href="http://feeding.cloud.geek.nz/index.rss"><img src="/feed-icon.png" height="32" width="32" align="left">Subscribe in a reader</a>
 [Subscribe by Email](http://www.feedburner.com/fb/a/emailverifySubmit?feedId=1839853&loc=en_US)
 
-<br><a href="http://flattr.com/thing/311291/Feeding-the-Cloud"><img src="/flattr_button.png" border="0" alt="Flattr"></a>
+<br><a href="http://flattr.com/thing/311291/Feeding-the-Cloud"><img src="/flattr_button.png" border="0" alt="Flattr" width="93" height="20"></a>
 
-<br><a href="https://www.gittip.com/fmarier/"><img src="/gittip_button.png" border="0" alt="Gittip"></a>
+<a href="https://www.gittip.com/fmarier/"><img src="/gittip_button.png" border="0" alt="Gittip" width="52" height="22"></a>
 
 # About me
 
