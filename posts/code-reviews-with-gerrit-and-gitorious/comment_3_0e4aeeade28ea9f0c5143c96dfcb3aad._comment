@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="38.99.63.250"
+ claimedauthor="Sridhar"
+ subject="Very informative to start gerrit setup"
+ date="2013-10-10T22:56:29Z"
+ content="""
+Hi, First of all thanks for this info.  This is very helpful to start gerrit setup. I completed my gerrit setup based on this, but I wonder how to create GerritSiteHeader.html and GerritSiteFooter.html files. 
+Do you have any sample format for these files so that I can just change color/logo/names etc. 
+
+Thanks
+Sridhar
+"""]]
