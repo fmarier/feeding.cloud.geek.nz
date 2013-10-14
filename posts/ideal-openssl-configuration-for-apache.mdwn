@@ -1,6 +1,9 @@
 [[!meta title="Ideal OpenSSL configuration for Apache and nginx"]]
 [[!meta date="2011-11-15T04:00:00.001+13:00"]]
 [[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+**The TLS world is moving fast and this post is now out of date! You might want to look at these A-grade [Apache](https://www.insecure.ws/2013/10/11/ssltls-configuration-for-apache-mod_ssl/) and [nginx](https://jve.linuxwall.info/blog/index.php?post/2013/10/12/A-grade-SSL/TLS-with-Nginx-and-StartSSL) configurations instead.**
+
 After recently reading a number of [SSL/TLS](https://secure.wikimedia.org/wikipedia/en/wiki/Transport_Layer_Security)-related articles, I decided to experiment and look for the ideal OpenSSL configuration for [Apache](http://httpd.apache.org/) (using [mod_ssl](https://httpd.apache.org/docs/2.2/mod/mod_ssl.html) since I haven't tried [mod_gnutls](http://modgnutls.sourceforge.net/) yet) and [nginx](http://www.nginx.org/).  
   
 By "ideal" I mean that this configuration needs to be **compatible** with most user agents likely to interact with my website as well as being **fast** and **secure**.  
