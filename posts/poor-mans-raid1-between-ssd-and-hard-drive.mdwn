@@ -111,4 +111,4 @@ The sync scripts are run every couple of hours through this crontab:
 which includes a reduced frequency while running on battery to avoid
 spinning the hard drive up too much.
 
-[[!tag debian]] [[!tag nzoss]]
+[[!tag debian]] [[!tag nzoss]] [[!tag raid]]
