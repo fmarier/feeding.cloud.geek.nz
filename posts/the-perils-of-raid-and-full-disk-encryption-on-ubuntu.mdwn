@@ -1,0 +1,106 @@
+[[!meta title="The Perils of RAID and Full Disk Encryption on Ubuntu 12.04"]]
+[[!meta date="2013-10-15T15:27:00.000-04:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+I've been using disk encryption (via
+[LUKS](https://en.wikipedia.org/wiki/Linux_Unified_Key_Setup) and
+[cryptsetup](https://en.wikipedia.org/wiki/Dm-crypt#cryptsetup)) on Debian
+and Ubuntu for quite some time and it has worked well for me. However, while
+setting up full disk encryption for a new computer on a RAID1 partition, I
+discovered that there are a few
+[major problems with RAID on Ubuntu](https://wiki.ubuntu.com/ReliableRaid).
+
+# My Setup: RAID and LUKS
+
+Since I was setting up a new machine on Ubuntu 12.04 LTS (Precise Pangolin),
+I used the
+[alternate CD](http://mirror.anl.gov/pub/ubuntu-iso/DVDs/ubuntu/precise/release/)
+(I burned
+[ubuntu-12.04.3-alternate-amd64+mac.iso](http://mirror.anl.gov/pub/ubuntu-iso/DVDs/ubuntu/precise/release/ubuntu-12.04.3-alternate-amd64+mac.iso)
+to a blank DVD) to get access to the full disk encryption options.
+
+First, I created a [RAID1](https://en.wikipedia.org/wiki/RAID1#RAID_1) array
+to mirror the data on the two hard disks. Then, I used the partition manager
+built into the installer to setup an unencrypted boot partition (`/dev/md0`
+mounted as `/boot`) and an encrypted root partition (`/dev/md1` mounted as
+`/`) on the RAID1 array.
+
+While I had done
+[full disk encryption](http://feeding.cloud.geek.nz/posts/doing_a_fresh_debian_ubuntu_install_without_having_to_reconfigure_everything/)
+and
+[mirrored drives](http://feeding.cloud.geek.nz/posts/setting-up-raid-on-existing/)
+before, I had never done them at the same time on Ubuntu or Debian.
+
+# The problem: cannot boot an encrypted degraded RAID
+
+After setting up the RAID, I decided to test it by booting from each drive
+with the other one unplugged.
+
+The first step was to ensure that the system is configured (via
+`dpkg-reconfigure mdadm`) to boot in "degraded mode".
+
+When I rebooted with a single disk though, I received a
+*[evms_activate is not available](https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1003309)*
+error message instead of the usual cryptsetup password prompt. The exact problem I ran into is best described in
+[this comment](https://bugs.launchpad.net/ubuntu/+source/cryptsetup/+bug/251164/comments/26) (see
+[this bug for context](https://bugs.launchpad.net/ubuntu/+source/cryptsetup/+bug/251164)).
+
+It turns out that booting degraded RAID arrays has been
+[plagued with several problems](https://bugs.launchpad.net/ubuntu/+source/mdadm/+bug/120375).
+
+# My solution: an extra initramfs boot script to start the RAID array
+
+The underlying problem is that the RAID1 array is not started automatically
+when it's missing a disk and so cryptsetup cannot find the
+[UUID](https://wiki.debian.org/fstab#UUIDs) of the drive to decrypt (as
+configured in `/etc/crypttab`).
+
+My fix, based on
+[a script](http://forums.debian.net/viewtopic.php?f=5&t=74232#p506229) I was
+lucky enough to stumble on, lives in `/etc/initramfs-tools/scripts/local-top/cryptraid`:
+
+    #!/bin/sh
+    PREREQ="mdadm"
+    prereqs()
+    {
+         echo "$PREREQ"
+    }
+    case $1 in
+    prereqs)
+         prereqs
+         exit 0
+         ;;
+    esac
+    
+    cat /proc/mdstat
+    mdadm --run /dev/md1
+    cat /proc/mdstat
+
+After creating that file, remember to:
+
+1. make the script executable (using `chmod a+x`) and
+2. regenerate the initramfs (using `dpkg-reconfigure linux-image-KERNELVERSION`).
+
+To make sure that the script is doing the right thing:
+
+1. press "Shift" while booting to bring up the Grub menu
+2. then press "e" to edit the default boot line
+3. remove the "quiet" and "splash" options from the kernel arguments
+4. press F10 to boot with maximum console output
+
+You should see the RAID array stopped (look for the output of the first `cat
+/proc/mdstat` call) and then you should see output from a running degraded
+RAID array.
+
+# Backing up the old initramfs
+
+If you want to be extra safe while testing this new initramfs, make sure you
+only reconfigure one kernel at a time (no `update-initramfs -u -k all`) and
+make a copy of the initramfs before you reconfigure the kernel:
+
+    cp /boot/initrd.img-KERNELVERSION-generic /boot/initrd.img-KERNELVERSION-generic.original
+
+Then if you run into problems, you can go into the Grub menu, edit the
+default boot option and make it load the `.original` initramfs.
+
+[[!tag debian]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag raid]]
