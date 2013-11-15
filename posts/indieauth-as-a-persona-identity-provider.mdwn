@@ -61,6 +61,26 @@ together via WebFinger. Thankfully, he found a clever way to do this with
     RewriteCond ${unescape:%{QUERY_STRING}} resource=acct:(.+)
     RewriteRule ^/.well-known/webfinger /profile/${unescape:%1}? [last]
 
+with the following in `/var/www/profile/francois@fmarier.org`:
+
+    {
+      "subject": "acct:francois@fmarier.org",
+      "links": [
+        {
+          "rel": "http://webfinger.net/rel/avatar",
+          "href": "http://fmarier.org/img/francois_marier.jpg"
+        },
+        {
+          "rel": "http://webfinger.net/rel/profile-page",
+          "href": "http://fmarier.org/"
+        },
+        {
+          "rel": "me",
+          "href": "http://fmarier.org/"
+        }
+      ]
+    }
+
 # Implementation
 
 Aaron and I worked out the the details of how this will work and wrote a
