@@ -49,7 +49,17 @@ pointing to his preferred email address, `aaron@parecki.com`:
 Finally, because his *email* domain (`parecki.com`) is different from his
 *personal* domain (`aaronparecki.com`), they would need to be linked
 together via WebFinger. Thankfully, he found a clever way to do this with
-[a simple Apache rewrite rule and some static files](https://gist.github.com/aaronpk/5846789).
+[a simple Apache rewrite rule and some static files](https://gist.github.com/aaronpk/5846789):
+
+    <Directory /var/www/profile>
+        DefaultType application/json
+        Header set Access-Control-Allow-Origin: "*"
+    </Directory>
+    
+    RewriteEngine on
+    RewriteMap unescape int:unescape
+    RewriteCond ${unescape:%{QUERY_STRING}} resource=acct:(.+)
+    RewriteRule ^/.well-known/webfinger /profile/${unescape:%1}? [last]
 
 # Implementation
 
