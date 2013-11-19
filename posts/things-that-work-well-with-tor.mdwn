@@ -1,0 +1,88 @@
+[[!meta title="Things that work well with Tor"]]
+[[!meta date="2013-11-18T21:38:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+
+[Tor](https://torproject.org) is a proxy server which allows its users to
+hide their IP address from the websites they connect to. In order to provide
+this level of anonymity however, it introduces latency into these
+connections, an unfortunate performance-privacy trade-off which means that
+few users choose to do all of their browsing through Tor.
+
+Here are a few things that I have found work quite well through Tor. If
+there are any other interesting use cases I've missed, please leave a comment!
+
+# Tor setup
+
+There are already great docs on how to
+[install and configure the Tor server](https://www.torproject.org/docs/tor-doc-unix.html.en)
+and the only thing I would add is that I've found that having a [Polipo](http://www.pps.univ-paris-diderot.fr/~jch/software/polipo/) proxy
+around is quite useful for those applications that support HTTP
+proxies but not [SOCKS](https://en.wikipedia.org/wiki/SOCKS) proxies.
+
+On Debian, it's just a matter of installing the
+[polipo](http://packages.debian.org/wheezy/polipo) package and then
+configuring it as [it used to be recommended by the Tor project](https://gitweb.torproject.org/torbrowser.git/blob/21e3c22670f0ceb1760b3403ff1a217301112e9d:/build-scripts/config/polipo.conf).
+
+# RSS feeds
+
+The whole idea behind [RSS](https://en.wikipedia.org/wiki/RSS) feeds is that
+articles are downloaded in batch ahead of time. In other words, latency
+doesn't matter.
+
+I use [akregator](http://userbase.kde.org/Akregator) to read blogs and the
+way to make it fetch articles over Tor is to change the
+[KDE](http://kde.org)-wide proxy server using `systemsettings` and setting a
+manual proxy of `localhost` on port `8008` (i.e. the local instance of
+Polipo).
+
+Similarly, I use [podget](http://podget.sourceforge.net/) to automatically
+fetch podcasts through this cron job in `/etc/cron.d/podget-francois`:
+
+    0 12 * * 1-5 francois	http_proxy=http://localhost:8008/ https_proxy=http://localhost:8008/ nocache nice ionice -n7 /usr/bin/podget -s
+
+Prior to that, I was using
+[hpodder](https://github.com/jgoerzen/hpodder/wiki) and had the following in
+`~/.hpodder/curlrc`:
+
+    proxy=socks4a://localhost:9050
+
+# GnuPG
+
+For those of us using the [GNU Privacy Guard](http://gnupg.org/) to exchange
+[encrypted emails](https://help.ubuntu.com/community/GnuPrivacyGuardHowto),
+keeping our public keyring up to date is important since it's the only way
+to ensure that
+[revoked keys](https://www.linux.com/news/featured-blogs/136-distroblogs/6775-the-need-for-a-gpg-revocation-certificate)
+are taken into account. The
+[script I use](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/gpg-refresh-keys)
+for this runs once a day and has the unfortunate side effect of revealing the
+contents of my address book to the [keyserver](http://pgp.net.nz) I use.
+
+Therefore, I figured that I should at least hide my IP address by putting
+the following in `~/.gnupg/gpg.conf`:
+
+    keyserver-options http-proxy=http://127.0.0.1:8008
+
+However, that tends to makes key submission fail and so I created a key
+submission alias in my `~/.bashrc` which avoids sending keys through Tor:
+
+    alias gpgsendkeys='gpg --send-keys --keyserver-options http-proxy=""'
+
+# Instant messaging
+
+Communication via [XMPP](https://en.wikipedia.org/wiki/XMPP) is another use
+case that's not affected much by a bit of extra latency.
+
+To get [Pidgin](http://pidgin.im/) to talk to an XMPP server over Tor,
+simply open "Tools | Preferences" and set a `SOCKS5` (**not** `Tor/Privacy`)
+proxy of `localhost` on port `9050`.
+
+# GMail
+
+Finally, I found that since I am
+[running GMail in a separate browser profile](http://feeding.cloud.geek.nz/posts/keeping-gmail-in-separate-browser/),
+I can take advantage of GMail's excellent caching and preloading and run the
+whole thing over Tor by setting that entire browser profile to run its
+traffic through the Tor SOCKS proxy on port `9050`.
+
+[[!tag debian]] [[!tag privacy]] [[!tag tor]] [[!tag nzoss]] [[!tag mozilla]]
