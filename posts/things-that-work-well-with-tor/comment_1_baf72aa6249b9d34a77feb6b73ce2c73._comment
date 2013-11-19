@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="122.109.125.226"
+ claimedauthor="Paul Wise"
+ url="http://bonedaddy.net/pabs3/"
+ subject="Use parcimonie for OpenPGP keyring refreshes"
+ date="2013-11-19T08:09:53Z"
+ content="""
+Please use parcimonie for OpenPGP keyring refreshes since that is much more fire-and-forget and also results in less correlation between the different keys you are fetching.
+
+https://we.riseup.net/riseuplabs+paow/openpgp-best-practices#make-sure-you-are-receiving-regular-key-updates
+"""]]
