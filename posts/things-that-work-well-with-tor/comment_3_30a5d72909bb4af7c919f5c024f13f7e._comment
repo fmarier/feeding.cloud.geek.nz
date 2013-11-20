@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="176.214.248.203"
+ claimedauthor="Roger"
+ subject="Really?"
+ date="2013-11-20T19:41:21Z"
+ content="""
+Using Tor to login to services that identify you defeats the purpose of Tor.  Also, although 99% of people running Tor exits nodes are honest people, there is a risk of hitting a node with more nefarious purposes such as collecting user-names and passwords. Make sure you're using end-to-end encryption. Surf safe my friend.
+"""]]
