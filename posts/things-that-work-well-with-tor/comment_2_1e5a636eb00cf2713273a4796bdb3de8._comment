@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="84.59.56.141"
+ claimedauthor="Al"
+ subject="Non-anonymous in Tor"
+ date="2013-11-19T19:08:32Z"
+ content="""
+That's all great, but using non-anonymous services defeats the purpose oft Tor. You could just use your plain connection when communicating because after all one can see your nickname or email address. What's more you can even be identified when you really want to be anonymous, because you used the Tor connection for identifyable communication earlier.
+"""]]
