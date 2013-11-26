@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ ip="64.113.32.29"
+ claimedauthor="Lunar"
+ subject="Some recommandations are obsolete"
+ date="2013-11-26T12:01:09Z"
+ content="""
+The [Tor Browser Bundle](https://www.torproject.org/torbrowser/) is the current recommended way to browse the web through Tor. Even without knowning the client's IP address, web browsers are [highly fingerprintable](https://panopticlick.eff.org/). The Tor Browser contains several modifications to Firefox that will help with fingerprinting issues.
+
+I know [it's not packaged in Debian](https://bugs.torproject.org/3994) but releases are signed by Erinn's key which is in the Debian keyring and getting the Tor Browser Bundle running is about unpacking a tarball and running a shell script.
+
+Also the new [torsocks](http://packages.debian.org/torsocks), currently in experimental, have
+several protections against application leaks and works fine with several RSS readers or GnuPG.
+
+The *Tor/Privacy* option of Pidgin was added in order to prevent DNS leaks and **should** be
+used. The proxy host should be set to `127.0.0.1` and not `localhost` instead.
+
+> Using Tor to login to services that identify you defeats the purpose of Tor.
+
+It does not defend the purpose of Tor. It might be a problem in your threat model but not in the one of others. One of Tor properties is that it hides the client's network location. Even if I login to my bank, why should they incidentally learn about my travels? Where I currently am is none of their business.
+"""]]
