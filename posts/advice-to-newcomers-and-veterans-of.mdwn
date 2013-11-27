@@ -1,6 +1,6 @@
 [[!meta title="Advice to newcomers and veterans of the Free and Open Source software communities"]]
 [[!meta date="2012-09-18T21:42:00.002+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 A few months ago, a collection of essays called [Open Advice](http://open-advice.org/) was released. It consists of the things that seasoned Free and Open Source developers wish they had known when they got started.
 
 The [LWN book review](https://lwn.net/Articles/481222/) is the best way to get a good feel for what it's about, but here are the notes I took while reading it:

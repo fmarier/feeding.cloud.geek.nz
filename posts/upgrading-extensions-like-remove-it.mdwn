@@ -1,6 +1,6 @@
 [[!meta title="Upgrading extensions (like Remove It Permanently) for Firefox 3"]]
 [[!meta date="2008-06-11T00:09:00.002+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Firefox 3 is great, but a few of my "required" extensions still haven't been updated for this yet-to-be-released version. One of which, [Remove It Permanently](https://addons.mozilla.org/en-US/firefox/addon/521), is essential for dealing with badly laid out websites.  
   
 Well it turns out that in that case, it's just a matter of:

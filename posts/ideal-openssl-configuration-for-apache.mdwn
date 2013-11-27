@@ -1,6 +1,6 @@
 [[!meta title="Ideal OpenSSL configuration for Apache and nginx"]]
 [[!meta date="2011-11-15T04:00:00.001+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 **The TLS world is moving fast and this post is now out of date! You might want to look at these A-grade [Apache](https://www.insecure.ws/2013/10/11/ssltls-configuration-for-apache-mod_ssl/) and [nginx](https://jve.linuxwall.info/blog/index.php?post/2013/10/12/A-grade-SSL/TLS-with-Nginx-and-StartSSL) configurations instead.**
 

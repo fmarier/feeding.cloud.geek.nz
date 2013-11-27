@@ -1,6 +1,6 @@
 [[!meta title="Preventing man-in-the-middle attacks on fetchmail and postfix"]]
 [[!meta date="2010-05-01T09:00:00.002+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Recent attacks against the DNS infrastructure have exposed the limitations of relying on TLS/SSL certificates for securing connections on the Internet.  
   
 Given that typical mail servers don't rotate their keys very often, it's not too cumbersome to hardcode their fingerprints and prevent your mail software from connecting to them should the certificate change. This is similar to how most people use ssh: assume that the certificate is valid on the first connection, but be careful if the certificate changes afterwards.  

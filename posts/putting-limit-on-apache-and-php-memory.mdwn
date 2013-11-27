@@ -1,6 +1,6 @@
 [[!meta title="Putting a limit on Apache and PHP memory usage"]]
 [[!meta date="2012-02-21T21:50:00.002+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 A little while ago, we [ran into memory problems](https://bugs.launchpad.net/mahara/+bug/784978) on mahara.org. It turned out to be due to the GD library having issues with large (as in height and width, not file size) images.  
   
 What we discovered is that the PHP memory limit (which is set to a fairly low value) only applies to actual PHP code, not C libraries like GD that are called from PHP. It's not obvious what PHP libraries are implemented as external C calls, which fall outside of the control of the interpreter, but anything that sounds like it's using some other library is probably not in PHP and is worth looking at.  

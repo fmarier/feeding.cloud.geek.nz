@@ -1,6 +1,6 @@
 [[!meta title="grub on a bootable USB rescue stick"]]
 [[!meta date="2009-08-19T20:44:00.006+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 If you've got a cheap USB key lying around which is too small to be useful, follow these instructions to create a rescue "stick" in case your boot loader stops working.  
   
 (This is based on [these instructions](http://www.mayrhofer.eu.org/Default.aspx?pageid=45) but simplified and updated for grub 2.)  

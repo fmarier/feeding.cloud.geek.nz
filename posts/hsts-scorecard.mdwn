@@ -1,6 +1,6 @@
 [[!meta title="How many Australasian banks use HSTS?"]]
 [[!meta date="2013-08-12T00:00:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 [HTTP Strict Transport Security](https://developer.mozilla.org/docs/Security/HTTP_Strict_Transport_Security)
 is a simple mechanism that secure sites can use to protect their users

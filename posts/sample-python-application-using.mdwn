@@ -1,6 +1,6 @@
 [[!meta title="Sample Python application using Libgearman"]]
 [[!meta date="2011-01-12T20:20:00.003+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Gearman](http://www.gearman.org/) is a distributed queue with several [language bindings](https://launchpad.net/gearman-interface).  
   
 While Gearman has a nice [Python](http://www.python.org/) implementation ([python-gearman](http://pypi.python.org/pypi/gearman)) of the client and worker, I chose to use the libgearman bindings ([python-libgearman](http://pypi.python.org/pypi/python-libgearman)) directly since they are already packaged for [Debian](http://www.debian.org/) (as [python-gearman.libgearman](http://packages.debian.org/python-gearman.libgearman)).  

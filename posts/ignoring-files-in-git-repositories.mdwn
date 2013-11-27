@@ -1,6 +1,6 @@
 [[!meta title="Ignoring files in git repositories"]]
 [[!meta date="2009-12-27T21:45:00.001+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 According to the [man page](http://www.kernel.org/pub/software/scm/git/docs/gitignore.html), there are three ways to exclude files from being tracked by [git](http://www.git-scm.org).  
   
 

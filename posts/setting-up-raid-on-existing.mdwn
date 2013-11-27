@@ -1,6 +1,6 @@
 [[!meta title="Setting up RAID on an existing Debian/Ubuntu installation"]]
 [[!meta date="2011-03-13T23:25:00.001+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 I run [RAID1](https://secure.wikimedia.org/wikipedia/en/wiki/Standard_RAID_levels#RAID_1) on all of the machines I support. While such hard disk mirroring is not a replacement for having good working backups, it means that a single drive failure is not going to force me to have to spend lots of time rebuilding a machine.  
   
 The best possible time to set this up is of course when you first install the operating system. The [Debian](http://www.debian.org/) installer will set everything up for you if you choose that option and Ubuntu has [alternate installation CDs](http://www.ubuntu.com/desktop/get-ubuntu/alternative-download#alternate) which allow you to do the same.  

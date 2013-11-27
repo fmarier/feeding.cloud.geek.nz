@@ -1,6 +1,6 @@
 [[!meta title="Debugging Gearman configuration"]]
 [[!meta date="2013-08-04T21:10:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 [Gearman](http://www.gearman.org) is a queuing system that [has been in Debian](http://packages.debian.org/search?keywords=gearman-job-server) for a long time and is quite reliable.
 

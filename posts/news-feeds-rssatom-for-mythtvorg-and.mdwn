@@ -1,6 +1,6 @@
 [[!meta title="News feeds (RSS/Atom) for MythTV.org and SchedulesDirect.org"]]
 [[!meta date="2008-04-17T17:18:00.004+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 I have created two separate RSS/Atom feeds that might be of interest to [MythTV](http://www.mythtv.org) and [Schedules Direct](http://www.schedulesdirect.org) users:  
 
   * [MythTV News Feed](http://feeds.feedburner.com/mythtv-news)

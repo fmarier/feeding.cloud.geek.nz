@@ -1,6 +1,6 @@
 [[!meta title="Encrypted swap partition on Debian/Ubuntu"]]
 [[!meta date="2008-03-30T14:29:00.004+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 The swap partition can hold a lot of unencrypted confidential information and the fact that it persists after shutting down the computer can be a problem.  
   
 Encrypting a swap partition however is slightly tricky if one wants to also support suspend-to-disk (also called hibernation). Here's a procedure that worked for me on both Debian Lenny and Ubuntu 7.10 (Gutsy Gibbon):  

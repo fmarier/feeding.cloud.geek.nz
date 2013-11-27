@@ -1,6 +1,6 @@
 [[!meta title="Writing the perfect patch"]]
 [[!meta date="2009-06-30T23:00:00.001+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Other people [have written](http://userweb.kernel.org/%7Eakpm/stuff/tpp.txt) and [talked (in Lecture 3)](http://cs.anu.edu.au/students/comp8440/lectures.php) about writing the perfect patch for a Free Software project. The goal there is to **increase the likelihood that a patch will be accepted** by the project developers.  
   
 Integrating and testing patches takes time and so reducing that burden is essential when interacting with busy maintainers. Especially if they're volunteers.  

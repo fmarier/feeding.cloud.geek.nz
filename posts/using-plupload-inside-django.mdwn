@@ -1,6 +1,6 @@
 [[!meta title="Using plupload inside a Django application"]]
 [[!meta date="2011-04-08T08:00:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Plupload](http://plupload.org/) is a reusable component which fully takes advantage of the file upload capabilities of your browser and its plugins. It will use HTML5, Flash and Google Gears if they are available, but otherwise, it can gracefully degrade down to HTML4 it it needs to. Here's how it can be integrated within a Django web application.  
   
 (I have posted the [sample application](https://gitorious.org/plupload_django/plupload_django) I will refer to and you may use it [anyway you like](https://gitorious.org/plupload_django/plupload_django/blobs/master/license.txt).)  

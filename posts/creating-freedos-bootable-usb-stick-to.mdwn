@@ -1,6 +1,6 @@
 [[!meta title="Creating a FreeDOS bootable USB stick to upgrade BIOS"]]
 [[!meta date="2012-03-13T08:00:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 I have an old motherboard that requires creating a DOS boot floppy in order to upgrade its BIOS. Fortunately, it's not too hard to do this with [FreeDOS](http://www.freedos.org/) and a USB stick.  
   
 _The instructions below are based on an [FDos wiki article](http://wiki.fdos.info/Installation/BootDiskCreateUSB)._  

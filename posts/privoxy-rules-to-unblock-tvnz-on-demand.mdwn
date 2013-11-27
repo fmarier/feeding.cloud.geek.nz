@@ -1,6 +1,6 @@
 [[!meta title="Privoxy rules to unblock TVNZ on-demand videos"]]
 [[!meta date="2010-05-07T08:00:00.001+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 My default [Privoxy](http://www.privoxy.org/) (a great Privacy-enhancing/ad blocking proxy) setup was blocking the on-demand section of TVNZ.  
   
 It was however quite easy to fix:  

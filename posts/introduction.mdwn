@@ -1,6 +1,6 @@
 [[!meta title="Introduction"]]
 [[!meta date="2008-03-19T14:37:00.004+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Google knows a lot about technology-related problems. Most of the time, I can just type my question in the One True Text Field and wait for the answer to magically appear in front of my eyes.  
   
 At times, however, the magical answering engine seems out of order. Some might say that it has to do with the alignment of the planets or a butterfly flapping its wings on the other side of the globe, but my guess is that somehow the information hasn't been posted online (or at least indexed properly).  

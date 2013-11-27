@@ -1,6 +1,6 @@
 [[!meta title="&quot;Abusing&quot; git storage"]]
 [[!meta date="2010-03-31T13:36:00.001+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 A [git](http://git-scm.com/) repository is primarily intended to store multiple branches of a single program or component. The underlying system however is much more flexible. Here are two ways to add files which are related to the project but outside the normal history.  
 
 ## Storing a single file all by itself

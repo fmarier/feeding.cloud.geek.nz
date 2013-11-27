@@ -1,6 +1,6 @@
 [[!meta title="RequestTracker workflow with only one person using the web UI to allocate tickets to external people"]]
 [[!meta date="2011-09-07T18:30:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Here are some notes on the way I set an instance of [RequestTracker](http://bestpractical.com/rt/) up to support the following workflow:  
 
   1. Customers use a web form which sends an email to RT.

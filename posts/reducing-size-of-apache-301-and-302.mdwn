@@ -1,6 +1,6 @@
 [[!meta title="Reducing the size of Apache 301 and 302 responses"]]
 [[!meta date="2011-10-23T12:50:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Looking through the [Libravatar](https://www.libravatar.org/) access logs, I found that most of the traffic we currently serve consists of 302 redirects to Gravatar. Optimising that path is therefore very important.  
   
 While Apache allows admins to provide [custom error pages](https://httpd.apache.org/docs/2.2/mod/core.html#errordocument) for things like 404 or 500, it's not quite that straightforward for 30x return codes.  

@@ -1,6 +1,6 @@
 [[!meta title="Starting a Free Software project"]]
 [[!meta date="2008-09-20T13:30:00.003+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Getting started with a Free Software project and making it available to the community can be confusing for first-time software authors. However there are a couple of things worth knowing that will help you attract more users and increase the likelihood that your software will be part of a Free Software distribution like [Debian](http://www.debian.org).  
 
 ## Idea, Name and License

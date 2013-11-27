@@ -1,6 +1,6 @@
 [[!meta title="Taking the max/min of two columns in PostgreSQL"]]
 [[!meta date="2010-10-11T14:00:00.002+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 As part of a database [view](http://www.postgresql.org/docs/9.0/static/sql-createview.html), I found myself wanting to get [Postgres](http://www.postgresql.org/) to display values from one of two columns, whichever was the largest.  
   
 My first attempt was:  

@@ -1,6 +1,6 @@
 [[!meta title="Encrypted system backup to DVD"]]
 [[!meta date="2011-04-03T11:30:00.006+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Inspired by [World Backup Day](http://worldbackupday.net/), I decided to take a backup of my laptop. Thanks to using a [free operating system](http://www.debian.org/) I don't have to backup any of my software, just configuration and data files, which fit on a single DVD.  
   
 In order to avoid worrying too much about secure storage and disposal of these backups, I have decided to encrypt them using a standard [encrypted loopback filesystem](http://feeding.cloud.geek.nz/2008/04/two-tier-encryption-strategy-archiving.html).  

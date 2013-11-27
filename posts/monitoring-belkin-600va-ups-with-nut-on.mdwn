@@ -1,6 +1,6 @@
 [[!meta title="Monitoring a Belkin 600VA UPS with NUT on Debian/Ubuntu"]]
 [[!meta date="2010-04-24T16:30:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 I recently bought a [Belkin 600VA UPS](http://www.belkin.com/au/IWCatProductPage.process?Product_Id=460629) (model F6S600auUSB) and here's what I had to do to setup the monitoring and automatic shutdown on Ubuntu 9.10 (karmic). (This procedure should work on recent versions of Debian as well.)  
   
 This UPS comes with a proprietary monitoring tool (written in Java) and you can find instructions to get this working on the Ubuntu forums, but I was looking for a free solution that would integrate well with the rest of the system. So after reading this [blog post](http://blog.shadypixel.com/monitoring-a-ups-with-nut-on-debian-or-ubuntu-linux/) I decided to go with the [Network UPS Tools](http://www.networkupstools.org/) project:  

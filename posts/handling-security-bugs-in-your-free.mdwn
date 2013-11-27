@@ -1,6 +1,6 @@
 [[!meta title="Handling security bugs in your Free Software project"]]
 [[!meta date="2009-03-10T21:45:00.001+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 If you are managing a Free Software project, you may eventually be confronted with a security vulnerability. Normally bugs in the Open Source world are discussed in a transparent way on public forums. In the case of security bugs however, there are benefits to **temporarily** withholding these details from the public.  
   
 Some people describe this approach as [responsible disclosure](http://en.wikipedia.org/wiki/Responsible_disclosure). It boils down to this:  

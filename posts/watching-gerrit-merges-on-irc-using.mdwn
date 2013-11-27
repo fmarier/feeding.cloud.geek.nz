@@ -1,6 +1,6 @@
 [[!meta title="Watching Gerrit merges on IRC using cia.vc"]]
 [[!meta date="2012-03-01T08:00:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 In order to get a notice on [IRC](irc://chat.freenode.net/%23mahara-commits) whenever someone merges a change in [Mahara](https://mahara.org/), we picked the [cia.vc](http://cia.vc/) service. This allows us to keep an eye on what is happening with the codebase.  
   
 If you want to replicate our setup, start by [creating an account](https://cia.vc/account/register/) on cia.vc and then [add a new project](https://cia.vc/account/projects/add/) and an [IRC bot](https://cia.vc/account/bots/add/) to your account.  

@@ -1,6 +1,6 @@
 [[!meta title="Getting involved in an Open Source project"]]
 [[!meta date="2009-02-11T11:30:00.001+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Contributing to an Open Source project is a fantastic way to learn new skills and gain some real work experience. Unlike most of the work done in the proprietary world, the contributions you make to a Free Software project are generally publicly visible and thus can easily be included in a portfolio you show to prospective employers.  
   
 In most cases, getting involved in an existing project is quite easy. Most projects need help and would be very happy to count you on board even if you're not a developer. Good places to start:  

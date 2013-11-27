@@ -1,6 +1,6 @@
 [[!meta title="Handling multiple identities/accounts in mutt"]]
 [[!meta date="2008-04-02T08:39:00.004+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Since [mutt](http://wiki.mutt.org/) seems to be [all the rage](http://she.geek.nz/archives/482-fixed-mutt-addressbook-failure.html) [these days](http://dollyfish.net.nz/blog/2008-04-01/mutt-and-vim-custom-autocompletion) at work, I might as well document here a few things about my .muttrc that might be useful to others.  
   
 (I recommend that you start off with the [Debian](http://packages.debian.org/mutt) or [Ubuntu](http://packages.ubuntu.com/mutt) package for mutt since a large chunk of necessary customization work has already been done by the Debian maintainers.)  

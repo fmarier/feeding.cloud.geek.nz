@@ -1,6 +1,6 @@
 [[!meta title="RAID1 alternative for SSD drives"]]
 [[!meta date="2010-11-02T20:10:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 I recently added a [solid-state drive](http://www.intel.com/design/flash/nand/value/overview.htm) to my desktop computer to take advantage of the performance boost rumored to come with these drives. For reliability reasons, I've always tried to use software [RAID1](http://en.wikipedia.org/wiki/Raid1#RAID_1) to avoid having to reinstall my machine from backups should a hard drive fail. While this strategy is fairly cheap with regular hard drives, it's not really workable with SSD drives which are still an order of magnitude more expensive.  
   
 The strategy I settled on is this one:

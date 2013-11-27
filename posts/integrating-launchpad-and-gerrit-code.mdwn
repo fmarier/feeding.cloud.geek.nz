@@ -1,6 +1,6 @@
 [[!meta title="Integrating Launchpad and Gerrit Code Review"]]
 [[!meta date="2011-05-30T18:30:00.002+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 While talking about how [Mahara](http://mahara.org/) uses [Gerrit and Gitorious for code reviews](http://feeding.cloud.geek.nz/2011/04/code-reviews-with-gerrit-and-gitorious.html), I forgot to include details on how to [link bugs](http://gerrit.googlecode.com/svn/documentation/2.1.6/config-gerrit.html#commentlink) in the commit logs to our bug tracker ([Launchpad](https://bugs.launchpad.net/mahara)).  
   
 

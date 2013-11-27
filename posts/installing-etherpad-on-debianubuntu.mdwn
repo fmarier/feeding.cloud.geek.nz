@@ -1,6 +1,6 @@
 [[!meta title="Installing Etherpad on Debian/Ubuntu"]]
 [[!meta date="2011-12-16T08:00:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Etherpad](http://etherpad.org/) is an excellent Open Source web application for collaborative text editing. Like Google Docs, it allows you to share documents with others through a secret URL or to set up private documents for which people need a login.
 
   

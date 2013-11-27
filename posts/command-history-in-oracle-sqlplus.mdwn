@@ -1,6 +1,6 @@
 [[!meta title="Command history in Oracle sqlplus: adding readline support at runtime"]]
 [[!meta date="2008-03-30T12:18:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Readline](http://en.wikipedia.org/wiki/Readline)-style editing (arrow keys, word deletion, command history, etc.) is a feature that most users expect out of a command-line application on Linux. And one that is painfully missing from Oracle sqlplus (the equivalent to psql).  
   
 Of course, Debian has a solution:  

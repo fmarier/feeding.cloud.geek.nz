@@ -1,6 +1,6 @@
 [[!meta title="Setting the default git branch in a bare repository"]]
 [[!meta date="2008-12-04T21:31:00.005+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 A bare repository in git does not include a checkout. So in order to set the default branch that users will get after they clone, you cannot use <tt>git-checkout <i>mybranch</i></tt>.  
   
 Instead, if you want the default branch to be something other than `master`, you need to do this:  

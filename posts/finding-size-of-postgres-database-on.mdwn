@@ -1,6 +1,6 @@
 [[!meta title="Finding the size of a Postgres database on disk"]]
 [[!meta date="2009-02-25T13:55:00.003+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Here's how to tell how much space (on disk) a Postgres database takes:  
 
 

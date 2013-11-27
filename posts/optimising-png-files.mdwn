@@ -1,6 +1,6 @@
 [[!meta title="Optimising PNG files"]]
 [[!meta date="2011-12-04T18:30:00.001+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 I have written about [using lossless optimisations techniques to reduce the size of images](http://feeding.cloud.geek.nz/2009/10/reducing-website-bandwidth-usage.html) before, but I recently learned of a few other [tools](http://developer.yahoo.com/yslow/smushit/faq.html#faq_crushtool) to further reduce the size of [PNG](http://en.wikipedia.org/wiki/Portable_Network_Graphics) images.  
   
 

@@ -1,6 +1,6 @@
 [[!meta title="Logstalgia (aka ApachePong) now in Debian"]]
 [[!meta date="2008-05-05T09:45:00.001+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Andrew Caudwell's [Logstalgia](http://code.google.com/p/logstalgia/) (aka ApachePong) has made it to [Debian](http://packages.qa.debian.org/l/logstalgia.html)! It's a fun little Apache access log viewer which replays old logs (or streams live ones) as an OpenGL pong game.  
   
 So grab your favourite high-traffic access log and head over to the [download page](http://code.google.com/p/logstalgia/downloads/list) to check it out. There's also a [youtube video](http://www.youtube.com/watch?v=BYYX-h4-dpM) if you can't find an interesting log file to use it with.

@@ -1,6 +1,6 @@
 [[!meta title="Work-around for Torchlight crashing with an Ogre exception on Linux"]]
 [[!meta date="2013-04-29T10:00:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 This will hopefully be useful to some of those who have purchased the
 Linux version of the [Torchlight](http://www.torchlightgame.com/) game as

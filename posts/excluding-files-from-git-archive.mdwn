@@ -1,6 +1,6 @@
 [[!meta title="Excluding files from git archive exports using gitattributes"]]
 [[!meta date="2010-02-09T16:45:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [git archive](http://www.kernel.org/pub/software/scm/git/docs/git-archive.html) provides an easy way of producing a tarball directly from a project's git branch.  
   
 For example, this is what we use to build the [Mahara](http://www.mahara.org) tarballs:  

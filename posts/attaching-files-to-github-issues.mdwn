@@ -1,6 +1,6 @@
 [[!meta title="Attaching files to Github issues"]]
 [[!meta date="2012-06-21T15:13:00.001+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 This is a hack to work-around the lack of support for file attachments on the Github issue tracker.
 
 You can of course host your files somewhere else and link to them, but it's a bit annoying to not be able to attach files directly on a bug report because these remote files might go away in the future and make archived issues much less useful.

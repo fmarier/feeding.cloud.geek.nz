@@ -1,6 +1,6 @@
 [[!meta title="Migrating Libravatar to the Persona Observer API"]]
 [[!meta date="2012-08-01T22:40:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Libravatar](https://www.libravatar.org) recently upgraded its support for the [Persona](https://login.persona.org) authentication system (formerly BrowserID).
 
 Here are some notes on what was involved in migrating to the [Observer API](http://identity.mozilla.com/post/28513408358/a-new-api-for-persona) for those who want to do the same on their sites.

@@ -1,6 +1,6 @@
 [[!meta title="Debugging logcheck rule files"]]
 [[!meta date="2009-12-20T16:00:00.006+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [logcheck](http://logcheck.org/) is a neat little log file monitoring tool I use on all of my machines.  
   
 I recently noticed however that I hadn't received any logcheck messages in a while from one of my servers. Either that was a sign that things were going really well or, more likely, that logcheck wasn't producing any output anymore.  

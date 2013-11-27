@@ -1,6 +1,6 @@
 [[!meta title="Encrypting your home directory using LUKS on Debian/Ubuntu"]]
 [[!meta date="2008-05-24T19:47:00.004+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Laptops are easily lost or stolen and in order to protect your emails, web passwords, encryption keys, etc., you should really think about encrypting (at least) your home directory.  
   
 If you happen to have `/home` on a separate partition already (`/dev/hda5` in this example), then it's a really easy process:  

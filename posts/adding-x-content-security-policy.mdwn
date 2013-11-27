@@ -1,6 +1,6 @@
 [[!meta title="Adding X-Content-Security-Policy headers in a Django application"]]
 [[!meta date="2011-09-18T20:30:00.004+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Content Security Policy is a [proposed HTTP extension](http://www.w3.org/Security/wiki/Content_Security_Policy) which allows websites to restrict the external content that can be displayed by visiting web browsers. By expressing a set of rules to be enforced by the browser, a website is able to prevent the injection of outside resources by malicious users.  
   
 While adding support for the [March 2011 draft](https://dvcs.w3.org/hg/content-security-policy/raw-file/tip/csp-unofficial-draft-20110303.html) in [Libravatar](https://www.libravatar.org/), I looked at three different approaches.  

@@ -1,6 +1,6 @@
 [[!meta title="Saving a Windows Media Player stream using mplayer"]]
 [[!meta date="2008-04-08T21:15:00.010+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 The Gentoo folks have a [great howto](http://gentoo-wiki.com/HOWTO_Rip_Streams_With_MPlayer) on ripping Windows Media Player streams (typically identified by an .asf, .asx or .wmv prefix) using [mplayer](http://www.mplayerhq.hu/).  
   
 Here's the gist of it:  

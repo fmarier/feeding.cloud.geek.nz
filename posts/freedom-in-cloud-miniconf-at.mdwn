@@ -1,6 +1,6 @@
 [[!meta title="Freedom in the Cloud Miniconf at linux.conf.au 2011"]]
 [[!meta date="2010-09-25T21:02:00.003+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Jon Phillips](http://rejon.org/) and I are putting together a [Freedom in the Cloud](http://lca2011.linux.org.au/wiki/Miniconfs/FreedomInTheCloudMiniconf) Miniconf for [linux.conf.au 2011](http://lca2011.linux.org.au/).  
   
 If you are interested in submitting a proposal (5, 25 or 45 minutes), we want to [hear from you](mailto:proposals@cloud.geek.nz)!  

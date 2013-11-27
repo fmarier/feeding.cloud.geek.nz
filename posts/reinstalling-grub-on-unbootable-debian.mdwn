@@ -1,6 +1,6 @@
 [[!meta title="Reinstalling grub on an unbootable Debian system"]]
 [[!meta date="2009-06-07T12:00:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Fixing an unbootable computer after a failed grub installation can be a bit tricky. Here's what I ended up doing.  
   
 First of all, boot the machine up and get access to the root partition:  

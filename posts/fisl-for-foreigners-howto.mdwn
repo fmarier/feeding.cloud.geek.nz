@@ -1,6 +1,6 @@
 [[!meta title="FISL for foreigners HOWTO"]]
 [[!meta date="2013-07-28T20:40:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 [FISL](http://fisl.softwarelivre.org/) (pronounced *FIZZ lay* by the locals)
 is a large Free and Open Source software gathering in

@@ -1,6 +1,6 @@
 [[!meta title="Debugging concurrency problems: Forcing a process to run on a single CPU"]]
 [[!meta date="2008-03-30T11:51:00.004+13:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Multi-threading can cause [hard-to-diagnose problems](http://radar.oreilly.com/archives/2007/01/threads-considered-harmful.html) and they are especially visible on multi-core CPUs (or multi-CPU systems) where threads actually run concurrently.  
   
 Here's a quick way to find out if the segfaults you are experiencing might be due to some concurrency/locking problem: force the application to run on a single CPU using schedtool (part of the schedtool package on Debian/Ubuntu).  

@@ -1,6 +1,6 @@
 [[!meta title="Reducing the number of HTTP connections used by a webapp"]]
 [[!meta date="2011-06-28T20:30:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 One of the factors affecting the speed (latency) of a web application is the [number of HTTP connections](http://developer.yahoo.com/performance/rules.html#num_http) needed to download a given page. These connections are often [reused](http://en.wikipedia.org/wiki/HTTP_persistent_connection) and some of the resources that a page needs will be downloaded in parallel, but that's not always the case (browsers will limit the number of connections they make to each web server for example) so it pays to take that into consideration while optimizing a page.  
   
 Client-side [image maps](http://en.wikipedia.org/wiki/Image_map) can often help, but here are two other ways to reduce the number of external images a page needs.  

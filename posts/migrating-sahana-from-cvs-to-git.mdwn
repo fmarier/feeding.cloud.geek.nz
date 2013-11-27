@@ -1,6 +1,6 @@
 [[!meta title="Migrating Sahana from cvs to git"]]
 [[!meta date="2009-08-04T14:41:00.010+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Here is how I migrated the [Sahana](http://www.sahana.lk/) CVS [repository](http://sourceforge.net/projects/sahana/develop) to [git](http://gitscm.org/), as part of the work that the [Sahana New Zealand Cluster](https://launchpad.net/%7Esahana-nz) is gearing up to do.  
   
 It was actually a lot simpler than I expected!  

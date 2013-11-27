@@ -1,6 +1,6 @@
 [[!meta title="OpenStreetMap/OpenLayers and Privoxy"]]
 [[!meta date="2009-09-24T18:30:00.004+12:00"]]
-[[!meta license="[Creative Commons Attribution-Share Alike 3.0 New Zealand License](http://creativecommons.org/licenses/by-sa/3.0/nz/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 I have been meaning to switch to [OpenStreetMap](http://www.openstreetmap.org/) for a while now, but the fact that it didn't work with [Privoxy](http://www.privoxy.org/) was holding me back. I don't enjoy surfing the web without protection and Privoxy is one of the most convenient ways of enhancing one's browsing experience on Debian and Ubuntu.  
   
 So I decided to spend some time trying to figure out what was wrong. If you want to skip the details and just get the fix, scroll down to the bottom of this post for the solution.  
