@@ -1,0 +1,181 @@
+[[!meta title="Creating a Linode-based VPN setup using OpenVPN on Debian or Ubuntu"]]
+[[!meta date="2013-12-22T23:00:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Using a
+[Virtual Private Network](https://en.wikipedia.org/wiki/Virtual_private_network)
+is a good way to work-around
+[geoIP](https://en.wikipedia.org/wiki/Geolocation) restrictions but also to
+protect your network traffic when travelling with your laptop and connecting
+to untrusted networks.
+
+While you might want to
+[use Tor](http://feeding.cloud.geek.nz/posts/things-that-work-well-with-tor/)
+for the part of your network activity where you prefer to be anonymous, a
+VPN is a faster way to connect to sites that already know you.
+
+Here are my instructions for setting up [OpenVPN](http://openvpn.net/) on
+Debian / Ubuntu machines where the VPN server is located on a cheap
+[Linode](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff)
+virtual private server. They are largely based on the
+[instructions found on the Debian wiki](https://wiki.debian.org/openvpn%20for%20server%20and%20client).
+
+An easier way to setup an ad-hoc VPN is to use
+[sshuttle](https://github.com/apenwarr/sshuttle) but for some reason, it
+doesn't seem work on Linode or Rackspace virtual servers.
+
+# Generating the keys
+
+Make sure you run the following on a machine with good entropy and not a VM!
+I personally use a machine fitted with an
+[Entropy Key](http://www.entropykey.co.uk/).
+
+The first step is to install the required package:
+
+    sudo apt-get install openvpn
+
+Then, copy the following file in your home directory (no need to run any of
+this as root):
+
+    mkdir easy-rsa
+    cp -ai /usr/share/doc/openvpn/examples/easy-rsa/2.0/ easy-rsa/
+    cd easy-rsa/2.0
+
+and put something like this in your `~/easy-rsa/2.0/vars`:
+
+    export KEY_SIZE=2084
+    export KEY_COUNTRY="NZ"
+    export KEY_PROVINCE="AKL"
+    export KEY_CITY="Auckland"
+    export KEY_ORG="fmarier.org"
+    export KEY_EMAIL="francois@fmarier.org"
+    export KEY_CN=hafnarfjordur.fmarier.org
+    export KEY_NAME=hafnarfjordur.fmarier.org
+    export KEY_OU=VPN
+
+Create this symbolic link:
+
+    ln -s openssl-1.0.0.cnf openssl.cnf in my "2.0" directory
+
+and generate the keys:
+
+    . ./vars
+    ./clean-all
+    ./build-ca
+    ./build-key-server server  # ENTER at every prompt, no password
+    ./build-key akranes  # "akranes" as Name, no password
+    ./build-dh
+    /usr/sbin/openvpn --genkey --secret keys/ta.key
+
+# Configuring the server
+
+On my server, a
+[Linode VPS](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff)
+called `hafnarfjordur.fmarier.org`, I installed the
+[openvpn package](http://packages.debian.org/stable/openvpn):
+
+    apt-get install openvpn
+
+and then copied the following files from my high-entropy machine:
+
+    cp ca.crt dh2048.pem server.key server.crt ta.key /etc/openvpn/
+    chown root:root /etc/openvpn/*
+    chmod 600 /etc/openvpn/ta.key /etc/openvpn/server.key
+
+Then I took the official configuration template:
+
+    cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz /etc/openvpn/
+    gunzip /etc/openvpn/server.conf.gz
+
+and set the following in `/etc/openvpn/server.conf`:
+
+    dh dh2048.pem
+    push "redirect-gateway def1 bypass-dhcp"
+    push "dhcp-option DNS 74.207.241.5"
+    push "dhcp-option DNS 74.207.242.5"
+    tls-auth ta.key 0
+    cipher AES-128-CBC
+    user nobody
+    group nogroup
+
+(These DNS servers are the ones I found in `/etc/resolv.conf` on my Linode VPS.)
+
+Finally, I added the following to these configuration files:
+
+* `/etc/sysctl.conf`: `net.ipv4.ip_forward=1`
+* `/etc/rc.local`: `iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j
+  MASQUERADE` (just before `exit 0`)
+* `/etc/default/openvpn`: `AUTOSTART="all"`
+
+and ran `sysctl -p` before starting openvpn:
+
+    /etc/init.d/openvpn start
+
+# Configuring the client
+
+The final piece of this solution is to setup my laptop, `akranes`, to
+connect to `hafnarfjordur` by installing the relevant
+[Network Manager](https://wiki.gnome.org/Projects/NetworkManager/) plugin:
+
+    apt-get install network-manager-openvpn-gnome
+
+The laptop needs these files from the high-entropy machine:
+
+    cp ca.crt akranes.crt akranes.key ta.key /etc/openvpn/
+    chown root:francois /etc/openvpn/akranes.key /etc/openvpn/ta.key
+    chmod 640 /etc/openvpn/ta.key /etc/openvpn/akranes.key
+
+and my own user needs to have read access to the secret keys.
+
+To create a new VPN, right-click on Network-Manager and add a new VPN
+connection of type "OpenVPN":
+
+* Gateway: `hafnarfjordur.fmarier.org`
+* Type: `Certificates (TLS)`
+* User Certificate: `/etc/openvpn/akranes.crt`
+* CA Certificate: `/etc/openvpn/ca.crt`
+* Private Key: `/etc/openvpn/akranes.key`
+* Available to all users: `NO`
+
+then click the "Avanced" button and set the following:
+
+* General
+
+ * Use LZO data compression: `YES`
+
+* Security
+
+ * Cipher: `AES-128-CBC`
+ * HMAC Authentication: `Default`
+
+* TLS Authentication:
+
+ * Subject Match: `server`
+ * Verify peer (server) certificate usage signature: `YES`
+ * Remote peer certificate TLS type: `Server`
+ * Use additional TLS authentication: `YES`
+ * Key File: `/etc/openvpn/ta.key`
+ * Key Direction: `1`
+
+# Debugging
+
+If you run into problems, simply take a look at the logs while attempting to
+connect to the server:
+
+    tail -f /var/log/syslog
+
+on both the server and the client.
+
+In my experience, searching for the error messages you find in there is
+usually enough to solve the problem.
+
+# Next steps
+
+The next thing I'm going to add to this VPN setup is a
+[local unbound DNS resolver](http://feeding.cloud.geek.nz/posts/setting-up-your-own-dnssec-aware/)
+that will be offered to all clients.
+
+Is there anything else you have in your setup and that I should consider
+adding to mine?
+
+[[!tag security]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]]
