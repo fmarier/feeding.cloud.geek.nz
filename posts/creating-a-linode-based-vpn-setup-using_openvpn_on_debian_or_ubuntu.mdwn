@@ -55,14 +55,14 @@ and put something like this in your `~/easy-rsa/2.0/vars`:
 
 Create this symbolic link:
 
-    ln -s openssl-1.0.0.cnf openssl.cnf in my "2.0" directory
+    ln -s openssl-1.0.0.cnf openssl.cnf
 
 and generate the keys:
 
     . ./vars
     ./clean-all
     ./build-ca
-    ./build-key-server server  # ENTER at every prompt, no password
+    ./build-key-server server  # press ENTER at every prompt, no password
     ./build-key akranes  # "akranes" as Name, no password
     ./build-dh
     /usr/sbin/openvpn --genkey --secret keys/ta.key
@@ -102,12 +102,19 @@ and set the following in `/etc/openvpn/server.conf`:
 
 Finally, I added the following to these configuration files:
 
-* `/etc/sysctl.conf`: `net.ipv4.ip_forward=1`
-* `/etc/rc.local`: `iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j
-  MASQUERADE` (just before `exit 0`)
-* `/etc/default/openvpn`: `AUTOSTART="all"`
+* `/etc/sysctl.conf`:
 
-and ran `sysctl -p` before starting openvpn:
+      net.ipv4.ip_forward=1
+
+* `/etc/rc.local` (just before `exit 0`):
+
+      iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+
+* `/etc/default/openvpn`:
+
+      AUTOSTART="all"
+
+and ran `sysctl -p` before starting OpenVPN:
 
     /etc/init.d/openvpn start
 
@@ -140,22 +147,17 @@ connection of type "OpenVPN":
 then click the "Avanced" button and set the following:
 
 * General
-
- * Use LZO data compression: `YES`
-
+   * Use LZO data compression: `YES`
 * Security
-
- * Cipher: `AES-128-CBC`
- * HMAC Authentication: `Default`
-
-* TLS Authentication:
-
- * Subject Match: `server`
- * Verify peer (server) certificate usage signature: `YES`
- * Remote peer certificate TLS type: `Server`
- * Use additional TLS authentication: `YES`
- * Key File: `/etc/openvpn/ta.key`
- * Key Direction: `1`
+   * Cipher: `AES-128-CBC`
+   * HMAC Authentication: `Default`
+* TLS Authentication
+   * Subject Match: `server`
+   * Verify peer (server) certificate usage signature: `YES`
+   * Remote peer certificate TLS type: `Server`
+   * Use additional TLS authentication: `YES`
+   * Key File: `/etc/openvpn/ta.key`
+   * Key Direction: `1`
 
 # Debugging
 
