@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="92.72.10.17"
+ claimedauthor="nh2"
+ url="http://nh2.me"
+ subject="Ubuntu 13.10"
+ date="2013-12-26T19:39:23Z"
+ content="""
+Just a note that this setup still works with Ubuntu 13.10:
+
+If you have an encrypted home partition and an encrypted swap as described here, pm-hibernate will use uswsusp and you have a working hibernation with swap encryption. The Ubuntu community articles should be updated with this, it works very well.
+
+(Side node: A more timely cryptsetup is probably: `sudo cryptsetup --cipher aes-xts-plain --key-size 256 --hash sha512 --use-random --verify-passphrase luksFormat /dev/sdXY`. XTS seems to be faster for many people - check with `cryptsetup benchmark` if you have cryptsetup >= 1.6.)
+"""]]
