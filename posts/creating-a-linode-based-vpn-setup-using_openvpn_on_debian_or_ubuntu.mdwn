@@ -118,6 +118,10 @@ and ran `sysctl -p` before starting OpenVPN:
 
     /etc/init.d/openvpn start
 
+If the server has a firewall, you'll need to [open up this port](http://docs.openvpn.net/frequently-asked-questions/):
+
+    iptables -A INPUT -p udp --dport 1194 -j ACCEPT
+
 # Configuring the client
 
 The final piece of this solution is to setup my laptop, `akranes`, to
