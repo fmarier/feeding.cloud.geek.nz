@@ -9,7 +9,7 @@ So instead, I decided to build a wrapper around "rm" which prevents the deletion
   
 ![](/posts/preventing-accidental-deletion-of/safe-rm.png)  
   
-This tool, [safe-rm](http://www.safe-rm.org.nz), ships with a default system-wide configuration file (`/etc/safe-rm.conf`), but each user can supplement that list of "protected" directories and files by adding lines to `~/.safe-rm`.  
+This tool, [safe-rm](https://launchpad.net/safe-rm), ships with a default system-wide configuration file (`/etc/safe-rm.conf`), but each user can supplement that list of "protected" directories and files by adding lines to `~/.safe-rm`.
   
 [Debian](http://packages.debian.org/safe-rm) and [Ubuntu](http://packages.ubuntu.com/safe-rm) packages are available from the usual places.  
   
