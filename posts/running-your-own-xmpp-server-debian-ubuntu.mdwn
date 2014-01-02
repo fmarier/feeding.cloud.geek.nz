@@ -1,4 +1,4 @@
-[[!meta title="Running ypour own XMPP server on Debian or Ubuntu"]]
+[[!meta title="Running your own XMPP server on Debian or Ubuntu"]]
 [[!meta date="2014-01-02T16:45:00.000+13:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
