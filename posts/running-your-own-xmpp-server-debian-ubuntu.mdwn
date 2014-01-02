@@ -15,9 +15,9 @@ put everything together.
 My personal domain is `fmarier.org` and so I created the following DNS
 records:
 
-    jabber-gw            CNAME    fmarier.org
-    _xmpp-client._tcp    SRV      5 0 5222 fmarier.org
-    _xmpp-server._tcp    SRV 	  5 0 5269 fmarier.org
+    jabber-gw            CNAME    fmarier.org.
+    _xmpp-client._tcp    SRV      5 0 5222 jabber-gw.fmarier.org.
+    _xmpp-server._tcp    SRV 	  5 0 5269 jabber-gw.fmarier.org.
 
 Then I went to get a free XMPP SSL certificate for `jabber-gw.fmarier.org`
 from [StartSSL](https://startssl.com). This is how I generated the CSR
@@ -93,5 +93,7 @@ certificate warnings.
 
 If you want to make sure that XMPP federation works, add your GMail address
 as a buddy to the account and send yourself a test message.
+
+In this example, the XMPP address I give to my friends is `me@fmarier.org`.
 
 [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]]
