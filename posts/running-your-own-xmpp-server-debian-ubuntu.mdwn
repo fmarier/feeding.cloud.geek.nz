@@ -58,18 +58,21 @@ permissions correctly:
       chown root:ejabberd /etc/ejabberd/ejabberd.pem
       chmod 640 /etc/ejabberd/ejabberd.pem
 
-4. Restart the ejabberd daemon:
+4. Restart the ejabberd
+daemon:
 
       /etc/init.d/ejabberd restart
 
-5. Create a new user account for yourself:
+5. Create a new user account for
+yourself:
 
       ejabberdctl register me fmarier.org P@ssw0rd1!
 
-6. Open up the following ports on the server's firewall:
+6. Open up the following ports on the server's
+firewall:
 
-    iptables -A INPUT -p tcp --dport 5222 -j ACCEPT
-    iptables -A INPUT -p tcp --dport 5269 -j ACCEPT
+      iptables -A INPUT -p tcp --dport 5222 -j ACCEPT
+      iptables -A INPUT -p tcp --dport 5269 -j ACCEPT
 
 # Client setup
 
