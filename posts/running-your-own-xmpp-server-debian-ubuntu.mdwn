@@ -1,0 +1,92 @@
+[[!meta title="Running ypour own XMPP server on Debian or Ubuntu"]]
+[[!meta date="2014-01-02T16:45:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to get closer to my goal of reducing my dependence on centralized
+services, I decided to setup my own XMPP / Jabber server on a
+[Linode VPS](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff)
+running [Debian wheezy](http://www.debian.org/releases/wheezy/). I chose
+[ejabberd](http://www.ejabberd.im/) since it was recommended by the
+[RTC Quick Start](http://www.rtcquickstart.org/) website and here's how I
+put everything together.
+
+# DNS and SSL
+
+My personal domain is `fmarier.org` and so I created the following DNS
+records:
+
+    jabber-gw            CNAME    fmarier.org
+    _xmpp-client._tcp    SRV      5 0 5222 fmarier.org
+    _xmpp-server._tcp    SRV 	  5 0 5269 fmarier.org
+
+Then I went to get a free XMPP SSL certificate for `jabber-gw.fmarier.org`
+from [StartSSL](https://startssl.com). This is how I generated the CSR
+(Certificate Signing Request) on a high-entropy machine:
+
+    openssl req -new -newkey rsa:2048 -nodes -out ssl.csr -keyout ssl.key -subj "/C=NZ/CN=jabber-gw.fmarier.org"
+
+I downloaded the signed certificate as well as the
+[StartSSL intermediate certificate](https://startssl.com/certs/) and
+[combined them](http://hyperstruct.net/2007/06/20/installing-the-startcom-ssl-certificate-in-ejabberd/)
+this way:
+
+    cat ssl.crt ssl.key sub.class1.server.ca.pem > ejabberd.pem
+
+# ejabberd installation
+
+Installing ejabberd on Debian is pretty simple and I mostly followed the
+[steps on the Ubuntu wiki](https://help.ubuntu.com/community/SettingUpJabberServer)
+with an
+[additional customization](http://www.die-welt.net/2013/05/wheezy-ejabberd-pidgin-and-srv-records/)
+to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
+
+1. Install the [package](http://packages.debian.org/wheezy/ejabberd), using
+"admin" as the username for the administrative user:
+
+      apt-get install ejabberd
+
+2. Set the following in `/etc/ejabberd/ejabberd.cfg` (don't forget the
+trailing dots!):
+
+      {acl, admin, {user, "admin", "fmarier.org"}}.
+      {hosts, ["fmarier.org"]}.
+      {fqdn, "jabber-gw.fmarier.org"}.
+
+3. Copy the SSL certificate into the `/etc/ejabberd/` directory and set the
+permissions correctly:
+
+      chown root:ejabberd /etc/ejabberd/ejabberd.pem
+      chmod 640 /etc/ejabberd/ejabberd.pem
+
+4. Restart the ejabberd daemon:
+
+      /etc/init.d/ejabberd restart
+
+5. Create a new user account for yourself:
+
+      ejabberdctl register me fmarier.org P@ssw0rd1!
+
+6. Open up the following ports on the server's firewall:
+
+    iptables -A INPUT -p tcp --dport 5222 -j ACCEPT
+    iptables -A INPUT -p tcp --dport 5269 -j ACCEPT
+
+# Client setup
+
+On the client side, if you use Pidgin, create a new account with the
+following settings in the "Basic" tab:
+
+* Protocol: XMPP
+* Username: `me`
+* Domain: `fmarier.org`
+* Password: `P@ssw0rd1!`
+
+and the following setting in the "Advanced" tab:
+
+* Connection security: Require encryption
+
+From this, I was able to connect to the server without clicking through any
+certificate warnings.
+
+If you want to make sure that XMPP federation works, add your GMail address
+as a buddy to account and send yourself a test message.
