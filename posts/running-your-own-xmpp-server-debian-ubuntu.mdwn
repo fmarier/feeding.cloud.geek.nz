@@ -92,6 +92,6 @@ From this, I was able to connect to the server without clicking through any
 certificate warnings.
 
 If you want to make sure that XMPP federation works, add your GMail address
-as a buddy to account and send yourself a test message.
+as a buddy to the account and send yourself a test message.
 
 [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]]
