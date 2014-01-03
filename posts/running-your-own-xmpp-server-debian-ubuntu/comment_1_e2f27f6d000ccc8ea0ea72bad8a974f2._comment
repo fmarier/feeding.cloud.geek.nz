@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="82.45.44.132"
+ claimedauthor="Steven  Watkin"
+ url="http://www.evilprofessor.co.uk"
+ subject="Better alternatives..."
+ date="2014-01-03T14:36:30Z"
+ content="""
+Personally I'd suggest prosody rather than ejabberd which (IMO) is a pain to install and configure.
+
+If you want something ejabberd-ish then there's also the mongoose.im project which was forked from ejabberd and has implemented many new (and working) features.
+"""]]
