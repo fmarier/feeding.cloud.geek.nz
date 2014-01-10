@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="93.62.249.62"
+ claimedauthor="Gp"
+ url="http://ktln2.org"
+ subject="It's missing a piece"
+ date="2014-01-09T15:48:54Z"
+ content="""
+Without --worktree-attributes passed as option to git archive the trick doesn't work.
+"""]]
