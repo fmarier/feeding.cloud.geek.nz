@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="199.116.72.86"
+ claimedauthor="max"
+ url="warped.org"
+ subject="Log Rotate"
+ date="2014-01-15T06:51:16Z"
+ content="""
+One other thing you might want to add is to add /var/log/router.log to /etc/logrotate.d/rsyslog  so that it doesn't grow forever.
+
+Cheers,
+-m
+"""]]
