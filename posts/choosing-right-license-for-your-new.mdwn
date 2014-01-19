@@ -26,7 +26,7 @@ So take the time to familiarize yourself with common licenses and then decide fo
 Here's an sample copyright statement for a piece of software under the latest version of the GNU General Public License:  
 
     Email-Reminder - Receive emails for events like birthdays and anniversaries
-    Copyright (C) 2004-2008 by Francois Marier (francois@email-reminder.org.nz)
+    Copyright (C) 2004-2008 by Francois Marier (francois@fmarier.org)
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
