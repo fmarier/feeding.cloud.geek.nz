@@ -122,6 +122,11 @@ If the server has a firewall, you'll need to [open up this port](http://docs.ope
 
     iptables -A INPUT -p udp --dport 1194 -j ACCEPT
 
+as well as let [forwarded packets](https://wiki.debian.org/OpenVPN#Forward_traffic_via_VPN) flow:
+
+    iptables -A FORWARD -i eth0 -o tun0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+    iptables -A FORWARD -s 10.8.0.0/24 -o eth0 -j ACCEPT
+
 # Configuring the client
 
 The final piece of this solution is to setup my laptop, `akranes`, to
