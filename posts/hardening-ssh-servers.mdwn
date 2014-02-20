@@ -1,0 +1,119 @@
+[[!meta title="Hardening ssh Servers"]]
+[[!meta date="2014-02-20T23:52:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+# Basic configuration
+
+There are a few basic things that most admins will already know (and that
+[tiger](http://savannah.nongnu.org/projects/tiger/) will warn you about if
+you forget):
+
+* only allow [version 2](http://en.wikipedia.org/wiki/Secure_Shell#Version_2.x) of the protocol
+* disable root logins
+* disable password authentication
+
+This is what `/etc/ssh/sshd_config` should contain:
+
+    Protocol 2
+    PasswordAuthentication no
+    PermitRootLogin no
+
+# Deterring brute-force (or dictionary) attacks
+
+One way to ban attackers who try to brute-force your ssh server is to
+install the [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page)
+package. It keeps an eye on the ssh log file (`/var/log/auth.log`) and
+temporarily blocks IP addresses after a number of failed login attempts.
+
+Another approach is to hide the ssh service using
+[Single-Packet Authentication](http://en.wikipedia.org/wiki/Single_Packet_Authorization). I
+have [fwknop](http://www.cipherdyne.org/fwknop/) installed on some of my
+servers and use small
+[wrapper](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/spassh)
+[scripts](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/spascp)
+to connect to them.
+
+# Using restricted shells
+
+For those users who only need an ssh account on the server in order to
+transfer files (using `scp` or `rsync`), it's a good idea to set their shell
+(via [chsh](http://linux.die.net/man/1/chsh)) to a restricted one like
+[rssh](http://www.pizzashack.org/rssh/).
+
+Should they attempt to log into the server, these users will be greeted with
+the following error message:
+
+    This account is restricted by rssh.
+    Allowed commands: rsync 
+    
+    If you believe this is in error, please contact your system administrator.
+    
+    Connection to server.example.com closed.
+
+# Restricting authorized keys to certain IP addresses
+
+In addition to listing all of the public keys that are allowed to log into a
+user account, the `~/.ssh/authorized_keys` file also allows (as the
+[man page](http://www.openbsd.org/cgi-bin/man.cgi?query=sshd&sektion=8#SSHRC)
+points out) a user to impose a number of restrictions.
+
+Perhaps the most useful option is *from* which allows a user to restrict the
+IP addresses which can login using a specific key.
+
+Here's what one of my `authorized_keys` looks like:
+
+    from="192.0.2.2" ssh-rsa AAAAB3Nz...zvCn bot@example
+
+You may also want to include the following options to each entry:
+`no-X11-forwarding`, `no-user-rc`, `no-pty`, `no-agent-forwarding` and
+`no-port-forwarding`.
+
+# Increasing the amount of logging
+
+The first thing I'd recommend is to increase the level of verbosity in
+`/etc/ssh/sshd_config`:
+
+    LogLevel VERBOSE
+
+which will, amongst other things, log the fingerprints of keys used to login:
+
+    sshd: Connection from 192.0.2.2 port 39671
+    sshd: Found matching RSA key: de:ad:be:ef:ca:fe
+    sshd: Postponed publickey for francois from 192.0.2.2 port 39671 ssh2 [preauth]
+    sshd: Accepted publickey for francois from 192.0.2.2 port 39671 ssh2 
+
+Secondly, if you run [logcheck](https://packages.debian.org/stable/logcheck)
+and would like to whitelist the "Accepted publickey" messages on your
+server, you'll have to start by deleting the first line of
+`/etc/logcheck/ignore.d.server/sshd`. Then you can add an entry for all of
+the usernames and IP addresses that you expect to see.
+
+Finally, it is also possible to
+[log all commands issued by a specific user over ssh](http://beardyjay.co.uk/logging-all-ssh-commands/logging-ssh)
+by enabling the `pam_tty_audit` module in `/etc/pam.d/sshd`:
+
+    session required pam_tty_audit.so enable=francois
+
+However this module is [not included in wheezy](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=699159) and has only recently been [re-added to Debian](http://packages.qa.debian.org/p/pam/news/20131021T001835Z.html).
+
+# Identitying stolen keys
+
+One thing I'd love to have is a way to identify a stolen public key. Given the IP
+restrictions described above, if a public key is stolen and used from a different IP,
+I will see something like this in `/var/log/auth.log`:
+
+    sshd: Connection from 198.51.100.10 port 39492
+    sshd: Authentication tried for francois with correct key but not from a permitted host (host=198.51.100.10, ip=198.51.100.10).
+    sshd: Failed publickey for francois from 198.51.100.10 port 39492 ssh2
+    sshd: Connection closed by 198.51.100.10 [preauth]
+
+So I can get the IP address of the attacker (likely to be a random VPS or a
+Tor exit node), but unfortunately, the key fingerprints don't appear for
+failed connections like they do for successful ones. So I don't know which key
+to revoke.
+
+Is there any way to identify which key was used in a failed login attempt or
+is the solution to only ever have a single public key in each
+`authorized_keys` file and create a separate user account for each user?
+
+[[!tag sysadmin]] [[!tag debian]] [[!tag security]] [[!tag nzoss]] 
