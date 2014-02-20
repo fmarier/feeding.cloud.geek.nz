@@ -18,6 +18,21 @@ This is what `/etc/ssh/sshd_config` should contain:
     PasswordAuthentication no
     PermitRootLogin no
 
+# Whitelist approach to giving users ssh access
+
+To ensure that only a few users have ssh access to the server and that newly
+created users don't have it enabled by default, create a new group:
+
+    addgroup sshuser
+
+and then add the relevant users to it:
+
+    adduser francois sshuser
+
+Finally, add this to `/etc/ssh/sshd_config`:
+
+    AllowGroups sshuser
+
 # Deterring brute-force (or dictionary) attacks
 
 One way to ban attackers who try to brute-force your ssh server is to
