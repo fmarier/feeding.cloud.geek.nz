@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="176.27.98.244"
+ claimedauthor="Steve Kemp"
+ url="http://steve.org.uk/"
+ subject="Logging .."
+ date="2014-02-20T17:26:23Z"
+ content="""
+You might enjoy [snoopy](https://packages.debian.org/snoopy) for logging purposes, since:
+
+* It is contained in squeeze, wheezy, and jessie.
+* It will log all commands.
+
+The downside is that it won't log stdin, but I'd suggest that's almost a benefit since it avoids root-access users from seeing passwords.
+"""]]

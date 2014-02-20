@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="88.217.87.110"
+ claimedauthor="madduck"
+ subject="ProxyCommand"
+ date="2014-02-20T13:35:09Z"
+ content="""
+Instead of a wrapper (which does funky things to e.g. remote command execution and pipes, control sockets, and forwarding), just use ProxyCommand and ProxyUseFdpass to execute SPA against %h, then to pass control back to /usr/bin/ssh…
+"""]]
