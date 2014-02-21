@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="212.203.0.138"
+ claimedauthor="KingOfThings"
+ url="http://geek.benstein.nl"
+ subject="2factor auth"
+ date="2014-02-21T10:43:30Z"
+ content="""
+You can also use 2facthor auth with ( for example ) google authenticator:
+
+http://www.howtogeek.com/121650/how-to-secure-ssh-with-google-authenticators-two-factor-authentication/
+"""]]
