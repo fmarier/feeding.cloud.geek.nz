@@ -1,0 +1,89 @@
+[[!meta title="Using vnc to do remote tech support over high-latency networks"]]
+[[!meta date="2014-03-02T13:00:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If you ever find yourself doing a bit of technical support for relatives
+over the phone, there's nothing like actually seeing what they are doing on
+their computer. One of the best tools for such remote desktop sharing is
+[vnc](https://en.wikipedia.org/wiki/Vnc).
+
+Here's the best setup I have come up with so far. If you have any
+suggestions, please leave a comment!
+
+# Basic vnc configuration
+
+First off, you need two things: a vnc server on your relative's 
+machine and a vnc client on yours. Thanks to vnc being
+an [open protocol](https://en.wikipedia.org/wiki/RFB_protocol), there are
+many choices for both.
+
+I eventually settled on [x11vnc](http://www.karlrunge.com/x11vnc/) for the
+server and [ssvnc](http://www.karlrunge.com/x11vnc/ssvnc.html) for the
+client. They are both available in the standard Debian and Ubuntu repositories.
+
+Since I have ssh access on the machine that needs to run the server, I
+simply login and then run `x11vnc`. Here's what `~/.x11vnrc` contains:
+
+    noxdamage
+
+That option
+[appears to be necessary](http://www.karlrunge.com/x11vnc/faq.html#faq-beryl)
+when the desktop to share is running gnome-shell / compiz.
+
+Afterwards, I start the client on my laptop with the following command:
+
+    ssvncviewer -encodings zrle -scale 1280x775 localhost
+
+The scaling factor is simply the resolution of the client minus any window
+decorations.
+
+# ssh configuration
+
+As you can see above, the client is not connecting directly to the
+server. Instead it's connecting to its own vnc port
+(`localhost:5900`). That's because I'm tunelling the traffic through the ssh
+connection in order to avoid relying on vnc extensions for authentication
+and encryption.
+
+Here's what the client's `~/.ssh/config` needs for that simple use case:
+
+    Host server.example.com:
+      LocalForward 5900 127.0.0.1:5900
+
+If the remote host (which has an internal IP address of `192.168.1.2` in
+this example) is not connected directly to the outside world and instead
+goes through a gateway, then your `~/.ssh/config` will look like this:
+
+    Host gateway.example.com:
+      ForwardAgent yes
+      LocalForward 5900 192.168.1.2:5900
+    
+    Host server.example.com:
+      ProxyCommand ssh -q -a gateway.example.com nc -q0 %h 22
+
+and the remote host will need to open up a port on its firewall for the
+gateway (internal IP address of `192.168.1.1` here):
+
+    iptables -A INPUT -p tcp --dport 5900 -s 192.168.1.1/32 -j ACCEPT
+
+# Optimizing for high-latency networks
+
+Since I do most of my tech support over a [very high latency network](https://en.wikipedia.org/wiki/Southern_Cross_Cable), I
+tweaked the default vnc settings to reduce the amount of network traffic.
+
+I added this to `~/.x11vncrc` on the vnc server:
+
+    ncache 10
+    ncache_cr
+
+and changed the client command line to this:
+
+    ssvncviewer -compresslevel 9 -quality 3 -bgr233 -encodings zrle -use64 -scale 1280x775 -ycrop 1024 localhost
+
+This decreases image quality (and required bandwidth) and enables
+[client-side caching](http://www.karlrunge.com/x11vnc/faq.html#faq-client-caching).
+
+The magic `1024` number is simply the full vertical resolution of the remote
+machine, which sports a vintage 1280x1024 LCD monitor.
+
+[[!tag sysadmin]] [[!tag debian]] [[!tag nzoss]] [[!tag vnc]]
