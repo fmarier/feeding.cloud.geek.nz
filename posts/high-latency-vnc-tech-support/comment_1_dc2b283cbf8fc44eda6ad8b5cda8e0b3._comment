@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ ip="50.43.14.201"
+ subject="noxdamage"
+ date="2014-03-02T05:09:55Z"
+ content="""
+You should only need noxdamage if you have an nVidia card; it works around a bug in the nVidia driver.
+"""]]
