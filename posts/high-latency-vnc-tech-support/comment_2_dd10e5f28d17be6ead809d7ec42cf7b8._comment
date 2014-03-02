@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="93.104.52.88"
+ claimedauthor="madduck"
+ subject="ProxyCommand"
+ date="2014-03-02T07:35:59Z"
+ content="""
+Instead of ssvnc, use sshvnc to connect to 'server.example.org:X', which will set up the SSH tunnel itself to port 5900+X, e.g. server.example.org:1 for port 5901.
+"""]]
