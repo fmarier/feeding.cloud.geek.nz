@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="2001:4dd0:ff00:86c6:e1be:67a3:8736:347b"
+ claimedauthor="Florian"
+ subject="gitso"
+ date="2014-03-02T23:30:31Z"
+ content="""
+Probably not for needs as special as yours, but the most simple and easy-to-use tool I found to give support is gitso (now packaged for Debian), which makes it trivially easy for someone less tech-savvy to initiate a reverse vnc connection to a helper.
+"""]]
