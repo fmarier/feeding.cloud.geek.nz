@@ -91,9 +91,15 @@ and the following setting in the "Advanced" tab:
 From this, I was able to connect to the server without clicking through any
 certificate warnings.
 
+# Testing
+
 If you want to make sure that XMPP federation works, add your GMail address
 as a buddy to the account and send yourself a test message.
 
 In this example, the XMPP address I give to my friends is `me@fmarier.org`.
+
+Finally, to ensure that your TLS settings are reasonable, use this
+[automated tool](https://xmpp.net/) to test both the client-to-server (c2s)
+and the server-to-server (s2s) flows.
 
 [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]]
