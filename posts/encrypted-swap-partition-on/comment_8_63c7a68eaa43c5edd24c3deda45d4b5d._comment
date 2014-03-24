@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="88.9.111.36"
+ claimedauthor="FM"
+ subject="Thanks"
+ date="2014-03-20T18:30:18Z"
+ content="""
+After several research, this tutorial was the one that worked for me in the Debian Wheezy installation. I think that something that I did not see in other tutorials was adding the option \"luks\" in the crypttab file, and this is why cswap mounting used to fail after a reboot.
+"""]]
