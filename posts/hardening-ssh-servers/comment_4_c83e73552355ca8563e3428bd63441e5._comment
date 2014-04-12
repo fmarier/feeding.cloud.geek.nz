@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="46.239.117.180"
+ claimedauthor="guilhem"
+ subject="ProxyCommand with ProxyUseFdpass=yes"
+ date="2014-04-12T18:23:21Z"
+ content="""
+ProxyUseFdpass is a fairly new addition to OpenSSH (6.5) hence not yet very used and documented AFAICT. It's unclear to me what should the ProxyCommand do before exiting.  Care to explain how to replace the (dummy) \"ProxyCommand nc %h %p\" with something that doesn't create a network socket and exits immediately?
+"""]]
