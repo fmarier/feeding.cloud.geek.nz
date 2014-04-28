@@ -1,0 +1,67 @@
+[[!meta title="Settings v. Prefs in Gaia Development"]]
+[[!meta date="2014-04-28T20:30:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[Jed](http://jedparsons.com/) and I got confused the other day when trying to add hidden prefs for a
+small Firefox OS application. We wanted to make a few advanced options
+configurable via preferences (like those found in `about:config` in Firefox)
+but couldn't figure out why it wasn't possible to access them from within
+our [certified](https://developer.mozilla.org/Apps/Build/App_permissions#Certified_app_permissions) application.
+
+The answer is that **settings** and **prefs** are entirely different things
+in FxOS land.
+
+# Preferences
+
+This is how you set prefs in [Gaia](https://developer.mozilla.org/Firefox_OS/Platform/Gaia):
+
+    pref("devtools.debugger.forbid-certified-apps", false);
+    pref("dom.inter-app-communication-api.enabled", true);
+
+from `build/config/custom-prefs.js`.
+
+These will be used by the [Gecko](https://developer.mozilla.org/docs/Mozilla/Gecko) layer like this:
+
+    if (!Preferences::GetBool("dom.inter-app-communication-api.enabled", false)) {
+      return false;
+    }
+
+from within
+[C++ code](https://mxr.mozilla.org/mozilla-central/source/dom/apps/src/InterAppComm.cpp#19),
+and like this:
+
+    let restrictPrivileges = Services.prefs.getBoolPref("devtools.debugger.forbid-certified-apps");
+
+from
+[JavaScript code](https://mxr.mozilla.org/mozilla-central/source/b2g/chrome/content/shell.js#1128).
+
+Preferences can be strings, integers or booleans.
+
+# Settings
+
+Settings on the other hand are
+[JSON objects](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON#JavaScript_Object_Notation)
+which can be set like this:
+
+    "alarm.enabled": false,
+
+in `build/config/common-settings.json` and can then be read [like this](https://mxr.mozilla.org/gaia/source/apps/clock/test/marionette/lib/alarm_actions.js#189):
+
+    var req = navigator.mozSettings.createLock().get('alarm.enabled');
+    req.onsuccess = function() {
+      marionetteScriptFinished(req.result['alarm.enabled']);
+    };
+
+as long as you have the following in your [application manifest](https://developer.mozilla.org/en-US/Apps/Build/Manifest):
+
+    "permissions": {
+      ...
+      "settings":{ "access": "readwrite" },
+      ...
+    }
+
+In other words, if you set something in `build/config/custom-prefs.js`,
+don't expect to be able to read it using `navigator.mozSettings` or the
+[SettingsHelper](https://mxr.mozilla.org/gaia/source/shared/js/settings_helper.js)!
+
+[[!tag mozilla]] [[!tag gecko]] [[!tag gaia]]
