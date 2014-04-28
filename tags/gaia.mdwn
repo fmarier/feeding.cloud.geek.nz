@@ -1,0 +1,4 @@
+[[!meta title="pages tagged gaia"]]
+
+[[!inline pages="tagged(gaia)" actions="no" archive="yes"
+feedshow=10]]
