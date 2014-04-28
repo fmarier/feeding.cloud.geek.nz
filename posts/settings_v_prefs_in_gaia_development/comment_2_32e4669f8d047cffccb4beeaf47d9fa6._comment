@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="89.202.203.51"
+ claimedauthor="Anthony Ricaud"
+ url="http://ricaud.me"
+ subject="comment 2"
+ date="2014-04-28T12:45:49Z"
+ content="""
+For the permission, if you only need to read, you can use   \"settings\":{ \"access\": \"readonly\" }.
+
+You can also take a look at [SettingsListener.observe][1] which is pretty convenient.
+
+[1]: https://github.com/mozilla-b2g/gaia/blob/f846abf4343bbbb8649497dc96a88188f5de1ce3/shared/js/settings_listener.js
+"""]]
