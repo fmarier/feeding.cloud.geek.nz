@@ -2,7 +2,7 @@
 [[!meta date="2011-11-15T04:00:00.001+13:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-**The TLS world is moving fast and this post is now out of date! You might want to look at these A-grade [Apache](https://www.insecure.ws/2013/10/11/ssltls-configuration-for-apache-mod_ssl/) and [nginx](https://jve.linuxwall.info/blog/index.php?post/2013/10/12/A-grade-SSL/TLS-with-Nginx-and-StartSSL) configurations instead.**
+**The TLS world is moving fast and this post is now out of date! You might want to look at these [SSL configuration recommended by Mozilla](https://wiki.mozilla.org/Security/Server_Side_TLS)**
 
 After recently reading a number of [SSL/TLS](https://secure.wikimedia.org/wikipedia/en/wiki/Transport_Layer_Security)-related articles, I decided to experiment and look for the ideal OpenSSL configuration for [Apache](http://httpd.apache.org/) (using [mod_ssl](https://httpd.apache.org/docs/2.2/mod/mod_ssl.html) since I haven't tried [mod_gnutls](http://modgnutls.sourceforge.net/) yet) and [nginx](http://www.nginx.org/).  
   
