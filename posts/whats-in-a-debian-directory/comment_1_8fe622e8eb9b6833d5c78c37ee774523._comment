@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ ip="109.214.252.191"
+ claimedauthor="Simon"
+ subject="watch file"
+ date="2014-05-04T09:40:31Z"
+ content="""
+The watch file is also very useful when it comes to update the debian package:
+
+    git-import-orig --uscan
+
+will automatically download the last upstream version and merge it into the git repo used for the packaging, using apropriate tags.
+
+<a href=\"https://www.debian.org/doc/devel-manuals#packaging-tutorial\">The packaging tutorial</a> written by Lucas is also very 'practice' oriented, and available in several languages:
+
+"""]]
