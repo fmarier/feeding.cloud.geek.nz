@@ -403,7 +403,7 @@ Another common example is the use of a `-doc` package to separate the
 documentation from the rest of a package so that it doesn't need to be
 installed on production servers for example.
 
-# debian/upstream/signing-key.asc
+## debian/upstream/signing-key.asc
 
     -----BEGIN PGP PUBLIC KEY BLOCK-----
     Version: GnuPG v1
@@ -505,7 +505,7 @@ basically says is that the patches found in `debian/patches/` will be
 applied to the upstream source using the
 [quilt](https://wiki.debian.org/UsingQuilt) tool at build time.
 
-# debian/fcheck.postrm
+## debian/fcheck.postrm
 
     #!/bin/sh
     # postrm script for fcheck
@@ -565,13 +565,13 @@ fcheck`). Looking at the case statement above, it doesn't do anything extra in t
 `remove` case, but it deletes a few files and directories when called with
 the `purge` argument.
 
-# debian/README.Debian
+## debian/README.Debian
 
 This optional README file contains [Debian-specific instructions](http://anonscm.debian.org/gitweb/?p=collab-maint/fcheck.git;a=blob;f=debian/README.Debian;h=7d9045f684f7b68aef08d50e44e1737372e2bca2;hb=f6e0a26c4bfac966dd78ab4342db6a2e7f682d16) that might
 be useful to users. It supplements the [upstream README](http://anonscm.debian.org/gitweb/?p=collab-maint/fcheck.git;a=blob;f=README;h=15923ff948a4fabedcd13891c3b401a75279506f;hb=f6e0a26c4bfac966dd78ab4342db6a2e7f682d16) which is
 often more generic and cannot assume a particular system configuration.
 
-# debian/rules
+## debian/rules
 
     #!/usr/bin/make -f
     # -*- makefile -*-
