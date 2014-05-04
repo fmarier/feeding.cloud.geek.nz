@@ -1,0 +1,675 @@
+[[!meta title="What's in a debian/ directory?"]]
+[[!meta date="2014-05-04T14:40:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If you're looking to get started at packaging free software for
+[Debian](http://www.debian.org), you should start with the excellent
+[New Maintainers' Guide](https://www.debian.org/doc/manuals/maint-guide/) or
+the
+[Introduction to Debian Packaging](https://wiki.debian.org/IntroDebianPackaging)
+on the Debian wiki.
+
+Once you know the basics, or if you prefer to learn by example, you may be
+interested in the full walkthrough which follows. We will look at the
+contents of three simple packages.
+
+# node-libravatar
+
+This [package](https://packages.debian.org/source/sid/node-libravatar) is a
+[node.js](http://nodejs.org) library for the
+[Libravatar](https://www.libravatar.org) service.
+
+[Version 2.0.0-3](http://snapshot.debian.org/package/node-libravatar/2.0.0-3/)
+of that package contains the following files in its `debian/` directory:
+
+* `changelog`
+* `compat`
+* `control`
+* `copyright`
+* `docs`
+* `node-libravatar.install`
+* `rules`
+* `source/format`
+* `watch`
+
+## debian/control
+
+    Source: node-libravatar
+    Priority: extra
+    Maintainer: Francois Marier <francois@debian.org>
+    Build-Depends: debhelper (>= 9)
+    Standards-Version: 3.9.4
+    Section: web
+    Homepage: https://github.com/fmarier/node-libravatar
+    Vcs-Git: git://git.debian.org/collab-maint/node-libravatar.git
+    Vcs-Browser: http://git.debian.org/?p=collab-maint/node-libravatar.git;a=summary
+    
+    Package: node-libravatar
+    Architecture: all
+    Depends: ${shlibs:Depends}, ${misc:Depends}, nodejs
+    Description: libravatar library for NodeJS
+     This library allows web application authors to make use of the free Libravatar
+     service (https://www.libravatar.org). This service hosts avatar images for
+     users and allows other sites to look them up using email addresses.
+     .
+     node-libravatar includes full support for federated avatar servers.
+
+This is probably the most important file since it contains the bulk of the
+metadata about this package.
+
+`Maintainer` is a required field listing the maintainer of that package,
+which can be a person or a team. It only contains a single value though, any
+co-maintainers will be listed under the optional `Uploaders` field.
+
+`Build-Depends` lists the packages which are needed to **build** the
+package (e.g. a compiler), as opposed to those which are needed to
+**install** the binary package (e.g. a library it uses).
+
+`Standards-Version` refers to the version of the
+[Debian Policy](https://www.debian.org/doc/debian-policy/) that this package
+complies with.
+
+The `Homepage` field refers to the **upstream** homepage, whereas the
+`Vcs-*` fields point to the repository where the **packaging** is stored. If
+you take a look at the
+[node-libravatar packaging repository](http://anonscm.debian.org/gitweb/?p=collab-maint/node-libravatar.git)
+you will see that it contains three branches:
+
+* `upstream` is the source as it was in the tarball downloaded from
+  upstream.
+* `master` is the upstream branch along with all of the Debian
+  customizations.
+* `pristine-tar` is unrelated to the other two branches and is used by the
+  [pristine-tar](https://wiki.debian.org/PackagingWithGit#pristine-tar) tool
+  to reconstitute the original upstream tarball as needed.
+
+After these fields comes a new section which starts with a `Package`
+field. This is the definition of a **binary package**, not to be confused
+with the `Source` field at the top of this file, which refers to the name of
+the **source package**. In this particular example, they are both the same
+and there is only one of each, however this is not always the case, as we'll
+see later.
+
+Inside that binary package definition, lives the `Architecture` field which
+is normally one of these two:
+
+* `all` for a binary package that will work on all architectures but only
+  needs to be **built once**
+* `any` for a binary package that will work everywhere but that will need to
+  be **built separately for each architecture**
+
+Finally, the last field worth pointing out is the `Depends` field which
+lists all of the runtime dependencies that the binary package has. This is
+what will be pulled in by apt-get when you `apt-get install
+node-libravatar`. The two variables will be substituted later by debhelper.
+
+## debian/changelog
+
+    node-libravatar (2.0.0-3) unstable; urgency=low
+    
+      * debian/watch: poll github directly
+      * Bump Standards-Version up to 3.9.4
+    
+     -- Francois Marier <francois@debian.org>  Mon, 20 May 2013 12:07:49 +1200
+    
+    node-libravatar (2.0.0-2) unstable; urgency=low
+    
+      * More precise license tag and upstream contact in debian/copyright
+    
+     -- Francois Marier <francois@debian.org>  Tue, 29 May 2012 22:51:03 +1200
+    
+    node-libravatar (2.0.0-1) unstable; urgency=low
+    
+      * New upstream release
+        - new non-backward-compatible API
+    
+     -- Francois Marier <francois@debian.org>  Mon, 07 May 2012 14:54:19 +1200
+    
+    node-libravatar (1.1.1-1) unstable; urgency=low
+    
+      * Initial release (Closes: #661771)
+    
+     -- Francois Marier <francois@debian.org>  Fri, 02 Mar 2012 15:29:57 +1300
+
+This may seem at first like a mundane file, but it is very important since
+it is the canonical source of the package version (`2.0.0-3` in this
+case). This is the only place where you need to bump the package version
+when uploading a new package to the Debian archive.
+
+The first line also includes the
+[distribution](https://www.debian.org/doc/manuals/developers-reference/pkgs.html#distribution)
+where the package will be uploaded. It is usually one of these values:
+
+* `unstable` for the vast majority of uploads
+* `stable` for uploads that have been [approved by the release maintainers](https://www.debian.org/doc/manuals/developers-reference/pkgs.html#upload-stable)
+  and fix serious bugs in the stable version of Debian
+* `stable-security` for security fixes to the stable version of Debian that
+  cannot wait until the next stable point release and have been
+  [approved by the security team](https://www.debian.org/doc/manuals/developers-reference/pkgs.html#bug-security)
+
+Packages uploaded to unstable will migrate automatically to [testing](https://www.debian.org/devel/testing)
+provided that a few conditions are met (e.g. no release-critical bugs were
+introduced). The length of time before that migration is influenced by the
+`urgency` field (low, medium or high) in the changelog entry.
+
+Another thing worth noting is that the first upload normally needs to close
+an [ITP](https://wiki.debian.org/ITP) (Intent to Package) bug.
+
+## debian/rules
+
+    #!/usr/bin/make -f
+    # -*- makefile -*-
+    
+    %:
+    	dh $@ 
+    
+    override_dh_auto_test:
+
+As can be gathered from the first two lines of this file, this is a
+[Makefile](https://www.gnu.org/software/make/manual/make.html#Introduction). This
+is what controls how the package is built.
+
+There's not much to see and that's because most of its content is
+automatically added by [debhelper](http://joeyh.name/code/debhelper/). So
+let's look at it in action by building the package:
+
+    $ git buildpackage -us -uc
+
+and then looking at parts of the build log (`../node-libravatar_2.0.0-3_amd64.build`):
+
+     fakeroot debian/rules clean
+    dh clean 
+       dh_testdir
+       dh_auto_clean
+       dh_clean
+
+One of the first things we see is the `debian/rules` file being run with the
+`clean` target. To find out what that does, have a look at the
+[dh\_auto\_clean](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_auto_clean&apropos=0&sektion=0&manpath=Debian+unstable+sid)
+which states that it will attempt to delete build residues and run something
+like `make clean` using the upstream Makefile.
+
+     debian/rules build
+    dh build 
+       dh_testdir
+       dh_auto_configure
+       dh_auto_build
+
+Next we see the `build` target being invoked and looking at
+[dh\_auto\_configure](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_auto_configure&apropos=0&sektion=0&manpath=Debian+unstable+sid)
+we see that this will essentially run `./configure` and its
+equivalents.
+
+The
+[dh\_auto\_build](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_auto_build&apropos=0&sektion=0&manpath=Debian+unstable+sid)
+helper script then takes care of running `make` (or equivalent) on the
+upstream code.
+
+This should be familiar to anybody who has ever built a piece of free
+software from scratch and has encountered the usual method for building
+from source:
+
+    ./configure
+    make
+    make install
+
+Finally, we get to actually build the `.deb`:
+
+     fakeroot debian/rules binary
+    dh binary 
+       dh_testroot
+       dh_prep
+       dh_installdirs
+       dh_auto_install
+       dh_install
+    ...
+       dh_md5sums
+       dh_builddeb
+    dpkg-deb: building package `node-libravatar' in `../node-libravatar_2.0.0-3_all.deb'.
+
+Here we see a number of helpers, including
+[dh\_auto\_install](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_auto_install&apropos=0&sektion=0&manpath=Debian+unstable+sid)
+which takes care of running `make install`.
+
+Going back to the `debian/rules`, we notice that there is manually defined
+target at the bottom of the file:
+
+    override_dh_auto_test:
+
+which essentially disables
+[dh\_auto\_test](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_auto_test&apropos=0&sektion=0&manpath=Debian+unstable+sid)
+by replacing it with an empty set of commands.
+
+The reason for this becomes clear when we take a look at the `test` target
+of the upstream Makefile and the
+[dependencies](https://github.com/fmarier/node-libravatar/blob/9e38736063f246935f3e4f0e6058199d6f63da42/package.json#L18)
+it has: [tap](https://www.npmjs.org/package/tap), a node.js library that is
+[not yet available in Debian](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=661779).
+
+In other words, we can't run the test suite on the build machines so we need
+to disable it here.
+
+## debian/compat
+
+    9
+
+This file simply specifies the version of debhelper that is required by the
+various helpers used in `debian/rules`. Version 9 is the latest at the moment.
+
+## debian/copyright
+
+    Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+    Upstream-Name: node-libravatar
+    Upstream-Contact: Francois Marier <francois@libravatar.org>
+    Source: https://github.com/fmarier/node-libravatar
+    
+    Files: *
+    Copyright: 2011 Francois Marier <francois@libravatar.org>
+    License: Expat
+    
+    Files: debian/*
+    Copyright: 2012 Francois Marier <francois@debian.org>
+    License: Expat
+    
+    License: Expat
+     Permission is hereby granted, free of charge, to any person obtaining a copy of this
+     software and associated documentation files (the "Software"), to deal in the Software
+     without restriction, including without limitation the rights to use, copy, modify,
+     merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+     permit persons to whom the Software is furnished to do so, subject to the following
+     conditions:
+     .
+     The above copyright notice and this permission notice shall be included in all copies
+     or substantial portions of the Software.
+     .
+     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+     INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+     PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+     CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+     OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+This [machine-readable](http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/) file lists all of the different licenses encountered in this
+package.
+
+It requires that the maintainer audits the upstream code for any copyright
+statements that might be present in addition to the license of the package
+as a whole.
+
+## debian/docs
+
+    README.md
+
+This file contains a list of upstream files that will be copied into the
+`/usr/share/doc/node-libravatar/` directory by [dh\_installdocs](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_installdocs&apropos=0&sektion=0&manpath=Debian+unstable+sid).
+
+## debian/node-libravatar.install
+
+    lib/*    usr/lib/nodejs/
+
+The `install` file is used by
+[dh\_install](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_install&apropos=0&sektion=0&manpath=Debian+unstable+sid)
+to supplement the work done by `dh_auto_install` which, as we have seen
+earlier, essentially just runs `make install` on the upstream Makefile.
+
+Looking at that
+[upstream Makefile](https://github.com/fmarier/node-libravatar/blob/9e38736063f246935f3e4f0e6058199d6f63da42/Makefile),
+it becomes clear that the files will need to be installed manually by the
+Debian package since that Makefile doesn't have an `install` target.
+
+## debian/watch
+
+    version=3
+    https://github.com/fmarier/node-libravatar/tags /fmarier/node-libravatar/archive/node-libravatar-([0-9.]+)\.tar\.gz
+
+This is the file that allows Debian tools like the
+[Package Tracking System](http://packages.qa.debian.org/n/node-libravatar.html)
+to automatically detect that a new upstream version is available.
+
+What it does is simply visit the
+upstream page which contains all of the
+[release tarballs](https://github.com/fmarier/node-libravatar/tags) and look
+for links which have an
+[href](https://developer.mozilla.org/docs/Web/HTML/Element/A#attr-href)
+matching the above regular expression.
+
+Running `uscan --report --verbose` will show us all of the tarballs that can
+be automatically discovered using this watch file:
+
+    -- Scanning for watchfiles in .
+    -- Found watchfile in ./debian
+    -- In debian/watch, processing watchfile line:
+       https://github.com/fmarier/node-libravatar/tags /fmarier/node-libravatar/archive/node-libravatar-([0-9.]+)\.tar\.gz
+    -- Found the following matching hrefs:
+         /fmarier/node-libravatar/archive/node-libravatar-2.0.0.tar.gz
+         /fmarier/node-libravatar/archive/node-libravatar-1.1.1.tar.gz
+         /fmarier/node-libravatar/archive/node-libravatar-1.1.0.tar.gz
+         /fmarier/node-libravatar/archive/node-libravatar-1.0.1.tar.gz
+         /fmarier/node-libravatar/archive/node-libravatar-1.0.0.tar.gz
+    Newest version on remote site is 2.0.0, local version is 2.0.0
+     => Package is up to date
+    -- Scan finished
+
+# pylibravatar
+
+This second [package](https://packages.debian.org/source/sid/pylibravatar) is the
+equivalent [Python](http://python.org) library for the Libravatar service.
+
+[Version 1.6-2](http://snapshot.debian.org/package/pylibravatar/1.6-2/)
+of that package contains similar files in its `debian/` directory, but let's
+look at two in particular:
+
+* `control`
+* `upstream/signing-key.asc`
+
+## debian/control
+
+    Source: pylibravatar
+    Section: python
+    Priority: optional
+    Maintainer: Francois Marier <francois@debian.org>
+    Build-Depends: debhelper (>= 9), python-all, python3-all
+    Standards-Version: 3.9.5
+    Homepage: https://launchpad.net/pyLibravatar
+    ...
+
+    Package: python-libravatar
+    Architecture: all
+    Depends: ${misc:Depends}, ${python:Depends}, python-dns, python
+    Description: Libravatar module for Python 2
+     Module to make use of the federated Libravatar.org avatar hosting service
+     from within Python applications.
+    ...
+    
+    Package: python3-libravatar
+    Architecture: all
+    Depends: ${misc:Depends}, ${python3:Depends}, python3-dns, python3
+    Description: Libravatar module for Python 3
+     Module to make use of the federated Libravatar.org avatar hosting service
+     from within Python applications.
+    ...
+
+Here is an example of a source package (`pylibravatar`) which builds two
+separate binary packages: `python-libravatar` and `python3-libravatar`.
+
+This highlights the fact that a given upstream source can be split into
+several binary packages in the archive when it makes sense. In this case,
+there is no point in Python 2 applications pulling in the Python 3 files, so
+the two separate packages make sense.
+
+Another common example is the use of a `-doc` package to separate the
+documentation from the rest of a package so that it doesn't need to be
+installed on production servers for example.
+
+# debian/upstream/signing-key.asc
+
+    -----BEGIN PGP PUBLIC KEY BLOCK-----
+    Version: GnuPG v1
+    
+    mQINBEpQYz4BEAC7REQD1za69RUnkt6nRCFhSJmmoeJc+yEiWTKc9GOIMAwJDme1
+    +CMYgVn4Xzf1VQYwD/lE+mfWgyeMomLQjDM1mxx/LOM2a1WWPOk9+PvQwKfRJy92
+    ...
+    UxDtZm/4yUmU6KvHvOGiDCMuIiB+MqhqJJ5wf80wXhzu8nmC+fyGt6nvu0ggMle8
+    sAMgXt/aQUTZE5zNCQ==
+    =RkTO
+    -----END PGP PUBLIC KEY BLOCK-----
+
+This is simply the
+[OpenPGP key](http://pgp.net.nz:11371/pks/lookup?op=get&search=0x16281F2E007C98D1)
+that the upstream developer uses to sign release tarballs.
+
+Since PGP signatures are available on the upstream
+[download page](https://pypi.python.org/pypi/pyLibravatar), it's possible
+to instruct
+[uscan](http://manpages.debian.org/cgi-bin/man.cgi?query=uscan&apropos=0&sektion=0&manpath=Debian+unstable+sid)
+to check signatures before downloading tarballs.
+
+The way to do that is to use the `pgpsigurlmange` option in `debian/watch`:
+
+    version=3
+    opts=pgpsigurlmangle=s/$/.asc/ https://pypi.python.org/pypi/pyLibravatar https://pypi.python.org/packages/source/p/pyLibravatar/pyLibravatar-(.*)\.tar\.gz
+
+which is simply a regular expression replacement string which takes the
+tarball URL and converts it to the URL of the matching PGP signature.
+
+# fcheck
+
+The last [package](https://packages.debian.org/source/sid/fcheck) we will look at
+is a file integrity checker. It essentially goes through all of the files in
+`/usr/bin/` and `/usr/lib/` and stores a hash of them in its database. When
+one of these files changes, you get an email.
+
+In particular, we will look at the following files in the `debian/` directory of
+[version 2.7.59-18](http://snapshot.debian.org/package/fcheck/2.7.59-18/):
+
+* `dirs`
+* `fcheck.cron.d`
+* `fcheck.postrm`
+* `fcheck.postinst`
+* `patches/`
+* `README.Debian`
+* `rules`
+* `source/format`
+
+## debian/patches
+
+This directory contains ten patches as well as a file called `series` which
+lists the patches that should be applied to the upstream source and in which
+order. Should you need to temporarily disable a patch, simply remove it from
+this file and it will no longer be applied at build time.
+
+Let's have a look at `patches/04_cfg_sha256.patch`:
+
+    Description: Switch to sha256 hash algorithm
+    Forwarded: not needed
+    Author: Francois Marier <francois@debian.org>
+    Last-Update: 2009-03-15
+    
+    --- a/fcheck.cfg
+    +++ b/fcheck.cfg
+    @@ -149,8 +149,7 @@ TimeZone        = EST5EDT
+     #$Signature      = /usr/bin/sum
+     #$Signature      = /usr/bin/cksum
+     #$Signature      = /usr/bin/md5sum
+    -$Signature      = /bin/cksum
+    -
+    +$Signature      = /usr/bin/sha256sum
+     
+     
+     # Include an optional configuration file.
+
+This is a very simple patch which changes the default configuration of
+fcheck to promote the use of a stronger hash function. At the top of the
+file is a bunch of metadata in the
+[DEP-3 format](http://dep.debian.net/deps/dep3/).
+
+Why does this package contain so many customizations to the upstream code
+when Debian's policy is to push fixes upstream and work towards reduce the
+delta between upstream and Debian's code? The answer can be found in
+`debian/control`:
+
+    Homepage: http://web.archive.org/web/20050415074059/www.geocities.com/fcheck2000/
+
+This package no longer has an upstream maintainer and its original source is
+gone. In other words, the Debian package is where all of the new bug fixes
+get done.
+
+## debian/source/format
+
+    3.0 (quilt)
+
+This file contains what is called the source package format. What it
+basically says is that the patches found in `debian/patches/` will be
+applied to the upstream source using the
+[quilt](https://wiki.debian.org/UsingQuilt) tool at build time.
+
+# debian/fcheck.postrm
+
+    #!/bin/sh
+    # postrm script for fcheck
+    #
+    # see: dh_installdeb(1)
+    
+    set -e
+    
+    # summary of how this script can be called:
+    #        * <postrm> `remove'
+    #        * <postrm> `purge'
+    #        * <old-postrm> `upgrade' <new-version>
+    #        * <new-postrm> `failed-upgrade' <old-version>
+    #        * <new-postrm> `abort-install'
+    #        * <new-postrm> `abort-install' <old-version>
+    #        * <new-postrm> `abort-upgrade' <old-version>
+    #        * <disappearer's-postrm> `disappear' <overwriter>
+    #          <overwriter-version>
+    # for details, see http://www.debian.org/doc/debian-policy/ or
+    # the debian-policy package
+    
+    
+    case "$1" in
+        remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+        ;;
+    
+        purge)
+          if [ -e /var/lib/fcheck/fcheck.dbf ]; then
+            echo "Purging old database file ..."
+            rm -f /var/lib/fcheck/fcheck.dbf
+          fi
+          rm -rf /var/lib/fcheck
+          rm -rf /var/log/fcheck
+          rm -rf /etc/fcheck
+        ;;
+    
+        *)
+            echo "postrm called with unknown argument \`$1'" >&2
+            exit 1
+        ;;
+    esac
+    
+    # dh_installdeb will replace this with shell code automatically
+    # generated by other debhelper scripts.
+    
+    #DEBHELPER#
+    
+    exit 0
+
+This script is one of the many possible
+[maintainer scripts](https://wiki.debian.org/MaintainerScripts) that a
+package can provide if needed.
+
+This particular one, as the name suggests, will be run after the package is
+removed (`apt-get remove fcheck`) or purged (`apt-get remove --purge
+fcheck`). Looking at the case statement above, it doesn't do anything extra in the
+`remove` case, but it deletes a few files and directories when called with
+the `purge` argument.
+
+# debian/README.Debian
+
+This optional README file contains [Debian-specific instructions](http://anonscm.debian.org/gitweb/?p=collab-maint/fcheck.git;a=blob;f=debian/README.Debian;h=7d9045f684f7b68aef08d50e44e1737372e2bca2;hb=f6e0a26c4bfac966dd78ab4342db6a2e7f682d16) that might
+be useful to users. It supplements the [upstream README](http://anonscm.debian.org/gitweb/?p=collab-maint/fcheck.git;a=blob;f=README;h=15923ff948a4fabedcd13891c3b401a75279506f;hb=f6e0a26c4bfac966dd78ab4342db6a2e7f682d16) which is
+often more generic and cannot assume a particular system configuration.
+
+# debian/rules
+
+    #!/usr/bin/make -f
+    # -*- makefile -*-
+    # Sample debian/rules that uses debhelper.
+    # This file was originally written by Joey Hess and Craig Small.
+    # As a special exception, when this file is copied by dh-make into a
+    # dh-make output file, you may use that output file without restriction.
+    # This special exception was added by Craig Small in version 0.37 of dh-make.
+    
+    # Uncomment this to turn on verbose mode.
+    #export DH_VERBOSE=1
+    
+    build-arch:
+    build-indep:
+    build: build-stamp
+    
+    build-stamp:
+    	dh_testdir
+    	pod2man --section=8 $(CURDIR)/debian/fcheck.pod > $(CURDIR)/fcheck.8
+    	touch build-stamp
+    
+    clean:
+    	dh_testdir
+    	dh_testroot
+    	rm -f build-stamp 
+    	rm -f $(CURDIR)/fcheck.8
+    	dh_clean
+    
+    install: build
+    	dh_testdir
+    	dh_testroot
+    	dh_prep
+    	dh_installdirs
+    	cp $(CURDIR)/fcheck $(CURDIR)/debian/fcheck/usr/sbin/fcheck
+    	cp $(CURDIR)/fcheck.cfg $(CURDIR)/debian/fcheck/etc/fcheck/fcheck.cfg
+    
+    # Build architecture-independent files here.
+    binary-arch: build install
+    
+    # Build architecture-independent files here.
+    binary-indep: build install
+    	dh_testdir
+    	dh_testroot
+    	dh_installdocs
+    	dh_installcron
+    	dh_installman fcheck.8
+    	dh_installchangelogs
+    	dh_installexamples
+    	dh_installlogcheck
+    	dh_link
+    	dh_strip
+    	dh_compress
+    	dh_fixperms
+    	dh_installdeb
+    	dh_shlibdeps
+    	dh_gencontrol
+    	dh_md5sums
+    	dh_builddeb
+    
+    binary: binary-indep binary-arch
+    .PHONY: build clean binary-indep binary-arch binary install
+
+This is an example of a old-style `debian/rules` file which you still
+encounter in packages which haven't yet upgraded to the latest version of
+debhelper 9, as can be shown by the contents of `debian/compat`:
+
+    8
+
+It does essentially the same thing that what we've seen in the build log,
+but in a more verbose way.
+
+## debian/dirs
+
+    usr/sbin
+    etc/fcheck
+
+This file contains a list of directories that
+[dh\_installdirs](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_installdirs&apropos=0&sektion=0&manpath=Debian+unstable+sid)
+will create in the **build** directory.
+
+The reason why these directories need to be created is that files are [copied
+into these directories](http://anonscm.debian.org/gitweb/?p=collab-maint/fcheck.git;a=blob;f=debian/rules;h=b2379420d7190e726730c2809bdfcaa94363b1a9;hb=f6e0a26c4bfac966dd78ab4342db6a2e7f682d16#l33)
+in the `install` target of the `debian/rules` file.
+
+Note that this is different from directories which are created at the time
+of **installation** of the package. In that case, the directory
+(e.g. `/var/log/fcheck/`) must be
+[created in the postinst script](http://anonscm.debian.org/gitweb/?p=collab-maint/fcheck.git;a=blob;f=debian/fcheck.postinst;h=75a6dfd731642860eb89e5799d3c8a274d68968d;hb=f6e0a26c4bfac966dd78ab4342db6a2e7f682d16#l26)
+and [removed in the postrm script](http://anonscm.debian.org/gitweb/?p=collab-maint/fcheck.git;a=blob;f=debian/fcheck.postrm;h=74f8607836e145f523b2c80f7a1b63f0bdcb4afd;hb=f6e0a26c4bfac966dd78ab4342db6a2e7f682d16#l32).
+
+## debian/fcheck.cron.d
+
+    #
+    # Regular cron job for the fcheck package
+    #
+    30 */2	* * *	root	test -x /usr/sbin/fcheck && if ! nice ionice -c3 /usr/sbin/fcheck -asxrf /etc/fcheck/fcheck.cfg >/var/run/fcheck.out 2>&1; then mailx -s "ALERT: [fcheck] `hostname --fqdn`" root </var/run/fcheck.out ; /usr/sbin/fcheck -cadsxlf /etc/fcheck/fcheck.cfg ; fi ; rm -f /var/run/fcheck.out
+
+This file is the cronjob which drives the checks performed by this
+package. It will be copied to `/etc/cron.d/fcheck` by [dh\_installcron](http://manpages.debian.org/cgi-bin/man.cgi?query=dh_installcron&apropos=0&sektion=0&manpath=Debian+unstable+sid).
+
+[[!tag debian]] [[!tag packaging]] [[!tag nzoss]]
