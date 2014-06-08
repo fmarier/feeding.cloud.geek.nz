@@ -34,7 +34,8 @@ way to make it fetch articles over Tor is to change the
 [KDE](http://kde.org)-wide proxy server using `systemsettings` and setting a
 manual proxy of `localhost` on port `8008` (i.e. the local instance of
 Polipo). If you don't see the proxy settings in the KDE control panel, make
-sure that the `libkonq-common` and `kpart-webkit` packages are installed.
+sure that the `kde-baseapps-bin`, `libkonq-common` and `kpart-webkit` packages
+are installed.
 
 Similarly, I use [podget](http://podget.sourceforge.net/) to automatically
 fetch podcasts through this cron job in `/etc/cron.d/podget-francois`:
