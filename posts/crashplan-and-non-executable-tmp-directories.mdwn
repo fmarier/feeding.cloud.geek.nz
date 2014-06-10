@@ -1,0 +1,68 @@
+[[!meta title="CrashPlan and non-executable /tmp directories"]]
+[[!meta date="2014-06-10T17:15:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If your computer's `/tmp` is non-executable, you will run into problems with
+[CrashPlan](http://www.code42.com/crashplan/).
+
+For example, the temp directory on my laptop is mounted using this line in
+`/etc/fstab`:
+
+    tmpfs  /tmp  tmpfs  size=1024M,noexec,nosuid,nodev  0  0
+
+This configuration leads to two serious problems with CrashPlan.
+
+# CrashPlan client not starting up
+
+The first one is that while the daemon is running, the client doesn't start
+up and doesn't print anything out to the console.
+
+You have to look in `/usr/local/crashplan/log/ui_error.log` to find the
+following error message:
+
+    Exception in thread "main" java.lang.UnsatisfiedLinkError: Could not load SWT library. Reasons:
+      Can't load library: /tmp/.cpswt/libswt-gtk-4234.so
+      Can't load library: /tmp/.cpswt/libswt-gtk.so
+      no swt-gtk-4234 in java.library.path
+      no swt-gtk in java.library.path
+      /tmp/.cpswt/libswt-gtk-4234.so: /tmp/.cpswt/libswt-gtk-4234.so: failed to map segment from shared object: Operation not permitted
+    
+      at org.eclipse.swt.internal.Library.loadLibrary(Unknown Source)
+      at org.eclipse.swt.internal.Library.loadLibrary(Unknown Source)
+      at org.eclipse.swt.internal.C.<clinit>(Unknown Source)
+      at org.eclipse.swt.internal.Converter.wcsToMbcs(Unknown Source)
+      at org.eclipse.swt.internal.Converter.wcsToMbcs(Unknown Source)
+      at org.eclipse.swt.widgets.Display.<clinit>(Unknown Source)
+      at com.backup42.desktop.CPDesktop.<init>(CPDesktop.java:266)
+      at com.backup42.desktop.CPDesktop.main(CPDesktop.java:200)
+
+To fix this, you must tell the client to use a different directory, one that
+is executable and writable by users who need to use the GUI, by adding
+something like this to the `GUI_JAVA_OPTS` variable of
+`/usr/local/crashplan/bin/run.conf`:
+
+    -Djava.io.tmpdir=/home/username/.crashplan-tmp
+
+# Backup waiting forever
+
+The second problem is that once you're able to start the client, backups are
+[stuck at "waiting for backup"](http://randomwindowstips.wordpress.com/2013/02/25/crashplan-pro-for-linux-stuck-at-waiting-for-backup-or-connecting-to-backup-destination/)
+and you can see the following in `/usr/local/crashplan/log/engine_error.log`:
+
+    Exception in thread "W87903837_ScanWrkr" java.lang.NoClassDefFoundError: Could not initialize class com.code42.jna.inotify.InotifyManager
+      at com.code42.jna.inotify.JNAInotifyFileWatcherDriver.<init>(JNAInotifyFileWatcherDriver.java:21)
+      at com.code42.backup.path.BackupSetsManager.initFileWatcherDriver(BackupSetsManager.java:393)
+      at com.code42.backup.path.BackupSetsManager.startScheduledFileQueue(BackupSetsManager.java:331)
+      at com.code42.backup.path.BackupSetsManager.access$1600(BackupSetsManager.java:66)
+      at com.code42.backup.path.BackupSetsManager$ScanWorker.delay(BackupSetsManager.java:1073)
+      at com.code42.utils.AWorker.run(AWorker.java:158)
+      at java.lang.Thread.run(Thread.java:744)
+
+This time, you must tell the server to use a different directory, one that
+is executable and writable by the CrashPlan engine user (`root` on my
+machine), by adding something like this to the `SRV_JAVA_OPTS` variable of
+`/usr/local/crashplan/bin/run.conf`:
+
+    -Djava.io.tmpdir=/var/crashplan
+
+[[!tag mozilla]] [[!tag backup]]
