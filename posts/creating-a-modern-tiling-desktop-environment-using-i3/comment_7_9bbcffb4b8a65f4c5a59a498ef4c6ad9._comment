@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="https://openid.fmarier.org/"
+ nickname="fmarier"
+ subject="Re: Random comments"
+ date="2014-07-21T23:28:55Z"
+ content="""
+Thanks for your comments Vincent, it's good to hear from someone who seems to know what's going on :)
+
+I've tried your `setxkbmap` line and the toggle doesn't work. I suspect these issues on jessie/sid are the same as what these other users have found on Ubuntu 14.04:
+
+* <http://ubuntuforums.org/showthread.php?t=2232343>
+* <https://stackoverflow.com/questions/24055428/setxkbmap-toggle-doesnt-work>
+
+It would also explain why the toggle doesn't work in the GNOME settings (since it's probably just calling `setxkbmap` for us).
+"""]]
