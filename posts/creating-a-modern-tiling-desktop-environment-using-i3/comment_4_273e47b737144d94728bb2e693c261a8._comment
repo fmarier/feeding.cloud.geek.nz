@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="92.132.127.25"
+ claimedauthor="Wojtek"
+ subject="comment 4"
+ date="2014-07-21T20:58:50Z"
+ content="""
+The ion3 has a fork Notion (http://notion.sourceforge.net/) which not only is actively mantained (and has a fair progress since forking, like new kludges and xrandr/xinerama-no-restart support) but also is properly licensed and is a part of Debian (at least testing, which I'm on). I use it on a daily basis. There's hardly an need for ion-addicts to reinvent the wheel...
+"""]]
