@@ -1,0 +1,120 @@
+[[!meta title="Creating a modern tiling desktop environment using i3"]]
+[[!meta date="2014-07-21T23:03:00.000+12:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Modern desktop environments like [GNOME](http://www.gnome.org) and [KDE](http://kde.org) involving a lot of mousing around and I much prefer using the keyboard where I can. This is why I switched to the [Ion tiling window manager](https://en.wikipedia.org/wiki/Ion_%28window_manager%29) back when I interned at [Net Integration Technologies](https://web.archive.org/web/20080417210959/http://open.nit.ca/wiki) and kept using it until I noticed it had been [removed from Debian](https://packages.qa.debian.org/i/ion3/news/20100408T093905Z.html). After experimenting with [awesome](http://awesome.naquadah.org/) for 2 years and briefly considering [xmonad](http://xmonad.org/) , I finally found a replacement I like in [i3](http://i3wm.org/).
+
+Here is how I customized it and made it play nice with the GNOME and KDE applications I use every day.
+
+# Startup script
+
+As soon as I log into my desktop, my [startup script](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/startup) starts a few programs, including:
+
+* [gnome-settings-daemon](https://packages.debian.org/stable/gnome-settings-daemon): makes GTK applications look nice by applying my preferred theme amongst other things
+* [gnome-keyring-daemon](https://packages.debian.org/stable/gnome-keyring): remembers ssh public keys for the duration of my session
+* [gnome-screensaver](https://packages.debian.org/stable/gnome-screensaver): locks the screen when I'm not around
+* [nm-applet](https://packages.debian.org/stable/network-manager-gnome): handles wifi and VPN connections
+* [git-annex](http://git-annex.branchable.com/): keeps my folders synchronized between machines
+
+Because of [a bug in gnome-settings-daemon](https://ask.fedoraproject.org/en/question/31186/my-mouse-cursor-dissapears-when-using-gnome3/) which makes the mouse cursor disappear as soon as gnome-settings-daemon is started, I had to run the following to disable the offending gnome-settings-daemon plugin:
+
+    dconf write /org/gnome/settings-daemon/plugins/cursor/active false
+
+# Screensaver
+
+In addition, gnome-screensaver didn't automatically lock my screen, so I installed [xautolock](https://packages.debian.org/stable/xautolock) and added it to my startup script:
+
+    xautolock -time 30 -locker "gnome-screensaver-command --lock" &
+
+to lock the screen using gnome-screensaver after 30 minutes of inactivity.
+
+I can also trigger it manually using the following shortcut defined in my `~/.i3/config`:
+
+    bindsym Ctrl+Mod1+l exec xautolock -locknow
+
+# Keyboard shortcuts
+
+While keyboard shortcuts can be configured in GNOME, they don't work within i3, so I added a few more bindings to my `~/.i3/config`:
+
+    # volume control
+    bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ -- '-5%'
+    bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ -- '+5%'
+
+    # brightness control
+    bindsym XF86MonBrightnessDown exec xbacklight -steps 1 -time 0 -dec 5
+    bindsym XF86MonBrightnessUp exec xbacklight -steps 1 -time 0 -inc 5
+
+    # show battery stats
+    bindsym XF86Battery exec gnome-power-statistics
+
+to make volume control, screen brightness and battery status buttons work as expected on my laptop.
+
+These bindings require the following packages:
+
+* [pulseaudio-utils](https://packages.debian.org/stable/pulseaudio-utils)
+* [xbacklight](https://packages.debian.org/stable/xbacklight)
+* [gnome-power-manager](https://packages.debian.org/stable/gnome-power-manager)
+
+# Keyboard layout switcher
+
+Another thing that used to work with GNOME and had to re-create in i3 is the ability to quickly toggle between two keyboard layouts using the keyboard.
+
+To make it work, I wrote [a simple shell script](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/toggle-xkbmap) and assigned a keyboard shortcut to it in `~/.i3/config`:
+
+    bindsym $mod+u exec /home/francois/bin/toggle-xkbmap
+
+# Suspend script
+
+Since I run lots of things in the background, I have set my laptop to avoid suspending when the lid is closed by putting the following in `/etc/systemd/login.conf`:
+
+    HandleLidSwitch=lock
+
+Instead, when I want to suspend to ram, I use the following keyboard shortcut:
+
+    bindsym Ctrl+Mod1+s exec /home/francois/bin/s2ram
+
+which executes a [custom suspend script](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/s2ram) to clear the clipboards (using [xsel](https://packages.debian.org/stable/xsel)), flush writes to disk and lock the screen before going to sleep.
+
+To avoid having to type my sudo password every time [pm-suspend](https://packages.debian.org/stable/pm-utils) is invoked, I added the following line to `/etc/sudoers`:
+
+    francois  ALL=(ALL)  NOPASSWD:  /usr/sbin/pm-suspend
+
+# Window and workspace placement hacks
+
+While tiling window managers promise to manage windows for you so that you can focus on more important things, you will most likely want to customize window placement to fit your needs better.
+
+## Working around misbehaving applications
+
+A few applications make too many assumptions about window placement and are just plain broken in tiling mode. Here's how to automatically switch them to *floating* mode:
+
+    for_window [class="VidyoDesktop"] floating enable
+
+You can get the Xorg class of the offending application by running this command:
+
+    xprop | grep WM_CLASS
+
+before clicking on the window.
+
+## Keeping IM windows on the first workspace
+
+I run [Pidgin](http://pidgin.im) on my first workspace and I have the following rule to keep any new window that pops up (e.g. in response to a new incoming message) on the same workspace:
+
+    assign [class="Pidgin"] 1
+
+## Automatically moving workspaces when docking
+
+Here's a neat configuration blurb which automatically moves my workspaces (and their contents) from the laptop screen (`eDP1`) to the external monitor (`DP2`) when I dock my laptop:
+
+    # bind workspaces to the right monitors
+    workspace 1 output DP2
+    workspace 2 output DP2
+    workspace 3 output DP2
+    workspace 4 output DP2
+    workspace 5 output DP2
+    workspace 6 output eDP1
+
+You can get these output names by running:
+
+    xrandr --display :0 | grep " connected"
+
+[[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]]
