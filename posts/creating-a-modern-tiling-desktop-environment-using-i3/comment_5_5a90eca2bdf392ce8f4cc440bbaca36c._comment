@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="https://openid.fmarier.org/"
+ nickname="fmarier"
+ subject="Re: git-annex"
+ date="2014-07-21T21:44:55Z"
+ content="""
+I should probably blog about my use of git-annex at some point :)
+
+Setting it up is not hard if you use the assistant (`git annex webapp`). I use my own ssh server as the intermediate transfer server and I set up an XMPP server on there too.
+
+For /etc however, I use the `etckeeper` package instead.
+"""]]
