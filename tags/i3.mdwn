@@ -1,0 +1,4 @@
+[[!meta title="pages tagged i3"]]
+
+[[!inline pages="tagged(i3)" actions="no" archive="yes"
+feedshow=10]]
