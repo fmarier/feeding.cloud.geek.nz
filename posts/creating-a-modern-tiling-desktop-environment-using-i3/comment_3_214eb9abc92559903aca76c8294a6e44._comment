@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ ip="2a01:e34:ec6d:710:468a:5bff:fe5c:219d"
+ claimedauthor="Vincent Bernat"
+ url="http://vincent.bernat.im"
+ subject="Random comments"
+ date="2014-07-21T14:18:29Z"
+ content="""
+Hi!
+
+`gnome-screensaver` does not work as expected because idleness is detected by `gnome-session`. You could run i3 through `gnome-session` (you need an hand-crafted desktop file).
+
+For switching between keyboard bindings, this is something that X can handle itself. For example, look at `setxkbmap us,fr '' grp:rctrl_rshift_toggle` will switch between US and FR layouts.
+
+I had tried to keep those gnome stuff in the past, but the interaction between all those parts is under-documented and can change quite often. I would stay far from gnome-settings-daemon which does a lot of things. You could look at `xsettingsd` which will do exactly what you describe without hidden features.
+"""]]
