@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="46.59.179.164"
+ claimedauthor="foobar"
+ subject="git-annex"
+ date="2014-07-21T12:17:28Z"
+ content="""
+Hi Micha,
+
+quite an off-topic. How do you use git-annex? Do you have a central server to distribute changes around your machines? How do you set up git-annex? What do you do about /etc/? What files are important for you?
+
+foobar
+"""]]
