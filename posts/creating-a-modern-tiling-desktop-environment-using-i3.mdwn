@@ -2,9 +2,9 @@
 [[!meta date="2014-07-21T23:03:00.000+12:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-Modern desktop environments like [GNOME](http://www.gnome.org) and [KDE](http://kde.org) involving a lot of mousing around and I much prefer using the keyboard where I can. This is why I switched to the [Ion tiling window manager](https://en.wikipedia.org/wiki/Ion_%28window_manager%29) back when I interned at [Net Integration Technologies](https://web.archive.org/web/20080417210959/http://open.nit.ca/wiki) and kept using it until I noticed it had been [removed from Debian](https://packages.qa.debian.org/i/ion3/news/20100408T093905Z.html). After experimenting with [awesome](http://awesome.naquadah.org/) for 2 years and briefly considering [xmonad](http://xmonad.org/) , I finally found a replacement I like in [i3](http://i3wm.org/).
+Modern desktop environments like [GNOME](http://www.gnome.org) and [KDE](http://kde.org) involving a lot of mousing around and I much prefer using the keyboard where I can. This is why I switched to the [Ion tiling window manager](https://en.wikipedia.org/wiki/Ion_%28window_manager%29) back when I interned at [Net Integration Technologies](https://web.archive.org/web/20080417210959/http://open.nit.ca/wiki) and kept using it until I noticed it had been [removed from Debian](https://packages.qa.debian.org/i/ion3/news/20100408T093905Z.html).
 
-Here is how I customized it and made it play nice with the GNOME and KDE applications I use every day.
+After experimenting with [awesome](http://awesome.naquadah.org/) for 2 years and briefly considering [xmonad](http://xmonad.org/) , I finally found a replacement I like in [i3](http://i3wm.org/). Here is how I customized it and made it play nice with the GNOME and KDE applications I use every day.
 
 # Startup script
 
