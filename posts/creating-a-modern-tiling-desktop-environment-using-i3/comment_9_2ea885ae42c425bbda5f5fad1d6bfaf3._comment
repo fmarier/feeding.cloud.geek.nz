@@ -1,0 +1,31 @@
+[[!comment format=mdwn
+ ip="165.228.126.9"
+ claimedauthor="Ian"
+ url="http://github.com/DarkStarSword"
+ subject="Alternatives"
+ date="2014-07-22T02:06:46Z"
+ content="""
+Seems like you've solved a lot of the same things I have in different ways after switching to i3 :)
+
+My i3 config is up on github - I use this along with a fairly trivial ~/.xsession to set up my ~/.i3/config and start i3. I also have some python scripts (i3companion) here to handle some of the more advanced things:
+
+https://github.com/DarkStarSword/junk/tree/master/config/home/.i3
+
+Some differences between our setups:
+
+gnome-settings-daemon - Sounds like you need this for a different reason to me. I used to run this as a quick hack to get backlight + keyboard backlight controls to work without needing root, but it always caused issues and was hard to configure without Gnome, so I now talk to the appropriate daemons over dbus/xcb to do this myself (upower for keyboard backlight, X11 RANDR for LCD backlight). More on this later.
+
+gnome-keyring-daemon - What's wrong with ssh-add (part of ssh-agent)?
+
+gnome-screensaver - I use i3lock with xautolock. I like the fact that i3lock actually saves power by turning off the screen and keeping it off until you start to unlock it (with the --dpms flag). Back when I used wmii I did basically the same thing as i3lock with xtrlock and a python script to keep the screen off.
+
+nm-applet - I use wicd-curses, which is bound to mod+n for quick access (N for networks)
+
+volume/brightness key bindings - I use my own python script (i3companion) for these instead of execing a binary each time, which significantly reduces the latency (especially on the first press after Linux has discarded the binary from the page cache). My script uses python-xpyb and python-xlib to grab the keybindings directly, so this does not strictly go through i3 any more.
+
+In addition to the XF86 keys, I also bind other common keys for these so I don't have to think about the different locations these keys are on every brand's keyboard (I typically switch between machines several times a day). I use mod+up/down for the LCD backlight, mod+shift+up/down for the keyboard backlight, mod+square brackets for volume up/down, mod+backslash for mute and mod+shift+backslash for pavucontrol (for when I need to do something more advanced, such as rerouting an audio stream to my bluetooth headphones).
+
+Suspend script - On one laptop I just use the laptop's Fn+F4 to do this through the standard acpi scripts, on another laptop I catch the power button (it's a Mac Air, so the power button is in the stupidest place they could possibly have conceived and not catching it is a recipe for disaster, because OF COURSE you would put the power button as a normal key just above backspace, I mean where else would you put a dangerous key like that?) and display a menu asking what to do (suspend, hibernate, shut down, reboot, log out, switch user) and invoke a suitable dbus interface to do the correct action - all without requiring root or sudo. To lock the screen on suspend I bind XF86ScreenSaver, XF86Sleep and XF86Suspend to run i3lock.
+
+I've got a few other neat tricks as well in my config - one of these days I should really blog about it, but the meantime, feel free to check it out on github :)
+"""]]

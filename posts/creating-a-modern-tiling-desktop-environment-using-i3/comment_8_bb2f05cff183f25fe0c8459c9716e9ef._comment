@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="104.34.170.5"
+ claimedauthor="Cameron"
+ subject="Want to make life a little easier?"
+ date="2014-07-22T03:31:00Z"
+ content="""
+This sets most of that for you, the rest should be able to be done with xdg-autostart entries: https://github.com/yrro/gnome-i3
+
+Also, you may prefer light-locker to gnome-screensaver.
+"""]]

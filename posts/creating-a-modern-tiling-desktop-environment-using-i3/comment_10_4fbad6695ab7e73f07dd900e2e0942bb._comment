@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="2a01:e34:ec6d:710:ea2a:eaff:fe05:c0df"
+ claimedauthor="Vincent Bernat"
+ url="http://vincent.bernat.im"
+ subject="Toggle"
+ date="2014-07-22T06:22:11Z"
+ content="""
+It works for me in Sid. I would speculate this is the kind of things that `gnome-settings-deamon` would interfere with but since it doesn't work either with Gnome itself, well, I don't know. :)
+"""]]
