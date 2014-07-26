@@ -32,7 +32,7 @@ to create an encrypted root partition on `/dev/sdb5`:
     $ vgchange -a y akranes2
     $ lvcreate -L247329718272B -nroot akranes2
     $ lvcreate -L8468299776B -nswap_1 akranes2
-    $ mkfs.ext4 /dev/akranes2/root
+    $ mkfs.ext4 -m1 /dev/akranes2/root
 
 Finally, I added the new encrypted partition to the list of drives to bring up
 at boot time by looking up its UUID:
