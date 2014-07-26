@@ -37,7 +37,7 @@ to create an encrypted root partition on `/dev/sdb5`:
 Finally, I added the new encrypted partition to the list of drives to bring up
 at boot time by looking up its UUID:
 
-    $ cryptsetup luksUUID sdb5_crypt
+    $ cryptsetup luksUUID /dev/sdb5
 
 and creating a new entry for it in `/etc/crypttab`.
 
