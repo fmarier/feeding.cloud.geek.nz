@@ -63,9 +63,9 @@ regular rsync of the root and boot partitions using the following mount
 points (as defined in `/etc/fstab`):
 
     /dev/mapper/akranes-root /           ext4    noatime,discard,errors=remount-ro 0       1
-    /dev/mapper/akranes2-root /mnt/root  ext4    noatime,errors=remount-ro         0       2
+    /dev/mapper/akranes2-root /mnt/root  ext4    noatime,errors=remount-ro,nofail  0       2
     UUID=0b9109d0-... /boot              ext2    defaults                          0       2
-    UUID=6e6f05fb-... /mnt/boot          ext2    defaults                          0       2
+    UUID=6e6f05fb-... /mnt/boot          ext2    defaults,nofail                   0       2
 
 I use this script (`/usr/local/sbin/ssd_boot_backup`) for syncing the boot
 partition:
