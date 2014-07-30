@@ -43,6 +43,7 @@ While keyboard shortcuts can be configured in GNOME, they don't work within i3, 
     # brightness control
     bindsym XF86MonBrightnessDown exec xbacklight -steps 1 -time 0 -dec 5
     bindsym XF86MonBrightnessUp exec xbacklight -steps 1 -time 0 -inc 5
+    bindsym XF86AudioMute exec /usr/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle
 
     # show battery stats
     bindsym XF86Battery exec gnome-power-statistics
@@ -116,5 +117,9 @@ Here's a neat configuration blurb which automatically moves my workspaces (and t
 You can get these output names by running:
 
     xrandr --display :0 | grep " connected"
+
+Finally, because X sometimes fail to detect my external monitor when docking/undocking, I also wrote a [script to set the displays properly](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/external-monitor) and bound it to the appropriate key on my laptop:
+
+    bindsym XF86Display exec /home/francois/bin/external-monitor
 
 [[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]]
