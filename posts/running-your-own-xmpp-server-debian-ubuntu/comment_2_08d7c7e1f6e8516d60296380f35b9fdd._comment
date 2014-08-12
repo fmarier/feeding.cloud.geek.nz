@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ ip="209.6.49.13"
+ subject="comment 2"
+ date="2014-08-12T12:08:23Z"
+ content="""
+I found the opposite - that ejabberd was much easier than both Prosody and Mongoose.IM to set up (Mongoose is probably easy on Debian/Ubuntu, but on Amazon Linux the dependencies are harder to install).
+"""]]
