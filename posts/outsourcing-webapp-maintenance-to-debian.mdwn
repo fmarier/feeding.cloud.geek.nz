@@ -1,0 +1,210 @@
+[[!meta title="Outsourcing your webapp maintenance to Debian"]]
+[[!meta date="2014-08-30T14:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Modern web applications are much more complicated than the simple Perl CGI
+scripts or PHP pages of the past. They usually start with a framework and
+include lots of external components both on the front-end and on the back-end.
+
+Here's an example from the Node.js back-end of a [real
+application](https://github.com/mozilla/persona):
+
+    $ npm list | wc -l
+    256
+
+What if one of these 256 external components has a security vulnerability?
+How would you know and what would you do if of your direct dependencies had
+a hard-coded dependency on the vulnerable version? It's a real problem and
+of course one way to avoid this is to write everything yourself. But that's
+neither realistic nor desirable.
+
+However, it's not a new problem. It was solved years ago by Linux
+distributions for C and C++ applications. For some reason though, this
+learning has not propagated to the web where the standard approach seems to
+be to "statically link everything".
+
+What if we could build on the work done by Debian maintainers and the
+security team?
+
+# Case study - the Libravatar project
+
+As a way of discussing a different approach to the problem of dependency
+management in web applications, let me describe the decisions made by the
+[Libravatar](https://www.libravatar.org) project.
+
+## Description
+
+Libravatar is a federated and free software alternative to the
+[Gravatar](http://www.gravatar.com) profile photo hosting site.
+
+From a developer point of view, it's a fairly simple stack:
+
+* [Apache](https://httpd.apache.org/)
+* [Postgres](http://www.postgresql.org/)
+* [Django](https://www.djangoproject.com/)
+* [Python](https://www.python.org/)
+* [Gearman](http://gearman.org/)
+
+The service is split between the master node, where you create an account
+and upload your avatar, and a few mirrors, which serve the photos to
+third-party sites.
+
+Like with Gravatar, sites wanting to display images don't have to worry
+about a complicated protocol. In a nutshell, [all that a site needs to
+do](http://wiki.libravatar.org/api/) is hash the user's email and add that
+hash to a base URL. Where the federation kicks in is that every email domain
+is able to specify a different base URL via an SRV record in DNS.
+
+For example, `francois@debian.org` hashes to `7cc352a2907216992f0f16d2af50b070` and so the full URL is:
+
+    http://cdn.libravatar.org/avatar/7cc352a2907216992f0f16d2af50b070
+
+whereas `francois@fmarier.org` hashes to `0110e86fdb31486c22dd381326d99de9` and the full URL is:
+
+    http://fmarier.org/avatar/0110e86fdb31486c22dd381326d99de9
+
+due to the presence of an SRV record on `fmarier.org`.
+
+## Ground rules
+
+The main rules that the project follows is to:
+
+1. only use [Python libraries](https://packages.debian.org/stable/python/) that are in Debian
+2. use the versions present in the latest stable release (including [backports](http://backports.debian.org/))
+
+## Deployment using packages
+
+In addition to these rules around dependencies, we decided to treat the
+application as if it were going to be uploaded to Debian:
+
+- It includes an ["upstream"
+  Makefile](https://gitorious.org/libravatar/libravatar/source/Makefile)
+  which minifies CSS and JavaScript, gzips them, and compiles PO files
+  (i.e. a "build" step).
+- The Makefile includes a `test` target which runs the unit tests and some
+  lint checks ([pylint](http://packages.debian.org/stable/pylint), [pyflakes](http://packages.debian.org/stable/pyflakes) and [pep8](http://packages.debian.org/stable/pep8)).
+- [Debian
+  packages](https://gitorious.org/libravatar/libravatar/source/debian/control)
+  are produced to encode the dependencies in the standard way as well as to
+  run various setup commands in maintainer scripts and install cron jobs.
+- The project runs its own package repository using
+  [reprepro](http://mirrorer.alioth.debian.org/) to easily distribute these
+  custom packages.
+- In order to update the repository and the packages installed on servers
+  that we control, we use [fabric](http://www.fabfile.org/), which is
+  basically a fancy way to run commands over ssh.
+- [Mirrors](http://wiki.libravatar.org/run_a_mirror/) can simply add our
+  repository to their apt `sources.list` and upgrade Libravatar packages at
+  the same time as their system packages.
+
+## Results
+
+Overall, this approach has been quite successful and Libravatar has been a
+very low-maintenance service to run.
+
+The ground rules have however limited our choice of libraries. For example,
+to talk to our queuing system, we had
+to use the raw [Python bindings to the C Gearman
+library](https://packages.debian.org/squeeze/python-gearman.libgearman)
+instead of being able to use a [nice pythonic
+library](https://pypi.python.org/pypi/gearman) which wasn't in Debian
+squeeze at the time.
+
+There is of course always the possibility of packaging a missing library for
+Debian and maintaining a backport of it until the next Debian release. This
+wouldn't be a lot of work considering the fact that responsible bundling of
+a library would normally force you to follow its releases closely and keep
+any dependencies up to date, so you may as well share the result
+of that effort. But in the end, it turns out that there is a lot of Python
+stuff already in Debian and we haven't had to package anything new yet.
+
+Another thing that was somewhat scary, due to the number of packages that
+were going to get bumped to a new major version, was the upgrade from
+squeeze to wheezy. It turned out however that it was surprisingly easy to
+upgrade to wheezy's version of Django, Apache and Postgres. It may be a
+problem next time, but all that means is that you have to set a day aside
+every 2 years to bring everything up to date.
+
+## Problems
+
+The main problem we ran into is that we optimized for sysadmins and
+unfortunately made it harder for new developers to setup their
+environment. That's not very good from the point of view of welcoming new
+contributors as there is quite a bit of friction in preparing and testing
+your first patch. That's why we're looking at encoding our [setup
+instructions](http://wiki.libravatar.org/development_environment/) into a
+[Vagrant](http://www.vagrantup.com/) script so that new contributors can get
+started quickly.
+
+Another problem we faced is that because we use the Debian version of jQuery
+and minify our own JavaScript files in the build step of the Makefile, we
+were affected by the [removal from that package of the minified version of
+jQuery](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=495178). In our
+setup, there is no way to minify JavaScript files that are provided by other
+packages and so the only way to fix this would be to fork the package in our
+repository or (preferably) to work with the Debian maintainer and get it
+fixed globally in Debian.
+
+One thing worth noting is that while the Django project is very good at
+issuing backwards-compatible fixes for security issues, sometimes there is
+no way around disabling broken features. In practice, this means
+that we cannot run
+[unattended-upgrades](https://packages.debian.org/stable/unattended-upgrades)
+on our main server in case something breaks. Instead, we make use of
+[apticron](https://packages.debian.org/stable/apticron) to automatically
+receive email reminders for any outstanding package updates.
+
+On that topic, it can occasionally take a while for security updates to be
+released in Debian, but this usually falls into one of two cases:
+
+1. You either notice because you're already tracking releases pretty
+well and therefore could help Debian with backporting of fixes and/or
+testing;
+2. or you don't notice because it has slipped through the cracks or
+there simply are too many potential things to keep track of, in which case
+the fact that it eventually gets fixed without your intervention is a huge
+improvement.
+
+Finally, relying too much on Debian packaging does prevent
+[Fedora](https://fedoraproject.org/) users (a project that also makes use of
+Libravatar) from easily contributing mirrors. Though if we had a concrete
+offer, we would certainly look into creating the appropriate RPMs.
+
+# Is it realistic?
+
+It turns out that I'm not the only one who thought about this approach,
+which has been named
+["debops"](http://www.enricozini.org/2014/debian/debops/). The same day that
+my talk was
+[announced on the DebConf website](http://blog.debconf.org/blog/2014/06/22#cfp-published-talks),
+someone emailed me saying that he had instituted the exact same rules at his
+company, which operates a large Django-based web application in the
+[US](https://www.safedns.com/) and [Russia](https://www.skydns.ru/). It was
+pretty impressive to read about a real business coming to the same
+conclusions and using the same approach (i.e. system libraries, deployment
+packages) as Libravatar.
+
+Regardless of this though, I think there is a class of applications that are
+particularly well-suited for the approach we've just described. If a web
+application is **not your full-time job** and you want to minimize the amount of
+work required to keep it running, then it's a good investment to restrict your
+options and leverage the work of the Debian community to simplify your
+maintenance burden.
+
+The second criterion I would look at is framework maturity. Given the 2-3
+year release cycle of stable distributions, this approach is more likely to
+work with a **mature framework** like Django. After all, you probably wouldn't
+compile Apache from source, but until recently building Node.js from source
+was the preferred option as it was changing so quickly.
+
+While it goes against conventional wisdom, relying on system libraries is a
+sustainable approach you should at least consider in your next
+project. After all, there is a real cost in bundling and keeping up with
+external dependencies.
+
+*This blog post is based on a [talk I gave at DebConf
+14](https://summit.debconf.org/debconf14/meeting/16/outsourcing-your-webapp-maintenance-to-debian/):
+[slides](https://speakerdeck.com/fmarier/outsourcing-your-webapp-maintenance-to-debian),
+[video](http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/).*
+
+[[!tag debian]] [[!tag web]]
