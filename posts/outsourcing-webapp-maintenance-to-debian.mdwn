@@ -205,6 +205,6 @@ external dependencies.
 *This blog post is based on a [talk I gave at DebConf
 14](https://summit.debconf.org/debconf14/meeting/16/outsourcing-your-webapp-maintenance-to-debian/):
 [slides](https://speakerdeck.com/fmarier/outsourcing-your-webapp-maintenance-to-debian),
-[video](http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/).*
+[video](http://meetings-archive.debian.net/pub/debian-meetings/2014/debconf14/webm/Outsourcing_your_webapp_maintenance_to_Debian.webm).*
 
 [[!tag debian]] [[!tag web]]
