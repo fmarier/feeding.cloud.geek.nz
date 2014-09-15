@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="198.0.163.153"
+ claimedauthor="01000101"
+ url="joscor.com"
+ subject="2FA & cipher restrictions"
+ date="2014-09-13T22:04:59Z"
+ content="""
+Nice tutorial. I wrote my own recently with a little more focus on Two-Factor Authentication and strong encryption (limiting weak ciphers/MACs) but found your tutorial really strong in the auditing department.  https://joscor.com/2014/09/hardening-openssh-server-ubuntu-14-04/ 
+"""]]
