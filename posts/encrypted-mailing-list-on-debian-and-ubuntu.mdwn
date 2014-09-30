@@ -83,8 +83,8 @@ to do it manually:
 2. Verify that the key is trusted: `gpg --fingerprint KEYID`
 3. Add the person to the list's
    `/var/lib/schleuder/HOSTNAME/LISTNAME/members.conf`:
-      - email: francois@fmarier.org
-        key_fingerprint: 8C470B2A0B31568E110D432516281F2E007C98D1
+       - email: francois@fmarier.org
+         key_fingerprint: 8C470B2A0B31568E110D432516281F2E007C98D1
 4. Export the public key: `gpg --export -a KEYID`
 5. Paste the exported key into the list's keyring:
       sudo -u schleuder gpg --homedir /var/lib/schleuder/HOSTNAME/LISTNAME/ --import
