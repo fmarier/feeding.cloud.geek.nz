@@ -1,0 +1,92 @@
+[[!meta title="Encrypted mailing list on Debian and Ubuntu"]]
+[[!meta date="2014-09-29T22:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Running an encrypted mailing list is surprisingly tricky. One of the first
+challenges is that you need to decide what the threat model is. Are you
+worried about someone compromising the list server? One of the subscribers
+stealing the list of subscriber email addresses? You can't just "turn on
+encryption", you have to think about what you're trying to defend against.
+
+I decided to use [schleuder](https://schleuder2.nadir.org/). Here's how I
+set it up.
+
+# Requirements
+
+What I decided to create was a mailing list where people could subscribe
+and receive emails encrypted to them from the list itself. In order to
+post, they need to send an email encrypted to the list' public key and
+signed using the private key of a subscriber.
+
+What the list then does is decrypt the email and encrypts it individually
+for each subscriber. This protects the emails while in transit, but is
+vulnerable to the list server itself being compromised since every list email
+transits through there at some point in plain text.
+
+# Installing the schleuder package
+
+The first thing to know about installing schleuder on Debian or Ubuntu is
+that at the moment it unfortunately depends on ruby 1.8. This means that you
+can only install it on Debian wheezy or Ubuntu precise: trusty and jessie
+won't work (until schleuder is ported to a more recent version of ruby).
+
+If you're running wheezy, you're fine, but if you're running precise, I
+recommend adding
+[my ppa](https://launchpad.net/~fmarier/+archive/ubuntu/ppa?field.series_filter=precise)
+to your `/etc/apt/sources.list` to get a version of schleuder that actually
+lets you create a new list without throwing an error.
+
+Then, simply install this package:
+
+    apt-get install schleuder
+
+# Postfix configuration
+
+The next step is to configure your mail server (I use [postfix](http://www.postfix.org/)) to
+handle the schleuder lists.
+
+This may be obvious but if you're like me and you're repurposing a server
+which hasn't had to accept incoming emails, make sure that postfix is set
+to the following in `/etc/postfix/main.cf`:
+
+    inet_interfaces = all
+
+Then follow the instructions from
+[/usr/share/doc/schleuder/README.Debian](http://sources.debian.net/src/schleuder/2.2.1-2%2Bdeb7u1/debian/README.Debian/#L86)
+and finally add the following line (thanks to the [wiki
+instructions](https://schleuder2.nadir.org/contrib/postfix_transport.html))
+to `/etc/postfix/main.cf`:
+
+    local_recipient_maps = proxy:unix:passwd.byname $alias_maps $transport_maps
+
+# Creating a new list
+
+Once everything is set up, creating a new list is pretty easy. Simply run
+`schleuder-newlist list@example.org` and follow the instructions
+
+After creating your list, remember to update `/etc/postfix/transports` and
+run `postmap /etc/postfix/transports`.
+
+Then you can test it by sending an email to
+`LISTNAME-sendkey@example.com`. You should receive the list's public key.
+
+# Adding list members
+
+Once your list is created, the list admin is the only subscriber. To add
+more people, you can send an [admin
+email](http://sources.debian.net/src/schleuder/2.2.1-2%2Bdeb7u1/debian/README.Debian/#L29)
+to the list or follow [these
+instructions](https://schleuder2.nadir.org/contrib/creating_lists_with_postfix.html)
+to do it manually:
+
+1. Get the person's GPG key: `gpg --recv-key KEYID`
+2. Verify that the key is trusted: `gpg --fingerprint KEYID`
+3. Add the person to the list's
+   `/var/lib/schleuder/HOSTNAME/LISTNAME/members.conf`:
+      - email: francois@fmarier.org
+        key_fingerprint: 8C470B2A0B31568E110D432516281F2E007C98D1
+4. Export the public key: `gpg --export -a KEYID`
+5. Paste the exported key into the list's keyring:
+      sudo -u schleuder gpg --homedir /var/lib/schleuder/HOSTNAME/LISTNAME/ --import
+
+[[!tag debian]] [[!tag security]] [[!tag nzoss]]
