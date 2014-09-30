@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="66.130.137.94"
+ claimedauthor="Evan Prodromou"
+ url="https://e14n.com/evan"
+ subject="mmreencrypt"
+ date="2014-09-30T13:26:58Z"
+ content="""
+I made this ancient software in 2000!
+
+https://sourceforge.net/projects/mmreencrypt/
+
+I don't think it still works, but it might be worth a try. Plugin for Mailman.
+"""]]
