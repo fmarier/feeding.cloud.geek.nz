@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ ip="66.159.44.90"
+ claimedauthor="Charlie"
+ subject="comment 3"
+ date="2014-10-16T20:34:28Z"
+ content="""
+Thank you for this great howto.
+
+Is there anyway to establish an s2s connexion with a domain that does not have SRV record?
+Some of my contact use gtalk with googleApps with their domain and does not have access to their DNS server.
+Is their anyway to disable TLS with all domains that use google's server?
+
+Thank you,
+Regards.
+Charlie
+"""]]

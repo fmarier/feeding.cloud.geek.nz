@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="173.218.253.98"
+ subject="comment 3"
+ date="2014-10-13T14:35:01Z"
+ content="""
+Yes, you're wrong, on both guesses. It's not 'left over' at all. The human-readable response text is there for humans who choose to use a text-based browser. Without the human-readable text, there would be way for the user to determine the problem short of carefully examining the headers.
+
+And, yes, some of us actually do use text-based browsers; especially when we're wanting to look under the hood while diagnosing problems with servers and browsers.
+"""]]
