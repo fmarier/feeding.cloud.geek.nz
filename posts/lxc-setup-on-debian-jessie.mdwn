@@ -26,26 +26,26 @@ through the "host":
 
 1. Enable IPv4 forwarding by putting this in `/etc/sysctl.conf`:
 
-        net.ipv4.ip_forward=1
+       net.ipv4.ip_forward=1
 
 2. and then applying it using:
 
-        sysctl -p
+       sysctl -p
 
 3. Ensure that the network bridge is automatically started on boot:
 
-        virsh -c lxc:/// net-start default
-        virsh -c lxc:/// net-autostart default
+       virsh -c lxc:/// net-start default
+       virsh -c lxc:/// net-autostart default
 
 4. and that it's not blocked by the host firewall, by putting this in `/etc/network/iptables.up.rules`:
 
-        -A INPUT -d 224.0.0.251 -s 192.168.122.1 -j ACCEPT
-        -A INPUT -d 192.168.122.255 -s 192.168.122.1 -j ACCEPT
-        -A INPUT -d 192.168.122.1 -s 192.168.122.0/24 -j ACCEPT
+       -A INPUT -d 224.0.0.251 -s 192.168.122.1 -j ACCEPT
+       -A INPUT -d 192.168.122.255 -s 192.168.122.1 -j ACCEPT
+       -A INPUT -d 192.168.122.1 -s 192.168.122.0/24 -j ACCEPT
 
 5. and applying the rules using:
 
-        iptables-apply
+       iptables-apply
 
 # Creating a container
 
