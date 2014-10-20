@@ -1,0 +1,100 @@
+[[!meta title="LXC setup on Debian jessie"]]
+[[!meta date="2014-10-20T15:00:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here's how to setup LXC-based "chroots" on Debian jessie. While this is
+documented on the [Debian wiki](https://wiki.debian.org/LXC), I had to tweak
+a few things to get the networking to work on my machine.
+
+Start by installing (as root) the necessary packages:
+
+    apt-get install lxc libvirt-bin debootstrap
+
+# Network setup
+
+I decided to use the default `/etc/lxc/default.conf` configuration (no
+change needed here):
+
+    lxc.network.type = veth
+    lxc.network.flags = up
+    lxc.network.link = virbr0
+    lxc.network.hwaddr = 00:FF:AA:xx:xx:xx
+    lxc.network.ipv4 = 0.0.0.0/24
+
+but I had to make sure that the "guests" could connect to the outside world
+through the "host":
+
+1. Enable IPv4 forwarding by putting this in `/etc/sysctl.conf`:
+
+        net.ipv4.ip_forward=1
+
+2. and then applying it using:
+
+        sysctl -p
+
+3. Ensure that the network bridge is automatically started on boot:
+
+        virsh -c lxc:/// net-start default
+        virsh -c lxc:/// net-autostart default
+
+4. and that it's not blocked by the host firewall, by putting this in `/etc/network/iptables.up.rules`:
+
+        -A INPUT -d 224.0.0.251 -s 192.168.122.1 -j ACCEPT
+        -A INPUT -d 192.168.122.255 -s 192.168.122.1 -j ACCEPT
+        -A INPUT -d 192.168.122.1 -s 192.168.122.0/24 -j ACCEPT
+
+5. and applying the rules using:
+
+        iptables-apply
+
+# Creating a container
+
+Creating a new container (in `/var/lib/lxc/`) is simple:
+
+    sudo MIRROR=http://ftp.nz.debian.org/debian lxc-create -n sid64 -t debian -- -r sid -a amd64
+
+You can start or stop it like this:
+
+    sudo lxc-start -n sid64 -d
+    sudo lxc-stop -n sid64
+
+# Connecting to a guest using ssh
+
+The ssh server is configured to require pubkey-based authentication for root
+logins, so you'll need to log into the console:
+
+    sudo lxc-stop -n sid64
+    sudo lxc-start -n sid64
+
+then install a text editor inside the container because the root image
+doesn't have one by default:
+
+    apt-get install vim
+
+then paste your public key in `/root/.ssh/authorized_keys`.
+
+Then you can exit the console (using `Ctrl+a q`) and ssh into the
+container. You can find out what IP address the container received from DHCP
+by typing this command:
+
+    sudo lxc-ls --fancy
+
+# Fixing Perl locale errors
+
+If you see a bunch of errors like these when you start your container:
+
+    perl: warning: Setting locale failed.
+    perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LANG = "fr_CA.utf8"
+        are supported and installed on your system.
+    perl: warning: Falling back to the standard locale ("C").
+
+then log into the container as root and use:
+
+    dpkg-reconfigure locales
+
+to enable the same locales as the ones you have configured in the host.
+
+[[!tag debian]] [[!tag lxc]] [[!tag nzoss]]
