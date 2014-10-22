@@ -51,7 +51,7 @@ through the "host":
 
 Creating a new container (in `/var/lib/lxc/`) is simple:
 
-    sudo MIRROR=http://ftp.nz.debian.org/debian lxc-create -n sid64 -t debian -- -r sid -a amd64
+    sudo MIRROR=http://http.debian.net/debian lxc-create -n sid64 -t debian -- -r sid -a amd64
 
 You can start or stop it like this:
 
