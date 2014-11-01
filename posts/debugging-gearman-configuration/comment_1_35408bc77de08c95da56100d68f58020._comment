@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ ip="88.73.181.177"
+ claimedauthor="MrKnödelmann"
+ subject="IP v6 localhost"
+ date="2014-11-01T06:55:02Z"
+ content="""
+Hi 
+
+I'm using OMD 1.10 and did not find gearman-job-server, but this solved this problem for me:
+renaming \"localhost\" for ::1 to \"localhost6\" in /etc/hosts
+
+first try:
+
+    $ nc -vz localhost 4730
+    nc: connect to localhost port 4730 (tcp) failed: Connection refused
+    Connection to localhost 4730 port [tcp/gearman] succeeded!
+
+after renaming localhost:
+
+    $ nc -vz localhost 4730
+    Connection to localhost 4730 port [tcp/gearman] succeeded!
+
+hth!
+
+Regards,
+Stefan
+"""]]
