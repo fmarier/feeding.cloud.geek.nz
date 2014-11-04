@@ -62,7 +62,7 @@ to `/etc/postfix/main.cf`:
 # Creating a new list
 
 Once everything is set up, creating a new list is pretty easy. Simply run
-`schleuder-newlist list@example.org` and follow the instructions
+`schleuder-newlist list@example.org` and follow the instructions.
 
 After creating your list, remember to update `/etc/postfix/transports` and
 run `postmap /etc/postfix/transports`.
@@ -88,5 +88,21 @@ to do it manually:
 4. Export the public key: `gpg --export -a KEYID`
 5. Paste the exported key into the list's keyring:
       sudo -u schleuder gpg --homedir /var/lib/schleuder/HOSTNAME/LISTNAME/ --import
+
+# Signing the list key
+
+In order to give assurance to list members that the list key is legitimate,
+it should be signed by the list admin.
+
+1. Export the key:
+      sudo -u schleuder gpg --homedir /var/lib/schleuder/HOSTNAME/LISTNAME/ -a --export LISTNAE@HOSTNAME > ~/LISTNAME.asc
+2. Copy the key onto your own machine using scp and import it: `gpg --import < LISTNAME.asc`
+3. Sign the key locally by editing the key `gpg --edit-key KEYID` and using the `sign` command.
+4. Export your signature: `gpg -a --export KEYID > LISTNAME.asc`
+5. Copy the signed key back onto the server using scp.
+6. Import your signature into the schleuder public keyring:
+      sudo -u schleuder gpg --homedir /var/lib/schleuder/HOSTNAME/LISTNAME/ --import < ~/LISTNAME.asc
+
+After that, anybody requesting the list key will get your signature as well.
 
 [[!tag debian]] [[!tag security]] [[!tag nzoss]]
