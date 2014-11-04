@@ -8,7 +8,7 @@ Here are a few ways to find out what people are saying online about your project
 
 ## RSS Feeds
 
-First of all, here are the RSS feeds I subscribe to for one of my projects ([safe-rm](http://www.safe-rm.org.nz/)):
+First of all, here are the RSS feeds I subscribe to for one of my projects ([safe-rm](https://launchpad.net/safe-rm)):
 
   * [Technorati](http://feeds.technorati.com/search/safe-rm.org.nz) (blog posts)
   * [Twitter tweets](http://search.twitter.com/search.atom?q=safe-rm.org.nz) (tweets)
