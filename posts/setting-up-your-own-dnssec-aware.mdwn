@@ -93,4 +93,4 @@ $ dig +dnssec A www.dnssec.cz | grep ad
 Are there any other ways of making sure that DNSSEC is fully functional?
 
 
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] 
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag dns]] [[!tag dnssec]]
