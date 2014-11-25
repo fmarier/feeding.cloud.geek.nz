@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="69.24.154.5"
+ claimedauthor="Eric Kramer"
+ subject="Same here... and byte order mark issues!"
+ date="2014-11-25T17:06:14Z"
+ content="""
+I just investigated something similar involving a caching proxy that performed decompression.  In my case the Content-Length header was, in many instances, off by three bytes.  Further investigation--including identifying the bytes 0xEE 0xBB 0xBF--led me to discover that the Byte Order Mark (BOM) at the head of some of my text files was being stripped away by the proxy...BUT the Content-Length wasn't being downward adjusted by the proxy!  So basically clients of the proxy ended up with some content (likely because of a keep-alive between the browser and the caching proxy) that included the first three bytes of the next response! (Usually this was \"HTT\" at the end of the file... probably part of the \"HTTP/1.1 200 OK\" response header on the next reply in the stream!  This took quite a bit of time to investigate but was quite interesting!
+"""]]
