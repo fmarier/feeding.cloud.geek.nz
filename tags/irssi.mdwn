@@ -1,0 +1,4 @@
+[[!meta title="pages tagged irssi"]]
+
+[[!inline pages="tagged(irssi)" actions="no" archive="yes"
+feedshow=10]]
