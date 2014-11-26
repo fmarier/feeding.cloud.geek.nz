@@ -1,0 +1,118 @@
+[[!meta title="Hiding network disconnections using an IRC bouncer"]]
+[[!meta date="2014-11-26T23:30:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+A [bouncer](https://en.wikipedia.org/wiki/IRC_bouncer) can be a useful tool
+if you rely on [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) for
+team communication and instant messaging. The most common use of such a
+server is to be permanently connected to IRC and to buffer messages while
+your client is disconnected.
+
+However, that's not what got me interested in this tool. I'm not looking for
+another place where messages accumulate and wait to be processed
+later. I'm much happier if people email me when I'm not around.
+
+Instead, I wanted to do to [irssi](http://irssi.org/) what
+[mosh](https://mosh.mit.edu) did to
+[ssh](https://en.wikipedia.org/wiki/Secure_Shell) clients: transparently
+handle and hide temporary disconnections. Here's how I set everything up.
+
+## Server setup
+
+The first step is to install [znc](http://wiki.znc.in/ZNC):
+
+    apt-get install znc
+
+Make sure you get the 1.0 series (in **jessie or trusty**, not wheezy
+or precise) since it has much better [multi-network support](http://wiki.znc.in/FAQ#Networks).
+
+Then, as a **non-root** user, generate a self-signed TLS certificate for it:
+
+    openssl req -x509 -sha256 -newkey rsa:2048 -keyout znc.pem -nodes -out znc.crt -days 365
+
+and make sure you use something like `irc.example.com` as the *subject
+name*, that is the URL you will be connecting to from your IRC client.
+
+Then install the certificate in the right place:
+
+    mkdir ~/.znc
+    mv znc.pem ~/.znc/
+    cat znc.crt >> ~/.znc/znc.pem
+
+Once that's done, you're ready to create a config file for znc using the
+`znc --makeconf` command, again as the same non-root user:
+
+* create separate znc users if you have separate nicks on different networks
+* use your *nickserv password* as the *server password* for each network
+* enable ssl
+* say no to the `chansaver` and `nickserv` plugins
+
+Finally, open the IRC port (tcp port 6697 by default) in your firewall:
+
+    iptables -A INPUT -p tcp --dport 6697 -j ACCEPT
+
+## Client setup (irssi)
+
+On the client side, the [official
+documentation](http://wiki.znc.in/Category:Clients) covers a number of IRC
+clients, but the [irssi page](http://wiki.znc.in/Irssi) was quite sparse.
+
+Here's what I used for the two networks I connect to (`irc.oftc.net`
+and `irc.mozilla.org`):
+
+    servers = (
+      {
+        address = "irc.example.com";
+        chatnet = "OFTC";
+        password = "fmarier/oftc:Passw0rd1!";
+        port = "6697";
+        use_ssl = "yes";
+        ssl_verify = "yes";
+        ssl_cafile = "~/.irssi/certs/znc.crt";
+      },
+      {
+        address = "irc.example.com";
+        chatnet = "Mozilla";
+        password = "francois/mozilla:Passw0rd1!";
+        port = "6697";
+        use_ssl = "yes";
+        ssl_verify = "yes";
+        ssl_cafile = "~/.irssi/certs/znc.crt";
+      }
+    );
+
+Of course, you'll need to copy your `znc.crt` file from the server into
+`~/.irssi/certs/znc.crt`.
+
+Make sure that you're no longer authenticating with the `nickserv` from
+within irssi. That's znc's job now.
+
+## Wrapper scripts
+
+So far, this is a pretty standard znc+irssi setup. What makes it work with
+my workflow is the [wrapper
+script](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/irc)
+I wrote to [enable
+znc](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/znc-on)
+before starting irssi and then [prompt to turn it
+off](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/znc-off)
+after exiting:
+
+    #!/bin/bash
+    ssh irc.example.com "pgrep znc || znc"
+    irssi
+    read -p "Terminate the bouncer? [y/N] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+      ssh irc.example.com killall -sSIGINT znc
+    fi
+
+Now, instead of typing `irssi` to start my IRC client, I use `irc`.
+
+If I'm exiting irssi before commuting or because I need to reboot for a
+kernel update, I keep the bouncer running. At the end of the day, I say yes
+to killing the bouncer. That way, I don't have a backlog to go through when
+I wake up the next day.
+
+[[!tag mozilla]] [[!tag debian]] [[!tag irc]] [[!tag irssi]] [[!tag nzoss]]
