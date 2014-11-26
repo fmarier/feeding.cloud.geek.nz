@@ -33,4 +33,4 @@ You can take a look at the [custom hook script](http://gitorious.org/mahara/maha
   * Keep an eye on Freenode's [#commits](irc://chat.freenode.net/%23commits) while testing your script.
 
 
-[[!tag catalyst]] [[!tag mahara]] [[!tag git]] [[!tag gerrit]] [[!tag nzoss]] 
+[[!tag catalyst]] [[!tag mahara]] [[!tag git]] [[!tag gerrit]] [[!tag nzoss]] [[!tag irc]]
