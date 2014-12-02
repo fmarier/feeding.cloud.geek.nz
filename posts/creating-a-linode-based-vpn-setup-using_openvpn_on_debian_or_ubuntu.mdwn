@@ -191,4 +191,4 @@ that will be offered to all clients.
 Is there anything else you have in your setup and that I should consider
 adding to mine?
 
-[[!tag security]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]]
+[[!tag security]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag openvpn]]
