@@ -116,4 +116,4 @@ Finally, to ensure that your TLS settings are reasonable, use this
 [automated tool](https://xmpp.net/) to test both the client-to-server (c2s)
 and the server-to-server (s2s) flows.
 
-[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]]
+[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag xmpp]]
