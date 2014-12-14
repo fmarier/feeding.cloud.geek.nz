@@ -23,7 +23,7 @@ Then I went to get a free XMPP SSL certificate for `jabber-gw.fmarier.org`
 from [StartSSL](https://startssl.com). This is how I generated the CSR
 (Certificate Signing Request) on a high-entropy machine:
 
-    openssl req -new -newkey rsa:2048 -nodes -out ssl.csr -keyout ssl.key -subj "/C=NZ/CN=jabber-gw.fmarier.org"
+    openssl req -new -newkey rsa:2048 -sha256 -nodes -out ssl.csr -keyout ssl.key -subj "/C=NZ/CN=jabber-gw.fmarier.org"
 
 I downloaded the signed certificate as well as the
 [StartSSL intermediate certificate](https://startssl.com/certs/) and
