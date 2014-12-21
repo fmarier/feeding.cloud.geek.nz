@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="188.174.48.138"
+ claimedauthor="madduck"
+ subject="Mosh? Mobile clients?"
+ date="2014-11-26T11:51:53Z"
+ content="""
+Why don't you just use mosh to connect to an IRC session running in screen? What's the benefit of znc and a local client?
+
+Also, I've looked at znc particularly for multi-client support. The idea would be that I have a main irssi session, but during certain times I'd like to tune in to just e.g. #debconf-team from my smartphone. Unfortunately, bouncers usually do all-or-nothing to all clients (meaning I can either subscribe to all channels or none from the smartphone, which will drain the battery like crazy) and while I am led to believe that znc actually supports slave accounts and can be used for this, it's very complex to set up.
+
+Finally, when you have multiple clients working, then privmsgs sent from one don't show up on the other.
+
+All this makes me stay with mosh for now. If only mosh existed for Android…
+"""]]
