@@ -1,0 +1,79 @@
+[[!meta title="Mercurial and Bitbucket workflow for Gecko development"]]
+[[!meta date="2014-12-21T21:30:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+While it sounds like I should really switch to a
+[bookmark-based](http://ahal.ca/blog/2014/new-mercurial-workflow/)
+[Mercurial](http://mercurial.selenic.com) workflow for my
+[Gecko](https://developer.mozilla.org/en-US/docs/Mozilla/Gecko) development,
+I figured that before I do that, I should document how I currently use
+[patch queues](http://mercurial.selenic.com/wiki/MqExtension) and
+[Bitbucket](https://bitbucket.org).
+
+# Starting work on a new bug
+
+After creating a new bug in [Bugzilla](https://bugzilla.mozilla.org), I do
+the following:
+
+1. Create a new `mozilla-central-mq-BUGNUMBER` repo on Bitbucket using the web
+   interface and use `https://bugzilla.mozilla.org/show_bug.cgi?id=BUGNUMBER`
+   as the description.
+2. Create a new patch queue: `hg qqueue -c BUGNUMBER`
+3. Initialize the patch queue: `hg init --mq`
+4. *Make some changes.*
+5. Create a new patch: `hg qnew -Ue bugBUGNUMBER.patch`
+6. Commit the patch to the mq repo: `hg commit --mq -m "Initial version"`
+7. Push the mq repo to Bitbucket: `hg push ssh://hg@bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER`
+8. Make the above URL the default for pull/push by putting this in
+   `.hg/patches-BUGNUMBER/.hg/hgrc`:
+
+        [paths]
+        default = https://bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER
+        default-push = ssh://hg@bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER
+
+# Working on a bug
+
+I like to preserve the history of the work I did on a patch. So once I've
+got some meaningful changes to commit to my patch queue repo, I do the
+following:
+
+1. Add the changes to the current patch: `hg qref`
+2. Check that everything looks fine: `hg diff --mq`
+3. Commit the changes to the mq repo: `hg commit --mq`
+4. Push the changes to Bitbucket: `hg push --mq`
+
+# Switching between bugs
+
+Since I have one patch queue per bug, I can easily work on more than one bug
+at a time without having to clone the repository again and work from a
+different directory.
+
+Here's how I switch between patch queues:
+
+1. Unapply the current queue's patches: `hg qpop -a`
+2. Switch to the new queue: `hg qqueue BUGNUMBER`
+3. Apply all of the new queue's patches: `hg qpush -a`
+
+# Rebasing a patch queue
+
+To rebase my patch onto the latest
+[mozilla-central](https://hg.mozilla.org/mozilla-central/) tip, I do the
+following:
+
+1. Unapply patches using `hg qpop -a`
+2. Update the branch: `hg pull -u`
+3. Reapply the first patch: `hg qpush` and resolve any conflicts
+4. Update the patch file in the queue: `hg qref`
+5. Repeat steps 3 and 4 for each patch.
+6. Commit the changes: `hg commit --mq -m "Rebase patch"`
+
+# Thanks
+
+Thanks to [Thinker Lee](https://twitter.com/ThinkerYzu) for telling me about
+`qqueue` and [Chris Pearce](https://twitter.com/chrisryanpearce) for explaining to me
+how he uses mq repos on Bitbucket.
+
+Of course, feel free to leave a comment if I missed anything useful or if
+there's a easier way to do any of the above.
+
+[[!tag mozilla]] [[!tag mercurial]]
