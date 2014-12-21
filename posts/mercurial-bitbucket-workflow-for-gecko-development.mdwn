@@ -27,9 +27,9 @@ the following:
 8. Make the above URL the default for pull/push by putting this in
    `.hg/patches-BUGNUMBER/.hg/hgrc`:
 
-        [paths]
-        default = https://bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER
-        default-push = ssh://hg@bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER
+       [paths]
+       default = https://bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER
+       default-push = ssh://hg@bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER
 
 # Working on a bug
 
@@ -67,7 +67,7 @@ following:
 5. Repeat steps 3 and 4 for each patch.
 6. Commit the changes: `hg commit --mq -m "Rebase patch"`
 
-# Thanks
+# Credits
 
 Thanks to [Thinker Lee](https://twitter.com/ThinkerYzu) for telling me about
 `qqueue` and [Chris Pearce](https://twitter.com/chrisryanpearce) for explaining to me
