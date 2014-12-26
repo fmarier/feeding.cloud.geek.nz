@@ -1,0 +1,50 @@
+[[!meta title="Making Firefox Hello work with NoScript and RequestPolicy"]]
+[[!meta date="2014-12-26T17:40:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[Firefox Hello](http://blog.mozilla.org/futurereleases/2014/10/16/test-the-new-firefox-hello-webrtc-feature-in-firefox-beta/)
+is a new beta feature in [Firefox 34](https://www.mozilla.org/en-US/firefox)
+which give users the ability to do plugin-free video-conferencing without
+leaving the browser (using [WebRTC](http://www.webrtc.org/) technology).
+
+If you cannot
+[get it to work](https://support.mozilla.org/en-US/kb/firefox-hello-video-and-voice-conversations-online)
+after
+[adding the Hello button](https://support.mozilla.org/en-US/kb/where-firefox-hello-button)
+to the toolbar, this post may help.
+
+# Preferences to check
+
+There are a few preferences to check in `about:config`:
+
+* `media.peerconnection.enabled` should be `true`
+* `network.websocket.enabled` should be `true`
+* `loop.enabled` should be `true`
+* `loop.throttled` should be `false`
+
+# NoScript
+
+If you use the popular
+[NoScript](https://addons.mozilla.org/en-US/firefox/addon/noscript/)
+add-on, you will need to whitelist the following hosts:
+
+* `firefox.com`
+* `loop.services.mozilla.com`
+* `opentok.com`
+* `tokbox.com`
+
+# RequestPolicy
+
+If you use the less popular but equally annoying
+[RequestPolicy](https://addons.mozilla.org/en-US/firefox/addon/requestpolicy/)
+add-on, then you will need to whitelist the following **destination** hosts:
+
+* `mozilla.com`
+* `opentok.com`
+* `tokbox.com`
+
+I have unfortunately not been able to find a way to restrict the above to a
+set of *(source, destination)* pairs. I suspect that the use of websockets
+confuses RequestPolicy.
+
+[[!tag firefox]] [[!tag debian]] [[!tag nzoss]] [[!tag mozilla]]
