@@ -33,6 +33,8 @@ add-on, you will need to whitelist the following hosts:
 * `opentok.com`
 * `tokbox.com`
 
+![](/posts/making-firefox-hello-work-with-noscript-request-policy/noscript-whitelist.png)
+
 # RequestPolicy
 
 If you use the less popular but equally annoying
@@ -42,6 +44,8 @@ add-on, then you will need to whitelist the following **destination** hosts:
 * `mozilla.com`
 * `opentok.com`
 * `tokbox.com`
+
+![](/posts/making-firefox-hello-work-with-noscript-request-policy/requestpolicy-whitelist.png)
 
 I have unfortunately not been able to find a way to restrict the above to a
 set of *(source, destination)* pairs. I suspect that the use of websockets
