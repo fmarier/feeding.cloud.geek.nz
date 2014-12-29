@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="https://openid.fmarier.org/"
+ nickname="fmarier"
+ subject="Re: Privacy/SaaS/network freedom concerns?"
+ date="2014-12-29T18:27:39Z"
+ content="""
+Fabian: As far as I know, both the [backend server](https://github.com/mozilla-services/loop-server) and the [client](http://dxr.mozilla.org/mozilla-central/source/browser/components/loop) are both free software. The client doesn't use any binary blobs other than the optional [OpenH264](https://github.com/cisco/openh264) (which is free software though patent-encumbered).
+
+It also relies on STUN / TURN servers which may or may not be free software, I'm not sure. Probably best to ask the folks on `#loop` (`irc.mozilla.org`).
+"""]]
