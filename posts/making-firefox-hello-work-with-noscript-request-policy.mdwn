@@ -28,27 +28,34 @@ If you use the popular
 [NoScript](https://addons.mozilla.org/en-US/firefox/addon/noscript/)
 add-on, you will need to whitelist the following hosts:
 
-* `firefox.com`
+* `about:loopconversation`
+* `hello.firefox.com`
 * `loop.services.mozilla.com`
 * `opentok.com`
 * `tokbox.com`
-
-![](/posts/making-firefox-hello-work-with-noscript-request-policy/noscript-whitelist.png)
 
 # RequestPolicy
 
 If you use the less popular but equally annoying
 [RequestPolicy](https://addons.mozilla.org/en-US/firefox/addon/requestpolicy/)
-add-on, then you will need to whitelist the following **destination** hosts:
+add-on, then you will need to whitelist the following **destination** host:
 
-* `mozilla.com`
-* `opentok.com`
 * `tokbox.com`
 
-![](/posts/making-firefox-hello-work-with-noscript-request-policy/requestpolicy-whitelist.png)
+as well as the following **origin** to **destination** mappings:
 
-I have unfortunately not been able to find a way to restrict the above to a
+* `about:loopconversation` -> `firefox.com`
+* `about:loopconversation` -> `mozilla.com`
+* `about:loopconversation` -> `opentok.com`
+* `firefox.com` -> `mozilla.com`
+* `firefox.com` -> `mozilla.org`
+* `firefox.com` -> `opentok.com`
+* `mozilla.org` -> `firefox.com`
+
+I have unfortunately not been able to find a way to restrict `tokbox.com` to a
 set of *(source, destination)* pairs. I suspect that the use of websockets
 confuses RequestPolicy.
+
+If you find a more restrictive policy that works, please leave a comment!
 
 [[!tag firefox]] [[!tag debian]] [[!tag nzoss]] [[!tag mozilla]]
