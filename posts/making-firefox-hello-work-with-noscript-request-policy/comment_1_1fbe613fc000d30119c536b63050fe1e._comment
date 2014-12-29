@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="173.248.234.199"
+ claimedauthor="Fabian Rodriguez"
+ url="http://fsf.magicfab.ca"
+ subject="Privacy/SaaS/network freedom concerns?"
+ date="2014-12-29T13:38:48Z"
+ content="""
+I don't suppose Firefox Hello will remain in Debian and other GNU/Linux distributions knowing it depends on third-party non-free network/SaaS services and possibly (I haven' t looked) introduces non-free code. Are there any plans to release this as a proper separate plugin/extension?
+
+[Videocasting/chromecasting](https://f-droid.org/forums/topic/firefox-beta/) is also problematic, but your post highlights a situation similar to what led to [FixUbuntu.com](https://fixubuntu.com/) creation, in that context.
+"""]]
