@@ -16,8 +16,8 @@ After creating a new bug in [Bugzilla](https://bugzilla.mozilla.org), I do
 the following:
 
 1. Create a new `mozilla-central-mq-BUGNUMBER` repo on Bitbucket using the web
-   interface and use `https://bugzilla.mozilla.org/show_bug.cgi?id=BUGNUMBER`
-   as the description.
+   interface and put `https://bugzilla.mozilla.org/show_bug.cgi?id=BUGNUMBER`
+   as the *Website* in the repository settings.
 2. Create a new patch queue: `hg qqueue -c BUGNUMBER`
 3. Initialize the patch queue: `hg init --mq`
 4. *Make some changes.*
