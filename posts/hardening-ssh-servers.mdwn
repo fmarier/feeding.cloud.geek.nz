@@ -18,6 +18,8 @@ This is what `/etc/ssh/sshd_config` should contain:
     PasswordAuthentication no
     PermitRootLogin no
 
+You may also want to ensure you are using [strong ciphers and hash functions](https://stribika.github.io/2015/01/04/secure-secure-shell.html).
+
 # Whitelist approach to giving users ssh access
 
 To ensure that only a few users have ssh access to the server and that newly
