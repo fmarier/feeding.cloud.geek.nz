@@ -1,0 +1,4 @@
+[[!meta title="pages tagged hsts"]]
+
+[[!inline pages="tagged(hsts)" actions="no" archive="yes"
+feedshow=10]]
