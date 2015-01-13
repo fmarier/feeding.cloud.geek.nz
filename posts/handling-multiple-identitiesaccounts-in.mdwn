@@ -13,6 +13,10 @@ Now this is to allow me to change the From address within the editor, in case I 
 
     set use_from
 
+and this one pre-fills the From address when replying to emails based on the email account that received the original mail:
+
+    set reverse_name
+
 Here are the two settings that I'm going to change when switching to a different identity (from address and status bar display).  
 
     # default profile
