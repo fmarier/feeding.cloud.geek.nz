@@ -20,12 +20,12 @@ and this one pre-fills the From address when replying to emails based on the ema
 Here are the two settings that I'm going to change when switching to a different identity (from address and status bar display).  
 
     # default profile
-    set from="fmarier@gmail.com"
-    set status_format="-%r-fmarier@gmail.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---"
+    set from="francois@fmarier.org"
+    set status_format="-%r-francois@fmarier.org: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---"
 
 Here are the macros I use to switch from one account to the next (bound to ESC-1 and ESC-2):  
 
-    macro index \e1 ":set from=fmarier@gmail.com\n:set status_format=\"-%r-fmarier@gmail.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to fmarier@gmail.com"
+    macro index \e1 ":set from=francois@fmarier.org\n:set status_format=\"-%r-francois@fmarier.org: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to francois@fmarier.org"
     macro index \e2 ":set from=francois@debian.org\n:set status_format=\"-%r-francois@debian.org: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to francois@debian.org"
 
 And this is the code that uses these macros to switch to the right identity automatically:  
