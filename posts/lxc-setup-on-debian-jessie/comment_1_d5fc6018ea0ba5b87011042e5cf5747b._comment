@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ ip="190.230.132.114"
+ claimedauthor="jordi"
+ url="http://jordila.github.io"
+ subject="...how to LXC other Debian flavours ?"
+ date="2015-01-24T16:51:33Z"
+ content="""
+
+So useful to me, Thanks!
+
+BTW, Can you expando on ? :
+
+sudo MIRROR=http://http.debian.net/debian lxc-create -n sid64 -t debian -- -r sid -a amd64
+
+
+how could i install another Debian flavour (say Wheezy) ?
+
+thanks again
+
+"""]]
