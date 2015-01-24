@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ ip="121.99.143.172"
+ claimedauthor="Francois Marier"
+ url="http://fmarier.org"
+ subject="Re: ...how to LXC other Debian flavours ?"
+ date="2015-01-24T23:06:26Z"
+ content="""
+> BTW, Can you expando on ? :
+> 
+>     sudo MIRROR=http://http.debian.net/debian lxc-create -n sid64 -t debian -- -r sid -a amd64
+> 
+> how could i install another Debian flavour (say Wheezy) ?
+
+If you replace `-r sid` with `-r wheezy` in the above, you'll get a container running Debian stable instead of Debian unstable.
+
+You can also change `-a amd64` to `-a i386` if you want a 32-bit container instead of a 64-bit one.
+"""]]
