@@ -1,0 +1,4 @@
+[[!meta title="pages tagged rackspace"]]
+
+[[!inline pages="tagged(rackspace)" actions="no" archive="yes"
+feedshow=10]]
