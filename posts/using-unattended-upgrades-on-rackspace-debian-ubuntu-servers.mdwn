@@ -1,0 +1,132 @@
+[[!meta title="Using unattended-upgrades on Rackspace's Debian and Ubuntu servers"]]
+[[!meta date="2014-01-26T21:25:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I install the
+[unattended-upgrades](https://packages.debian.org/sid/unattended-upgrades)
+package on almost all of my Debian and Ubuntu servers in order to ensure
+that security updates are automatically applied. It works quite well except
+that I still need to login manually to upgrade my
+[Rackspace](http://www.rackspace.com) servers whenever a new
+`rackspace-monitoring-agent` is released because it comes from a [separate
+repository](http://www.rackspace.com/knowledge_center/article/install-the-cloud-monitoring-agent#Ubuntu)
+that's not covered by unattended-upgrades.
+
+It turns out that unattended-upgrades can be configured to automatically
+upgrade packages outside of the standard security repositories but it's not
+very well documented and the few [relevant
+answers](http://askubuntu.com/questions/87849/how-to-enable-silent-automatic-updates-for-any-repository)
+you can find online are still using the old whitelist syntax.
+
+## Initial setup
+
+The first thing to do is to install the package if it's not already done:
+
+    apt-get install unattended-upgrades
+
+and to answer yes to the automatic stable update question.
+
+If you don't see the question (because your debconf threshold is too low --
+change it with `dpkg-reconfigure debconf`), you can always trigger the
+question manually:
+
+    dpkg-reconfigure -plow unattended-upgrades
+
+Once you've got that installed, the configuration file you need to look at is
+`/etc/apt/apt.conf.d/50unattended-upgrades`.
+
+## Whitelist matching criteria
+
+Looking at the unattended-upgrades
+[source code](https://bazaar.launchpad.net/~ubuntu-core-dev/unattended-upgrades/ubuntu/view/322/unattended-upgrade#L274),
+I found the list of things that can be used to match on in the whitelist:
+
+- `origin` (shortcut: `o`)
+- `label` (shortcut: `l`)
+- `archive` (shortcut: `a`)
+- `suite` (which is the same as `archive`)
+- `component` (shortcut: `c`)
+- `site` (no shortcut)
+
+You can find the value for each of these fields in the appropriate
+`_Release` file under `/var/lib/apt/lists/`.
+
+Note that the value of `site` is the hostname of the package repository,
+also present in the first part these `*_Release` filenames
+(`stable.packages.cloudmonitoring.rackspace.com` in the example below).
+
+In my case, I was looking at the following inside
+`/var/lib/apt/lists/stable.packages.cloudmonitoring.rackspace.com_debian-wheezy-x86%5f64_dists_cloudmonitoring_Release`:
+
+    Origin: Rackspace
+    Codename: cloudmonitoring
+    Date: Fri, 23 Jan 2015 18:58:49 UTC
+    Architectures: i386 amd64
+    Components: main
+    ...
+
+which means that, in addition to `site`, the only things I could match on
+were `origin` and `component` since there are no `Suite` or `Label` fields
+in the Release file.
+
+This is the line I ended up adding to my
+`/etc/apt/apt.conf.d/50unattended-upgrades`:
+
+     Unattended-Upgrade::Origins-Pattern {
+             // Archive or Suite based matching:
+             // Note that this will silently match a different release after
+             // migration to the specified archive (e.g. testing becomes the
+             // new stable).
+     //      "o=Debian,a=stable";
+     //      "o=Debian,a=stable-updates";
+     //      "o=Debian,a=proposed-updates";
+             "origin=Debian,archive=stable,label=Debian-Security";
+             "origin=Debian,archive=oldstable,label=Debian-Security";
+    +        "origin=Rackspace,component=main";
+     };
+
+## Testing
+
+To ensure that the config is right and that `unattended-upgrades` will pick
+up `rackspace-monitoring-agent` the next time it runs, I used:
+
+    unattended-upgrade --dry-run --debug
+
+which should output something like this:
+
+    Initial blacklisted packages: 
+    Starting unattended upgrades script
+    Allowed origins are: ['origin=Debian,archive=stable,label=Debian-Security', 'origin=Debian,archive=oldstable,label=Debian-Security', 'origin=Rackspace,component=main']
+    Checking: rackspace-monitoring-agent (["<Origin component:'main' archive:'' origin:'Rackspace' label:'' site:'stable.packages.cloudmonitoring.rackspace.com' isTrusted:True>"])
+    pkgs that look like they should be upgraded: rackspace-monitoring-agent
+    ...
+    Option --dry-run given, *not* performing real actions
+    Packages that are upgraded: rackspace-monitoring-agent
+
+## Making sure that automatic updates are happening
+
+In order to make sure that all of this is working and that updates are
+actually happening, I always install
+[apticron](https://packages.debian.org/sid/apticron) on all of the servers I
+maintain. It runs once a day and emails me a list of packages that need to
+be updated and it keeps doing that until the system is fully up-to-date.
+
+The only thing missing from this is getting a reminder whenever a package
+update (usually the kernel) **requires a reboot** to take effect. That's
+where the
+[update-notifier-common](https://packages.debian.org/wheezy/update-notifier-common)
+package comes in.
+
+Because that package will add a hook that will create the
+`/var/run/reboot-required` file whenever a kernel update has been installed,
+all you need to do is create a cronjob like this in
+`/etc/cron.daily/reboot-required`:
+
+    #!/bin/sh
+    cat /var/run/reboot-required 2> /dev/null || true
+
+assuming of course that you are already receiving emails sent to the root
+user (if not, add the appropriate alias in `/etc/aliases` and run
+`newaliases`).
+
+[[!tag debian]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag rackspace]]
