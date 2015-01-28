@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="https://openid.fmarier.org/"
+ nickname="fmarier"
+ subject="Re: Look at 50unattended-upgrades"
+ date="2015-01-28T09:05:43Z"
+ content="""
+> So now in jessie it's I think it's pretty good doco, although I'm probably not the best judge since I wrote it.
+
+Indeed, it [looks much better](http://sources.debian.net/src/unattended-upgrades/0.83.3/data/50unattended-upgrades.Debian/#L8) now. Thanks!
+"""]]
