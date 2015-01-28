@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="59.167.217.249"
+ claimedauthor="ras"
+ subject="Look at 50unattended-upgrades"
+ date="2015-01-28T01:37:56Z"
+ content="""
+Did you look in the comment in /etc/apt/preferences.d/50unattended-upgrades?  Yes, it is was so incomplete you did have to read the source to find out how to use it.  And like you I did that.  And then I wrote it up like you did here, and filed a bug whinging about it to the maintainer for good measure.
+
+The maintainer turns out to be a very nice fellow.  So now in jessie it's I think it's pretty good doco, although I'm probably not the best judge since I wrote it.
+"""]]
