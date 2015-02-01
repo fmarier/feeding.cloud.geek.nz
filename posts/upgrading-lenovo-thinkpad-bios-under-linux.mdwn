@@ -1,0 +1,48 @@
+[[!meta title="Upgrading Lenovo ThinkPad BIOS under Linux"]]
+[[!meta date="2015-02-01T16:30:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+The [Lenovo support site](http://support.lenovo.com/) offers downloadable
+BIOS updates that can be run either from Windows or from a bootable CD.
+
+Here's how to convert the bootable CD ISO images under Linux in order to
+update the BIOS from a USB stick.
+
+## Checking the BIOS version
+
+Before upgrading your BIOS, you may want to look up which version of the
+BIOS you are currently running. To do this, install the
+[dmidecode](http://packages.debian.org/jessie/dmidecode) package:
+
+    apt-get install dmidecode
+
+then run:
+
+    dmidecode
+
+or alternatively, look at the following file:
+
+    cat /sys/devices/virtual/dmi/id/bios_version
+
+## Updating the BIOS using a USB stick
+
+To update [without using a bootable
+CD](http://www.thinkwiki.org/wiki/BIOS_update_without_optical_disk), install
+the [genisoimage](http://packages.debian.org/jessie/genisoimage) package:
+
+    apt-get install genisoimage
+
+then use `geteltorito` to convert the ISO you got from Lenovo:
+
+    geteltorito -o bios.img gluj19us.iso
+
+Insert a USB stick you're willing to **erase entirely** and then copy the
+image onto it (replacing `sdX` with the correct **device** name, not
+partition name, for the USB stick):
+
+    dd if=bios.img of=/dev/sdX
+
+then restart and boot from the USB stick by pressing Enter, then F12 when
+you see the Lenovo logo.
+
+[[!tag debian]] [[!tag nzoss]] [[!tag lenovo]] [[!tag thinkpad]]
