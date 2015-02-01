@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ ip="80.72.68.107"
+ claimedauthor="Djadala"
+ subject="easy way"
+ date="2015-02-01T05:39:24Z"
+ content="""
+Hi,
+there is easy way,
+install grub-imageboot, put iso file in /boot/images, update-grub, reboot.
+From grub menu select your iso file.
+
+This works for me.
+Regards,
+Jamil Djadala
+
+"""]]
