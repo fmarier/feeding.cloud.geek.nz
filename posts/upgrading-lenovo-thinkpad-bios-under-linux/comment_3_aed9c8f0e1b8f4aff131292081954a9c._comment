@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ ip="69.172.84.153"
+ claimedauthor="Fabian Rodriguez"
+ url="http://magicfab.ca"
+ subject="DMIDECODE arguments"
+ date="2015-02-05T13:39:20Z"
+ content="""
+If I remember well the dmidecode package is not installed by default. 
+
+You can invoke dmidecode to get the BIOS version only:
+
+    $ sudo dmidecode -s bios-version
+
+But using cat as you mentioned does not require admin privileges.
+"""]]
