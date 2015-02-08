@@ -38,23 +38,14 @@ add-on, you will need to whitelist the following hosts:
 
 If you use the less popular but equally annoying
 [RequestPolicy](https://addons.mozilla.org/en-US/firefox/addon/requestpolicy/)
-add-on, then you will need to whitelist the following **destination** host:
+add-on, then you will need to whitelist the following **origin** to
+**destination** mappings:
 
-* `tokbox.com`
-
-as well as the following **origin** to **destination** mappings:
-
-* `about:loopconversation` -> `firefox.com`
-* `about:loopconversation` -> `mozilla.com`
 * `about:loopconversation` -> `opentok.com`
+* `about:loopconversation` -> `tokbox.com`
 * `firefox.com` -> `mozilla.com`
-* `firefox.com` -> `mozilla.org`
 * `firefox.com` -> `opentok.com`
-* `mozilla.org` -> `firefox.com`
-
-I have unfortunately not been able to find a way to restrict `tokbox.com` to a
-set of *(source, destination)* pairs. I suspect that the use of websockets
-confuses RequestPolicy.
+* `firefox.com` -> `tokbox.com`
 
 If you find a more restrictive policy that works, please leave a comment!
 
