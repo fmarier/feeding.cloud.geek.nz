@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="138.246.2.57"
+ claimedauthor="Christian Neukirchen"
+ url="http://chneukirchen.org/"
+ subject="comment 4"
+ date="2015-02-12T14:00:34Z"
+ content="""
+For my X220, I use a grub4dos USB image that can load the iso directly from the USB stick.
+"""]]
