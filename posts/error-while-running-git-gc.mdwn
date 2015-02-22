@@ -1,0 +1,29 @@
+[[!meta title="Error while running &quot;git gc&quot;"]]
+[[!meta date="2015-02-22T21:30:00.001+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If you see errors like these while trying to do garbage collection on a [git](http://git-scm.com/)
+repository:
+
+    $ git gc
+    warning: reflog of 'refs/heads/synced/master' references pruned commits
+    warning: reflog of 'refs/heads/annex/direct/master' references pruned commits
+    warning: reflog of 'refs/heads/git-annex' references pruned commits
+    warning: reflog of 'refs/heads/master' references pruned commits
+    warning: reflog of 'HEAD' references pruned commits
+    error: Could not read a4909371f8d5a38316e140c11a2d127d554373c7
+    fatal: Failed to traverse parents of commit 334b7d05087ed036c1a3979bc09bcbe9e3897226
+    error: failed to run repack
+
+then the [reflog](http://git-scm.com/docs/git-reflog) may be pointing to
+corrupt entries.
+
+They can be purged by running this:
+
+    $ git reflog expire --all --stale-fix
+
+Thanks to [Joey Hess](http://joeyh.name) for pointing me in the right
+direction while debugging a [git-annex](http://git-annex.branchable.com/)
+problem.
+
+[[!tag git]] [[!tag nzoss]]
