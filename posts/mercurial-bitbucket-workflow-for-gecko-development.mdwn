@@ -23,7 +23,7 @@ the following:
 4. *Make some changes.*
 5. Create a new patch: `hg qnew -Ue bugBUGNUMBER.patch`
 6. Commit the patch to the mq repo: `hg commit --mq -m "Initial version"`
-7. Push the mq repo to Bitbucket: `hg push ssh://hg@bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER`
+7. Push the mq repo to Bitbucket: `hg push --mq ssh://hg@bitbucket.org/fmarier/mozilla-central-mq-BUGNUMBER`
 8. Make the above URL the default for pull/push by putting this in
    `.hg/patches-BUGNUMBER/.hg/hgrc`:
 
