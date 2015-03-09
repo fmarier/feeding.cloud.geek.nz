@@ -8,7 +8,7 @@ After experimenting with [awesome](http://awesome.naquadah.org/) for 2 years and
 
 # Startup script
 
-As soon as I log into my desktop, my [startup script](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/startup) starts a few programs, including:
+As soon as I log into my desktop, my [startup script](https://github.com/fmarier/user-scripts/blob/master/startup) starts a few programs, including:
 
 * [gnome-settings-daemon](https://packages.debian.org/stable/gnome-settings-daemon): makes GTK applications look nice by applying my preferred theme amongst other things
 * [gnome-keyring-daemon](https://packages.debian.org/stable/gnome-keyring): remembers ssh public keys for the duration of my session
@@ -60,7 +60,7 @@ These bindings require the following packages:
 
 Another thing that used to work with GNOME and had to re-create in i3 is the ability to quickly toggle between two keyboard layouts using the keyboard.
 
-To make it work, I wrote [a simple shell script](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/toggle-xkbmap) and assigned a keyboard shortcut to it in `~/.i3/config`:
+To make it work, I wrote [a simple shell script](https://github.com/fmarier/user-scripts/blob/master/toggle-xkbmap) and assigned a keyboard shortcut to it in `~/.i3/config`:
 
     bindsym $mod+u exec /home/francois/bin/toggle-xkbmap
 
@@ -74,7 +74,7 @@ Instead, when I want to suspend to ram, I use the following keyboard shortcut:
 
     bindsym Ctrl+Mod1+s exec /home/francois/bin/s2ram
 
-which executes a [custom suspend script](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/s2ram) to clear the clipboards (using [xsel](https://packages.debian.org/stable/xsel)), flush writes to disk and lock the screen before going to sleep.
+which executes a [custom suspend script](https://github.com/fmarier/user-scripts/blob/master/s2ram) to clear the clipboards (using [xsel](https://packages.debian.org/stable/xsel)), flush writes to disk and lock the screen before going to sleep.
 
 To avoid having to type my sudo password every time [pm-suspend](https://packages.debian.org/stable/pm-utils) is invoked, I added the following line to `/etc/sudoers`:
 
@@ -118,7 +118,7 @@ You can get these output names by running:
 
     xrandr --display :0 | grep " connected"
 
-Finally, because X sometimes fail to detect my external monitor when docking/undocking, I also wrote a [script to set the displays properly](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/external-monitor) and bound it to the appropriate key on my laptop:
+Finally, because X sometimes fail to detect my external monitor when docking/undocking, I also wrote a [script to set the displays properly](https://github.com/fmarier/user-scripts/blob/master/external-monitor) and bound it to the appropriate key on my laptop:
 
     bindsym XF86Display exec /home/francois/bin/external-monitor
 

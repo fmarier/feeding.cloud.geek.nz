@@ -91,11 +91,11 @@ within irssi. That's znc's job now.
 
 So far, this is a pretty standard znc+irssi setup. What makes it work with
 my workflow is the [wrapper
-script](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/irc)
+script](https://github.com/fmarier/user-scripts/blob/master/irc)
 I wrote to [enable
-znc](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/znc-on)
+znc](https://github.com/fmarier/user-scripts/blob/master/znc-on)
 before starting irssi and then [prompt to turn it
-off](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/znc-off)
+off](https://github.com/fmarier/user-scripts/blob/master/znc-off)
 after exiting:
 
     #!/bin/bash

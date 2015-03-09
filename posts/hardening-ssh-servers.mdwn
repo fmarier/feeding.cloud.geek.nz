@@ -46,8 +46,8 @@ Another approach is to hide the ssh service using
 [Single-Packet Authentication](http://en.wikipedia.org/wiki/Single_Packet_Authorization). I
 have [fwknop](http://www.cipherdyne.org/fwknop/) installed on some of my
 servers and use small
-[wrapper](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/spassh)
-[scripts](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/spascp)
+[wrapper](https://github.com/fmarier/user-scripts/blob/master/spassh)
+[scripts](https://github.com/fmarier/user-scripts/blob/master/spascp)
 to connect to them.
 
 # Using restricted shells

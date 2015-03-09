@@ -13,7 +13,7 @@ This tool, [safe-rm](https://launchpad.net/safe-rm), ships with a default system
   
 [Debian](http://packages.debian.org/safe-rm) and [Ubuntu](http://packages.ubuntu.com/safe-rm) packages are available from the usual places.  
   
-There are of course [different approaches](http://gitorious.org/projects/safe-rm/repos/mainline/blobs/master/README) to preventing these kinds of problems...
+There are of course [different approaches](http://repo.or.cz/w/safe-rm.git/blob/ad57ef902217ea5c68a9eede181e526e52e549a0:/README#l42) to preventing these kinds of problems...
 
 
 [[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] 

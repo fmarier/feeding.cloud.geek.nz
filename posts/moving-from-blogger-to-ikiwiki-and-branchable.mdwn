@@ -112,7 +112,7 @@ their blog. The usual cause being the change in post identifiers.
 Unsurprisingly, Ikiwiki already had a
 [few ways to avoid this problem](http://www.branchable.com/forum/Way_to_limit_the_number_of_posts_in_a_feed__63__/). I
 chose to simply
-[modify each tagged feed](https://gitorious.org/fmarier-org/feedingthecloud/commit/903c65607f1120ca540bd30489ae1fb84c162b0f)
+[modify each tagged feed](https://github.com/fmarier/feeding.cloud.geek.nz/commit/903c65607f1120ca540bd30489ae1fb84c162b0f)
 and limit them to the posts added after the move to Branchable.
 
 # Switching DNS

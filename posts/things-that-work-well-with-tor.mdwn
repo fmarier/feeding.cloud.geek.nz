@@ -56,7 +56,7 @@ keeping our public keyring up to date is important since it's the only way
 to ensure that
 [revoked keys](https://www.linux.com/news/featured-blogs/136-distroblogs/6775-the-need-for-a-gpg-revocation-certificate)
 are taken into account. The
-[script I use](https://gitorious.org/fmarier-misc-scripts/user-scripts/source/gpg-refresh-keys)
+[script I use](https://github.com/fmarier/user-scripts/blob/master/gpg-refresh-keys)
 for this runs once a day and has the unfortunate side effect of revealing the
 contents of my address book to the [keyserver](http://pgp.net.nz) I use.
 
