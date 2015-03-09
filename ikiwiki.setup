@@ -24,6 +24,8 @@ destdir: /home/b-feedingthecloud/public_html
 url: http://feeding.cloud.geek.nz
 # url to the ikiwiki.cgi
 cgiurl: http://feeding.cloud.geek.nz/ikiwiki.cgi
+# do not adjust cgiurl if CGI is accessed via different URL
+reverse_proxy: 0
 # filename of cgi wrapper to generate
 cgi_wrapper: /var/www/b-feedingthecloud/ikiwiki.cgi
 # mode for cgi_wrapper (can safely be made suid)
@@ -71,9 +73,12 @@ add_plugins:
 - gitpush
 - notifyemail
 - anonok
+- google
+- autoindex
+- txt
+- date
 # plugins to disable
 disable_plugins:
-- google
 - recentchanges
 # additional directory to search for template files
 templatedir: /usr/share/ikiwiki/templates
@@ -118,8 +123,7 @@ hardlink: 1
 # extra library and plugin directory
 libdir: /home/b-feedingthecloud/.ikiwiki
 # environment variables
-ENV:
-  TMPDIR: /home/b-feedingthecloud/tmp
+#ENV: ''
 # time zone name
 timezone: Pacific/Auckland
 # regexp of normally excluded files to include
@@ -133,11 +137,13 @@ allow_symlinks_before_srcdir: 0
 # cookie control
 cookiejar:
   file: /home/b-feedingthecloud/.ikiwiki/cookies
+# set custom user agent string for outbound HTTP requests e.g. when fetching aggregated RSS feeds
+useragent: ikiwiki/3.20141017
 
 ######################################################################
 # core plugins
 #   (branchable, editpage, git, gitpush, htmlscrubber, ikiwikihosting,
-#    inline, link, meta, parentlinks)
+#    inline, link, meta, parentlinks, templatebody)
 ######################################################################
 
 # branchable plugin
@@ -172,7 +178,7 @@ gitmaster_branch: master
 # gitpush plugin
 # git repository urls that changes are pushed to
 git_push_to:
-- git@gitorious.org:fmarier-org/feedingthecloud.git
+- git@github.com:fmarier/feeding.cloud.geek.nz.git
 
 # htmlscrubber plugin
 # PageSpec specifying pages not to scrub
@@ -225,7 +231,7 @@ anonok_pagespec: postcomment(*)
 blogspam_pagespec: postcomment(*)
 # options to send to blogspam server
 #blogspam_options: blacklist=1.2.3.4,blacklist=8.7.6.5,max-links=10
-# blogspam server XML-RPC url
+# blogspam server JSON url
 #blogspam_server: ''
 
 # httpauth plugin
@@ -244,7 +250,7 @@ moderate_pagespec: '*'
 
 # openid plugin
 # url pattern of openid realm (default is cgiurl)
-#openid_realm: ''
+openid_realm: http://*.branchable.com/
 # url to ikiwiki cgi to use for openid authentication (default is cgiurl)
 #openid_cgiurl: ''
 
@@ -318,8 +324,8 @@ po_link_to: default
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
-#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, google, goto,
+#    mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -343,11 +349,7 @@ comments_allowauthor: 1
 # commit comments to the VCS
 comments_commit: 1
 # Restrict formats for comments to (no restriction if empty)
-comments_allowformats: ''
-
-# getsource plugin
-# Mime type for returned source.
-#getsource_mimetype: text/plain; charset=utf-8
+comments_allowformats: mdwn txt
 
 # mirrorlist plugin
 # list of mirrors
@@ -365,7 +367,7 @@ repositories:
 # path to the omega cgi program
 omega_cgi: /usr/lib/cgi-bin/omega/omega
 # use google site search rather than internal xapian index?
-google_search: 1
+google_search: 0
 
 # theme plugin
 # name of theme to enable
@@ -474,9 +476,9 @@ prettydateformat: '%X, %B %o, %Y'
 
 # recentchanges plugin
 # name of the recentchanges page
-#recentchangespage: recentchanges
+recentchangespage: recentchanges
 # number of changes to track
-#recentchangesnum: 100
+recentchangesnum: 100
 
 # rsync plugin
 # command to run to sync updated pages
@@ -490,7 +492,7 @@ global_sidebars: 1
 # parent page tags are located under
 tagbase: tags
 # autocreate new tag pages?
-#tag_autocreate: 1
+tag_autocreate: 1
 # commit autocreated tag pages
 tag_autocreate_commit: 1
 
