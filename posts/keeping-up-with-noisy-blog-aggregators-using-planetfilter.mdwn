@@ -1,0 +1,126 @@
+[[!meta title="Keeping up with noisy blog aggregators using PlanetFilter"]]
+[[!meta date="2015-03-25T22:55:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I follow a few blog aggregators (or "planets") and it's always a struggle to
+keep up with the amount of posts that some of these get. The best strategy I
+have found so far to is to filter them so that I remove the blogs I am not
+interested in, which is why I wrote
+[PlanetFilter](https://pypi.python.org/pypi/planetfilter).
+
+## Other options
+
+In my opinion, the first step in starting a new free software project should
+be to look for a reason not to do it :) So I started by looking for
+another approach and by asking people around me how they dealt with the
+firehoses that are [Planet Debian](http://planet.debian.org) and
+[Planet Mozilla](http://planet.mozilla.org).
+
+It seems like a lot of people choose to "randomly sample" planet feeds and
+only read a fraction of the posts that are sent through there. Personally
+however, I find there are a lot of authors whose posts I never want to
+miss so this option doesn't work for me.
+
+A better option that other people have suggested is to avoid
+subscribing to the planet feeds, but rather to subscribe to each of the
+author feeds separately and prune them as you go. Unfortunately, this
+*whitelist* approach is a high maintenance one since planets constantly add
+and remove feeds. I decided that I wanted to follow a *blacklist* approach
+instead.
+
+## PlanetFilter
+
+[PlanetFilter](https://pypi.python.org/pypi/planetfilter) is a local application
+that you can configure to fetch your favorite planets and filter the posts
+you see.
+
+If you get it via [Debian](http://packages.debian.org/planetfilter) or
+[Ubuntu](https://launchpad.net/ubuntu/+source/planetfilter), it comes with a
+cronjob that looks at all configuration files in `/etc/planetfilter.d/` and
+outputs filtered feeds in `/var/cache/planetfilter/`.
+
+You can either:
+
+* add `file:///var/cache/planetfilter/planetname.xml` to your local feed reader
+* serve it locally (e.g. `http://localhost/planetname.xml`) using a
+webserver, or
+* host it on a server somewhere on the Internet.
+
+The software will fetch new posts every hour and overwrite the local copy of
+each feed.
+
+A basic configuration file looks like this:
+
+    [feed]
+    url = http://planet.debian.org/atom.xml
+    
+    [blacklist]
+
+## Filters
+
+There are currently two ways of filtering posts out. The main one is by
+author name:
+
+    [blacklist]
+    authors =
+      Alice Jones
+      John Doe
+
+and the other one is by title:
+
+    [blacklist]
+    titles =
+      This week in review
+      Wednesday meeting for
+
+In both cases, if a blog entry contains one of the blacklisted authors or
+titles, it will be discarded from the generated feed.
+
+## Tor support
+
+Since blog updates happen asynchronously in the background, they can
+[work very well over Tor](http://feeding.cloud.geek.nz/posts/things-that-work-well-with-tor/).
+
+In order to set that up in the Debian version of planetfilter:
+
+1. Install the [tor](https://packages.debian.org/tor) and
+   [polipo](https://packages.debian.org/polipo) packages.
+2. Set the following in `/etc/polipo/config`:
+
+        proxyAddress = "127.0.0.1"
+        proxyPort = 8008
+        allowedClients = 127.0.0.1
+        allowedPorts = 1-65535
+        proxyName = "localhost"
+        cacheIsShared = false
+        socksParentProxy = "localhost:9050"
+        socksProxyType = socks5
+        chunkHighMark = 67108864
+        diskCacheRoot = ""
+        localDocumentRoot = ""
+        disableLocalInterface = true
+        disableConfiguration = true
+        dnsQueryIPv6 = no
+        dnsUseGethostbyname = yes
+        disableVia = true
+        censoredHeaders = from,accept-language,x-pad,link
+        censorReferer = maybe
+
+3. Tell planetfilter to use the polipo proxy by adding the following to
+   `/etc/default/planetfilter`:
+
+        export http_proxy="localhost:8008"
+        export https_proxy="localhost:8008"
+
+## Bugs and suggestions
+
+The source code is available on
+[repo.or.cz](http://repo.or.cz/w/planetfilter.git).
+
+I've been using this for over a month and it's been working quite well for
+me. If you give it a go and run into any problems, please
+[file a bug](https://bugs.launchpad.net/planetfilter/+filebug)!
+
+I'm also interested in any suggestions you may have.
+
+[[!tag mozilla]] [[!tag debian]] [[!tag python]] [[!tag nzoss]] [[!tag tor]]
