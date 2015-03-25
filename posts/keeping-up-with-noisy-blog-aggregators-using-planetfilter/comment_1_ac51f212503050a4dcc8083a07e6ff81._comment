@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="2.229.4.174"
+ claimedauthor="risca"
+ url="http://risca.eu"
+ subject="My alternative"
+ date="2015-03-25T11:00:50Z"
+ content="""
+Hi,
+the way you do seems interesting. Till some time ago I was used to use akregator, but now I've change to rss2email [0]. What I do is running through cron the program rss2email which fetchs the feeds and sends them to my email inbox. There I order, sort and in case blacklist the feeds using the mailbox filters.
+
+The advantage is that I can access them from wherever I am (through IMAP as well as webmail access), the filtering are really powerful and easy to set, it's in sync on every computer that I use.
+
+[0] http://www.allthingsrss.com/rss2email/
+"""]]

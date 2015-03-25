@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="70.208.67.189"
+ claimedauthor="Jim"
+ subject="comment 1"
+ date="2015-03-25T13:40:48Z"
+ content="""
+I've used yahoo pipes to filter unwanted \"noise\" from feeds via regex with great success. Very easy to craft stuff like this on the fly. 
+"""]]
