@@ -78,13 +78,13 @@ In addition to these rules around dependencies, we decided to treat the
 application as if it were going to be uploaded to Debian:
 
 - It includes an ["upstream"
-  Makefile](https://gitorious.org/libravatar/libravatar/source/Makefile)
+  Makefile](https://git.nzoss.org.nz/libravatar/libravatar/blob/master/Makefile)
   which minifies CSS and JavaScript, gzips them, and compiles PO files
   (i.e. a "build" step).
 - The Makefile includes a `test` target which runs the unit tests and some
   lint checks ([pylint](http://packages.debian.org/stable/pylint), [pyflakes](http://packages.debian.org/stable/pyflakes) and [pep8](http://packages.debian.org/stable/pep8)).
 - [Debian
-  packages](https://gitorious.org/libravatar/libravatar/source/debian/control)
+  packages](https://git.nzoss.org.nz/libravatar/libravatar/blob/master/debian/control)
   are produced to encode the dependencies in the standard way as well as to
   run various setup commands in maintainer scripts and install cron jobs.
 - The project runs its own package repository using

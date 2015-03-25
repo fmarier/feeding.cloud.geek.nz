@@ -23,7 +23,7 @@ Linking the original bug reports in Launchpad to committed code (and its review 
   
 The first step was to create a [new Launchpad account](https://launchpad.net/+login) for these automated updates and to confirm the email address it will be sending emails from. In our case, the account is [MaharaBot](https://launchpad.net/~dev-mahara).  
   
-Then, we wrote a [custom hook script](http://gitorious.org/mahara/mahara-scripts/blobs/master/change-merged) (inspired by [one for JIRA](https://github.com/hobbs/jirret)) which we placed in `~/mahara_reviews/etc/gerrit.config`.  
+Then, we wrote a [custom hook script](https://gitlab.com/mahara/mahara-scripts/blob/master/change-merged) (inspired by [one for JIRA](https://github.com/hobbs/jirret)) which we placed in `~/mahara_reviews/etc/gerrit.config`.  
   
 For an example of what it sends to the bug tracker, see [bug 788457](https://bugs.launchpad.net/mahara/+bug/788457).
 

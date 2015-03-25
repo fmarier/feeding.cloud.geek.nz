@@ -9,7 +9,7 @@ Here are some notes on what was involved in migrating to the [Observer API](http
 
 Libravatar used to `POST` the user's assertion to the server-side verification code through a hidden HTML form, just like the [example Python CGI](https://github.com/mozilla/browserid-cookbook/blob/6b5292f9cdf4f25cb37dca5dcd91dcdaa3efaee6/python/python.cgi#L26) from the [BrowserID cookbook](https://github.com/mozilla/browserid-cookbook).
 
-This was a reasonable solution when the Persona code was only needed on a handful of pages, but the new API recommends loading the code on all pages where users can be logged in. Therefore, instead of copying this hidden form into the base template and including it on every page, I decided to [switch to a jQuery.post()-based solution](https://gitorious.org/libravatar/libravatar/commit/8fc6cab6186052dbdb1dee379141114f6b272233) prior to making any other changes.
+This was a reasonable solution when the Persona code was only needed on a handful of pages, but the new API recommends loading the code on all pages where users can be logged in. Therefore, instead of copying this hidden form into the base template and including it on every page, I decided to [switch to a jQuery.post()-based solution](https://git.nzoss.org.nz/libravatar/libravatar/commit/8fc6cab6186052dbdb1dee379141114f6b272233) prior to making any other changes.
 
 As a side-effect of interacting with the backend in an [AJAX](https://en.wikipedia.org/wiki/Ajax_%28programming%29) call, the error pages were converted to [JSON](https://en.wikipedia.org/wiki/JSON) structures and are now displayed in a popup alert.
 
@@ -24,11 +24,11 @@ In the case of Libravatar, this involved:
   * adding a redirection to the [existing logout page](https://www.libravatar.org/account/logout) from the new `onlogout` callback
   * sharing part of the session state (i.e. which user is currently logged in, if any) with Persona through the `loggedInEmail` option to `watch()`
 
-One thing to note is that while [`loggedInEmail` is going to be renamed to `loggedInUser`](https://github.com/mozilla/browserid/pull/1806), this change hasn't hit the production version of Persona yet and so I [reverted to the old name](https://gitorious.org/libravatar/libravatar/commit/d39673bda7acfa615b52c9eaba98b565c14bcbf3) after noticing that [`onlogin` was unnecessarily called on every page load](https://github.com/mozilla/browserid/issues/2145) (a fairly expensive operation given the need to transmit and verify the assertion server-side).
+One thing to note is that while [`loggedInEmail` is going to be renamed to `loggedInUser`](https://github.com/mozilla/browserid/pull/1806), this change hasn't hit the production version of Persona yet and so I [reverted to the old name](https://git.nzoss.org.nz/libravatar/libravatar/commit/d39673bda7acfa615b52c9eaba98b565c14bcbf3) after noticing that [`onlogin` was unnecessarily called on every page load](https://github.com/mozilla/browserid/issues/2145) (a fairly expensive operation given the need to transmit and verify the assertion server-side).
 
 ### Simplifying Content Security Policy headers
 
-The [CSP headers](http://feeding.cloud.geek.nz/2011/11/using-browserid-and-content-security.html) that Libravatar used to set on the pages that made use of the Persona Javascript shim now need to be set on every page, which is actually a nice [simplication of our Apache config](https://gitorious.org/libravatar/libravatar/commit/ae4c4db7859193eed6c85d820d95a1134599f21c).
+The [CSP headers](http://feeding.cloud.geek.nz/2011/11/using-browserid-and-content-security.html) that Libravatar used to set on the pages that made use of the Persona Javascript shim now need to be set on every page, which is actually a nice [simplication of our Apache config](https://git.nzoss.org.nz/libravatar/libravatar/commit/ae4c4db7859193eed6c85d820d95a1134599f21c).
 
 Note that if your CSP headers still refer to `browserid.org`, you must [change them to `login.persona.org`](https://mail.mozilla.org/pipermail/persona-notices/2012/000001.html).
 
@@ -38,28 +38,28 @@ One important change with respect to the old API is that Persona now keeps track
 
 This is a very important feature since it will enable features like global logout and persistent cross-device logins, but it does mean that you have to notify Persona whenever your login state changes. If you forget to do this, your state will be automatically changed to match what Persona expects to see.
 
-In Libravatar, this means that when users delete their account, we need to kill their session and [tell Persona about it](https://gitorious.org/libravatar/libravatar/commit/96513befe1668f0759968bd8417eb8c7e8fbde09) (through [navigator.id.logout()](https://developer.mozilla.org/en/DOM/navigator.id.logout)). Otherwise, Persona will log them in again, which will of course cause a new account to be provisioned.
+In Libravatar, this means that when users delete their account, we need to kill their session and [tell Persona about it](https://git.nzoss.org.nz/libravatar/libravatar/commit/96513befe1668f0759968bd8417eb8c7e8fbde09) (through [navigator.id.logout()](https://developer.mozilla.org/en/DOM/navigator.id.logout)). Otherwise, Persona will log them in again, which will of course cause a new account to be provisioned.
 
 ### Working around the internal login state
 
 The most complicated part of this migration to the new API was around our "add email" functionality, which lets users add extra emails to their existing Libravatar account.
 
-With the old `get()` API, adding emails was as easy as requesting additional assertions and verifying them. Under the Observer API, requesting an assertion also changes the internal state that Persona keeps for that website. In practice, it means that after adding a new email in Libravatar, we need to [update the "logged in" identifier](https://gitorious.org/libravatar/libravatar/commit/8b4dff7bbd491366fd75fa1fd7309ff1992e6e4e) to match the new one. Failure to do this will prompt Persona to invoke the `onlogout` callback with a different email, which will cause the email to get added to a new Libravatar account instead.
+With the old `get()` API, adding emails was as easy as requesting additional assertions and verifying them. Under the Observer API, requesting an assertion also changes the internal state that Persona keeps for that website. In practice, it means that after adding a new email in Libravatar, we need to [update the "logged in" identifier](https://git.nzoss.org.nz/libravatar/libravatar/commit/8b4dff7bbd491366fd75fa1fd7309ff1992e6e4e) to match the new one. Failure to do this will prompt Persona to invoke the `onlogout` callback with a different email, which will cause the email to get added to a new Libravatar account instead.
 
 There are also two corner cases where Libravatar needs to fallback to its manual authentication backend and tell Persona that nobody is logged in:
 
-  * when users [remove from their account](https://gitorious.org/libravatar/libravatar/commit/0c597856c35c4138613ace28770bf8a1b27756c4) the email address that their Persona session is tied to
-  * when users [unsuccessfully attempt to add](https://gitorious.org/libravatar/libravatar/commit/f2b8772a0ac7766e7f4443c4c999e12914a2e940) an email that's already claimed by another account
+  * when users [remove from their account](https://git.nzoss.org.nz/libravatar/libravatar/commit/0c597856c35c4138613ace28770bf8a1b27756c4) the email address that their Persona session is tied to
+  * when users [unsuccessfully attempt to add](https://git.nzoss.org.nz/libravatar/libravatar/commit/f2b8772a0ac7766e7f4443c4c999e12914a2e940) an email that's already claimed by another account
 
 In any case, despite these hacks, I got it all working in the end which is why I'm hopeful that [we'll find a way to support this use case](https://github.com/mozilla/browserid/issues/2152).
 
 ### Taking advantage of the new features
 
-The most visible feature that the new API brings (as [options to `request()`](https://gitorious.org/libravatar/libravatar/commit/bccf97a3709dec79d6ac6d7848c9f8851f31f19f)) is the [ability to add your name and logo](http://identity.mozilla.com/post/27122712140/new-feature-adding-your-websites-name-and-logo-to-the) to the Persona popup window:
+The most visible feature that the new API brings (as [options to `request()`](https://git.nzoss.org.nz/libravatar/libravatar/commit/bccf97a3709dec79d6ac6d7848c9f8851f31f19f)) is the [ability to add your name and logo](http://identity.mozilla.com/post/27122712140/new-feature-adding-your-websites-name-and-logo-to-the) to the Persona popup window:
 
 ![](/posts/migrating-libravatar-to-persona/persona_branded_popup.png)
 
-The second feature [I tried to enable](https://gitorious.org/libravatar/libravatar/commit/984e51875b215156b4b85d465bfd0b17ef3c9628) on Libravatar is the new [redirectTo](http://identity.mozilla.com/post/27914354400/improvements-to-the-first-time-sign-up-flow) `request()` option. Unfortunately, I had to [revert this change](https://gitorious.org/libravatar/libravatar/commit/b6d5919f9aaa31f8ba40deecec64aeafb5189632) since in our case, going straight to the profile page causes the [@login_required](https://docs.djangoproject.com/en/1.2/topics/auth/#the-login-required-decorator) Django decorator to run before the `onlogin` callback has a chance to set the session cookie.
+The second feature [I tried to enable](https://git.nzoss.org.nz/libravatar/libravatar/commit/984e51875b215156b4b85d465bfd0b17ef3c9628) on Libravatar is the new [redirectTo](http://identity.mozilla.com/post/27914354400/improvements-to-the-first-time-sign-up-flow) `request()` option. Unfortunately, I had to [revert this change](https://git.nzoss.org.nz/libravatar/libravatar/commit/b6d5919f9aaa31f8ba40deecec64aeafb5189632) since in our case, going straight to the profile page causes the [@login_required](https://docs.djangoproject.com/en/1.2/topics/auth/#the-login-required-decorator) Django decorator to run before the `onlogin` callback has a chance to set the session cookie.
 
 In any case, redirecting to the login page already worked and so Libravatar probably doesn't need to make use of this Persona feature.
 

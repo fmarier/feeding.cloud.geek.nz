@@ -18,7 +18,7 @@ Here is what the affected code used to look like (edited for clarity):
 
   
   
-One of the problems with this code was that if the `handle_activity()` function threw an exception, it would interfere with the processing of the entire queue. So [it got fixed](http://gitorious.org/mahara/mahara/commit/823ab3168aed5ae0e4de27139d56b50c0ab0787c) in the following way:  
+One of the problems with this code was that if the `handle_activity()` function threw an exception, it would interfere with the processing of the entire queue. So [it got fixed](https://github.com/MaharaProject/mahara/commit/823ab3168aed5ae0e4de27139d56b50c0ab0787c) in the following way:  
   
 
 <pre>
@@ -40,7 +40,7 @@ db_commit();
   
 Much better. However, there was still a problem with the code: the whole queue processing is contained within a transaction. This means that should any of the SQL statements fail at any point, the exception would be caught but the SQL statements would all be rolled back at the end by the database.  
   
-Now the idea of a transaction is good: we want activity handling to either succeed entirely or be rolled back. But the fact that some activities cannot be handled should not interfere with other activities. So this has [been fixed](http://gitorious.org/mahara/mahara/commit/d08395ac1308727dd45396083f454c47605c0604) by moving the transaction to the inside of the loop:  
+Now the idea of a transaction is good: we want activity handling to either succeed entirely or be rolled back. But the fact that some activities cannot be handled should not interfere with other activities. So this has [been fixed](https://github.com/MaharaProject/mahara/commit/d08395ac1308727dd45396083f454c47605c0604) by moving the transaction to the inside of the loop:  
   
 
 <pre>
@@ -64,7 +64,7 @@ So individual activites are allowed to fail and get rolled back, but they will n
   
 Well, in that case, it turns out that Mahara will never reach the `delete_records()` call and the activity queue will never be cleared. Which means that on the next cron run, all of the activities will be handled again, even the ones that were successfully handled already (i.e. emails will be sent over and over again).  
   
-The way we [fixed this problem](http://gitorious.org/mahara/mahara/commit/d736fd6c0c99cb998af56979b12ceab60ed101ee) was by moving the `delete_records()` from the end of the function to the beginning of the loop:  
+The way we [fixed this problem](https://github.com/MaharaProject/mahara/commit/d736fd6c0c99cb998af56979b12ceab60ed101ee) was by moving the `delete_records()` from the end of the function to the beginning of the loop:  
   
 
 <pre>

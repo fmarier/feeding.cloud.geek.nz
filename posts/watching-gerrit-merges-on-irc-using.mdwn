@@ -25,7 +25,7 @@ To avoid interrupting our [main developer channel](irc://chat.freenode.net/%23ma
 
 Since the place where we host our code, [Gitorious](https://gitorious.org/), doesn't support automatic notifications to cia.vc, we added a [merge hook](http://gerrit.googlecode.com/svn/documentation/2.1.6/config-hooks.html#change-merged) into our [code review system](https://reviews.mahara.org/) to let cia.vc know whenever a commit gets merged into our branch.  
   
-You can take a look at the [custom hook script](http://gitorious.org/mahara/mahara-scripts/blobs/master/change-merged) we wrote for this (note that this script also [updates our bugtracker](http://feeding.cloud.geek.nz/2011/05/integrating-launchpad-and-gerrit-code.html) at the same time), but here are a few notes if you want to write your own [cia.vc client script](http://cia.vc/doc/clients/):
+You can take a look at the [custom hook script](https://gitlab.com/mahara/mahara-scripts/blob/master/change-merged) we wrote for this (note that this script also [updates our bugtracker](http://feeding.cloud.geek.nz/2011/05/integrating-launchpad-and-gerrit-code.html) at the same time), but here are a few notes if you want to write your own [cia.vc client script](http://cia.vc/doc/clients/):
 
   * Client scripts can submit data via [email](http://cia.vc/clients/git/ciabot.bash) or [XMLRPC](http://cia.vc/clients/bzr/cia_bzr.py).
   * The data needs to be sent in an [XML document](http://cia-vc.googlecode.com/svn/trunk/cia/xml/schema.xsd).
