@@ -32,16 +32,16 @@ I personally use a machine fitted with an
 
 The first step is to install the required package:
 
-    sudo apt-get install openvpn
+    sudo apt-get install easy-rsa openvpn
 
 Then, copy the following file in your home directory (no need to run any of
 this as root):
 
     mkdir easy-rsa
-    cp -ai /usr/share/doc/openvpn/examples/easy-rsa/2.0/ easy-rsa/
-    cd easy-rsa/2.0
+    cp -ai /usr/share/easy-rsa/* easy-rsa/
+    cd easy-rsa/
 
-and put something like this in your `~/easy-rsa/2.0/vars`:
+and put something like this in your `~/easy-rsa/vars`:
 
     export KEY_SIZE=2048
     export KEY_COUNTRY="NZ"
@@ -49,9 +49,10 @@ and put something like this in your `~/easy-rsa/2.0/vars`:
     export KEY_CITY="Auckland"
     export KEY_ORG="fmarier.org"
     export KEY_EMAIL="francois@fmarier.org"
-    export KEY_CN=hafnarfjordur.fmarier.org
-    export KEY_NAME=hafnarfjordur.fmarier.org
-    export KEY_OU=VPN
+    export KEY_CN="hafnarfjordur.fmarier.org"
+    export KEY_NAME="hafnarfjordur.fmarier.org"
+    export KEY_OU="VPN"
+    export KEY_ALTNAMES=""
 
 Create this symbolic link:
 
@@ -61,9 +62,9 @@ and generate the keys:
 
     . ./vars
     ./clean-all
-    ./build-ca
+    ./build-ca                 # press ENTER at every prompt
     ./build-key-server server  # press ENTER at every prompt, no password
-    ./build-key akranes  # "akranes" as Name, no password
+    ./build-key akranes        # "akranes" as Name, no password
     ./build-dh
     /usr/sbin/openvpn --genkey --secret keys/ta.key
 

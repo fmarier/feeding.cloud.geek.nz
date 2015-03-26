@@ -1,8 +1,0 @@
-[[!comment format=mdwn
- username="https://www.google.com/accounts/o8/id?id=AItOawnYl3fUmnPET-TVm7Kz_JynXezgtuHvL1M"
- nickname="Joël"
- subject="Ubuntu 13.10 and possibly earlier"
- date="2013-12-24T00:27:12Z"
- content="""
-On Ubuntu 13.10, the easy-rsa package has to be installed along the openvpn package to get the required files in order to setup the CA.
-"""]]
