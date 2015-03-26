@@ -43,7 +43,7 @@ this as root):
 
 and put something like this in your `~/easy-rsa/2.0/vars`:
 
-    export KEY_SIZE=2084
+    export KEY_SIZE=2048
     export KEY_COUNTRY="NZ"
     export KEY_PROVINCE="AKL"
     export KEY_CITY="Auckland"
