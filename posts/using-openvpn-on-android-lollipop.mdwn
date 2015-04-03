@@ -1,0 +1,67 @@
+[[!meta title="Using OpenVPN on Android Lollipop"]]
+[[!meta date="2015-04-03T16:45:00.000+13:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I use my
+[Linode VPS](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff)
+as a VPN endpoint for my laptop when I'm using untrusted networks and I
+wanted to do the same on my Android 5 (Lollipop) phone.
+
+It turns out that it's quite easy to do (doesn't require rooting your phone)
+and that it works very well.
+
+## Install OpenVPN
+
+Once you have [installed and configured OpenVPN on the
+server](http://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/),
+you need to install the OpenVPN app for Android (available both on
+[F-Droid](https://f-droid.org/repository/browse/?fdid=de.blinkt.openvpn) and
+[Google
+Play](https://play.google.com/store/apps/details?id=de.blinkt.openvpn)).
+
+From the `easy-rsa` directory you created while generating the server keys,
+create a new keypair for your phone:
+
+    ./build-key nexus6        # "nexus6" as Name, no password
+
+and then copy the following files onto your phone (e.g. via Google Drive):
+
+* `ca.crt`
+* `nexus6.crt`
+* `nexus6.key`
+* `ta.key`
+
+## Create a new VPN config
+
+If you configured your server as per my instructions, these are the settings
+you'll need to use on your phone:
+
+Basic:
+
+- LZO Compression: `YES`
+- Type: `Certificates`
+- CA Certificate: `ca.crt`
+- Client Certificate: `nexus6.crt`
+- Client Certificate Key: `nexus6.key`
+
+Server list:
+
+- Server address: `hafnarfjordur.fmarier.org`
+- Port: `1194`
+- Protocol: `UDP`
+- Custom Options: `NO`
+
+Authentication/Encryption:
+
+- Expect TLS server certificate: `YES`
+- Certificate hostname check: `YES`
+- Remote certificate subject: `server`
+- Use TLS Authentication: `YES`
+- TLS Auth File: `ta.key`
+- TLS Direction: `1`
+- Encryption cipher: `AES-256-CBC`
+- Packet authentication: `SHA384` (**not** `SHA-384`)
+
+That's it. Everything else should work with the defaults.
+
+[[!tag security]] [[!tag android]] [[!tag debian]] [[!tag nzoss]] [[!tag openvpn]]
