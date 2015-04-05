@@ -15,10 +15,17 @@ you forget):
 This is what `/etc/ssh/sshd_config` should contain:
 
     Protocol 2
+    AuthenticationMethods publickey
     PasswordAuthentication no
     PermitRootLogin no
+    KeyRegenerationInterval 1800
+    UsePrivilegeSeparation sandbox
 
-You may also want to ensure you are using [strong ciphers and hash functions](https://stribika.github.io/2015/01/04/secure-secure-shell.html).
+You may also want to ensure you are using [strong ciphers and hash functions](https://wiki.mozilla.org/Security/Guidelines/OpenSSH#OpenSSH_server):
+
+    KexAlgorithms <insert Mozilla list>
+    Ciphers <insert Mozilla list>
+    MACs <insert Mozilla list>
 
 # Whitelist approach to giving users ssh access
 
