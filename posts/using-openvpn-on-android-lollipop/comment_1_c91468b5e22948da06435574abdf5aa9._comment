@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="2001:44b8:310c:a800:9eb6:54ff:fef5:7038"
+ claimedauthor="Jeremy"
+ url="https://jeremy.visser.name/"
+ subject="IPv6"
+ date="2015-04-05T03:27:10Z"
+ content="""
+I should also mention that IPv6 dual-stack works well over OpenVPN for Android on 5.0 and above (it's broken on 4.4).
+
+(Side-note: IPv6 dual-stack also works well with the strongSwan IKEv2 app.)
+"""]]
