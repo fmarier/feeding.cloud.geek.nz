@@ -23,6 +23,12 @@ This is what `/etc/ssh/sshd_config` should contain:
     PasswordAuthentication no
     PermitRootLogin no
 
+Once you've done that, make sure you have all of the required host keys by running:
+
+    ssh-keygen -A
+
+as root.
+
 You may also want to ensure you are using [strong ciphers and hash functions](https://wiki.mozilla.org/Security/Guidelines/OpenSSH#OpenSSH_server):
 
     KexAlgorithms <insert Mozilla list>
