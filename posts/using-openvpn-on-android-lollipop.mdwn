@@ -24,7 +24,7 @@ create a new keypair for your phone:
 
     ./build-key nexus6        # "nexus6" as Name, no password
 
-and then copy the following files onto your phone (e.g. via Google Drive):
+and then copy the following files onto your phone:
 
 * `ca.crt`
 * `nexus6.crt`
