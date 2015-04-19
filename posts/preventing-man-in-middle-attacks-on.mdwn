@@ -38,17 +38,14 @@ poll pop.gmail.com protocol pop3 user "<i>remoteusername</i>" is "<i>localuserna
 
 ## Postfix
 
-Similarly, to detect changes to the certificate on your outgoing mail server (used as a smarthost on your local postfix instance), extract its sha1 fingerprint:  
-  
+Similarly, to detect changes to the certificate on your outgoing mail server (used as a smarthost on your local postfix instance), extract its sha256 fingerprint:
 
 <pre>
 openssl s_client -connect <i>mail.yourisp.net</i>:465 -showcerts  
-openssl x509 -fingerprint <b>-sha1</b> -noout -in <i>isp.out</i>
+openssl x509 -fingerprint <b>-sha256</b> -noout -in <i>isp.out</i>
 </pre>
 
-  
 Then add the fingerprint to `/etc/postfix/main.cf`:  
-  
 
 <pre>
 relayhost = <i>mail.isp.net</i>  
@@ -58,10 +55,9 @@ smtp_sasl_security_options = noanonymous
 smtp_tls_security_level = fingerprint  
 smtp_tls_mandatory_ciphers = high  
 smtp_tls_mandatory_protocols = !SSLv2, !SSLv3  
-smtp_tls_fingerprint_digest = <b>sha1</b>  
+smtp_tls_fingerprint_digest = <b>sha256</b>
 smtp_tls_fingerprint_cert_match =  
-   <i>12:34:AB:CD:56:78:EF:90:12:AB:CD:34:56:EF:78:90:AB:CD:12:34</i>
+   <i>12:34:AB:CD:56:78:EF:90:12:AB:CD:34:56:EF:78:90:AB:CD:12:34:AB:DD:44:66:DA:77:CF:DB:E4:A7:02:E1</i>
 </pre>
-
 
 [[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] 
