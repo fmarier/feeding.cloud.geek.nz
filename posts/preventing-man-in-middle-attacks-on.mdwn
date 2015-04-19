@@ -41,14 +41,14 @@ poll pop.gmail.com protocol pop3 user "<i>remoteusername</i>" is "<i>localuserna
 Similarly, to detect changes to the certificate on your outgoing mail server (used as a smarthost on your local postfix instance), extract its sha256 fingerprint:
 
 <pre>
-openssl s_client -connect <i>mail.yourisp.net</i>:465 -showcerts  
+openssl s_client -connect smtp.gmail.com:587 -starttls smtp -showcerts
 openssl x509 -fingerprint <b>-sha256</b> -noout -in <i>isp.out</i>
 </pre>
 
 Then add the fingerprint to `/etc/postfix/main.cf`:  
 
 <pre>
-relayhost = <i>mail.isp.net</i>  
+relayhost = smtp.gmail.com
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd  
 smtp_sasl_auth_enable = yes  
 smtp_sasl_security_options = noanonymous  
