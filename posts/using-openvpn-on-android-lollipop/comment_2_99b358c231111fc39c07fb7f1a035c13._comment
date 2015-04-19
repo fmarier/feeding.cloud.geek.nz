@@ -1,0 +1,57 @@
+[[!comment format=mdwn
+ ip="2001:1a80:303a:0:f2de:f1ff:fef6:29b4"
+ claimedauthor="Georg Sauthoff"
+ subject="OpenVPN for Android vs. OpenVPN Connect, Profile File"
+ date="2015-04-18T11:19:32Z"
+ content="""
+I've used your OpenVPN posts as a starting point for my own openvpn experiments.
+
+Is there a reason why you chose the Android App [OpenVPN for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn) over [OpenVPN Connect](https://play.google.com/store/apps/details?id=net.openvpn.openvpn)?
+
+I couldn't find much on the differences in the documentation/FAQ of those projects. I've ended up using 'OpenVPN Connect' since it is claimed that it is the 'official' OpenVPN app - and because it is installed/rated by more users.
+
+Do you know some advantages of one over the other?
+
+Regarding the settings on the Android device - I generally dislike the idea of having to navigate complex configuration dialogs in an android app. Fortunately 'OpenVPN Connect' supports importing the settings, keys and certificate from a single `.ovpn` profile file ('OpenVPN for Android' supports this, too, it seems). With that you can even include the certificates and keys inline.
+
+Your example settings translated to `.ovpn` syntax should look like:
+
+    client
+    dev tun
+    proto udp
+    remote openvpn-gateway.example.org 1194
+    resolv-retry infinite
+    nobind
+    persist-key
+    persist-tun
+    remote-cert-tls server
+    comp-lzo
+    cipher AES-256-CBC
+    auth SHA384
+    <ca>
+    -----BEGIN CERTIFICATE-----
+    [..]
+    -----END CERTIFICATE-----
+    </ca>
+    <cert> 
+    -----BEGIN CERTIFICATE-----
+    [..]
+    -----END CERTIFICATE-----
+    </cert>
+    <key>
+    -----BEGIN PRIVATE KEY-----
+    [..]
+    -----END PRIVATE KEY-----
+    </key>
+
+    key-direction 1
+    <tls-auth>
+    -----BEGIN OpenVPN Static key V1-----
+    [..]
+    -----END OpenVPN Static key V1-----
+    </tls-auth>
+
+I've tested it with 'OpenVPN Connect' on Android 5 and it works as expected.
+
+
+"""]]
