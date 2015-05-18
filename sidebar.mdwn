@@ -24,5 +24,3 @@
 
 [[Tags]]:
 [[!pagestats pages="./tags/* and !tags/debian and !tags/catalyst and !tags/mozilla and !tags/ubuntu and !tags/nzoss and !tags/sysadmin and !tags/mahara" among="./posts/*"]]
-
-<br><center><a href="http://affiliates.mozilla.org/link/banner/25220"><img src="https://affiliates.mozilla.org/media/uploads/banners/cc854bf8135e2a772ee053d743e463eb96a294cc.png"></a></center>
