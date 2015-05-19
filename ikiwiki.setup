@@ -10,7 +10,7 @@
 # name of the wiki
 wikiname: Feeding the Cloud
 # contact email for wiki
-adminemail: francois@fmarier.org
+adminemail: admin@branchable.com
 # users who are wiki admins
 adminuser:
 - https://openid.fmarier.org/
@@ -98,7 +98,7 @@ indexpages: 0
 discussion: 0
 # name of Discussion pages
 discussionpage: Discussion
-# generate HTML5?
+# use elements new in HTML5 like <section>?
 html5: 1
 # only send cookies over SSL connections?
 sslcookie: 0
@@ -120,10 +120,12 @@ hardlink: 1
 #umask: public
 # group for wrappers to run in
 #wrappergroup: ikiwiki
-# extra library and plugin directory
+# extra library and plugin directories
+libdirs: []
+# extra library and plugin directory (searched after libdirs)
 libdir: /home/b-feedingthecloud/.ikiwiki
 # environment variables
-#ENV: ''
+ENV: {}
 # time zone name
 timezone: Pacific/Auckland
 # regexp of normally excluded files to include
@@ -139,6 +141,8 @@ cookiejar:
   file: /home/b-feedingthecloud/.ikiwiki/cookies
 # set custom user agent string for outbound HTTP requests e.g. when fetching aggregated RSS feeds
 useragent: ikiwiki/3.20141017
+# theme has a responsive layout? (mobile-optimized)
+responsive_layout: 1
 
 ######################################################################
 # core plugins
@@ -191,7 +195,7 @@ urlalias:
 - http://feeds.cloud.geek.nz/
 - http://www.feeding.cloud.geek.nz/
 - http://feedingthecloud.branchable.com/
-# openid of primary site owner
+# openid or email of primary site owner
 owner: https://openid.fmarier.org/
 # optional hostname of site this one was branched from
 #parent: ''
@@ -203,6 +207,8 @@ created: 1351997051
 #log_period: 7
 # disable IPv6?
 ipv6_disabled: 0
+# redirect from http to https?
+redirect_to_https: 0
 
 # inline plugin
 # enable rss feeds by default?
@@ -218,7 +224,7 @@ pingurl: []
 
 ######################################################################
 # auth plugins
-#   (anonok, blogspam, httpauth, lockedit, moderatedcomments,
+#   (anonok, blogspam, emailauth, httpauth, lockedit, moderatedcomments,
 #    opendiscussion, openid, passwordauth, signinedit)
 ######################################################################
 
@@ -250,7 +256,7 @@ moderate_pagespec: '*'
 
 # openid plugin
 # url pattern of openid realm (default is cgiurl)
-#openid_realm: http://*.branchable.com/
+#openid_realm: ''
 # url to ikiwiki cgi to use for openid authentication (default is cgiurl)
 #openid_cgiurl: ''
 
@@ -285,8 +291,8 @@ langdefdir: /usr/share/highlight/langDefs
 #po_master_language: en|English
 # slave languages (translated via PO files) format: ll|Langname
 #po_slave_languages:
-#- fr|Français
-#- es|Español
+#- fr|FranÃ§ais
+#- es|EspaÃ±ol
 #- de|Deutsch
 # PageSpec controlling which pages are translatable
 po_translatable_pages: ''
@@ -324,8 +330,8 @@ po_link_to: default
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, google, goto,
-#    mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
+#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -350,6 +356,10 @@ comments_allowauthor: 1
 comments_commit: 1
 # Restrict formats for comments to (no restriction if empty)
 comments_allowformats: mdwn txt
+
+# getsource plugin
+# Mime type for returned source.
+#getsource_mimetype: text/plain; charset=utf-8
 
 # mirrorlist plugin
 # list of mirrors
@@ -405,9 +415,13 @@ websetup_show_unsafe: 0
 
 # calendar plugin
 # base of the archives hierarchy
-#archivebase: archives
-# PageSpec of pages to include in the archives; used by ikiwiki-calendar command
+archivebase: archives
+# PageSpec of pages to include in the archives, if option `calendar_autocreate` is true.
 archive_pagespec: page(posts/*) and !*/Discussion
+# autocreate new calendar pages?
+calendar_autocreate: ''
+# if set, when building calendar pages, also build pages of year and month when no pages were published (building empty calendars).
+calendar_fill_gaps: 1
 
 # listdirectives plugin
 # directory in srcdir that contains directive descriptions
@@ -438,10 +452,11 @@ directive_description_dir: ikiwiki/directive
 ######################################################################
 # other plugins
 #   (aggregate, autoindex, brokenlinks, camelcase, ddate, embed, favicon,
-#    filecheck, flattr, goodstuff, htmlbalance, localstyle, missingsite,
-#    notifyemail, pagetemplate, parked, pingee, pinger, prettydate,
-#    recentchanges, recentchangesdiff, relativedate, rsync, sidebar,
-#    smiley, sortnaturally, tag, testpagespec, trail, transient, typography)
+#    filecheck, flattr, goodstuff, htmlbalance, localstyle, loginselector,
+#    missingsite, notifyemail, pagetemplate, parked, pingee, pinger,
+#    prettydate, recentchanges, recentchangesdiff, relativedate, rsync,
+#    sidebar, smiley, sortnaturally, tag, testpagespec, trail, transient,
+#    typography)
 ######################################################################
 
 # aggregate plugin
