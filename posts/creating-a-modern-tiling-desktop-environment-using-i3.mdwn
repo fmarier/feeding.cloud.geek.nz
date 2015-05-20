@@ -37,13 +37,13 @@ I can also trigger it manually using the following shortcut defined in my `~/.i3
 While keyboard shortcuts can be configured in GNOME, they don't work within i3, so I added a few more bindings to my `~/.i3/config`:
 
     # volume control
-    bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ -- '-5%'
-    bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ -- '+5%'
+    bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '-5%'
+    bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+5%'
+    bindsym XF86AudioMute exec /usr/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle
 
     # brightness control
     bindsym XF86MonBrightnessDown exec xbacklight -steps 1 -time 0 -dec 5
     bindsym XF86MonBrightnessUp exec xbacklight -steps 1 -time 0 -inc 5
-    bindsym XF86AudioMute exec /usr/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle
 
     # show battery stats
     bindsym XF86Battery exec gnome-power-statistics
