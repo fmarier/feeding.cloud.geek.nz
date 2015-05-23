@@ -260,7 +260,7 @@ test the whole setup using `mail root`.
 
 To [reduce the server's contribution to
 bufferbloat](https://lwn.net/Articles/616241/) I change the default kernel
-queueing discipline by putting the following in `/etc/sysctl.conf`:
+queueing discipline (jessie or later) by putting the following in `/etc/sysctl.conf`:
 
     net.core.default_qdisc=fq_codel
 
