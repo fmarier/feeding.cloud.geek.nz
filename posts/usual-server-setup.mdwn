@@ -107,7 +107,7 @@ and add a timeout for root sessions by putting this in `/root/.bash_profile`:
 
 # Security checks
 
-    apt-get install logcheck logcheck-database fcheck tiger debsums
+    apt-get install logcheck logcheck-database fcheck tiger debsums corekeeper
     apt-get remove john john-data rpcbind tripwire
 
 Logcheck is the main tool I use to keep an eye on log files, which is why I
