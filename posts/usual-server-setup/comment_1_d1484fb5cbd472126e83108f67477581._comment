@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="176.0.23.143"
+ claimedauthor="Natureshadow"
+ subject="etckeeper as audit helper"
+ date="2015-05-23T17:07:24Z"
+ content="""
+> turn off daily auto-commits
+> turn off auto-commits before package installs
+
+I'd actually not do that. etckeeper's daily autocommit feature once helped me tracing an intruder in a system that got hijacked by a botnet. Although this shouldn't happen in the first place, it was quite helpful that etckeeper kept a hint on when some important files were changed.
+"""]]
