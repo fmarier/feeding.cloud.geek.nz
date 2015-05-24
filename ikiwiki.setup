@@ -14,6 +14,7 @@ adminemail: admin@branchable.com
 # users who are wiki admins
 adminuser:
 - https://openid.fmarier.org/
+- francois@fmarier.org
 # users who are banned from the wiki
 banned_users: []
 # where the source of the wiki is located
