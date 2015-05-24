@@ -11,31 +11,26 @@ Before you start, make sure you've got both the `parted` and the `grub-pc` packa
 
 Plug in your USB stick and replace the device name and capacity with the appropriate values. (You can find the total capacity of the stick by typing `print` inside parted.)  
 
-<pre>
-$ sudo parted /dev/<i>sda</i>  
-(parted) rm 1  
-(parted) mkpart primary 1MB <i>4009</i>MB  
-(parted) mkfs 1 fat32  
-(parted) toggle 1 boot  
-(parted) quit
-</pre>
+    $ sudo parted /dev/sda
+    (parted) rm 1
+    (parted) mkpart primary 1MB 4009MB
+    (parted) mkfs 1 fat32
+    (parted) toggle 1 boot
+    (parted) quit
 
 ### Install grub
 
 Again, substitute _`sda`_ with the correct device name.  
 
-<pre>
-mount /dev/<i>sda</i> /mnt  
-  
-mkdir -p /mnt/boot/grub  
-cp /usr/lib/grub/i386-pc/* /mnt/boot/grub/  
-echo '(hd0) /dev/<i>sda</i>' &gt; /mnt/boot/grub/device.map  
-sudo grub-install --root-directory=/mnt /dev/<i>sda</i>  
-  
-umount /mnt
-</pre>
+    mount /dev/sda /mnt
+    
+    mkdir -p /mnt/boot/grub
+    cp /usr/lib/grub/i386-pc/* /mnt/boot/grub/
+    echo '(hd0) /dev/sda' > /mnt/boot/grub/device.map
+    sudo grub-install --root-directory=/mnt /dev/sda
+    
+    umount /mnt
 
 That's it, now all you have to do is reboot with the stick plugged in and test booting your box manually with it.
 
-
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 
+[[!tag grub]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]]

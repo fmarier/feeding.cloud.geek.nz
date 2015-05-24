@@ -26,5 +26,4 @@ update-grub
 
 Finally, reboot and cross your fingers :)
 
-
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag nzoss]] 
+[[!tag grub]] [[!tag debian]] [[!tag sysadmin]] [[!tag nzoss]]

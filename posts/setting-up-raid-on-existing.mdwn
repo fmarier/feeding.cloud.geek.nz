@@ -217,5 +217,4 @@ Something else you should seriously consider is to install the `smartmontools` p
 
 These checks, performed by the hard disk controllers directly, could warn you of imminent failures ahead of time. Personally, when I start seeing errors in the SMART log (`smartctl -a /dev/sda`), I order a new drive straight away.
 
-
-[[!tag catalyst]] [[!tag raid]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 
+[[!tag grub]] [[!tag raid]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]]

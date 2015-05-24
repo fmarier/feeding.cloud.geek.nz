@@ -56,5 +56,4 @@ Finally, after reading this [excellent LWN article](http://lwn.net/Articles/4084
   
 Is there anything else I should be doing to make sure I get the most out of my SSD?
 
-
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag raid]]
+[[!tag grub]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag raid]]
