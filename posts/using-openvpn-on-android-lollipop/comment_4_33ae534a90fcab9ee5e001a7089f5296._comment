@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: comment 3"
+ date="2015-05-26T20:02:25Z"
+ content="""
+> Is there a possibility to getting it work with tap interface? The current openvpn binary doesn't work with Android Lollipop :(
+
+I'm using it on Lollipop and I was able to set it up with a graphical app, not a command-line one.
+"""]]
