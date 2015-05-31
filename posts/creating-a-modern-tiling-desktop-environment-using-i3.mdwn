@@ -43,7 +43,7 @@ While keyboard shortcuts can be configured in GNOME, they don't work within i3, 
 
     # brightness control
     bindsym XF86MonBrightnessDown exec xbacklight -steps 1 -time 0 -dec 5
-    bindsym XF86MonBrightnessUp exec xbacklight -steps 1 -time 0 -inc 5
+    bindsym XF86MonBrightnessUp exec xbacklight -steps 1 -time 0 -inc 10
 
     # show battery stats
     bindsym XF86Battery exec gnome-power-statistics
