@@ -1,0 +1,4 @@
+[[!meta title="pages tagged sri"]]
+
+[[!inline pages="tagged(sri)" actions="no" archive="yes"
+feedshow=10]]
