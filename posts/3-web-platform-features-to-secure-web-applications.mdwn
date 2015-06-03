@@ -1,0 +1,188 @@
+[[!meta title="Adding X-Content-Security-Policy headers in a Django application"]]
+[[!meta date="2011-09-18T20:30:00.004+12:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+Three Web Platform Features to Secure your Web Applications
+
+The web platform is constantly evolving and adding new features. Some of
+these allow web authors to harden their web applications against common
+attacks. Here are two established features as well as a new one coming soon
+to a browser near you.
+
+# Content Security Policy
+
+[Content Security Policy](TODO: w3c spec) or CSP is meant to protect web applications
+againts [cross-site scripting](TODO: owasp) attacks by restricting the
+external resources that browsers can load.
+
+This is quite important because the default for browsers is to load anything
+that is referenced by a webpage, executable or not. In order to change this
+default, we need to provide a policy defining what kinds of external resources are acceptable
+to load from a given web page. A simple CSP policy looks like this:
+
+    Content-Security-Policy: script-src 'self' https://cdn.example.com
+
+which is to say that it is delivered as an HTTP response header and contains
+a list of directives controlling various parts of the plaftorm. In the above
+example, it instructs the browser to allow script tags from the same origin
+as the page, as well as those coming from `https://cdn.example.com` but
+nothing else.
+
+Should an attacker insert a script tag pointing to
+`https://evil.example.net`, it will be blocked by the browser. In addition,
+inline scripts are blocked by default because it's impossible to
+distinguish those that are meant to be there from those added by a third
+party.
+
+CSP allows authors to control [a number of different element types](TODO:
+list of directives) and also includes a [reporting functionality](TODO:
+MDN?) via the `report-uri` directive:
+
+    Content-Security-Policy: ... report-uri https://example.com/submit
+
+When browsers block content due to a CSP violation, they will post a JSON
+report to the URL provided by the site.
+
+Basic support for CSP is available in [all browsers except for IE](TODO:
+caniuse.com).
+
+## CSP Level 2
+
+The second version of CSP, [Level 2](TODO: spec), has made it to the most recent
+versions of Chrome and Firefox. The most important new feature in my opinion
+is a new mechanism to whitelist inline scripts.
+
+By including a [hash of the allowed scripts](TODO: inline script section in
+CSP2 spec), authors are able to distinguish between the scripts they added
+themselves and want to see executed on the page, as well as the scripts that
+were added by attackers:
+
+    Content-Security-Policy: script-src 'self' 'sha256-DpuJI2KWjyuDWynH9NpMNutHejNcFPor91XKlMihYhc='
+
+If you were holding out on CSP due to the need to have inline scripts, now
+is the time to take a second look!
+
+# HTTP Strict Transport Security
+
+[Strict Transport Security](TODO: spec), sometimes abbreviated as HSTS or
+STS, is mechanism to prevent HTTPS to HTTP downgrade attacks.
+
+The canonical attack example is one made ridiculously easy by
+[sslstrip](TODO: sslstrip homepage). Taking advantage of the fact that URLs
+default to HTTP and that users typically don't pay much attention to the
+security indicators in browsers, an attacker can take the following flow:
+
+1. user types `bank.com` in the address bar
+2. browser visits `http://bank.com`
+3. server redirects browser from `http://bank.com` to `https://bank.com`
+
+and eliminate the redirect so that the user stays on `http://bank.com`, a
+page that the attacker can trivially tamper with.
+
+What HSTS allows an author to do is instruct visiting web browsers that this
+domain should only ever be visited over HTTPS, via the use of another HTTP
+response header:
+
+    Strict-Transport-Security: max-age=31536000
+
+where the `max-age` is the number of seconds for which a browser should
+remember this.
+
+Once a browser has this domain in its list of HTTPS-only domains, it will
+never connect to it over HTTP and instead will silently "upgrade" all HTTP
+requests (e.g. links a user clicks on, a URL typed in manually) to HTTPS.
+Therefore the attack describe above will fail because the server-side
+redirect will never be needed.
+
+## Preload list
+
+Except for one important case: the very first visit. Because HSTS relies on
+the browser remember an instruction delivered via a response header, the
+first visit to that website is not protected. This is why some browsers have
+a built-in HSTS preload list.
+
+The most popular of these lists is [the one maintained by the Chromium
+folks](TODO: link to chromium source code) and used by both Chrome and
+Firefox. To get your site added to this list, use [this web form](TODO:
+preload list app).
+
+Support for Strict Transport Security is again available in [all browsers
+except for IE](TODO: caniuse.com).
+
+# Subresource Integrity
+
+The last feature I want to mention is [Subresource Integrity](TODO: spec), a
+way to protect external subresources against a compromise of the machines
+that serves them.
+
+The canonical example for SRI is the following:
+
+    <script src="https://code.jquery.com/jquery-1.8.0.min.js">
+
+where an attacker takes control of the infrastructure hosting
+`code.jquery.com` and delivers a different payload to millions of
+unsuspecting web browsers.
+
+With SRI, authors can specify the hash of the response they are expecting
+from that server and therefore ensure that anything else will be blocked by
+the browser and prevent a compromise of their application:
+
+    <script src="https://code.jquery.com/jquery-1.8.0.min.js"
+            integrity="sha256-DpuJI2KWjyuDWynH9NpMNutHejNcFPor91XKlMihYhc="
+            crossorigin="anonymous">
+
+Should there be more than one possible response from the server (for
+example, due to content negotiation or user agent sniffing), then multiple
+hashes may be provided:
+
+    <link rel="stylesheet" href="https://example.com/style.css"
+            integrity="sha256-1Xt9Jx23Yk8XAPqY5oToxhanjO8tw0yTLr3i7v1ievc=
+                       sha256-jTNG5Vpbu1KAraypS+QE8NrNpPeN3FKgF4paEYKt9LE="
+            crossorigin="anonymous">
+
+and browsers will load the subresource as long as one of the hashes matches.
+
+At this time, both scripts and stylesheets can be protected by SRI.
+
+## CORS
+
+The crossorigin attribute is required since cross-origin requests must be
+loaded via [CORS](TODO: spec) in order to be eligible for integrity checks.
+
+The reason for this is that the [Same-Origin Policy](TODO: spec?) prevents
+scripts served from one origin to be able to access data from scripts served
+from a different origin. While SRI checks do not directly enable an attacker
+to read the contents of a remote resource, they do leak some information.
+
+For example, if a cross-domain attacker wants to determine the value of the
+`maritalStatus` variable in the following contrived example:
+
+    var hometown = ????;
+    ...
+
+loading this file via a number of SRI-enabled script elements allows that
+attacker to test a number of different guesses by providing multiples and
+hooking into the `onload` and `onerror` callbacks on each element.
+
+Of course, what this means is that authors wanting to use SRI are limited to
+those resources that have been explicitly been made public for the purposes
+of cross-origin requests via the [CORS response header](TODO:
+enable-cors.org/server link):
+
+    Access-Control-Allow-Origin: *
+
+## Hash generation
+
+To generate the hash digest in the correct format (the same as CSP Level 2),
+authors can use this command:
+
+    cat file.js | openssl dgst -sha256 -binary | openssl enc -base64 -A
+
+or use a service like <https://srihash.org>.
+
+Subresource integrity has initial implementations in both [Chrome](TODO:
+chrome bug) and [Firefox](TODO: 992096).
+
+**If implementing features like these sounds like something you'd like to get
+paid to do, [my team is hiring :)](http://hire.jobvite.com/m?3iYenhwD).**
+
+[[!tag security]] [[!tag web]] [[!tag csp]] [[!tag nzoss]] [[!tag mozilla]] [[!tag owasp]] [[!tag sri]] [[!tag hsts]]
