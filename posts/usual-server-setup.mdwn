@@ -194,9 +194,9 @@ effect.
 
 # Handy utilities
 
-    apt-get install renameutils atool iotop sysstat lsof mtr-tiny
+    apt-get install renameutils atool iotop sysstat lsof mtr-tiny mc
 
-Most of these tools are configure-free, except for sysstat, which requires
+Most of these tools are configuration-free, except for sysstat, which requires
 enabling data collection in `/etc/default/sysstat` to be useful.
 
 # Apache configuration
