@@ -1,0 +1,63 @@
+[[!meta title="Setting the wifi regulatory domain on Linux and OpenWRT"]]
+[[!meta date="2015-08-01T13:20:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+The list of [available wifi channels](https://en.wikipedia.org/wiki/List_of_WLAN_channels)
+is slightly different from country to country. To ensure access to the
+right channels and transmit power settings, one needs to set the right
+regulatory domain in the wifi stack.
+
+# Linux
+
+For most Linux-based computers, you can look and change the current
+regulatory domain using these commands:
+
+    iw reg get
+    iw reg set CA
+
+where *`CA`* is the [two-letter country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+when the device is located.
+
+On Debian and Ubuntu, you can make this setting permanent by putting the
+country code in `/etc/default/crda`.
+
+Finally, to see the list of channels that are available in the current
+config, use:
+
+    iwlist wlan0 frequency
+
+# OpenWRT
+
+On [OpenWRT](https://openwrt.org/)-based routers (including derivatives like
+[Gargoyle](https://www.gargoyle-router.com/)), looking and setting the
+regulatory domain temporarily works the same way (i.e. the `iw` commands
+above).
+
+In order to persist your changes though, you need to use the
+[uci](http://wiki.openwrt.org/doc/uci/wireless) command:
+
+    uci set wireless.radio0.country=CA
+    uci set wireless.radio1.country=CA
+    uci commit wireless
+
+where *`wireless.radio0`* and *`wireless.radio1`* are the wireless devices
+specific to your router. You can look them up using:
+
+    uci show wireless
+
+To test that it worked, simply reboot the router and then look at the
+selected regulatory domain:
+
+    iw reg get
+
+# Scanning the local wifi environment
+
+Once your devices are set to the right country, you should scan the local
+environment to pick the least congested wifi channel. You can use the
+[Kismet spectools](https://kismetwireless.net/spectools/) (free software)
+if you have the hardware, otherwise
+[WifiAnalyzer](https://play.google.com/store/apps/details?id=com.farproc.wifi.analyzer)
+(proprietary) is a good choice on Android (remember to manually set the
+available channels in the settings).
+
+[[!tag debian]] [[!tag openwrt]] [[!tag gargoyle]]
