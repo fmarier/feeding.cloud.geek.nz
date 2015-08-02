@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ ip="89.158.143.6"
+ claimedauthor="John Hughes"
+ url="http://perso.calvaedi.com/~john/"
+ subject="the least congested wifi channel"
+ date="2015-08-02T08:12:01Z"
+ content="""
+\"Once your devices are set to the right country, you should scan the local environment to pick the least congested wifi channel.\"
+
+But beware -- the least congested channel may be unused for a reason.  In my office I can see the usual mess of overlapping wifi's but nobody uses 5/6/7.
+
+And if you try you soon find out why -- something nearby emits huge amounts of noise at those frequencies and those channels just don't work at that location.
+
+(Makes the \"auto select\" feature of many AP's useless). 
+"""]]
