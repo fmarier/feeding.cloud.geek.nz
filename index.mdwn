@@ -6,5 +6,3 @@
 
 [[!inline pages="page(./posts/*) and !*/Discussion" show="10"
 actions=yes rootpage="posts"]]
-
-<script src="http://ad.aloodo.com/ad.js" async></script>
