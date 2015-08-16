@@ -43,6 +43,13 @@ default editor:
 
     update-alternatives --config editor
 
+and I turn on syntax highlighting and visual beeping globally by adding the
+following to `/etc/vim/vimrc.local`:
+
+    syntax on
+    set background=dark
+    set visualbell
+
 # ssh
 
     apt-get install openssh-server mosh fail2ban
