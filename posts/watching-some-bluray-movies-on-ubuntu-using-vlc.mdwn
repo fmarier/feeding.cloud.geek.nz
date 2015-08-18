@@ -1,0 +1,34 @@
+[[!meta title="Watching (some) Bluray movies on Ubuntu 14.04 using VLC"]]
+[[!meta date="2015-08-17T23:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+While the Bluray [digital restrictions management](https://defectivebydesign.org/what_is_drm_digital_restrictions_management)
+system is a lot more crippling than [the one](https://en.wikipedia.org/wiki/Content_Scramble_System) preventing users from watching
+their legally purchased DVDs, it is possible to decode some Bluray discs on
+Linux using [vlc](https://www.videolan.org/).
+
+First of all, install the required packages as root:
+
+    apt install vlc libaacs0 libbluray-bdj libbluray1
+    mkdir /usr/share/libbluray/
+    ln -s /usr/share/java/libbluray-0.5.0.jar /usr/share/libbluray/libbluray.jar
+
+The last two lines are there to fix an error you might see on the console
+when opening a Bluray disc with vlc:
+
+    libbluray/bdj/bdj.c:249: libbluray.jar not found.
+    libbluray/bdj/bdj.c:349: BD-J check: Failed to load libbluray.jar
+
+and is apparently due to a [bug in libbluray](https://mailman.videolan.org/pipermail/libbluray-devel/2013-December/001262.html).
+
+Then, as a user, you must install some [AACS decryption keys](https://en.wikipedia.org/wiki/AACS_encryption_key_controversy).
+The most interesting source at the moment seems to be
+[labDV.com](http://www.labdv.com/aacs/):
+
+    mkdir ~/.config/aacs
+    cd ~/.config/aacs
+    wget http://www.labdv.com/aacs/KEYDB.cfg
+
+but it is still limited in the range of discs it can decode.
+
+[[!tag vlc]]
