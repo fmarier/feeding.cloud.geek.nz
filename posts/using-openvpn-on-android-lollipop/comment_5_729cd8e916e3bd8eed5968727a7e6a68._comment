@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ ip="86.90.183.14"
+ claimedauthor="JD"
+ subject="OpenVPN "
+ date="2015-08-20T09:15:13Z"
+ content="""
+Hello,
+Maybe you can help me.
+I installed the OpenVPN on my tab (Samsung tab4 with Android lollipop) and the connection is OK. I see that there is a connection, I can even ping the tab from my VPNserver (router).
+The thing is now, not all traffic is flowing through the tunnel. I started a couple of applications and the registered data use is not increasing that much. Also some applications won't work because they only work in my own LAN. So my conclusion the tunnel is not used for several applications.
+
+Questions:
+1. How can I check if an application is using the tunnel or nog.
+2. How can I config that all applications are using the tunnel.
+3. Maybe something else I have to do ??
+
+Thanks in advance.
+
+Greetz,
+
+JD
+
+"""]]
