@@ -45,12 +45,15 @@ to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
 
       apt-get install ejabberd
 
-2. Set the following in `/etc/ejabberd/ejabberd.cfg` (don't forget the
+2. Set the following in `/etc/ejabberd/ejabberd.yml` (don't forget the
 trailing dots!):
 
-      {acl, admin, {user, "admin", "fmarier.org"}}.
-      {hosts, ["fmarier.org"]}.
-      {fqdn, "jabber-gw.fmarier.org"}.
+      acl:
+        admin:
+           user:
+               - "admin": "fmarier.org"
+      hosts:
+        - "fmarier.org"
 
 3. Copy the SSL certificate into the `/etc/ejabberd/` directory and set the
 permissions correctly:
@@ -61,16 +64,18 @@ permissions correctly:
 3. [Improve](https://bettercrypto.org/) the client-to-server TLS configuration
 by adding `starttls_required` to this block:
 
-      {listen,
-        [
-          {5222, ejabberd_c2s, [
-            {access, c2s},
-            {shaper, c2s_shaper},
-            {max_stanza_size, 65536},
-            starttls,
-            starttls_required,
-            {certfile, "/etc/ejabberd/ejabberd.pem"}
-          ]},
+      listen:
+        -
+          port: 5222
+          ip: "::"
+          module: ejabberd_c2s
+          certfile: "/etc/ejabberd/ejabberd.pem"
+          starttls: true
+          protocol_options:
+            - "no_sslv3"
+          max_stanza_size: 65536
+          shaper: c2s_shaper
+          access: c2s
 
 4. Restart the ejabberd
 daemon:
