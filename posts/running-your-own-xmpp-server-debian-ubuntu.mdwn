@@ -54,6 +54,8 @@ trailing dots!):
                - "admin": "fmarier.org"
       hosts:
         - "fmarier.org"
+      auth_password_format: scram
+      fqdn: "jabber-gw.fmarier.org"
 
 3. Copy the SSL certificate into the `/etc/ejabberd/` directory and set the
 permissions correctly:
