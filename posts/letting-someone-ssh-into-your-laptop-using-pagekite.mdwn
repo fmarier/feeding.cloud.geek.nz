@@ -1,0 +1,72 @@
+[[!meta title="Letting someone ssh into your laptop using Pagekite"]]
+[[!meta date="2015-08-29T14:20:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to [investigate a bug I was running into](https://github.com/mozilla/rr/issues/1537), I recently had to give
+[my colleague](http://robert.ocallahan.org/) ssh access to my laptop behind a firewall. The easiest way
+I found to do this was to create an account for him on my laptop and setup a
+[pagekite](https://pagekite.net/wiki/OpenSource/) frontend on my
+[Linode server](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff) and a pagekite backend on my laptop.
+
+# Frontend setup
+
+Setting up my Linode server in order to make the ssh service accessible and
+proxy the traffic to my laptop was fairly straightforward.
+
+First, I had to install the
+[pagekite package](https://packages.debian.org/jessie/pagekite) (already in
+Debian and Ubuntu) and open up a port on my firewall by adding the following
+to both `/etc/network/iptables.up.rules` and
+`/etc/network/ip6tables.up.rules`:
+
+    -A INPUT -p tcp --dport 10022 -j ACCEPT
+
+Then I created a new `CNAME` for my server in DNS:
+
+    pagekite.fmarier.org.	3600	IN	CNAME	fmarier.org.
+
+With that in place, I started the pagekite frontend using this command:
+
+    pagekite --clean --isfrontend --rawports=virtual --ports=10022 --domain=raw:pagekite.fmarier.org:Password1
+
+# Backend setup
+
+After installing the [pagekite](https://packages.debian.org/jessie/pagekite) and
+[openssh-server](https://packages.debian.org/jessie/openssh-server) packages
+on my laptop and creating a new user account:
+
+    adduser roc
+
+I used this command to connect my laptop to the pagekite frontend:
+
+    pagekite --clean --frontend=pagekite.fmarier.org:10022 --service_on=raw/22:pagekite.fmarier.org:localhost:22:Password1
+
+# Client setup
+
+Finally, my colleague needed to add the folowing entry to `~/.ssh/config`:
+
+    Host pagekite.fmarier.org
+      CheckHostIP no
+      ProxyCommand /bin/nc -X connect -x %h:10022 %h %p
+
+and install the
+[netcat-openbsd](https://packages.debian.org/jessie/netcat-openbsd) package
+since [other versions of netcat don't work](https://pagekite.net/wiki/Howto/SshOverPageKite/#wrongnetcat).
+
+On Fedora, we used
+[netcat-openbsd-1.89](http://rpm.pbone.net/index.php3/stat/4/idpl/23693452/dir/fedora_19/com/netcat-openbsd-1.89-119.1.i686.rpm.html)
+successfully, but
+[this newer package](https://build.opensuse.org/package/show?project=home%3Astefjakobs&package=netcat-openbsd)
+may also work.
+
+He was then able to ssh into my laptop via `ssh roc@pagekite.fmarier.org`.
+
+# Making settings permanent
+
+I was quite happy settings things up temporarily on the command-line, but
+it's also possible to persist these settings and to make both the pagekite
+frontend and backend start up automatically at boot. See
+[the documentation](https://pagekite.net/wiki/Howto/GNULinux/ConfigureYourSystem/)
+for how to do this on Debian and Fedora.
+
+[[!tag mozilla]] [[!tag debian]] [[!tag sysadmin]] [[!tag ssh]]
