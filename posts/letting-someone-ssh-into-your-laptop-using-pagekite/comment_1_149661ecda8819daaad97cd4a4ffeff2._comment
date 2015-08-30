@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="2001:470:28:8b0:96de:80ff:fe6f:9ad4"
+ claimedauthor="Alexander E. Patrakov"
+ subject="A simpler solution exists"
+ date="2015-08-30T07:19:23Z"
+ content="""
+In similar situations, I just say \"use IPv6\". If a tunnel is needed, miredo is already in Debian, and trex.fi provides a reliable teredo server.
+"""]]
