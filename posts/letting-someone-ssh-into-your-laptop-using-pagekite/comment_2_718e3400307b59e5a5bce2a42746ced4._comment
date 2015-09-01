@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ ip="24.245.127.58"
+ claimedauthor="Chuck Peters"
+ url="axs.org"
+ subject="I think ssh over Tor is even easier"
+ date="2015-08-31T23:12:20Z"
+ content="""
+Did you just tell the whole world how to attack your laptop?
+
+I have provided ssh access with SixXS tunnels, but the ssh connections seem to drop after a while.  I've had other issues with the tunnels also, but I still use it to run a Bind9 hidden master.  
+
+Recently I documented how to set up ssh through Tor with a stealth authentication cookie.  I think it's easier than signing up for a tunnel provider, perhaps setting up a firewall etc...  The latency of Tor can be a bit tedious for an interactive shell, but it works fine for our use cases. 
+
+<a href=\"https://www.axs.org/tor/ssh_access_over_Tor.html\">https://www.axs.org/tor/ssh_access_over_Tor.html</a>
+
+Note if the https doesn't work, try http.  I have been testing some things and have nginx running port 443 and Apache on port 80 and I may break TLS as I try out some things.
+
+"""]]
