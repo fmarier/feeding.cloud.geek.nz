@@ -22,19 +22,27 @@ and setup two encrypted mount points in `/etc/cryptmount/cmtab`:
     backup {  
       dev=/backup.dat  
       dir=/backup  
-      fstype=ext2    fsoptions=defaults     cipher=aes  
-      
-      keyfile=/backup.key  
-      keyhash=sha1    keycipher=des3  
+      fstype=ext4
+      mountoptions=defaults,noatime
+
+      keyfile=/backup.key
+      keyhash=sha512
+      keycipher=aes-xts-plain64
+      keyformat=builtin
+      cipher=aes-xts-plain64
     }  
       
     testbackup {  
       dev=/cdrom/backup.dat  
       dir=/backup  
-      fstype=ext2    fsoptions=defaults    cipher=aes  
-      
-      keyfile=/cdrom/backup.key  
-      keyhash=sha1    keycipher=des3  
+      fstype=ext4
+      mountoptions=defaults,noatime
+
+      keyfile=/cdrom/backup.key
+      keyhash=sha512
+      keycipher=aes-xts-plain64
+      keyformat=builtin
+      cipher=aes-xts-plain64
     }
 
 
@@ -45,11 +53,11 @@ and setup two encrypted mount points in `/etc/cryptmount/cmtab`:
 Make sure you have at least 4.3 GB of free disk space on `/` and then run:  
 
 
-    mkdir /backup  
-    dd if=/dev/zero of=/backup.dat bs=1M count=4096  
-    cryptmount --generate-key 32 backup  
-    cryptmount --prepare backup  
-    mkfs.ext2 -m 0 /dev/mapper/backup  
+    mkdir /backup
+    dd if=/dev/zero of=/backup.dat bs=1M count=4096
+    cryptmount --generate-key 32 backup
+    cryptmount --prepare backup
+    mkfs.ext4 -m 0 /dev/mapper/backup
     cryptmount --release backup
 
 
@@ -100,5 +108,4 @@ and remove the temporary files:
     rm /backup.dat /backup.key
 
 
-
-[[!tag catalyst]] [[!tag debian]] [[!tag backup]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 
+[[!tag catalyst]] [[!tag debian]] [[!tag backup]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]]
