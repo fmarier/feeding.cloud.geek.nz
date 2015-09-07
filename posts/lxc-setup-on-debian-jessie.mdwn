@@ -79,7 +79,7 @@ by typing this command:
 
     sudo lxc-ls --fancy
 
-# Fixing Perl locale errors
+# Fixing locale errors
 
 If you see a bunch of errors like these when you start your container:
 
@@ -96,5 +96,31 @@ then log into the container as root and use:
     dpkg-reconfigure locales
 
 to enable the same locales as the ones you have configured in the host.
+
+If you see these errors while reconfiguring the `locales` package:
+
+    Generating locales (this might take a while)...
+      en_US.UTF-8...cannot change mode of new locale archive: No such file or directory
+     done
+      fr_CA.UTF-8...cannot change mode of new locale archive: No such file or directory
+     done
+    Generation complete.
+
+and see the following `dmesg` output on the host:
+
+    [235350.947808] audit: type=1400 audit(1441664940.224:225): apparmor="DENIED" operation="chmod" info="Failed name lookup - deleted entry" error=-2 profile="/usr/bin/lxc-start" name="/usr/lib/locale/locale-archive.WVNevc" pid=21651 comm="localedef" requested_mask="w" denied_mask="w" fsuid=0 ouid=0
+
+then AppArmor is interfering with the `locale-gen` binary and the
+work-around I found is to temporarily shutdown AppArmor on the host:
+
+    lxc-stop -n sid64
+    service apparmor teardown
+    lxc-start -n sid64 -d
+
+and then start up it later once the locales have been updates:
+
+    lxc-stop -n sid64
+    service apparmor start
+    lxc-start -n sid64 -d
 
 [[!tag debian]] [[!tag lxc]] [[!tag nzoss]]
