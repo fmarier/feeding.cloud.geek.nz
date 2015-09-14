@@ -1,0 +1,107 @@
+[[!meta title="Setting up a network scanner using SANE"]]
+[[!meta date="2015-09-13T22:40:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Sharing a scanner over the network using [SANE](http://sane-project.org/) is
+fairly straightforward. Here's how I shared a scanner on a server (running
+Debian jessie) with a client (running Ubuntu trusty).
+
+# Install SANE
+
+The packages you need on both the client and the server are:
+
+- [libsane](https://packages.debian.org/stable/libsane)
+- [sane-utils](https://packages.debian.org/stable/sane-utils)
+
+You should check whether or your scanner is
+[supported by the latest stable release](http://sane-project.org/sane-mfgs.html) or
+by the
+[latest development version](http://sane-project.org/lists/sane-mfgs-cvs.html).
+
+In my case, I needed to get a
+[Canon LiDE 220](http://www.usa.canon.com/cusa/consumer/products/scanners/photo_scanners/canoscan_lide220?selectedName=DriversAndSoftware)
+working so I had to grab the [libsane 1.0.25+git20150528-1 package](https://packages.debian.org/experimental/libsane) from Debian experimental.
+
+# Test the scanner locally
+
+Once you have SANE installed, you can test it out locally to confirm that it
+detects your scanner:
+
+    scanimage -L
+
+This should give you output similar to this:
+
+    device `genesys:libusb:001:006' is a Canon LiDE 220 flatbed scanner
+
+If that doesn't work, make sure that the scanner is actually detected by the
+USB stack:
+
+    $ lsusb | grep Canon
+    Bus 001 Device 006: ID 04a9:190f Canon, Inc.
+
+and that its USB ID shows up in the SANE backend it needs:
+
+    $ grep 190f /etc/sane.d/genesys.conf 
+    usb 0x04a9 0x190f
+
+To do a test scan, simply run:
+
+    scanimage > test.ppm
+
+and then take a look at the (greyscale) image it produced (`test.ppm`).
+
+# Configure the server
+
+With the scanner working locally, it's time to expose it to network clients
+by adding the client IP addresses to `/etc/sane.d/saned.conf`:
+
+    ## Access list
+    192.168.1.3
+
+and then opening the appropriate port on your firewall
+(typically `/etc/network/iptables` in Debian):
+
+    -A INPUT -s 192.168.1.3 -p tcp --dport 6566 -j ACCEPT
+
+Then you need to ensure that the SANE server is running by setting the
+following in `/etc/default/saned`:
+
+    RUN=yes
+
+if you're using the sysv init system, or by running this command:
+
+    systemctl enable saned.socket
+
+if using systemd.
+
+I actually had to **reboot** to make saned visible to systemd, so if you still
+run into these errors:
+
+    $ service saned start
+    Failed to start saned.service: Unit saned.service is masked.
+
+you're probably just one reboot away from getting it to work.
+
+# Configure the client
+
+On the client, all you need to do is add the following to
+`/etc/sane.d/net.conf`:
+
+    connect_timeout = 60
+    myserver
+
+where `myserver` is the hostname or IP address of the server running saned.
+
+# Test the scanner remotely
+
+With everything in place, you should be able to see the scanner from the
+client computer:
+
+    $ scanimage -L
+    device `net:myserver:genesys:libusb:001:006' is a Canon LiDE 220 flatbed scanner
+
+and successfully perform a test scan using this command:
+
+    scanimage > test.ppm
+
+[[!tag debian]] [[!tag sane]]
