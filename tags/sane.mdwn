@@ -1,0 +1,4 @@
+[[!meta title="pages tagged sane"]]
+
+[[!inline pages="tagged(sane)" actions="no" archive="yes"
+feedshow=10]]
