@@ -1,0 +1,74 @@
+[[!meta title="Hooking into docking and undocking events to run scripts"]]
+[[!meta date="2015-09-19T16:55:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to automatically update my monitor setup and activate/deactivate my
+external monitor when plugging my ThinkPad into its dock, I found a way to
+hook into the ACPI events and run arbitrary scripts.
+
+This was tested on a T420 with a [ThinkPad Dock Series
+3](http://www.thinkwiki.org/wiki/ThinkPad_Port_Replicator_Series_3) as well
+as a T440p with a [ThinkPad Ultra
+Dock](http://www.thinkwiki.org/wiki/ThinkPad_Ultra_Dock).
+
+The only requirement is the ThinkPad ACPI kernel module which you can find in
+the [tp-smapi-dkms
+package](https://packages.debian.org/stable/tp-smapi-dkms) in Debian. That's
+what generates the `ibm/hotkey` events we will listen for.
+
+## Hooking into the events
+
+Create the following
+[ACPI event scripts](http://www.thinkwiki.org/wiki/How_to_configure_acpid#Event_Script)
+as [suggested in this guide](http://phihag.de/2012/thinkpad-docking.html).
+
+Firstly, `/etc/acpi/events/thinkpad-dock`:
+
+    event=ibm/hotkey LEN0068:00 00000080 00004010
+    action=su francois -c "/home/francois/bin/external-monitor dock"
+
+Secondly, `/etc/acpi/events/thinkpad-undock`:
+
+    event=ibm/hotkey LEN0068:00 00000080 00004011
+    action=su francois -c "/home/francois/bin/external-monitor undock"
+
+then restart udev:
+
+    sudo service udev restart
+
+## Finding the right events
+
+To make sure the events are the right ones, lift them off of:
+
+    sudo acpi-listen
+
+and ensure that your script is actually running by adding:
+
+    logger "ACPI event: $*"
+
+at the begininng of it and then looking in `/var/log/syslog` for this lines
+like:
+
+    logger: external-monitor undock
+    logger: external-monitor dock
+
+If that doesn't work for some reason, try using an ACPI event script like this:
+
+    event=ibm/hotkey
+    action=logger %e
+
+to see which event you should hook into.
+
+## Using xrandr inside an ACPI event script
+
+Because the script will be running outside of your user session, the
+`xrandr` calls must explicitly set the display variable (`-d`). This is what
+I used:
+
+    #!/bin/sh
+    logger "ACPI event: $*"
+    xrandr -d :0.0 --output DP2 --auto
+    xrandr -d :0.0 --output eDP1 --auto
+    xrandr -d :0.0 --output DP2 --left-of eDP1
+
+[[!tag debian]] [[!tag nzoss]]
