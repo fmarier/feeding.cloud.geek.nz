@@ -40,7 +40,7 @@ then restart udev:
 
 To make sure the events are the right ones, lift them off of:
 
-    sudo acpi-listen
+    sudo acpi_listen
 
 and ensure that your script is actually running by adding:
 
