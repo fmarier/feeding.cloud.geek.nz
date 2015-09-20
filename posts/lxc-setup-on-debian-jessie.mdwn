@@ -8,7 +8,7 @@ a few things to get the networking to work on my machine.
 
 Start by installing (as root) the necessary packages:
 
-    apt-get install lxc libvirt-bin debootstrap
+    apt install lxc libvirt-bin debootstrap
 
 # Network setup
 
@@ -69,7 +69,7 @@ logins, so you'll need to log into the console:
 then install a text editor inside the container because the root image
 doesn't have one by default:
 
-    apt-get install vim
+    apt install vim
 
 then paste your public key in `/root/.ssh/authorized_keys`.
 
