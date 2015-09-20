@@ -63,10 +63,29 @@ He was then able to ssh into my laptop via `ssh roc@pagekite.fmarier.org`.
 
 # Making settings permanent
 
-I was quite happy settings things up temporarily on the command-line, but
-it's also possible to persist these settings and to make both the pagekite
-frontend and backend start up automatically at boot. See
-[the documentation](https://pagekite.net/wiki/Howto/GNULinux/ConfigureYourSystem/)
-for how to do this on Debian and Fedora.
+I was initially quite happy settings things up temporarily on the
+command-line, but it's also possible to persist these settings and to make
+both the pagekite
+[frontend and backend start up automatically](https://pagekite.net/wiki/Howto/GNULinux/ConfigureYourSystem/))
+at boot.
 
-[[!tag mozilla]] [[!tag debian]] [[!tag sysadmin]] [[!tag ssh]]
+I ended up putting the following in `/etc/pagekite.d/20_frontends.rc` on my
+server:
+
+    #defaults
+    
+    isfrontend
+    rawports=virtual
+    ports=10022
+    domain=raw:pagekite.fmarier.org:Password1
+
+as well as removing the following lines from `/etc/pagekite.d/10_account.rc`:
+
+    # Delete this line!
+    abort_not_configured
+
+before restarting the pagekite daemon using:
+
+    service pagekite restart
+
+[[!tag mozilla]] [[!tag debian]] [[!tag sysadmin]] [[!tag ssh]] [[!tag nzoss]]
