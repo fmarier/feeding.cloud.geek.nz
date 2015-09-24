@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="85.10.96.133"
+ claimedauthor="Adoa Coturnix"
+ url="https://ctrnx.de"
+ subject="Instant Messaging + NoScript"
+ date="2015-09-23T22:58:37Z"
+ content="""
+With Firefox 41 there is a new instant messaging feature.  Somehow it does not work properly for the one who inititates the conversation.  I suspect that NoScript blocks this feature.  However, I have no idea which domains to whitelist as the initiating party has no suggestion presented by NoScript.
+"""]]
