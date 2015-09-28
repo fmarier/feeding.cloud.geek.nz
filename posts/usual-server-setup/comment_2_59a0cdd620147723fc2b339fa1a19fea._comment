@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="207.244.72.195"
+ claimedauthor="MIchael Boelen"
+ url="https://cisofy.com/lynis/"
+ subject="Additions"
+ date="2015-09-28T09:44:08Z"
+ content="""
+Great article to set-up a server and directly apply system hardening principles. Gave me some new ideas for open source security auditing tool Lynis, which you and your readers might find useful after setting up a server. If you are interested, Lynis can be downloaded via [[https://cisofy.com/lynis/]] or [[GitHub|https://github.com/CISOfy/lynis]].
+"""]]
