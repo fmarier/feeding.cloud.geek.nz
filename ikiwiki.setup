@@ -127,7 +127,7 @@ libdirs: []
 # extra library and plugin directory (searched after libdirs)
 libdir: /home/b-feedingthecloud/.ikiwiki
 # environment variables
-#ENV: ''
+ENV: {}
 # time zone name
 timezone: America/Vancouver
 # regexp of normally excluded files to include
@@ -244,6 +244,10 @@ blogspam_pagespec: postcomment(*)
 # blogspam server JSON url
 #blogspam_server: ''
 
+# emailauth plugin
+# email address to send emailauth mails as (default: adminemail)
+emailauth_sender: login@branchable.com
+
 # httpauth plugin
 # url to redirect to when authentication is needed
 #cgiauthurl: http://example.com/wiki/auth/ikiwiki.cgi
@@ -334,8 +338,8 @@ po_link_to: default
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, google, goto,
-#    mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
+#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -360,6 +364,10 @@ comments_allowauthor: 1
 comments_commit: 1
 # Restrict formats for comments to (no restriction if empty)
 comments_allowformats: mdwn txt
+
+# getsource plugin
+# Mime type for returned source.
+#getsource_mimetype: text/plain; charset=utf-8
 
 # mirrorlist plugin
 # list of mirrors
