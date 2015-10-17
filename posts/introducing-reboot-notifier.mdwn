@@ -21,12 +21,12 @@ admins might have written prior to jessie.
 
 If you're running sid or strech, all you need to do is:
 
-  apt install reboot-notifier
+    apt install reboot-notifier
 
 On jessie, you'll need to [add the backports
 repository](http://backports.debian.org/Instructions/#index2h2) to
 `/etc/apt/sources.list`:
 
-  deb http://httpredir.debian.org/debian jessie-backports main
+    deb http://httpredir.debian.org/debian jessie-backports main
 
 [[!tag debian]]
