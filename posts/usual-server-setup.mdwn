@@ -199,6 +199,10 @@ the following cronjob in `/etc/cron.daily/reboot-required`:
 to send me a notification whenever a kernel update requires a reboot to take
 effect.
 
+If you're on jessie or later, simply install
+[reboot-notifier](http://feeding.cloud.geek.nz/posts/introducing-reboot-notifier/)
+instead of `update-notifier-common` and you're done!
+
 # Handy utilities
 
     apt-get install renameutils atool iotop sysstat lsof mtr-tiny mc
