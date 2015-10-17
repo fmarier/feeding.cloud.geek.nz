@@ -1,0 +1,32 @@
+[[!comment format=mdwn
+ ip="59.88.96.37"
+ claimedauthor="shirish agarwal"
+ url="http://flossexperiences.wordpress.com"
+ subject="doesn't needrestart and needrestart-session do the same thing ?"
+ date="2015-10-17T13:42:49Z"
+ content="""
+Dear Francois Marier, 
+
+Does needrestart and needrestart-session do the same thing ?
+
+See :-
+
+$ aptitude show needrestart-session
+Package: needrestart-session             
+State: installed
+Automatically installed: no
+Version: 0.3-2
+Priority: optional
+Section: admin
+Maintainer: Patrick Matthäi <pmatthaei@debian.org>
+Architecture: all
+Uncompressed Size: 187 k
+Depends: perl, needrestart (>= 2.0), libnet-dbus-perl, libproc-processtable-perl, libwx-perl, wmctrl, policykit-1
+Description: check for processes need to be restarted in user sessions
+ needrestart checks which processes need to be restarted after library upgrades. needrestart-session implements a notification of user sessions about
+ their obsolete processes after system upgrades.
+Homepage: https://github.com/liske/needrestart-session
+
+Now, is there a need for reboot-notifier if you have the above installed ?
+
+"""]]
