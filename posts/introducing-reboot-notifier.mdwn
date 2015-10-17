@@ -1,0 +1,32 @@
+[[!meta title="Introducing reboot-notifier for jessie and stretch"]]
+[[!meta date="2015-10-16T18:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+One of the packages that got
+[lost](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=755443) in the
+transition from Debian wheezy to jessie was the
+[update-notifier-common](https://packages.debian.org/wheezy/update-notifier-common)
+package which could be [used to receive notifications when a reboot is
+needed](http://feeding.cloud.geek.nz/posts/usual-server-setup/#Package_updates)
+(for example, after installing a kernel update).
+
+I decided to wrap this piece of functionality along with a [simple cron
+job](https://anonscm.debian.org/cgit/collab-maint/reboot-notifier.git/tree/debian/cron.daily)
+and create a new package:
+[reboot-notifier](https://packages.debian.org/sid/reboot-notifier).
+
+Because it uses the same file (`/var/run/reboot-required`) to indicate
+that a reboot is needed, it should work fine with any custom scripts that
+admins might have written prior to jessie.
+
+If you're running sid or strech, all you need to do is:
+
+  apt install reboot-notifier
+
+On jessie, you'll need to [add the backports
+repository](http://backports.debian.org/Instructions/#index2h2) to
+`/etc/apt/sources.list`:
+
+  deb http://httpredir.debian.org/debian jessie-backports main
+
+[[!tag debian]]
