@@ -1,0 +1,148 @@
+[[!meta title="How Tracking Protection works in Firefox"]]
+[[!meta date="2015-11-05T22:00:00.000+00:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[Firefox 42](https://blog.mozilla.org/blog/2015/11/03/firefox-now-offers-a-more-private-browsing-experience/)
+introduced a new feature in its Private Browsing mode: [tracking
+protection](https://support.mozilla.org/kb/tracking-protection-pbm).
+
+If you are interested in how this binary list is put together and then used
+in Firefox, this post is for you.
+
+# Safe Browsing lists
+
+There are many possible ways to download URLs to the browser and check
+against that list before loading anything. One of those is already
+implemented as part of our [malware and phishing](https://support.mozilla.org/kb/how-does-phishing-and-malware-protection-work) protection. It uses
+the [Safe Browsing v2.2 protocol](https://developers.google.com/safe-browsing/developers_guide_v2).
+
+In a nutshell, the way that this works is that each URL on the block list is
+hashed (using `SHA-256`) and then that list of **binary** hashes is
+downloaded by Firefox and stored into a data structure on disk:
+
+* `~/.cache/mozilla/firefox/XXXX/safebrowsing/mozstd-track*` on Linux
+* `~/Library/Caches/Firefox/Profiles/XXXX/safebrowsing/mozstd-track*` on Mac
+* `C:\Users\XXXX\AppData\Local\mozilla\firefox\profiles\XXXX\safebrowsing\mozstd-track*` on Windows
+
+The
+[sbdbdump script](https://github.com/fmarier/sbdbdump/blob/master/dump.py)
+can be used to examine the hashes contained in these files and will output
+something like this:
+
+    $ ~/sbdbdump/dump.py -v .
+    - Reading sbstore: mozstd-track-digest256
+    [mozstd-track-digest256] magic 1231AF3B Version 3 NumAddChunk: 1 NumSubChunk: 0 NumAddPrefix: 0 NumSubPrefix: 0 NumAddComplete: 1696 NumSubComplete: 0
+    [mozstd-track-digest256] AddChunks: 1445465225
+    [mozstd-track-digest256] SubChunks:
+    ...
+    [mozstd-track-digest256] addComplete[chunk:1445465225] e48768b0ce59561e5bc141a52061dd45524e75b66cad7d59dd92e4307625bdc5
+    ...
+    [mozstd-track-digest256] MD5: 81a8becb0903de19351427b24921a772
+
+The name of the blocklist is set in the `urlclassifier.trackingTable`
+preference which you can find in `about:config`. It currently defaults to
+`mozstd-track-digest256`.
+
+# List lookups
+
+Once it's time to load a resource, Firefox hashes the URL, as well as
+[a few variations](https://developers.google.com/safe-browsing/developers_guide_v2#RegexLookup)
+of it, and then looks for it in the local lists.
+
+If there's no match, then the load proceeds. If there's a match, then we do
+an additional check against a *pairwise allowlist*.
+
+That second list (look for the `urlclassifier.trackingWhitelistTable` pref)
+is designed to encode what we call "entity relationships" which is
+essentially grouping related domains together (e.g. `twitter.com` and
+`twimg.com` both belong to the same entity) for
+the purpose of checking whether a load is first or third party.
+
+Entries on the `mozstd-trackwhite-digest256` list look like this:
+
+    twitter.com/?resource=twimg.com
+
+which translates to "if you're on the `twitter.com` site, then don't block
+resources from `twimg.com`.
+
+So if there's a match on the second list, we don't block the load either.
+It's only when we get a match on the first list and not the second one that
+we go ahead and cancel the network load.
+
+If you visit [our test
+page](https://itisatrap.org/firefox/its-a-tracker.html), you will see
+tracking protection in action with a shield icon in the URL bar. Opening the
+developer tool console will expose the URL of the resource that was blocked:
+
+> The resource at "https://trackertest.org/tracker.js" was blocked because tracking protection is enabled.
+
+# Creating the lists
+
+The blocklist is created by [Disconnect](https://disconnect.me/) according to their
+[definition of tracking](https://disconnect.me/trackerprotection#definition-of-tracking).
+
+The Disconnect list is on their [Github
+page](https://github.com/disconnectme/disconnect-tracking-protection/blob/master/services.json),
+but the copy we use in Firefox is the copy we have in [our own
+repository](https://github.com/mozilla-services/shavar-prod-lists/blob/master/disconnect-blacklist.json).
+Similarly the Disconnect entity list is [from
+here](https://s3.amazonaws.com/lists.disconnect.me/entitylist.json) but our
+copy is in [our
+repository](https://github.com/mozilla-services/shavar-prod-lists/blob/master/disconnect-entitylist.json).
+Should you wish to be notified of any changes to the lists, you
+can simply subscribe to this [Atom
+feed](https://github.com/mozilla-services/shavar-prod-lists/commits/master.atom).
+
+To convert this JSON-formatted list into the binary format needed by the
+Safe Browsing code, we run a [custom list generation
+script](https://github.com/mozilla-services/shavar-list-creation) whenever
+the list changes on GitHub.
+
+If you run that script locally using the [same configuration](https://github.com/mozilla-services/shavar-list-creation-config) as our server
+stack, you can see the conversion from the original list to the binary hashes.
+
+Here's a sample entry from the `mozstd-track-digest256.log` file:
+
+    [m] twimg.com >> twimg.com/
+    [canonicalized] twimg.com/
+    [hash] e48768b0ce59561e5bc141a52061dd45524e75b66cad7d59dd92e4307625bdc5
+
+and one from `mozstd-trackwhite-digest256.log`:
+
+    [entity] Twitter >> (canonicalized) twitter.com/?resource=twimg.com, hash a8e9e3456f46dbe49551c7da3860f64393d8f9d96f42b5ae86927722467577df
+
+Along with the `sbdbdump` script mentioned earlier, you should be able to
+audit the contents of the local lists.
+
+# Serving the lists
+
+The way that the binary lists are served to Firefox is through a
+custom server component written by Mozilla:
+[shavar](https://github.com/mozilla-services/shavar).
+
+Every hour, Firefox requests updates from `shavar.services.mozilla.com` and
+unless there is new data, all it receives in return is an empty `204` response.
+
+Should you want to play with it and run your own server, follow the
+[installation
+instructions](https://github.com/mozilla-services/shavar/blob/master/README.md#running-locally)
+and then go into `about:config` to change these preferences to point to
+your own instance:
+
+    browser.trackingprotection.gethashURL
+    browser.trackingprotection.updateURL
+
+Note that on Firefox 43 and later, these prefs have been renamed to:
+
+    browser.safebrowsing.provider.mozilla.gethashURL
+    browser.safebrowsing.provider.mozilla.updateURL
+
+# Learn more
+
+If you want to learn more about how tracking protection works in Firefox,
+you can find all of the technical on the [Mozilla
+wiki](https://wiki.mozilla.org/Security/Tracking_protection) or you can ask
+questions on our
+[mailing list](https://www.mozilla.org/en-US/about/forums/#dev-security).
+
+[[!tag firefox]] [[!tag nzoss]] [[!tag mozilla]] [[!tag debian]]
