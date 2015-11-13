@@ -1,5 +1,5 @@
 [[!meta title="How Tracking Protection works in Firefox"]]
-[[!meta date="2015-11-13T12:00:00.000-08:00"]]
+[[!meta date="2015-11-13T12:40:00.000-08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 [Firefox 42](https://blog.mozilla.org/blog/2015/11/03/firefox-now-offers-a-more-private-browsing-experience/),
@@ -7,27 +7,27 @@ which was released last week, introduced a new feature in its Private
 Browsing mode:
 [tracking protection](https://support.mozilla.org/kb/tracking-protection-pbm).
 
-If you are interested in how this binary list is put together and then used
+If you are interested in how this list is put together and then used
 in Firefox, this post is for you.
 
 # Safe Browsing lists
 
-There are many possible ways to download URLs to the browser and check
+There are many possible ways to download URL lists to the browser and check
 against that list before loading anything. One of those is already
 implemented as part of our [malware and phishing](https://support.mozilla.org/kb/how-does-phishing-and-malware-protection-work) protection. It uses
 the [Safe Browsing v2.2 protocol](https://developers.google.com/safe-browsing/developers_guide_v2).
 
 In a nutshell, the way that this works is that each URL on the block list is
-hashed (using `SHA-256`) and then that list of **binary** hashes is
+hashed (using `SHA-256`) and then that list of hashes is
 downloaded by Firefox and stored into a data structure on disk:
 
 * `~/.cache/mozilla/firefox/XXXX/safebrowsing/mozstd-track*` on Linux
 * `~/Library/Caches/Firefox/Profiles/XXXX/safebrowsing/mozstd-track*` on Mac
 * `C:\Users\XXXX\AppData\Local\mozilla\firefox\profiles\XXXX\safebrowsing\mozstd-track*` on Windows
 
-The
+This
 [sbdbdump script](https://github.com/fmarier/sbdbdump/blob/master/dump.py)
-can be used to examine the hashes contained in these files and will output
+can be used to extract the hashes contained in these files and will output
 something like this:
 
     $ ~/sbdbdump/dump.py -v .
@@ -40,9 +40,7 @@ something like this:
     ...
     [mozstd-track-digest256] MD5: 81a8becb0903de19351427b24921a772
 
-The name of the blocklist is set in the `urlclassifier.trackingTable`
-preference which you can find in `about:config`. It currently defaults to
-`mozstd-track-digest256`.
+The name of the blocklist being dumped here (`mozstd-track-digest256`) is set in the `urlclassifier.trackingTable` preference which you can find in `about:config`. The most important part of the output shown above is the `addComplete` line which contains a hash that we will see again in a later section.
 
 # List lookups
 
@@ -55,20 +53,19 @@ an
 [additional check](https://dxr.mozilla.org/mozilla-central/rev/cc48981c026c50fdf80d47b040ae1fb8fe99ad07/netwerk/base/nsChannelClassifier.cpp#540)
 against a *pairwise allowlist*.
 
-That second list (look for the `urlclassifier.trackingWhitelistTable` pref)
-is designed to encode what we call "entity relationships" which is
-essentially grouping related domains together (e.g. `twitter.com` and
-`twimg.com` both belong to the same entity) for
-the purpose of checking whether a load is first or third party.
+The *pairwise allowlist* (hardcoded in the `urlclassifier.trackingWhitelistTable` pref)
+is designed to encode what we call "entity relationships". The list groups related domains together  for
+the purpose of checking whether a load is first or third party (e.g. `twitter.com` and
+`twimg.com` both belong to the same entity).
 
-Entries on the `mozstd-trackwhite-digest256` list look like this:
+Entries on this list (named `mozstd-trackwhite-digest256`) look like this:
 
     twitter.com/?resource=twimg.com
 
 which translates to "if you're on the `twitter.com` site, then don't block
 resources from `twimg.com`.
 
-So if there's a match on the second list, we don't block the load either.
+If there's a match on the second list, we don't block the load.
 It's only when we get a match on the first list and not the second one that
 we go ahead and
 [cancel the network load](https://dxr.mozilla.org/mozilla-central/rev/cc48981c026c50fdf80d47b040ae1fb8fe99ad07/netwerk/base/nsChannelClassifier.cpp#643).
@@ -115,7 +112,7 @@ and one from `mozstd-trackwhite-digest256.log`:
 
     [entity] Twitter >> (canonicalized) twitter.com/?resource=twimg.com, hash a8e9e3456f46dbe49551c7da3860f64393d8f9d96f42b5ae86927722467577df
 
-Along with the `sbdbdump` script mentioned earlier, you should be able to
+This in combination with the `sbdbdump` script mentioned earlier, will allow you  to
 audit the contents of the local lists.
 
 # Serving the lists
@@ -124,8 +121,7 @@ The way that the binary lists are served to Firefox is through a
 custom server component written by Mozilla:
 [shavar](https://github.com/mozilla-services/shavar).
 
-Every hour, Firefox requests updates from `shavar.services.mozilla.com` and
-unless there is new data, all it receives in return is an empty `204` response.
+Every hour, Firefox requests updates from `shavar.services.mozilla.com`. If new data is available, then the whole list is downloaded again. Otherwise, all it receives in return is an empty `204` response.
 
 Should you want to play with it and run your own server, follow the
 [installation
@@ -144,9 +140,12 @@ Note that on Firefox 43 and later, these prefs have been renamed to:
 # Learn more
 
 If you want to learn more about how tracking protection works in Firefox,
-you can find all of the technical on the [Mozilla
+you can find all of the technical details on the [Mozilla
 wiki](https://wiki.mozilla.org/Security/Tracking_protection) or you can ask
 questions on our
 [mailing list](https://www.mozilla.org/en-US/about/forums/#dev-security).
+
+*Thanks to [Tanvi Vyas](https://twitter.com/tanvihacks) for reviewing a draft
+of this post.*
 
 [[!tag firefox]] [[!tag nzoss]] [[!tag mozilla]] [[!tag debian]]
