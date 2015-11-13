@@ -1,10 +1,11 @@
 [[!meta title="How Tracking Protection works in Firefox"]]
-[[!meta date="2015-11-05T22:00:00.000+00:00"]]
+[[!meta date="2015-11-13T12:00:00.000-08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-[Firefox 42](https://blog.mozilla.org/blog/2015/11/03/firefox-now-offers-a-more-private-browsing-experience/)
-introduced a new feature in its Private Browsing mode: [tracking
-protection](https://support.mozilla.org/kb/tracking-protection-pbm).
+[Firefox 42](https://blog.mozilla.org/blog/2015/11/03/firefox-now-offers-a-more-private-browsing-experience/),
+which was released last week, introduced a new feature in its Private
+Browsing mode:
+[tracking protection](https://support.mozilla.org/kb/tracking-protection-pbm).
 
 If you are interested in how this binary list is put together and then used
 in Firefox, this post is for you.
@@ -50,7 +51,9 @@ Once it's time to load a resource, Firefox hashes the URL, as well as
 of it, and then looks for it in the local lists.
 
 If there's no match, then the load proceeds. If there's a match, then we do
-an additional check against a *pairwise allowlist*.
+an
+[additional check](https://dxr.mozilla.org/mozilla-central/rev/cc48981c026c50fdf80d47b040ae1fb8fe99ad07/netwerk/base/nsChannelClassifier.cpp#540)
+against a *pairwise allowlist*.
 
 That second list (look for the `urlclassifier.trackingWhitelistTable` pref)
 is designed to encode what we call "entity relationships" which is
@@ -67,7 +70,8 @@ resources from `twimg.com`.
 
 So if there's a match on the second list, we don't block the load either.
 It's only when we get a match on the first list and not the second one that
-we go ahead and cancel the network load.
+we go ahead and
+[cancel the network load](https://dxr.mozilla.org/mozilla-central/rev/cc48981c026c50fdf80d47b040ae1fb8fe99ad07/netwerk/base/nsChannelClassifier.cpp#643).
 
 If you visit [our test
 page](https://itisatrap.org/firefox/its-a-tracker.html), you will see
