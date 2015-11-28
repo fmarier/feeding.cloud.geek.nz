@@ -24,7 +24,7 @@ Then I check the hard drives using:
 
 # Configuration
 
-    apt-get install etckeepr git sudo vim
+    apt-get install etckeeper git sudo vim
 
 To keep track of the configuration changes I make in `/etc/`, I use etckeeper
 to keep that directory in a git repository and make the following changes to
@@ -115,7 +115,7 @@ and add a timeout for root sessions by putting this in `/root/.bash_profile`:
 # Security checks
 
     apt-get install logcheck logcheck-database fcheck tiger debsums corekeeper mcelog
-    apt-get remove john john-data rpcbind tripwire
+    apt-get remove --purge john john-data rpcbind tripwire
 
 Logcheck is the main tool I use to keep an eye on log files, which is why I
 add a few additional log files to the default list in
@@ -217,7 +217,7 @@ enabling data collection in `/etc/default/sysstat` to be useful.
 While configuring apache is often specific to each server and the services
 that will be running on it, there are a few common changes I make.
 
-I enable these in `/etc/apache2/conf.d/security`:
+I enable these in `/etc/apache2/conf-enabled/security.conf` (or `/etc/apache2/conf.d/security` on wheezy):
 
     <Directory />
         AllowOverride None
@@ -229,9 +229,13 @@ I enable these in `/etc/apache2/conf.d/security`:
 
 and remove cgi-bin directives from `/etc/apache2/sites-enabled/000-default`.
 
-I also create a new `/etc/apache2/conf.d/servername` which contains:
+I also create a new `/etc/apache2/conf-available/servername.conf` which contains:
 
     ServerName machine_hostname
+
+and then run:
+
+    a2enconf servername
 
 # Mail
 
