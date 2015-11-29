@@ -226,7 +226,16 @@ enabling data collection in `/etc/default/sysstat` to be useful.
 While configuring apache is often specific to each server and the services
 that will be running on it, there are a few common changes I make.
 
-I enable these in `/etc/apache2/conf-enabled/security.conf` (or `/etc/apache2/conf.d/security` on wheezy):
+I enable these in `/etc/apache2/conf-enabled/security.conf`:
+
+    <Directory />
+        AllowOverride None
+        Require all denied
+    </Directory>
+    ServerTokens Prod
+    ServerSignature Off
+
+or `/etc/apache2/conf.d/security` on wheezy):
 
     <Directory />
         AllowOverride None
