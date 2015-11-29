@@ -152,7 +152,7 @@ customize a few tiger settings in `/etc/tiger/tigerrc`:
     Tiger_FSScan_WDIR=Y
     Tiger_SSH_Protocol='2'
     Tiger_Passwd_Hashes='sha512'
-    Tiger_Running_Procs='rsyslogd cron atd /usr/sbin/apache2 postgres'
+    Tiger_Running_Procs='rsyslogd cron /usr/sbin/apache2 postgres'
     Tiger_Listening_ValidProcs='sshd|mosh-server|ntpd'
 
 I also add these to `/etc/fcheck/fcheck.local.cfg`:
