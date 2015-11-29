@@ -155,6 +155,15 @@ customize a few tiger settings in `/etc/tiger/tigerrc`:
     Tiger_Running_Procs='rsyslogd cron atd /usr/sbin/apache2 postgres'
     Tiger_Listening_ValidProcs='sshd|mosh-server|ntpd'
 
+I also add these to `/etc/fcheck/fcheck.local.cfg`:
+
+    Directory      = /var/www
+    
+    Exclusion      = /etc/.git/
+    Exclusion      = /etc/.etckeeper
+    Exclusion      = /etc/.gitignore
+    Exclusion      = /etc/mtab
+
 # General hardening
 
     apt-get install harden-clients harden-environment harden-servers apparmor apparmor-profiles apparmor-profiles-extra
