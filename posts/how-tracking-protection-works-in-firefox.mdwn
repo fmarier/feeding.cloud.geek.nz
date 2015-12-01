@@ -123,11 +123,54 @@ custom server component written by Mozilla:
 
 Every hour, Firefox requests updates from `shavar.services.mozilla.com`. If new data is available, then the whole list is downloaded again. Otherwise, all it receives in return is an empty `204` response.
 
-Should you want to play with it and run your own server, follow the
-[installation
-instructions](https://github.com/mozilla-services/shavar/blob/master/README.md#running-locally)
-and then go into `about:config` to change these preferences to point to
-your own instance:
+To replicate how Firefox downloads the list, you can use
+[this download script](https://github.com/fmarier/safebrowsing-tools/blob/master/download-list.py)
+to ask the server for a copy of the full TP list:
+
+    $ ./download-list.py
+    n:3600
+    i:mozstd-track-digest256
+    u:tracking-protection.cdn.mozilla.net/mozstd-track-digest256/1445465225
+
+and then follow the URL redirection to get the actual list payload from the CDN:
+
+    $ wget https://tracking-protection.cdn.mozilla.net/mozstd-track-digest256/1445465225
+
+Once you've downloaded that binary file, you can examine its content using
+this
+[extractor script](https://github.com/fmarier/safebrowsing-tools/blob/master/redirect-response-extractor.py):
+
+    $ ./redirect-response-extractor.py 1445465225
+    Parsing a 54294-byte response file
+    Processing control line...
+    Add chunk 1445465225 contains 54272 bytes of 32-byte hashes
+    Found 1696 prefixes in 54272 bytes
+
+and dump all of the hashes it contains using the `--verbose` argument:
+
+    $ ./redirect-response-extractor.py 1445465225
+    Parsing a 54294-byte response file
+    Processing control line...
+    Add chunk 1445465225 contains 54272 bytes of 32-byte hashes
+    35e032660edb921c0c0ce59bfa289dc5a84c71b99584b359d74d6b03d00de66f
+    532239bcc9edf7681023070798bee5ec5e4a6bc7c0bb68e1e8e9099e45fdff94
+    52c058e95fc8d0e51bb9dd4b72f1364aa471157475a8435daa71e8e1c9533615
+    ...
+    e48768b0ce59561e5bc141a52061dd45524e75b66cad7d59dd92e4307625bdc5
+    ...
+    8a565d247c08ff7fd0950d8a1f37bf2da29eae4a0dd65126d87a0db7cab4b400
+    ca705fed923ab66d6d8bfe0f65359a4b872981be5bcc1364e29aac69375af323
+    7fc983ea552f7c8d153fc308d621eb4f52e84aa63ecccf3a735698a11a2a4a8d
+    Found 1696 prefixes in 54272 bytes
+
+which, as I have highlighted, contains the `twimg.com` hash we have seen
+earlier.
+
+Should you want to play with the server backend and run your own instance,
+follow the
+[installation instructions](https://github.com/mozilla-services/shavar/blob/master/README.md#running-locally)
+and then go into `about:config` to change these preferences to point to your
+own instance:
 
     browser.trackingprotection.gethashURL
     browser.trackingprotection.updateURL
