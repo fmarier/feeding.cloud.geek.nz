@@ -1,0 +1,128 @@
+[[!meta title="Tweaking Cookies For Privacy in Firefox"]]
+[[!meta date="2015-12-07T17:45:00.000-05:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Cookies are an important part of the Web since they are the primary
+mechanism that websites use to maintain user sessions. Unfortunately, they
+are also abused by surveillance marketing companies to follow you around the
+Web. Here are a few things you can do in Firefox to protect your privacy.
+
+# Cookie Expiry
+
+Cookies are sent from the website to your browser via a `Set-Cookie` HTTP header on the
+response. It looks like this:
+
+    HTTP/1.1 200 OK
+    Date: Mon, 07 Dec 2015 16:55:43 GMT
+    Server: Apache
+    Set-Cookie: SESSIONID=65576c6c64206e6f2c657920756f632061726b636465742065686320646f2165
+    Content-Length: 2036
+    Content-Type: text/html;charset=UTF-8
+
+When your browser sees this, it saves that cookie for the given hostname and
+keeps it until you close the browser.
+
+Should a site want to persist their cookie for longer, they can add an
+`Expires` *attribute*:
+
+    Set-Cookie: SESSIONID=65576c...; expires=Tue, 06-Dec-2016 22:38:26 GMT
+
+in which case the browser will retain the cookie until the server-provided
+expiry date (which could be in a few years). Of course, that's if you don't
+instruct your browser to do things differently.
+
+## Controlling Cookie Expiry
+
+In order to change your cookie settings, you must open the Firefox
+preferences, click on "Privacy" and then choose "Use custom settings for
+history" under the "History" heading.
+
+There, you will have the ability to **turn off cookies entirely**
+(`network.cookie.cookieBehavior = 2`), which I don't recommend you do in
+your browser since you won't be able to login anywhere. On the other hand,
+turning off cookies is what I do (and recommend) in Thunderbird since
+I can't think of a legitimate reason for an email to leave a cookie in my
+mail client.
+
+Another control you'll find there is "Keep until" which defaults to honoring
+the server-provided expiry ("they expire" aka `network.cookie.lifetimePolicy
+= 0`) or making them **expire at the end of the browsing session** ("I close
+Firefox" aka `network.cookie.lifetimePolicy = 2`).
+
+A third option is available if you type `about:config` into your URL bar
+and looking for the `network.cookie.lifetimePolicy` preference. Setting this to
+`3` will honor the server-provided expiry up to a **maximum lifetime of 90
+days**. You can also make that 90 days be anything you want by changing the
+`network.cookie.lifetime.days` preference.
+
+Regardless of the settings you choose, you can always tell Firefox to clear
+cookies when you close it by selecting the "Clear history when Firefox
+closes" checkbox, clicking the "Settings" button and making sure that
+"Cookies" is selected (`privacy.clearOnShutdown.cookies = true`). This could
+be useful for example if you'd like to ensure that cookies never last longer
+than 5 days but are also cleared whenever you shut down Firefox.
+
+# Third-Party Cookies
+
+So far, we've only looked at first-party cookies: the ones set by the
+website you visit and which are typically used to synchronize your login
+state with the server.
+
+There is however another kind: third-party cookies. These ones are set by
+the third-party resources that a page loads. For example, if a page loads
+JavaScript from a third-party ad network, you can be pretty confident that
+they will set their own cookie in order to build a profile on you and serve
+you "better and more relevant ads".
+
+## Controlling Third-Party Cookies
+
+If you'd like to opt out of these, you have a couple of options. The first
+one is to **turn off third-party cookies entirely** by going back into the
+Privacy preferences and selecting "Never" next to the "Accept third-party
+cookies" setting (`network.cookie.cookieBehavior = 1`). Unfortunately,
+turning off third-party cookies entirely tends to break a number of sites
+which rely on this functionality (for example as part of their for login
+process).
+
+A more forgiving option is to accept third-party cookies **only for sites
+which you have actually visited directly**. For example, if you visit Facebook
+and login, you will get a cookie from them. Then when you visit other sites
+which include Facebook widgets they will not recognize you unless you allow
+cookies to be sent in a third-party context. To do that, choose the "From
+visited" option (`network.cookie.cookieBehavior = 3`).
+
+In addition to this setting, you can also choose to make all third-party
+cookies automatically expire when you close Firefox by setting the
+`network.cookie.thirdparty.sessionOnly` option to `true` in `about:config`.
+
+## Other Ways to Limit Third-Party Cookies
+
+Another way to limit undesirable third-party cookies is to tell the browser
+to avoid connecting to trackers in the first place. This functionality is
+now
+[built into Private Browsing mode](https://blog.mozilla.org/blog/2015/11/03/firefox-now-offers-a-more-private-browsing-experience/)
+and enabled by default. To enable it outside of Private Browsing too, simply
+go into `about:config` and set `privacy.trackingprotection.enabled` to
+`true`.
+
+You could also install the EFF's
+[Privacy Badger](https://www.eff.org/privacybadger) add-on which uses
+heuristics to detect and block trackers, unlike Firefox
+[tracking protection](https://feeding.cloud.geek.nz/posts/how-tracking-protection-works-in-firefox/)
+which uses a blocklist of known trackers.
+
+# My Recommended Settings
+
+On my work computer I currently use the following:
+
+    network.cookie.cookieBehavior = 3
+    network.cookie.lifetimePolicy = 3
+    network.cookie.lifetime.days = 5
+    network.cookie.thirdparty.sessionOnly = true
+    privacy.trackingprotection.enabled = true
+
+which allows me to stay logged into most sites for the whole week (no matter
+now often I restart [Firefox Nightly](https://nightly.mozilla.org/)) while
+limiting tracking and other undesirable cookies as much as possible.
+
+[[!tag firefox]] [[!tag debian]] [[!tag nzoss]] [[!tag mozilla]] [[!tag privacy]]
