@@ -191,4 +191,4 @@ questions on our
 *Thanks to [Tanvi Vyas](https://twitter.com/tanvihacks) for reviewing a draft
 of this post.*
 
-[[!tag firefox]] [[!tag nzoss]] [[!tag mozilla]] [[!tag debian]]
+[[!tag firefox]] [[!tag nzoss]] [[!tag mozilla]] [[!tag debian]] [[!tag privacy]]
