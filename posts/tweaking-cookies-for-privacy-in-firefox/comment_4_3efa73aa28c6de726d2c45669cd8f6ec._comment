@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ ip="2001:41d0:fe04:bc00:adec:d97a:73e7:db37"
+ subject="Yet an other addon"
+ date="2015-12-08T13:09:52Z"
+ content="""
+Instead of request policy (continued) and/or noscript I personally recommend uMatrix which does everything the two other addons do but with a matrix instead of a list, and it lets you block requests by type instead of only by host. It also can spoof referrer for third party requests and delete cookies either only from blocked sites or from both whitelisted and blocked sites. It's also completely open-source (https://github.com/gorhill/umatrix) and more up to date than Request Policy and NoScript which are becoming old and harder to maintain with new Firefox versions
+"""]]
