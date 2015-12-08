@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: Add-on choices"
+ date="2015-12-08T12:37:33Z"
+ content="""
+It depends how much inconvenience you're willing to tolerate :) At home, I use both [RequestPolicy Continued](https://addons.mozilla.org/en-US/firefox/addon/requestpolicy-continued/) and [NoScript](https://addons.mozilla.org/en-US/firefox/addon/noscript/). I quite like their block-everything-by-default approach.
+
+On the other hand, at work, I don't have time for this so I use [Privacy Badger](https://www.eff.org/privacybadger).
+
+I avoid Ghostery since it's [proprietary](https://addons.mozilla.org/en-US/firefox/addon/ghostery/license/5.4.9).
+"""]]
