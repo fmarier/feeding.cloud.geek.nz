@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ ip="88.128.81.206"
+ claimedauthor="Martin Krafft"
+ subject="Add-on choices"
+ date="2015-12-08T00:38:40Z"
+ content="""
+There are at least four choices:
+
+* PrivacyBadger
+* RequestPolicy
+* Ghostery
+* NoScript
+
+and they all overlap in ways that are not clear to me. Do you have a recommendation for the best way to secure my privacy? Right now I use RP and NS, but I wonder what I am missing out not using PB or Ghostery.
+
+Also, NS is prveenting e.g. use of Twitter and an ever-increasing number of sites, so it's not a long-term solution unless fixed.
+"""]]
