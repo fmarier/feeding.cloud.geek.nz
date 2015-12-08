@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ ip="69.165.165.5"
+ subject="Another addon option"
+ date="2015-12-08T12:47:47Z"
+ content="""
+One could also try an addon like Cookie Monster, which is a bit like NoScript for cookies. I set the default to deny cookies, and then I can choose to allow or allow for session on a per-site basis.
+"""]]
