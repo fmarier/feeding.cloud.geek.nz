@@ -1,0 +1,35 @@
+[[!meta title="Linux kernel module options on Debian"]]
+[[!meta date="2015-12-30T12:25:00.000-05:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Linux kernel modules often have options that can be set. Here's how to make
+use of them on Debian-based systems, using the `i915` Intel graphics driver
+as an example.
+
+To get the list of all available options:
+
+    modinfo -p i915
+
+To check the current value of a particular option:
+
+    cat /sys/module/i915/parameters/enable_ppgtt
+
+To give that option a value when the module is loaded, create a new
+`/etc/modprobe.d/i915.conf` file and put the following in it:
+
+    options i915 enable_ppgtt=0
+
+and then re-generate the initial RAM disks:
+
+    update-initramfs -u -k all
+
+Alternatively, that option can be set at boot time on the kernel command
+line by setting the following in `/etc/default/grub`:
+
+    GRUB_CMDLINE_LINUX="i915.enable_ppgtt=0"
+
+and then updating the grub config:
+
+    update-grub2
+
+[[!tag linux]] [[!tag debian]] [[!tag nzoss]] [[!tag ubuntu]]
