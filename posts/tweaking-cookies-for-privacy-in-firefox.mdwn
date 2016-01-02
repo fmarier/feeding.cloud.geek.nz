@@ -89,7 +89,9 @@ which you have actually visited directly**. For example, if you visit Facebook
 and login, you will get a cookie from them. Then when you visit other sites
 which include Facebook widgets they will not recognize you unless you allow
 cookies to be sent in a third-party context. To do that, choose the "From
-visited" option (`network.cookie.cookieBehavior = 3`).
+visited" option (`network.cookie.cookieBehavior = 3`). However, note that
+a **few payment gateways are still relying on arbitrary third-party cookies**
+and will break unless you keep the default (`network.cookie.cookieBehavior = 0`).
 
 In addition to this setting, you can also choose to make all third-party
 cookies automatically expire when you close Firefox by setting the
@@ -115,7 +117,7 @@ which uses a blocklist of known trackers.
 
 On my work computer I currently use the following:
 
-    network.cookie.cookieBehavior = 3
+    network.cookie.cookieBehavior = 0
     network.cookie.lifetimePolicy = 3
     network.cookie.lifetime.days = 5
     network.cookie.thirdparty.sessionOnly = true
