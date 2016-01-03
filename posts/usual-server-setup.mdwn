@@ -114,7 +114,7 @@ and add a timeout for root sessions by putting this in `/root/.bash_profile`:
 
 # Security checks
 
-    apt-get install logcheck logcheck-database fcheck tiger debsums corekeeper mcelog
+    apt-get install logcheck logcheck-database fcheck tiger debsums corekeeper mcelog rkhunter
     apt-get remove --purge john john-data rpcbind tripwire
 
 Logcheck is the main tool I use to keep an eye on log files, which is why I
@@ -164,14 +164,48 @@ I also add these to `/etc/fcheck/fcheck.local.cfg`:
     Exclusion      = /etc/.gitignore
     Exclusion      = /etc/mtab
 
+and these to `/etc/rkhunter.conf.local`:
+
+    ALLOWHIDDENDIR=/etc/.git
+    ALLOWHIDDENFILE=/etc/.etckeeper
+    ALLOWHIDDENFILE=/etc/.gitignore
+    
+    ALLOWDEVFILE=/dev/shm/logcheck.*
+    ALLOWDEVFILE=/dev/shm/logcheck.*/ignore/*
+    ALLOWDEVFILE=/dev/shm/logcheck.*/violations/*
+    ALLOWDEVFILE=/dev/shm/logcheck.*/violations-ignore/*
+    ALLOWDEVFILE=/dev/shm/logcheck.*/cracking/*
+    ALLOWDEVFILE=/dev/shm/logcheck.*/logoutput/*
+    ALLOWDEVFILE=/dev/shm/logcheck.*/logoutput-sorted
+    ALLOWDEVFILE=/dev/shm/logcheck.*/checked
+    ALLOWDEVFILE=/dev/shm/PostgreSQL.*
+
 # General hardening
 
-    apt-get install harden-clients harden-environment harden-servers apparmor apparmor-profiles apparmor-profiles-extra
+    apt-get install harden-clients harden-environment harden-servers apparmor apparmor-profiles apparmor-profiles-extra libpam-tmpdir
 
 While the harden packages are configuration-free, AppArmor must be [manually enabled](https://wiki.debian.org/AppArmor/HowToUse#Enable_AppArmor):
 
     perl -pi -e 's,GRUB_CMDLINE_LINUX="(.*)"$,GRUB_CMDLINE_LINUX="$1 apparmor=1 security=apparmor",' /etc/default/grub
     update-grub
+
+In addition, certain kernel security features can be enabled by putting the
+following in `/etc/sysctl.conf` to
+[hide kernel pointers and messages](https://www.kernel.org/doc/Documentation/sysctl/kernel.txt)
+from unprivileged processes:
+
+    kernel.dmesg_restrict = 1
+    kernel.kptr_restrict = 1
+
+and the following to harden the TCP stack:
+
+    net.ipv4.conf.all.send_redirects = 0
+    net.ipv4.conf.all.accept_source_route = 0
+    net.ipv6.conf.all.accept_source_route = 0
+    net.ipv4.conf.all.log_martians = 1
+    net.ipv4.tcp_syncookies=1
+
+before reloading these settings using `sysctl -p`.
 
 # Entropy and timekeeping
 
@@ -192,7 +226,7 @@ manually [apply a patch](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=705397
 
 # Package updates
 
-    apt-get install apticron unattended-upgrades deborphan debfoster apt-listchanges update-notifier-common aptitude popularity-contest
+    apt-get install apticron unattended-upgrades deborphan debfoster apt-listchanges update-notifier-common aptitude popularity-contest needrestart
 
 These tools help me keep packages up to date and remove unnecessary or
 obsolete packages from servers. On Rackspace servers, a small [configuration
@@ -211,6 +245,10 @@ effect.
 If you're on jessie or later, simply install
 [reboot-notifier](http://feeding.cloud.geek.nz/posts/introducing-reboot-notifier/)
 instead of `update-notifier-common` and you're done!
+
+In addition to knowing when you need to reboot your machine, the
+`needrestart` package will let you know (and offer to do it for you) when
+you need to restart a daemon using an obsolete library.
 
 # Handy utilities
 
@@ -268,6 +306,7 @@ Change the following in `/etc/postfix/main.cf`:
 
     inet_interfaces = loopback-only
     myhostname = (fully qualified hostname)
+    smtpd_banner = $myhostname ESMTP
     smtp_tls_security_level = may
     smtp_tls_protocols = !SSLv2, !SSLv3
 
