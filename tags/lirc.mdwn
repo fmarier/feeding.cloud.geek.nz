@@ -1,0 +1,4 @@
+[[!meta title="pages tagged lirc"]]
+
+[[!inline pages="tagged(lirc)" actions="no" archive="yes"
+feedshow=10]]
