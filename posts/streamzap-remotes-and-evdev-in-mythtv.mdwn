@@ -1,0 +1,101 @@
+[[!meta title="Streamzap remotes and evdev in MythTV"]]
+[[!meta date="2016-01-07T09:50:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Modern versions of Linux and MythTV enable infrared remote controls without
+the need for [lirc](http://lirc.org/). Here's how I migrated my
+[Streamzap remote](http://www.streamzap.com/consumer/pc_remote/index.php) to
+[evdev](https://www.mythtv.org/wiki/User_Manual:IR_control_via_evdev).
+
+# Installing packages
+
+In order to avoid conflicts between evdev and lirc, I started by removing
+lirc and its config:
+
+    apt purge lirc
+
+and then I installed this tool:
+
+    apt install ir-keytable
+
+# Remapping keys
+
+While my Streamzap remote works out of the box with kernel 3.16, the
+keycodes that it sends to Xorg are not the ones that MythTV expects.
+
+I therefore copied the existing mapping:
+
+    cp /lib/udev/rc_keymaps/streamzap /home/mythtv/
+
+and changed it to this:
+
+    0x28c0 KEY_0
+    0x28c1 KEY_1
+    0x28c2 KEY_2
+    0x28c3 KEY_3
+    0x28c4 KEY_4
+    0x28c5 KEY_5
+    0x28c6 KEY_6
+    0x28c7 KEY_7
+    0x28c8 KEY_8
+    0x28c9 KEY_9
+    0x28ca KEY_ESC
+    0x28cb KEY_MUTE # |
+    0x28cc KEY_UP
+    0x28cd KEY_RIGHTBRACE
+    0x28ce KEY_DOWN
+    0x28cf KEY_LEFTBRACE
+    0x28d0 KEY_UP
+    0x28d1 KEY_LEFT
+    0x28d2 KEY_ENTER
+    0x28d3 KEY_RIGHT
+    0x28d4 KEY_DOWN
+    0x28d5 KEY_M
+    0x28d6 KEY_ESC
+    0x28d7 KEY_L
+    0x28d8 KEY_P
+    0x28d9 KEY_ESC
+    0x28da KEY_BACK # <
+    0x28db KEY_FORWARD # >
+    0x28dc KEY_R
+    0x28dd KEY_PAGEUP
+    0x28de KEY_PAGEDOWN
+    0x28e0 KEY_D
+    0x28e1 KEY_I
+    0x28e2 KEY_END
+    0x28e3 KEY_A
+
+The complete list of all [`EV_KEY` keycodes](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/input-event-codes.h?id=refs/tags/v4.4-rc8)
+can be found in the kernel.
+
+The following command will write this mapping to the driver:
+
+    /usr/bin/ir-keytable w /home/mythtv/streamzap -d /dev/input/by-id/usb-Streamzap__Inc._Streamzap_Remote_Control-event-if00
+
+and they should take effect once MythTV is restarted.
+
+# Applying the mapping at boot
+
+While the na&iuml;ve solution is to apply the mapping at boot (for example, by
+sticking it in `/etc/rc.local`), that only works if the right modules are
+loaded before `rc.local` runs.
+
+A much better solution is to
+[write a udev rule](http://www.reactivated.net/writing_udev_rules.html) so
+that the mapping is written after the driver is loaded.
+
+I created `/etc/udev/rules.d/streamzap.rules` with the following:
+
+    # Configure remote control for MythTV
+    # https://www.mythtv.org/wiki/User_Manual:IR_control_via_evdev#Modify_key_codes
+    ACTION=="add", ATTRS{idVendor}=="0e9c", ATTRS{idProduct}=="0000", RUN+="/usr/bin/ir-keytable -c -w /home/mythtv/streamzap -D 1000 -P 250 -d /dev/input/by-id/usb-Streamzap__Inc._Streamzap_Remote_Control-event-if00"
+
+and got the vendor and product IDs using:
+
+    grep '^[IN]:' /proc/bus/input/devices
+
+The `-D` and `-P` parameters control what happens when a button on the
+remote is held down and the keypress must be repeated. These delays are in
+milliseconds.
+
+[[!tag mythtv]] [[!tag debian]] [[!tag nzoss]] [[!tag lirc]]
