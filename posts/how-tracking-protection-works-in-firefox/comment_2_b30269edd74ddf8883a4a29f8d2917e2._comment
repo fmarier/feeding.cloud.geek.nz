@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: A dumb Q about shavar"
+ date="2016-01-09T20:33:25Z"
+ content="""
+> I have an entry that \"Name resolution for the name shavar.services.mozilla.com timed out after none of the configured DNS servers responded.\" But from this article, I suppose there's nothing to worry about because shavar updates every hour, and this one line is probably just a glitch.
+
+It's hard to say what went wrong, but I wouldn't worry about it because Firefox will keep using the old list as long as it can't reach the server.
+"""]]
