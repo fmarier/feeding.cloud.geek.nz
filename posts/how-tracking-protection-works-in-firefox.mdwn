@@ -148,7 +148,7 @@ this
 
 and dump all of the hashes it contains using the `--verbose` argument:
 
-    $ ./redirect-response-extractor.py 1445465225
+    $ ./redirect-response-extractor.py --verbose 1445465225
     Parsing a 54294-byte response file
     Processing control line...
     Add chunk 1445465225 contains 54272 bytes of 32-byte hashes
