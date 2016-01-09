@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="173.77.18.107"
+ claimedauthor="glnz"
+ subject="A dumb Q about shavar"
+ date="2016-01-09T15:33:33Z"
+ content="""
+First, hats off to FF for doing such a great job for us non-tech citizens.  I don't understand why anyone would ever trust a pro-data-use browser like edge or chrome.  Happy to have made small annual contributions to Mozilla the last two years.
+Now, in my Win 10 Pro 64-bit event view error messages, I have an entry that \"Name resolution for the name shavar.services.mozilla.com timed out after none of the configured DNS servers responded.\"
+But from this article, I suppose there's nothing to worry about because shavar updates every hour, and this one line is probably just a glitch.  Some electron somewhere had to run to the bathroom for five minutes?
+Thanks.
+"""]]
