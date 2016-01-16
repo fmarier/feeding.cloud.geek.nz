@@ -70,7 +70,7 @@ submission alias in my `~/.bashrc` which avoids sending keys through Tor:
 
     alias gpgsendkeys='gpg --send-keys --keyserver-options http-proxy=""'
 
-# Debian packages
+# Package updates
 
 Since most Debian packages are fairly small, downloading them over Tor doesn't
 take a whole lot longer. Large updates on the other hand are affected
@@ -96,8 +96,8 @@ Communication via [XMPP](https://en.wikipedia.org/wiki/XMPP) is another use
 case that's not affected much by a bit of extra latency.
 
 To get [Pidgin](http://pidgin.im/) to talk to an XMPP server over Tor,
-simply open "Tools | Preferences" and set a `SOCKS5` (**not** `Tor/Privacy`)
-proxy of `localhost` on port `9050`.
+simply open "Tools | Preferences" and set a `Tor/Privacy (SOCKS5)`
+proxy of `127.0.0.1` on port `9050`.
 
 # GMail
 
