@@ -80,6 +80,8 @@ with the following in `/var/www/profile/francois@fmarier.org.json`:
       ]
     }
 
+You can test that your setup is working using <https://webfinger.net/>.
+
 # Implementation
 
 Aaron and I worked out the the details of how this will work and wrote a
