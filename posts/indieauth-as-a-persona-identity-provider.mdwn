@@ -52,16 +52,15 @@ together via WebFinger. Thankfully, he found a clever way to do this with
 [a simple Apache rewrite rule and some static files](https://gist.github.com/aaronpk/5846789):
 
     <Directory /var/www/profile>
-        DefaultType application/json
         Header set Access-Control-Allow-Origin: "*"
     </Directory>
     
     RewriteEngine on
     RewriteMap unescape int:unescape
     RewriteCond ${unescape:%{QUERY_STRING}} resource=acct:(.+)
-    RewriteRule ^/.well-known/webfinger /profile/${unescape:%1}? [last]
+    RewriteRule ^/.well-known/webfinger /profile/${unescape:%1}.json? [last]
 
-with the following in `/var/www/profile/francois@fmarier.org`:
+with the following in `/var/www/profile/francois@fmarier.org.json`:
 
     {
       "subject": "acct:francois@fmarier.org",
