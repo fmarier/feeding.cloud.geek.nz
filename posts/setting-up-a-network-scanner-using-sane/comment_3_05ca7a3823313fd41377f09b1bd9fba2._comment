@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="208.38.27.132"
+ claimedauthor="MSHYYC"
+ subject="Point of a network scanner is obvious"
+ date="2016-01-27T10:17:14Z"
+ content="""
+Printers are devices you have to physically move to as well and they are networked all the time. So it makes sense to network a scanner for similar reasons and more:
+
+* a scanner has to be networked to scan to a network destination like a shared drive or scan directly to email
+
+* It makes no sense to have a scanner for each person in an office, so you can share the scanner just like sharing a printer.  Otherwise the computer with the scanner connected has to be physically logged onto and used to scan instead of controlling it right from your own computer.  This can be handy if you are scanning and need to try multiple times to get the settings right too.
+
+Of course this mainly applies to scanners that do not have built in networking ability (usb only connections).  If they do have built in servers it makes less sense.
+"""]]
