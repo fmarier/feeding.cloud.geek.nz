@@ -1,0 +1,18 @@
+[[!meta title="Extracting Album Covers from the iTunes Store"]]
+[[!meta date="2016-02-28T16:50:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+The iTunes store is a good source of high-quality album cover art. If you
+search for the album on [Google Images](https://images.google.com), then
+visit the page and right-click on the cover image, you will get a **170 px
+by 170 px** image. Change the `170x170` in the URL to one of the following
+values to get a higher resolution image:
+
+- `170x170`
+- `340x340`
+- `600x600`
+- `1200x1200`
+- `1400x1400`
+
+Alternatively, use this [handy webapp](https://bendodson.com/code/itunes-artwork-finder/index.html) to
+query the iTunes search API and get to the source image directly.
