@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ ip="96.81.84.65"
+ claimedauthor="Tom"
+ url="tomleo.com"
+ subject="Must use full path to file"
+ date="2016-03-16T21:01:04Z"
+ content="""
+This might be common sense but...
+
+-> pwd
+/home/foo
+
+-> git log -- bar
+
+This will return nothing
+
+-> git log -- baz/bar
+
+This will return the history of the file bar in the directory baz
+"""]]
