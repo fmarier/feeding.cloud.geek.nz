@@ -1,0 +1,229 @@
+[[!meta title="How Safe Browsing works in Firefox"]]
+[[!meta date="2016-03-31T23:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Firefox has had support for Google's
+[Safe Browsing](https://developers.google.com/safe-browsing/) for quite some
+time. It started in 2005 as
+[a stand-alone Firefox extension](https://web.archive.org/web/20051218171531/http://www.google.com/tools/firefox/safebrowsing/index.html)
+only available in the US, then was opened up to the rest of the world in
+2006 before moving into the
+[Google Toolbar](https://web.archive.org/web/20060412192055/http://tools.google.com/firefox/toolbar/), being
+[integrated directly](https://bugzilla.mozilla.org/show_bug.cgi?id=329292)
+into
+[Firefox 2.0](http://website-archive.mozilla.org/www.mozilla.org/firefox_releasenotes/en-US/firefox/2.0/releasenotes/)
+and then
+[launched publicly](https://security.googleblog.com/2007/05/introducing-googles-anti-malware.html)
+in 2007.
+
+Many people seem confused by this phishing and malware protection
+system and while there is a
+[pretty good explanation of how it works](https://support.mozilla.org/en-US/kb/how-does-phishing-and-malware-protection-work)
+on our support site, it doesn't go into technical details. This will
+hopefully be of interest to those who have more questions about it.
+
+# Browsing Protection
+
+The main part of the Safe Browsing system is the one that watches for bad
+URLs as you're browsing. Browsing protection currently protects users from:
+
+- [malware](https://www.stopbadware.org/badware) sites,
+- [deceptive sites](https://security.googleblog.com/2015/11/safe-browsing-protection-from-even-more.html)
+(including [phishing](https://support.google.com/websearch/answer/106318?hl=en&rd=1)
+and [social engineering](https://security.googleblog.com/2016/02/no-more-deceptive-download-buttons.html)
+sites), and
+- sites hosting [potentially unwanted software](https://security.googleblog.com/2015/07/more-visible-protection-against.html).
+
+If a Firefox user attempts to visit one of these sites, a warning page will
+show up instead, which you can see for yourself here:
+
+- [fake malware page](https://itisatrap.org/firefox/its-an-attack.html)
+- [fake unwanted software page](https://itisatrap.org/firefox/unwanted.html)
+- [fake phishing page](https://itisatrap.org/firefox/its-a-trap.html)
+
+The first two warnings can be toggled using the `browser.safebrowsing.malware.enabled`
+preference (in `about:config`) whereas the last one is controlled by
+`browser.safebrowsing.enabled`.
+
+## List updates
+
+It would be too slow (and privacy-invasive) to contact a trusted server
+every time the browser wants to establish a connection with a web server.
+Instead, Firefox downloads a list of bad URLs every 30 minutes from the
+server (`browser.safebrowsing.provider.google.updateURL`) and does a
+[lookup against its local database](https://dxr.mozilla.org/mozilla-central/rev/494289c72ba3997183e7b5beaca3e0447ecaf96d/netwerk/base/nsBaseChannel.cpp#303-320)
+before displaying a page to the user.
+
+Downloading the entire list of sites flagged by Safe Browsing would be
+impractical due to
+[its size](https://www.google.com/transparencyreport/safebrowsing/notes/#size-of-blacklist)
+so the following transformations are applied:
+
+1. each URL on the list is [canonicalized](https://developers.google.com/safe-browsing/developers_guide_v2#Canonicalization),
+2. then [hashed](https://en.wikipedia.org/w/index.php?title=SHA256),
+3. of which only the first 32 bits of the hash are kept.
+
+The lists that are requested from the Safe Browsing server and used to flag
+pages as malware/unwanted or phishing can be found in
+`urlclassifier.malwareTable` and `urlclassifier.phishTable` respectively.
+
+If you want to see some debugging information in your terminal while Firefox
+is downloading updated lists, turn on `browser.safebrowsing.debug`.
+
+Once downloaded, the lists can be found in the cache directory:
+
+* `~/.cache/mozilla/firefox/XXXX/safebrowsing/` on Linux
+* `~/Library/Caches/Firefox/Profiles/XXXX/safebrowsing/` on Mac
+* `C:\Users\XXXX\AppData\Local\mozilla\firefox\profiles\XXXX\safebrowsing\` on Windows
+
+## Resolving partial hash conflicts
+
+Because the Safe Browsing database only contains partial hashes, it is
+possible for a safe page to share the same 32-bit hash prefix as a bad page.
+Therefore when a URL matches the local list, the browser needs to know
+whether or not the rest of the hash matches the entry on the Safe Browsing
+list.
+
+In order resolve such conflicts, Firefox requests from the Safe Browsing
+server (`browser.safebrowsing.provider.mozilla.gethashURL`) all of the
+hashes that start with the affected 32-bit prefix and adds these full-length
+hashes to its local database. Turn on `browser.safebrowsing.debug` to see
+some debugging information on the terminal while these "completion" requests
+are made.
+
+If the current URL doesn't match any of these full hashes, the load
+proceeds as normal. If it does match one of them, a warning interstitial
+page is shown and the
+[load is canceled](https://dxr.mozilla.org/mozilla-central/rev/494289c72ba3997183e7b5beaca3e0447ecaf96d/netwerk/base/nsChannelClassifier.cpp#689).
+
+# Download Protection
+
+The second part of the Safe Browsing system protects users against malicious
+downloads. It was
+[launched](https://security.googleblog.com/2011/04/protecting-users-from-malicious.html)
+in 2011, [implemented](https://bugzilla.mozilla.org/show_bug.cgi?id=662819) in
+[Firefox 31](https://www.mozilla.org/en-US/firefox/31.0/releasenotes/) on
+Windows and [enabled](https://bugzilla.mozilla.org/show_bug.cgi?id=1111741)
+in [Firefox 39](https://www.mozilla.org/en-US/firefox/39.0/releasenotes/) on
+Mac and Linux.
+
+It roughly works like this:
+
+1. Download the file.
+2. Check the main URL, referrer and redirect chain against a local
+blocklist (`urlclassifier.downloadBlockTable`) and block the download
+in case of a match.
+3. On Windows, if the binary is signed, check the signature against a local
+whitelist (`urlclassifier.downloadAllowTable`) of known good publishers and
+release the download if a match is found.
+4. If the file is not a
+[binary file](https://dxr.mozilla.org/mozilla-central/rev/494289c72ba3997183e7b5beaca3e0447ecaf96d/toolkit/components/downloads/ApplicationReputation.cpp#388-425)
+then release the download.
+5. Otherwise, send the binary file's
+[metadata](https://dxr.mozilla.org/mozilla-central/rev/494289c72ba3997183e7b5beaca3e0447ecaf96d/toolkit/components/downloads/ApplicationReputation.cpp#921-950)
+to the remote application reputation server
+(`browser.safebrowsing.downloads.remote.url`) and block the download if the
+server indicates that the file isn't safe.
+
+Blocked downloads can be unblocked by right-clicking on them in the download
+manager and selecting "Unblock".
+
+While the download protection feature is automatically disabled when malware
+protection (`browser.safebrowsing.malware.enabled`) is turned off, it can
+also be disabled independently via the
+`browser.safebrowsing.downloads.enabled` preference.
+
+Note that Step 5 is the only point at which any information about the
+download is shared with Google. That remote lookup can be suppressed via the
+`browser.safebrowsing.downloads.remote.enabled` preference for those users
+concerned about sending that metadata to a third party.
+
+## Types of malware
+
+The original application reputation service would protect users against
+"dangerous" downloads, but it has recently been expanded to also warn users
+about
+[unwanted software](https://chrome.googleblog.com/2014/08/thats-not-download-youre-looking-for.html)
+as well as software that's not commonly downloaded.
+
+These various warnings can be turned on and off in Firefox through the
+following preferences:
+
+* `browser.safebrowsing.downloads.remote.block_dangerous`
+* `browser.safebrowsing.downloads.remote.block_dangerous_host`
+* `browser.safebrowsing.downloads.remote.block_potentially_unwanted`
+* `browser.safebrowsing.downloads.remote.block_uncommon`
+
+and tested using [Google's test page](https://testsafebrowsing.appspot.com).
+
+If you want to see how often each "verdict" is returned by the server, you
+can have a look at the
+[telemetry results for Firefox Beta](https://telemetry.mozilla.org/new-pipeline/dist.html#!cumulative=0&end_date=2016-03-23&keys=__none__!__none__!__none__&max_channel_version=beta%252F46&measure=APPLICATION_REPUTATION_SERVER_VERDICT&min_channel_version=null&product=Firefox&sanitize=1&sort_keys=submissions&start_date=2016-03-07&table=1&trim=1&use_submission_date=0).
+
+# Privacy
+
+One of the most persistent misunderstandings about Safe Browsing is the idea
+that the browser needs to send all visited URLs to Google in order to verify
+whether or not they are safe.
+
+While this was
+[an option](https://www.google.com/tools/firefox/safebrowsing/faq.html#q11)
+in [version 1](https://wiki.mozilla.org/Safe_Browsing:_Server_Spec) of the Safe Browsing protocol (as disclosed in their
+[privacy policy](https://web.archive.org/web/20051230133135/http://www.google.com/tools/firefox/extensions_privacy.html)
+at the time), support for this
+["enhanced mode" was removed in Firefox 3](https://bugzilla.mozilla.org/show_bug.cgi?id=388652)
+and the version 1 server was
+[decommissioned in late 2011](https://security.googleblog.com/2011/05/safe-browsing-protocol-v2-transition.html)
+in favor of
+[version 2 of the Safe Browsing API](https://developers.google.com/safe-browsing/developers_guide_v2)
+which doesn't offer this type of real-time lookup.
+
+Google explicitly states that the information collected as part
+of operating the Safe Browsing service
+["is only used to flag malicious activity and is never used anywhere else at Google"](https://blog.chromium.org/2012/01/all-about-safe-browsing.html)
+and that
+["Safe Browsing requests won't be associated with your Google Account"](https://www.google.com/intl/en/chrome/browser/privacy/whitepaper.html#malware).
+In addition, Firefox adds a few privacy protections:
+
+- Query string parameters are
+[stripped](https://dxr.mozilla.org/mozilla-central/rev/494289c72ba3997183e7b5beaca3e0447ecaf96d/toolkit/components/downloads/ApplicationReputation.cpp#684-710)
+from URLs we check as part of the download protection feature.
+- Cookies set by the Safe Browsing servers to protect the service from
+abuse are stored in a
+[separate cookie jar](https://bugzilla.mozilla.org/show_bug.cgi?id=897516)
+so that they are not mixed with regular browsing/session cookies.
+- When requesting complete hashes for a 32-bit prefix, Firefox throws in a
+number of extra
+["noise" entries](https://dxr.mozilla.org/mozilla-central/rev/494289c72ba3997183e7b5beaca3e0447ecaf96d/toolkit/components/url-classifier/nsUrlClassifierDBService.cpp#283-289)
+to obfuscate the original URL further.
+
+On balance, we believe that most users will want to keep Safe Browsing enabled,
+but we also make it easy for
+[users with particular needs](https://www.torproject.org/projects/torbrowser.html)
+to turn it off.
+
+# Learn More
+
+If you want to learn more about how Safe Browsing works in Firefox, you can
+find all of the technical details on the
+[Safe Browsing](https://wiki.mozilla.org/Security/Safe_Browsing) and
+[Application Reputation](https://wiki.mozilla.org/Security/Application_Reputation)
+pages of the Mozilla wiki or you can ask questions on our
+[mailing list](https://www.mozilla.org/en-US/about/forums/#dev-security).
+
+Google provides some interesting statistics about what their systems detect in their
+[transparency report](https://www.google.com/transparencyreport/safebrowsing/)
+and offers a tool to find out
+[why a particular page has been blocked](https://www.google.com/transparencyreport/safebrowsing/diagnostic/).
+Some information on
+[how phishing sites are detected](https://security.googleblog.com/2010/03/phishing-phree.html)
+is also available on the Google Security blog, but for more detailed information
+about all parts of the Safe Browsing system, see the following papers:
+
+- [All Your IFrames Are Belong to Us](http://research.google.com/archive/provos-2008a.pdf)
+- [Content-Agnostic Malware Protection](https://www.cs.jhu.edu/~moheeb/aburajab-ndss-13.pdf)
+- [Ghost in the Browser](http://www.usenix.org/event/hotbots07/tech/full_papers/provos/provo
+s.pdf)
+
+[[!tag firefox]] [[!tag nzoss]] [[!tag mozilla]] [[!tag debian]]
+[[!tag privacy]] [[!tag security]]
