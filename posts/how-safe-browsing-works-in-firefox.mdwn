@@ -3,18 +3,19 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Firefox has had support for Google's
-[Safe Browsing](https://developers.google.com/safe-browsing/) for quite some
-time. It started in 2005 as
-[a stand-alone Firefox extension](https://web.archive.org/web/20051218171531/http://www.google.com/tools/firefox/safebrowsing/index.html)
-only available in the US, then was opened up to the rest of the world in
-2006 before moving into the
-[Google Toolbar](https://web.archive.org/web/20060412192055/http://tools.google.com/firefox/toolbar/), being
+[Safe Browsing](https://developers.google.com/safe-browsing/) since 2005
+when it started as
+[a stand-alone Firefox extension](https://web.archive.org/web/20051218171531/http://www.google.com/tools/firefox/safebrowsing/index.html).
+At first it was only available in the USA, but it was opened up to the rest of the world in
+2006 and moved to the 
+[Google Toolbar](https://web.archive.org/web/20060412192055/http://tools.google.com/firefox/toolbar/).
+It then got 
 [integrated directly](https://bugzilla.mozilla.org/show_bug.cgi?id=329292)
 into
 [Firefox 2.0](http://website-archive.mozilla.org/www.mozilla.org/firefox_releasenotes/en-US/firefox/2.0/releasenotes/)
-and then
-[launched publicly](https://security.googleblog.com/2007/05/introducing-googles-anti-malware.html)
-in 2007.
+before the 
+[public launch](https://security.googleblog.com/2007/05/introducing-googles-anti-malware.html)
+of the service in 2007.
 
 Many people seem confused by this phishing and malware protection
 system and while there is a
