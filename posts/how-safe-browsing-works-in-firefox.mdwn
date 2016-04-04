@@ -223,8 +223,7 @@ about all parts of the Safe Browsing system, see the following papers:
 
 - [All Your IFrames Are Belong to Us](http://research.google.com/archive/provos-2008a.pdf)
 - [Content-Agnostic Malware Protection](https://www.cs.jhu.edu/~moheeb/aburajab-ndss-13.pdf)
-- [Ghost in the Browser](http://www.usenix.org/event/hotbots07/tech/full_papers/provos/provo
-s.pdf)
+- [Ghost in the Browser](http://www.usenix.org/event/hotbots07/tech/full_papers/provos/provos.pdf)
 
 [[!tag firefox]] [[!tag nzoss]] [[!tag mozilla]] [[!tag debian]]
 [[!tag privacy]] [[!tag security]]
