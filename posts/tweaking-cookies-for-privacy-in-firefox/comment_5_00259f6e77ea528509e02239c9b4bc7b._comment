@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="80.73.206.122"
+ claimedauthor="Paul"
+ subject="Exceptions"
+ date="2016-04-06T09:48:11Z"
+ content="""
+Do \"network.cookie.lifetimePolicy\" and \"network.cookie.lifetime.days\" affect exception domains that I explicitly set to allow cookies?
+"""]]
