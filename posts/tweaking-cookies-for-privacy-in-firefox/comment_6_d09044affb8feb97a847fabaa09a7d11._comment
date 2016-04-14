@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: Exceptions"
+ date="2016-04-14T02:29:52Z"
+ content="""
+> Do \"network.cookie.lifetimePolicy\" and \"network.cookie.lifetime.days\" affect exception domains that I explicitly set to allow cookies?
+
+The exceptions are [applied before the other restrictions](https://dxr.mozilla.org/mozilla-central/rev/21bf1af375c1fa8565ae3bb2e89bd1a0809363d4/extensions/cookie/nsCookiePermission.cpp#192-202) and so the `network.cookie.lifetimePolicy` and `network.cookie.lifetime.days` preferences only have an effect for the [default case](https://dxr.mozilla.org/mozilla-central/rev/21bf1af375c1fa8565ae3bb2e89bd1a0809363d4/extensions/cookie/nsCookiePermission.cpp#229-256).
+"""]]
