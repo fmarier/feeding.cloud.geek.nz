@@ -54,10 +54,9 @@ selected regulatory domain:
 
 Once your devices are set to the right country, you should scan the local
 environment to pick the least congested wifi channel. You can use the
-[Kismet spectools](https://kismetwireless.net/spectools/) (free software)
+[Kismet spectools](https://kismetwireless.net/spectools/)
 if you have the hardware, otherwise
-[WifiAnalyzer](https://play.google.com/store/apps/details?id=com.farproc.wifi.analyzer)
-(proprietary) is a good choice on Android (remember to manually set the
-available channels in the settings).
+[WiFi Analyzer](https://f-droid.org/repository/browse/?fdid=com.vrem.wifianalyzer)
+is a good choice on Android.
 
 [[!tag debian]] [[!tag openwrt]] [[!tag gargoyle]]
