@@ -1,0 +1,101 @@
+[[!meta title="Using DNSSEC and DNSCrypt in Debian"]]
+[[!meta date="2016-04-25T20:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+While there is real progress being made towards
+[eliminating insecure HTTP traffic](https://blog.mozilla.org/security/2015/04/30/deprecating-non-secure-http/),
+[DNS](https://en.wikipedia.org/wiki/Domain_Name_System) is a fundamental
+Internet service that still usually relies on unauthenticated cleartext.
+There are however a few efforts to try and fix this problem. Here is the
+setup I use on my Debian laptop to make use of both
+[DNSSEC](http://www.dnssec.net/) and [DNSCrypt](https://dnscrypt.org/).
+
+# DNSCrypt
+
+DNSCrypt was created to enable end-users to encrypt the traffic between
+themselves and their chosen DNS resolver.
+
+To switch away from your ISP's default DNS resolver to a DNSCrypt resolver,
+simply install the [`dnscrypt-proxy` package](https://packages.debian.org/stretch/dnscrypt-proxy) and then
+set it as the default resolver either in `/etc/resolv.conf`:
+
+    nameserver 127.0.2.1
+
+if you are using a static network configuration or in
+`/etc/dhcp/dhclient.conf`:
+
+    supersede domain-name-servers 127.0.2.1;
+
+if you rely on dynamic network configuration via [DHCP](https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol).
+
+There are two things you might want to keep in mind when choosing your
+[DNSCrypt resolver](https://github.com/jedisct1/dnscrypt-proxy/blob/master/dnscrypt-resolvers.csv):
+
+- whether or not they keep any logs of the DNS traffic
+- whether or not they support DNSSEC
+
+I have personally selected a resolver located in Iceland by setting the
+following in `/etc/default/dnscrypt-proxy`:
+
+    DNSCRYPT_PROXY_RESOLVER_NAME=ns0.dnscrypt.is
+
+# DNSSEC
+
+While DNSCrypt protects the confidentiality of our DNS queries, it doesn't
+give us any assurance that the results of such queries are the right ones.
+In order to authenticate results in that way and prevent DNS poisoning, a
+hierarchical cryptographic system was created: DNSSEC.
+
+In order to enable it, I have [setup a local unbound DNSSEC
+resolver](https://feeding.cloud.geek.nz/posts/setting-up-your-own-dnssec-aware/)
+on my machine and pointed `/etc/resolv.conf` (or
+`/etc/dhcp/dhclient.conf`) to my unbound installation at `127.0.0.1`.
+
+Then I put the following in `/etc/unbound/unbound.conf.d/dnscrypt.conf`:
+
+    server:
+        # Remove localhost from the donotquery list
+        do-not-query-localhost: no
+
+    forward-zone:
+        name: "."
+        forward-addr: 127.0.2.1@53
+
+to stop unbound from resolving DNS directly and to instead go through the
+encrypted DNSCrypt proxy.
+
+# Reliability
+
+In my experience, unbound and dnscrypt-proxy are fairly reliable but they
+eventually get confused (presumably) by network changes and start returning
+errors.
+
+The ugly but dependable work-around I have found is to create a cronjob at
+`/etc/cron.d/restart-dns.conf` that restarts both services once a day:
+
+    0 3 * * *    root    /usr/sbin/service dnscrypt-proxy restart
+    1 3 * * *    root    /usr/sbin/service unbound restart
+
+# Captive portals
+
+The one remaining problem I need to solve has to do with
+[captive portals](https://en.wikipedia.org/wiki/Captive_portal). This can be
+quite annoying when travelling because it requires me to use the portal's
+DNS resolver in order to connect to the splash screen that unlocks the wifi
+connection.
+
+The
+[`dnssec-trigger` package](https://packages.debian.org/stable/dnssec-trigger)
+looked promising but when I tried it on my `jessie` laptop, it wasn't
+particularly reliable.
+
+My temporary work-around is to comment out this line in
+`/etc/dhcp/dhclient.conf` whenever I need to connect to such annoying wifi
+networks:
+
+    #supersede domain-name-servers 127.0.0.1;
+
+If you've found a better solution to this problem, please leave a comment!
+
+[[!tag nzoss]] [[!tag debian]] [[!tag privacy]] [[!tag security]]
+[[!tag dns]] [[!tag dnssec]]
