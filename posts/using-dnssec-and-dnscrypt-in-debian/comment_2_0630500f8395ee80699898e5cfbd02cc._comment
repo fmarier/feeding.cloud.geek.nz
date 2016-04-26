@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="80.187.102.79"
+ claimedauthor="Philipp Kern"
+ subject="comment 2"
+ date="2016-04-26T08:05:53Z"
+ content="""
+There is a reason why every ISP provides a recursor: latency. Every new connection that uses a name (unless cached locally with a caching resolver), every newly launched binary that connects somewhere needs to bear DNS latency. Not sure if dnscrypt-proxy caches but it doesn't seem that useful as general advise if it doesn't and everyone uses a proxy in Iceland.
+"""]]
