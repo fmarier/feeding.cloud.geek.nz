@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: comment 2"
+ date="2016-04-26T17:39:49Z"
+ content="""
+> Not sure if dnscrypt-proxy caches but it doesn't seem that useful as general advise if it doesn't and everyone uses a proxy in Iceland.
+
+I don't believe that `dnsproxy-crypt` caches (the name implies it doesn't), but Unbound does.
+"""]]
