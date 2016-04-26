@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="203.167.144.68"
+ claimedauthor="Ewen McNeill"
+ subject="Captive portals"
+ date="2016-04-26T04:06:48Z"
+ content="""
+FWIW, my usual solution to captive portals is to add some exceptions to the DNS resolution/HTTP proxy, which forces enough requests to go \"directly\" to be able to log into the captive portal.  Eg, the domain of the place I'm staying in, and the domain of whatever Wifi provider they're using.  Then I trigger the captive port by, eg, trying to go to the domain of the place I'm staying in.  Over time one could accumulate a list of such exceptions required (and it seems like something that could be crowd sourced).
+
+For better privacy one would perhaps want to selectively enable these exceptions based on the current location (and/or selectively disable them if at known locations like home/work/etc when it's not needed).
+
+Ewen
+
+PS: If your names are resolved from a location far away from you, you'll also generally get CDN nodes which are far away from you.  Which may lead to poor performance.  YMMV.
+"""]]
