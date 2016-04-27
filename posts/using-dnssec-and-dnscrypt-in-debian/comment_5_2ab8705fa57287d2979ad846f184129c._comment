@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="79.248.243.100"
+ claimedauthor="Jonathan"
+ subject="Why encrypt DNS?"
+ date="2016-04-27T12:18:51Z"
+ content="""
+Why encrypt DNS when your browser still leaks the domain name via SNI extension, even though it runs over https?
+https://wikipedia.org/wiki/Server_Name_Indication
+"""]]
