@@ -3,7 +3,7 @@
  subject="comment 4"
  date="2016-04-26T19:26:33Z"
  content="""
-There's some documentation on https://wiki.debian.org/HowTo/dnsmasq
+There's some documentation on <https://wiki.debian.org/HowTo/dnsmasq>
 
-Unfortunately this setup still leaks the client IP address to the resolver. There's no way to use dnscrypt over Tor yet: https://github.com/jedisct1/dnscrypt-proxy/issues/234
+Unfortunately this setup still leaks the client IP address to the resolver. There's no way to use dnscrypt over Tor yet: <https://github.com/jedisct1/dnscrypt-proxy/issues/234>
 """]]
