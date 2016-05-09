@@ -166,10 +166,12 @@ then click the "Avanced" button and set the following:
 * TLS Authentication
    * Subject Match: `server`
    * Verify peer (server) certificate usage signature: `YES`
-   * Remote peer certificate TLS type: `Server`
+     * Remote peer certificate TLS type: `Server`
+   * Verify peer (server) certificate nsCertType designation: `YES`
+     * Remove peer certificate nsCert designation: `Server`
    * Use additional TLS authentication: `YES`
-   * Key File: `/etc/openvpn/ta.key`
-   * Key Direction: `1`
+     * Key File: `/etc/openvpn/ta.key`
+     * Key Direction: `1`
 
 # Debugging
 
