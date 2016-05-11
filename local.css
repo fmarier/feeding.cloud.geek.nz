@@ -48,8 +48,12 @@ code, pre {
   display: none;
 }
 
+.page {
+  max-width: 75em'
+}
+
 #pagebody {
-  width: 800px;
+  width: 60em;
 }
 
 .inlinepage {
