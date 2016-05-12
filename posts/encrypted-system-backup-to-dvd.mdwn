@@ -60,8 +60,10 @@ Make sure you have at least 4.3 GB of free disk space on `/` and then run:
     mkfs.ext4 -m 0 /dev/mapper/backup
     cryptmount --release backup
 
+Alternatively, if you're using a double-layer DVD then use this `dd` line:
 
-  
+    dd if=/dev/zero of=/backup.dat bs=1M count=8000
+
 
 ### Burn the data to a DVD
 
