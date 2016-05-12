@@ -79,12 +79,11 @@ and then copy the files you want to `/backup/` before unmounting that partition:
     cryptmount -u backup
 
 
-Finally, use your favourite DVD-burning program to burn these two files:  
+Finally, use your favourite DVD-burning program to burn these files:
 
   * `/backup.dat`
   * `/backup.key`
-
-  
+  * `/etc/cryptmount/cmtab`
 
 ### Test your backup
 
