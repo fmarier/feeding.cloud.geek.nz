@@ -1,0 +1,98 @@
+[[!meta title="Using OpenVPN on iOS and OSX"]]
+[[!meta date="2016-05-26T22:50:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I have written instructions on how to connect to [your own OpenVPN
+server](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
+using Network Manager as well as
+[Android](https://feeding.cloud.geek.nz/posts/using-openvpn-on-android-lollipop/).
+
+Here is how to do it on iOS and OSX assuming you have followed my
+instructions for the server setup.
+
+# Generate new keys
+
+From the easy-rsa directory you created while generating the server keys, create a new keypair for your phone:
+
+    ./build-key iphone   # "iphone" as Name, no password
+
+and for your laptop:
+
+    ./build-key osx      # "osx" as Name, no password
+
+# Using OpenVPN Connect on iOS
+
+The app you need to install from the App Store is [OpenVPN
+Connect](https://itunes.apple.com/us/app/openvpn-connect/id590379981).
+
+Once it's installed, connect your phone to your computer and [transfer the
+following files using iTunes](https://support.apple.com/kb/PH12318):
+
+- `ca.crt`
+- `iphone.crt`
+- `iphone.key`
+- `iphone.ovpn`
+- `ta.key`
+
+You should then be able to select it after launching the app. See the
+[official FAQ](https://docs.openvpn.net/docs/openvpn-connect/openvpn-connect-ios-faq.html)
+if you run into any problems.
+
+`iphone.ovpn` is a configuration file that you need to supply since the
+OpenVPN Connect app doesn't have a configuration interface. You can use [this
+script](https://gist.github.com/trovao/18e428b5a758df24455b) to generate it
+or write it from scratch [using this
+template](https://openvpn.net/index.php/open-source/documentation/howto.html#client).
+
+On Linux, you can also create a configuration file using [Network Manager 1.2](https://blogs.gnome.org/lkundrak/2016/04/20/networkmanager-1-2-is-here/),
+use the following command:
+
+    nmcli connection export hafnarfjordur > iphone.ovpn
+
+though that didn't quite work in my experience.
+
+Here is the config I successfully used to connect to my server:
+
+    client
+    remote hafnarfjordur.fmarier.org 1194
+    ca ca.crt
+    cert iphone.crt
+    key iphone.key
+    cipher AES-256-CBC
+    auth SHA384
+    comp-lzo yes
+    proto udp
+    tls-remote server
+    remote-cert-tls server
+    ns-cert-type server
+    tls-auth ta.key 1
+
+# Using Viscosity on Mac OSX
+
+One of the possible OpenVPN clients you can use on OSX is
+[Viscosity](https://www.sparklabs.com/viscosity/).
+
+Here are the settings you'll need to change when setting up a new VPN
+connection:
+
+- **General**
+ - Remote server: `hafnarfjordur.fmarier.org`
+- **Authentication**
+ - Type: SSL/TLS client
+ - CA: `ca.crt`
+ - Cert: `osx.crt`
+ - Key: `osx.key`
+ - Tls-Auth: `ta.key`
+ - direction: 1
+- **Options**
+ - peer certificate: require server nsCertType
+ - compression: turn LZO on
+- **Networking**
+ - send all traffic on VPN
+- **Advanced**
+ - add the following extra OpenVPN configuration commands:
+
+            cipher AES-256-CBC
+            auth SHA384
+
+[[!tag openvpn]]
