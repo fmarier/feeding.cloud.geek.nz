@@ -76,23 +76,23 @@ Here are the settings you'll need to change when setting up a new VPN
 connection:
 
 - **General**
- - Remote server: `hafnarfjordur.fmarier.org`
+   - Remote server: `hafnarfjordur.fmarier.org`
 - **Authentication**
- - Type: SSL/TLS client
- - CA: `ca.crt`
- - Cert: `osx.crt`
- - Key: `osx.key`
- - Tls-Auth: `ta.key`
- - direction: 1
+   - Type: SSL/TLS client
+   - CA: `ca.crt`
+   - Cert: `osx.crt`
+   - Key: `osx.key`
+   - Tls-Auth: `ta.key`
+   - direction: 1
 - **Options**
- - peer certificate: require server nsCertType
- - compression: turn LZO on
+   - peer certificate: require server nsCertType
+   - compression: turn LZO on
 - **Networking**
- - send all traffic on VPN
+   - send all traffic on VPN
 - **Advanced**
- - add the following extra OpenVPN configuration commands:
+   - add the following extra OpenVPN configuration commands:
 
-            cipher AES-256-CBC
-            auth SHA384
+         cipher AES-256-CBC
+         auth SHA384
 
 [[!tag openvpn]]
