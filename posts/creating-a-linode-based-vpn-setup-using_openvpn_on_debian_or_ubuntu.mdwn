@@ -173,6 +173,8 @@ then click the "Avanced" button and set the following:
      * Key File: `/etc/openvpn/ta.key`
      * Key Direction: `1`
 
+There are also compatible clients on [Android](https://feeding.cloud.geek.nz/posts/using-openvpn-on-android-lollipop/), [iOS and OSX](https://feeding.cloud.geek.nz/posts/using-openvpn-on-ios-and-osx/).
+
 # Debugging
 
 If you run into problems, simply take a look at the logs while attempting to
