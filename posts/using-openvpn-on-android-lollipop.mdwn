@@ -62,6 +62,10 @@ Authentication/Encryption:
 - Encryption cipher: `AES-256-CBC`
 - Packet authentication: `SHA384` (**not** `SHA-384`)
 
+Advanced:
+
+- Persistent tun: `YES`
+
 That's it. Everything else should work with the defaults.
 
 [[!tag security]] [[!tag android]] [[!tag debian]] [[!tag nzoss]] [[!tag openvpn]]
