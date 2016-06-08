@@ -61,7 +61,6 @@ add_plugins:
 - listdirectives
 - poll
 - progress
-- relativedate
 - search
 - testpagespec
 - version
@@ -82,6 +81,7 @@ add_plugins:
 # plugins to disable
 disable_plugins:
 - fortune
+- relativedate
 # additional directory to search for template files
 templatedir: /usr/share/ikiwiki/templates
 # base wiki source location
@@ -127,7 +127,7 @@ libdirs: []
 # extra library and plugin directory (searched after libdirs)
 libdir: /home/b-feedingthecloud/.ikiwiki
 # environment variables
-ENV: {}
+#ENV: ''
 # time zone name
 timezone: America/Vancouver
 # regexp of normally excluded files to include
@@ -144,7 +144,7 @@ cookiejar:
 # set custom user agent string for outbound HTTP requests e.g. when fetching aggregated RSS feeds
 useragent: ikiwiki/3.20141017
 # theme has a responsive layout? (mobile-optimized)
-responsive_layout: 1
+responsive_layout: 0
 # try harder to produce deterministic output
 deterministic: 0
 
@@ -338,8 +338,8 @@ po_link_to: default
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
-#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, google, goto,
+#    mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -364,10 +364,6 @@ comments_allowauthor: 1
 comments_commit: 1
 # Restrict formats for comments to (no restriction if empty)
 comments_allowformats: mdwn txt
-
-# getsource plugin
-# Mime type for returned source.
-#getsource_mimetype: text/plain; charset=utf-8
 
 # mirrorlist plugin
 # list of mirrors
@@ -430,6 +426,10 @@ archive_pagespec: page(posts/*) and !*/Discussion
 calendar_autocreate: 1
 # if set, when building calendar pages, also build pages of year and month when no pages were published (building empty calendars).
 calendar_fill_gaps: 1
+
+# img plugin
+# Image formats to process (jpeg, png, gif, svg, pdf or 'everything' to accept all)
+#img_allowed_formats: ''
 
 # listdirectives plugin
 # directory in srcdir that contains directive descriptions
