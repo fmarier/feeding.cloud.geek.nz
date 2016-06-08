@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="178.236.196.236"
+ claimedauthor="Marius Gedminas"
+ url="https://gedmin.as"
+ subject="Healthchecks"
+ date="2016-06-08T06:48:41Z"
+ content="""
+Recently I've discovered [healthchecks.io](https://healthchecks.io), which is a free (and also FOSS) service that can check whether your mail server can deliver email.
+
+The way it works: you configure a cron script on your server to send email to `<uuid>@healtchecks.io`, and if that email doesn't arrive for a set period (say, 24 hours, if you want one daily check), healtchecks.io will drop you a notification.
+"""]]
