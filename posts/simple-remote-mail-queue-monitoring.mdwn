@@ -1,0 +1,63 @@
+[[!meta title="Simple Remote Mail Queue Monitoring"]]
+[[!meta date="2016-06-07T22:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to monitor some of the [machines I
+maintain](https://feeding.cloud.geek.nz/posts/usual-server-setup/), I rely
+on a simple email setup using
+[logcheck](https://packages.debian.org/sid/logcheck). Unfortunately that
+system completely breaks down if mail delivery stops.
+
+This is the simple setup I've come up with to ensure that mail doesn't
+pile up on the remote machine.
+
+# Server setup
+
+The first thing I did on the server-side is to follow [Sean Whitton's
+advice](https://spwhitton.name//blog/entry/postfixexpiry/) and configure
+postfix so that it keeps undelivered emails for 10 days (instead of 5 days,
+the default):
+
+    postconf -e maximal_queue_lifetime=10d
+
+Then I created a new user:
+
+    adduser mailq-check
+
+with a password straight out of `pwgen -s 32`.
+
+I gave [ssh
+permission](https://feeding.cloud.geek.nz/posts/hardening-ssh-servers/) to
+that user:
+
+    adduser mailq-check sshuser
+
+and then authorized my new ssh key (see next section):
+
+    sudo -u mailq-check -i
+    mkdir ~/.ssh/
+    cat - > ~/.ssh/authorized_keys
+
+# Laptop setup
+
+On my laptop, the machine from where I monitor the server's mail queue, I
+first created a new password-less ssh key:
+
+    ssh-keygen -t ed25519 -f .ssh/egilsstadir-mailq-check
+    cat ~/.ssh/egilsstadir-mailq-check.pub
+
+which I then installed on the server.
+
+Then I added this cronjob in `/etc/cron.d/egilsstadir-mailq-check`:
+
+    0 2 * * * francois /usr/bin/ssh -i /home/francois/.ssh/egilsstadir-mailq-check mailq-check@egilsstadir mailq | grep -v "Mail queue is empty"
+
+and that's it. I get a (locally delivered) email whenever the mail queue on
+the server is non-empty.
+
+There is a race condition built into this setup since it's possible that the
+server will want to send an email at 2am. However, all that does is send a
+spurious warning email in that case and so it's a pretty small price to pay
+for a dirt simple setup that's unlikely to break.
+
+[[!tag sysadmin]] [[!tag debian]] [[!tag nzoss]]
