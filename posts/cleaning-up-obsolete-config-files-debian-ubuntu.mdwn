@@ -1,0 +1,76 @@
+[[!meta title="Cleaning up obsolete config files on Debian and Ubuntu"]]
+[[!meta date="2016-06-11T14:40:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+As part of regular operating system hygiene, I run a [cron
+job](https://github.com/fmarier/root-scripts/blob/master/apt-cron) which
+updates package metadata and looks for obsolete packages and configuration
+files.
+
+While there is already some easily available information on how to [purge
+unneeded or obsolete
+packages](https://raphaelhertzog.com/2011/01/31/debian-cleanup-tip-1-get-rid-of-useless-configuration-files/)
+and how to [clean up config files properly in maintainer scripts](https://raphaelhertzog.com/2010/10/07/the-right-way-to-remove-an-obsolete-conffile-in-a-debian-package/
+), the guidance on [how to delete obsolete config
+files](http://comments.gmane.org/gmane.linux.debian.devel.mentors/61287) is not
+easy to find and somewhat incomplete.
+
+These are the obsolete conffiles I started with:
+
+    $ dpkg-query -W -f='${Conffiles}\n' | grep obsolete
+     /etc/apparmor.d/abstractions/evince ae2a1e8cf5a7577239e89435a6ceb469 obsolete
+     /etc/apparmor.d/tunables/ntpd 5519e4c01535818cb26f2ef9e527f191 obsolete
+     /etc/apparmor.d/usr.bin.evince 08a12a7e468e1a70a86555e0070a7167 obsolete
+     /etc/apparmor.d/usr.sbin.ntpd a00aa055d1a5feff414bacc89b8c9f6e obsolete
+     /etc/bash_completion.d/initramfs-tools 7eeb7184772f3658e7cf446945c096b1 obsolete
+     /etc/bash_completion.d/insserv 32975fe14795d6fce1408d5fd22747fd obsolete
+     /etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf 8df3896101328880517f530c11fff877 obsolete
+     /etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf d81013f5bfeece9858706aed938e16bb obsolete
+
+
+To get rid of the `/etc/bash_completion.d/` files, I first determined what
+packages they were registered to:
+
+    $ dpkg -S /etc/bash_completion.d/initramfs-tools
+    initramfs-tools: /etc/bash_completion.d/initramfs-tools
+    $ dpkg -S /etc/bash_completion.d/insserv
+    initramfs-tools: /etc/bash_completion.d/insserv
+
+and then followed
+[Paul Wise's instructions](https://lists.debian.org/debian-mentors/2013/05/msg00115.html):
+
+    $ rm /etc/bash_completion.d/initramfs-tools /etc/bash_completion.d/insserv
+    $ apt install --reinstall initramfs-tools insserv
+
+For some reason that didn't work for the `/etc/dbus-1/system.d/` files
+and I had to purge and reinstall the relevant package:
+
+    $ dpkg -S /etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf
+    system-config-printer-common: /etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf
+    $ dpkg -S /etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf
+    system-config-printer-common: /etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf
+    
+    $ apt purge system-config-printer-common
+    $ apt install system-config-printer
+
+The files in `/etc/apparmor.d/` were even more complicated to deal with
+because purging the packages that they come from didn't help:
+
+    $ dpkg -S /etc/apparmor.d/abstractions/evince
+    evince: /etc/apparmor.d/abstractions/evince
+    $ apt purge evince
+    $ dpkg-query -W -f='${Conffiles}\n' | grep obsolete
+     /etc/apparmor.d/abstractions/evince ae2a1e8cf5a7577239e89435a6ceb469 obsolete
+     /etc/apparmor.d/usr.bin.evince 08a12a7e468e1a70a86555e0070a7167 obsolete
+
+I was however able to get rid of them by also purging the apparmor profile
+packages that are installed on my machine:
+
+    $ apt purge apparmor-profiles apparmor-profiles-extra evince ntp
+    $ apt install apparmor-profiles apparmor-profiles-extra evince ntp
+
+Not sure why I had to do this but I suspect that these files used to be
+shipped by one of the apparmor packages and then eventually migrated to the
+`evince` and `ntp` packages directly and dpkg got confused.
+
+[[!tag sysadmin]] [[!tag debian]] [[!tag nzoss]]
