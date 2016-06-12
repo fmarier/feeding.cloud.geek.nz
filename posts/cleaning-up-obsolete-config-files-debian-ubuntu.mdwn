@@ -73,4 +73,8 @@ Not sure why I had to do this but I suspect that these files used to be
 shipped by one of the apparmor packages and then eventually migrated to the
 `evince` and `ntp` packages directly and dpkg got confused.
 
+If you're in a similar circumstance, you want want to search for the file you're
+trying to get rid of on Google and then you might end up on <http://apt-browse.org/>
+which could lead you to the old package that used to own this file.
+
 [[!tag sysadmin]] [[!tag debian]] [[!tag nzoss]]
