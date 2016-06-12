@@ -17,7 +17,7 @@ easy to find and somewhat incomplete.
 
 These are the obsolete conffiles I started with:
 
-    $ dpkg-query -W -f='${Conffiles}\n' | grep obsolete
+    $ dpkg-query -W -f='${Conffiles}\n' | grep 'obsolete$'
      /etc/apparmor.d/abstractions/evince ae2a1e8cf5a7577239e89435a6ceb469 obsolete
      /etc/apparmor.d/tunables/ntpd 5519e4c01535818cb26f2ef9e527f191 obsolete
      /etc/apparmor.d/usr.bin.evince 08a12a7e468e1a70a86555e0070a7167 obsolete
@@ -59,7 +59,7 @@ because purging the packages that they come from didn't help:
     $ dpkg -S /etc/apparmor.d/abstractions/evince
     evince: /etc/apparmor.d/abstractions/evince
     $ apt purge evince
-    $ dpkg-query -W -f='${Conffiles}\n' | grep obsolete
+    $ dpkg-query -W -f='${Conffiles}\n' | grep 'obsolete$'
      /etc/apparmor.d/abstractions/evince ae2a1e8cf5a7577239e89435a6ceb469 obsolete
      /etc/apparmor.d/usr.bin.evince 08a12a7e468e1a70a86555e0070a7167 obsolete
 
