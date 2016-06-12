@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="2001:a62:25a:d01:d85b:48f8:e4c1:4fea"
+ subject="Let's make it obsolete files"
+ date="2016-06-12T05:40:32Z"
+ content="""
+Often I forget to clean up things like /etc/ssh/ssh_host_ecdsa_key (or dsa) or similar pieces that should be. Maybe you can include those (and other) as well.
+
+Thanks for your insightful post.
+"""]]
