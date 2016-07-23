@@ -1,0 +1,106 @@
+[[!meta title="Replacing a failed RAID drive"]]
+[[!meta date="2016-07-22T22:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here's the complete procedure I followed to replace a failed drive from a
+RAID array on a Debian machine.
+
+# Replace the failed drive
+
+After seeing that `/dev/sdb` had been kicked out of my RAID array, I used
+[smartmontools](https://packages.debian.org/jessie/smartmontools) to
+identify the serial number of the drive to pull out:
+
+    smartctl -a /dev/sdb
+
+Armed with this information, I shutdown the computer, pulled the bad drive
+out and put the new blank one in.
+
+# Initialize the new drive
+
+After booting with the new blank drive in, I copied the partition table
+using [parted](https://packages.debian.org/jessie/parted).
+
+First, I took a look at what the partition table looks like on the good
+drive:
+
+    $ parted /dev/sda
+    unit s
+    print
+
+and created a new empty one on the replacement drive:
+
+    $ parted /dev/sdb
+    unit s
+    mktable gpt
+
+then I ran `mkpart` for all 4 partitions and made them all the same size as
+the matching ones on `/dev/sda`.
+
+Finally, I ran `toggle 1 bios_grub` (boot partition) and `toggle X raid`
+(where *X* is the partition number) for all RAID partitions, before
+verifying using `print` that the two partition tables were now the same.
+
+# Resync/recreate the RAID arrays
+
+To sync the data from the good drive (`/dev/sda`) to the replacement one
+(`/dev/sdb`), I ran the following on my RAID1 partitions:
+
+    mdadm /dev/md0 -a /dev/sdb2
+    mdadm /dev/md2 -a /dev/sdb4
+
+and kept an eye on the status of this sync using:
+
+    watch -n 2 cat /proc/mdstat
+
+In order to [speed up the
+sync](http://www.cyberciti.biz/tips/linux-raid-increase-resync-rebuild-speed.html),
+I used the following trick:
+
+    blockdev --setra 65536 "/dev/md0"
+    blockdev --setra 65536 "/dev/md2"
+    echo 300000 > /proc/sys/dev/raid/speed_limit_min
+    echo 1000000 > /proc/sys/dev/raid/speed_limit_max
+
+Then, I recreated my RAID0 swap partition like this:
+
+    mdadm /dev/md1 --create --level=0 --raid-devices=2 /dev/sda3 /dev/sdb3
+    mkswap /dev/md1
+
+Because the swap partition is brand new (you can't restore a RAID0, you need
+to re-create it), I had to update two things:
+
+- replace the UUID for the swap mount in `/etc/fstab`, with the one returned
+  by `mkswap` (or running `blkid` and looking for `/dev/md1`)
+- replace the UUID for `/dev/md1` in `/etc/mdadm/mdadm.conf` with the one
+  returned for `/dev/md1` by `mdadm --detail --scan`
+
+# Ensuring that I can boot with the replacement drive
+
+In order to be able to boot from both drives, I reinstalled the grub boot
+loader onto the replacement drive:
+
+    grub-install /dev/sdb
+
+before rebooting with both drives to first make sure that my new config
+works.
+
+Then I booted without `/dev/sda` to make sure that everything would be fine
+should that drive fail and leave me with just the new one (`/dev/sdb`).
+
+This test obviously gets the two drives out of sync, so I rebooted with both
+drives plugged in and then had to re-add `/dev/sda` to the RAID1 arrays:
+
+    mdadm /dev/md0 -a /dev/sda2
+    mdadm /dev/md2 -a /dev/sda4
+
+Once that finished, I rebooted again with both drives plugged in to confirm
+that everything is fine:
+
+    cat /proc/mdstat
+
+Then I ran a full SMART test over the new replacement drive:
+
+    smartctl -t long /dev/sdb
+
+[[!tag nzoss]] [[!tag sysadmin]] [[!tag debian]] [[!tag raid]]
