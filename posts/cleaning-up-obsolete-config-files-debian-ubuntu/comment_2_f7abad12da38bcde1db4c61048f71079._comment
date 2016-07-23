@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="2001:470:71:1b:224:1dff:fed1:8e63"
+ claimedauthor="klg"
+ subject="Transitional packages "
+ date="2016-06-13T00:05:18Z"
+ content="""
+I found that on my system all cases when your rm-and-reinstall procedure failed to clear the file off the obsolete list was exactly because of what you suspected—some other package than the one given by `dpkg -S` had installed the file in the first place.  So for the record, `dpkg -W` can tell you which package to look for:
+
+    dpkg-query -W '-f=${Package}\n${Conffiles}\n' | awk '/^[^ ]/{pkg=$1}/ obsolete$/{print pkg,$0}'
+
+"""]]
