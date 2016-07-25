@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="24.178.215.44"
+ subject="Command to copy partition table setup to another drive"
+ date="2016-07-25T14:48:09Z"
+ content="""
+Here's a quick tip for copying the partition table setup from one drive to the other:
+
+(sda is source, sdb is destination)
+
+sfdisk -d /dev/sda | sfdisk --force /dev/sdb
+"""]]
