@@ -8,6 +8,8 @@ visit the page and right-click on the cover image, you will get a **170 px
 by 170 px** image. Change the `170x170` in the URL to one of the following
 values to get a higher resolution image:
 
+- `64x64`
+- `100x100`
 - `170x170`
 - `340x340`
 - `600x600`
