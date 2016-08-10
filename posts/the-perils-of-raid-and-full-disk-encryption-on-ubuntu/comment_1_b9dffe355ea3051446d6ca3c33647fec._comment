@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="190.6.88.85"
+ claimedauthor="julio"
+ subject="worked fine in ubuntu server 16.04 64bit, not in 32bit"
+ date="2016-08-10T21:14:13Z"
+ content="""
+I have tried this patch in both versions of Ubuntu server 16.04 (32 and 64 bit) in a Virtual Box vm. I found that the 64 bit editions it's fine, but the 32 bit edition does not boot up. It stops with the message \"cryptsetup: lvm is not available\" Perhaps there is a way to solve this, but is far from my knowledge. Thanks for the patch.
+
+Kind regards
+"""]]
