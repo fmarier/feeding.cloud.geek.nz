@@ -114,5 +114,3 @@ et j'ai ensuite exécuter un test *SMART* complet sur le nouveau
 disque :
 
     smartctl -t long /dev/sdb
-
-[[!tag nzoss]] [[!tag sysadmin]] [[!tag debian]] [[!tag raid]]
