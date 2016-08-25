@@ -1,0 +1,112 @@
+[[!meta title="Debugging gnome-session problems on Ubuntu 14.04"]]
+[[!meta date="2016-08-24T22:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After upgrading an Ubuntu 14.04 ("trusty") machine to the latest 16.04
+[Hardware Enablement](https://wiki.ubuntu.com/Kernel/LTSEnablementStack)
+packages, I ran into login problems. I could log into my user account and
+see the GNOME desktop for a split second before getting thrown back into the
+LightDM login manager.
+
+The solution I found was to install this missing package:
+
+    apt install libwayland-egl1-mesa-lts-xenial
+
+# Looking for clues in the logs
+
+The first place I looked was the log file for the login manager
+(`/var/log/lightdm/lightdm.log`) where I found the following:
+
+    DEBUG: Session pid=12743: Running command /usr/sbin/lightdm-session gnome-session --session=gnome
+    DEBUG: Creating shared data directory /var/lib/lightdm-data/username
+    DEBUG: Session pid=12743: Logging to .xsession-errors
+
+This told me that the login manager runs the `gnome-session` command and
+gets it to create a session of type *gnome*. That command line is defined
+in `/usr/share/xsessions/gnome.desktop` (look for `Exec=`):
+
+    [Desktop Entry]
+    Name=GNOME
+    Comment=This session logs you into GNOME
+    Exec=gnome-session --session=gnome
+    TryExec=gnome-shell
+    X-LightDM-DesktopName=GNOME
+
+I couldn't see anything unexpected there, but it did point to another log
+file (`~/.xsession-errors`) which contained the following:
+
+    Script for ibus started at run_im.
+    Script for auto started at run_im.
+    Script for default started at run_im.
+    init: Le processus gnome-session (GNOME) main (11946) s'est achevé avec l'état 1
+    init: Déconnecté du bus D-Bus notifié
+    init: Le processus logrotate main (11831) a été tué par le signal TERM
+    init: Le processus update-notifier-crash (/var/crash/_usr_bin_unattended-upgrade.0.crash) main (11908) a été tué par le signal TERM
+
+Seaching for French error messages isn't as useful as searching for English
+ones, so I took a look at `/var/log/syslog` and found this:
+
+    gnome-session[4134]: WARNING: App 'gnome-shell.desktop' exited with code 127
+    gnome-session[4134]: WARNING: App 'gnome-shell.desktop' exited with code 127
+    gnome-session[4134]: WARNING: App 'gnome-shell.desktop' respawning too quickly
+    gnome-session[4134]: CRITICAL: We failed, but the fail whale is dead. Sorry....
+
+It looks like `gnome-session` is executing `gnome-shell` and that this last
+command is terminating prematurely. This would explain why `gnome-session`
+exits immediately after login.
+
+# Increasing the amount of logging
+
+In order to get more verbose debugging information out of `gnome-session`, I
+created a new type of session (*GNOME debug*) by copying the regular *GNOME*
+session:
+
+    cp /usr/share/xsessions/gnome.desktop /usr/share/xsessions/gnome-debug.desktop
+
+and then adding `--debug` to the command line inside `gnome-debug.desktop`:
+
+    [Desktop Entry]
+    Name=GNOME debug
+    Comment=This session logs you into GNOME debug
+    Exec=gnome-session --debug --session=gnome
+    TryExec=gnome-shell
+    X-LightDM-DesktopName=GNOME debug
+
+After restarting LightDM (`service lightdm restart`), I clicked the GNOME
+logo next to the password field and chose *GNOME debug* before trying to
+login again.
+
+This time, I had a lot more information in `~/.xsession-errors`:
+
+    gnome-session[12878]: DEBUG(+): GsmAutostartApp: starting gnome-shell.desktop: command=/usr/bin/gnome-shell startup-id=10d41f1f5c81914ec61471971137183000000128780000
+    gnome-session[12878]: DEBUG(+): GsmAutostartApp: started pid:13121
+    ...
+    /usr/bin/gnome-shell: error while loading shared libraries: libwayland-egl.so.1: cannot open shared object file: No such file or directory
+    gnome-session[12878]: DEBUG(+): GsmAutostartApp: (pid:13121) done (status:127)
+    gnome-session[12878]: WARNING: App 'gnome-shell.desktop' exited with code 127
+
+which suggests that `gnome-shell` won't start because of a missing library.
+
+# Finding the missing library
+
+To find the missing library, I used the [apt-file](https://launchpad.net/ubuntu/+source/apt-file) command:
+
+    apt-file update
+    apt-file search libwayland-egl.so.1
+
+and found that this file is provided by the following packages:
+
+- libhybris
+- libwayland-egl1-mesa
+- libwayland-egl1-mesa-dbg
+- libwayland-egl1-mesa-lts-utopic
+- libwayland-egl1-mesa-lts-vivid
+- libwayland-egl1-mesa-lts-wily
+- libwayland-egl1-mesa-lts-xenial
+
+Since I installed the LTS Enablement stack, the package I needed to install to fix this
+was [libwayland-egl1-mesa-lts-xenial](https://launchpad.net/ubuntu/trusty/+package/libwayland-egl1-mesa-lts-xenial).
+
+I filed [a bug for this on Launchpad](https://bugs.launchpad.net/ubuntu/+source/xserver-xorg-video-intel-lts-xenial/+bug/1616734).
+
+[[!tag nzoss]] [[!tag debian]] [[!tag gnome]] [[!tag ubuntu]]
