@@ -16,12 +16,11 @@ Install [cryptmount](http://cryptmount.sourceforge.net/):
     apt-get install cryptmount
 
 
-and setup two encrypted mount points in `/etc/cryptmount/cmtab`:  
+and setup two encrypted mount points in `/etc/cryptmount/cmtab`:
 
-
-    backup {  
-      dev=/backup.dat  
-      dir=/backup  
+    backup {
+      dev=/backup.dat
+      dir=/backup
       fstype=ext4
       mountoptions=defaults,noatime
 
@@ -30,13 +29,13 @@ and setup two encrypted mount points in `/etc/cryptmount/cmtab`:
       keycipher=aes-xts-plain64
       keyformat=builtin
       cipher=aes-xts-plain64
-    }  
-      
-    testbackup {  
+    }
+
+    testbackup {
       dev=/media/cdrom/backup.dat
-      dir=/backup  
+      dir=/backup
       fstype=ext4
-      mountoptions=defaults,noatime
+      mountoptions=defaults,noatime,ro
 
       keyfile=/media/cdrom/backup.key
       keyhash=sha512
@@ -44,9 +43,6 @@ and setup two encrypted mount points in `/etc/cryptmount/cmtab`:
       keyformat=builtin
       cipher=aes-xts-plain64
     }
-
-
-  
 
 ### Initialize the encrypted filesystem
 
