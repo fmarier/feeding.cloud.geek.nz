@@ -144,7 +144,7 @@ cookiejar:
 # set custom user agent string for outbound HTTP requests e.g. when fetching aggregated RSS feeds
 useragent: ikiwiki/3.20141017
 # theme has a responsive layout? (mobile-optimized)
-responsive_layout: 0
+responsive_layout: 1
 # try harder to produce deterministic output
 deterministic: 0
 
