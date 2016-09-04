@@ -1,73 +1,304 @@
 /* ikiwiki local style sheet */
-body, .pageheader .actions ul li {
-  background-color: #EEEED9;
-  text-rendering: optimizeLegibility;
-}
-
-a {
-  color: #5187bd;
-}
-
-code, pre {
-  background-color: #ddddbe;
-}
-
-.header {
-  font-weight: bold;
-}
-
-.pageheader, .pagefooter {
-  border: none;
-  background-color: #335577;
-  color: white;
-}
-
-.pageheader a, .pagefooter a {
-  color: #6db6ff;
-}
-
-#footer, #pageinfo {
-  margin: 0;
-}
-
-.sidebar {
-  background-color: #558866;
-  width: 220px;
-  color: white !important;
-}
-
-.sidebar a {
-  color: #65f5d8;
-}
-
-.sidebar img {
-  margin: 0 10px 0 0;
-}
-
 .blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions {
-  display: none;
+    display: none;
 }
+
+body {
+    background-color: #277459;
+    color: #FFF;
+    line-height: 1.2;
+    text-rendering: optimizeLegibility;
+}
+
+    body a {
+        color: #bee8da;
+    }
+
+/* PAGE WRAPPER */
 
 .page {
-  max-width: 75em;
+    max-width: 60em;
+    margin-right: 19em;
+    border-bottom: 2em solid #335577;
+    background: #EEEED9;
+    color: #333;
 }
+
+    .page a {
+        color: #5187bd;
+    }
+
+/* HEADER */
+
+.pageheader {
+    border: none;
+    padding: 2em;
+    background-color: #335577;
+    color: #FFF;
+}
+
+    .pageheader a, 
+    .pagefooter a {
+        color: #A4D2FF;
+    }
+
+    .pageheader .header {
+        padding-top: 1em;
+    }
+
+    .pageheader .parentlinks {
+        display: block;
+        margin-right: 12em;
+    }
+
+        .pageheader .parentlinks a::after {
+            content: ' ';
+        }
+
+    .pageheader .title {
+        margin-bottom: 0.2em;
+        font-weight: bold;
+    }
+
+#searchform {
+    top: 1.6em;
+}
+
+#searchform input {
+    padding: 2px 16px 2px 10px;
+    font-size: inherit;
+}
+
+.pageheader .actions > ul > li {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+}
+
+.pageheader .actions > ul > li > a {
+    display: block;
+    float: right;
+    padding: 0 0 0.4em 1em;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 15em;
+    margin: 0 -19em 0 2em;
+    padding: 2em;
+    border: 0;
+    background-color: #277459;
+    color: #FFF !important;
+}
+
+    .sidebar :first-child {
+        margin-top: 0;
+    }
+
+    .sidebar a {
+        color: #bee8da !important;
+    }
+
+/* PAGE BODY
+   - wraps #content and #comments
+*/
 
 #pagebody {
-  width: 60em;
+    padding: 2em;
 }
+
+    #pagebody code, 
+    #pagebody pre,
+    #pagebody blockquote {
+        background-color: #ddddbe;
+        font-size: 1.05em;
+    }
+
+    #pagebody pre,
+    #pagebody blockquote {
+            padding: 0.5em;
+    }
+
+#content {
+    margin: 0;
+    padding: 0;
+    max-width: 60em;
+}
+
+    #content :first-child {
+        margin-top: 0;
+    }
 
 .inlinepage {
-  margin: 0 0 4em 0;
-  padding: 0;
-  border: none;
+    margin-bottom: 2em;
+    border: 0;
+    border-bottom: 1px solid #277459;
+    padding-bottom: 2em;
 }
 
-.pageheader .actions ul li a {
-  color: black;
+#content .inlinepage:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+    padding-bottom: 0;
 }
+
+#comments {
+    margin: 2em 0 0 0;
+    padding: 0;
+    border-top: 1px solid #277459;
+}
+
+.feedlink {
+    margin: 2em 0em;
+}
+
+.comment {
+    margin: 0 0 2em 0;
+    border: none;
+    border-bottom: 1px solid #ddddbe;
+    padding-bottom: 2em;
+}
+
+.comment-subject {
+    font-size: 120%;
+}
+
+.comment-header {
+    padding-top: 0.5em;
+}
+
+.comment .actions > ul > li {
+    padding: 0.2em 0.2em 0.2em 0;
+}
+
+.addcomment {
+    margin-top: 2em;
+}
+
+/* FOOTER */
+
+#footer {
+    margin: 0;
+}
+
+.pagefooter {
+    border: none;
+    background: #EEEED9;
+    color: #333;
+}
+
+    .pagefooter a {
+        color: #5187bd;
+    }
+
+#pageinfo {
+    margin: 0;
+    border: none;
+    padding: 2em;
+    border-top: 1px solid #277459;
+}
+
+    #pageinfo :first-child {
+        margin-top: 0;
+    }
+
+#backlinks {
+    margin-top: 0;
+}
+
+/* PAGE CLOUD */
 
 .pagecloud {
-  color: white !important;
-  border: none;
-  background: none;
+    border: 0;
+    background-color: transparent;
+}
+
+/* ALOODO
+     - stops it from putting extra empty space at bottom of page
+*/
+iframe[src='//ad.aloodo.com/track/'] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+}
+
+
+/* ADAPT TO MOBILE */
+
+@media all and (max-width: 79em) {
+    .pageheader {
+        margin-right: -19em;
+    }
+}
+
+@media all and (max-width: 60em) {
+    .page {
+        margin-right: 0;
+    }
+    
+    .pageheader {
+        margin-right: 0;
+    }
+    
+    /* move sidebar after content */
+    .page {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: auto;
+        margin: 0;
+        order: 3;
+    }
+}
+
+@media all and (max-width: 40em) {
+    .pageheader,
+    #pagebody,
+    .sidebar {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+    
+    .pageheader .header,
+    .pageheader .actions,
+    #searchform {
+        position: static;
+        top: 0;
+        float: none;
+    }
+    
+    .pageheader .header {
+        padding-top: 0;
+    }
+    
+    .pageheader .parentlinks {
+        margin-right: 0;
+    }
+    
+    #searchform {
+        text-align: right;
+    }
+    
+    .pageheader .actions {
+         position: relative;
+         right: 0;
+         bottom: auto;
+         top: 1em;
+    }
+    
+}
+
+/* MEDIA QUERY OVERRIDES */
+@media (max-width: 600px) {
+    #content, #enclosure, #footer {
+        margin: 0;
+    }
+    .pageheader .actions ul li {
+        font-size: 1em;
+    }
 }
