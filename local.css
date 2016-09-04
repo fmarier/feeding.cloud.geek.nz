@@ -1,5 +1,6 @@
 /* ikiwiki local style sheet */
-.blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions {
+.blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions,
+ {
     display: none;
 }
 
@@ -37,8 +38,7 @@ body {
     color: #FFF;
 }
 
-    .pageheader a, 
-    .pagefooter a {
+    .pageheader a {
         color: #A4D2FF;
     }
 
@@ -58,6 +58,12 @@ body {
     .pageheader .title {
         margin-bottom: 0.2em;
         font-weight: bold;
+    }
+
+    .pageheader .actions a[href^='/ikiwiki.cgi?do=comment'],
+    .pageheader .actions a[href^='/ikiwiki.cgi?do=edit'],
+    .pageheader .actions a[href^='./#comments'] {
+        display: none;
     }
 
 #searchform {
