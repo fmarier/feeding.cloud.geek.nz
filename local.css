@@ -1,6 +1,5 @@
 /* ikiwiki local style sheet */
-.blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions,
- {
+.blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions {
     display: none;
 }
 
