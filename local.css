@@ -264,7 +264,8 @@ iframe[src='//ad.aloodo.com/track/'] {
 @media all and (max-width: 40em) {
     .pageheader,
     #pagebody,
-    .sidebar {
+    .sidebar,
+    #pageinfo {
         padding-left: 1em;
         padding-right: 1em;
     }
