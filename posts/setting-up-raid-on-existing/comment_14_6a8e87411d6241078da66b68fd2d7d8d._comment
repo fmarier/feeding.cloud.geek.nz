@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="87.230.109.38"
+ claimedauthor="Rincewind"
+ subject="Thanks for the great guide"
+ date="2016-09-21T14:20:31Z"
+ content="""
+One addendum though. In my case at least grub threw an error regarding null devices or something (I don't recall exactly what it was). If that happens you need to \"blockdev --flushbufs [device]\" for your involved devices. After that everything worked perfectly.
+"""]]
