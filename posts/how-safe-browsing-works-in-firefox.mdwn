@@ -44,7 +44,7 @@ show up instead, which you can see for yourself here:
 
 The first two warnings can be toggled using the `browser.safebrowsing.malware.enabled`
 preference (in `about:config`) whereas the last one is controlled by
-`browser.safebrowsing.enabled`.
+`browser.safebrowsing.phishing.enabled`.
 
 ## List updates
 
