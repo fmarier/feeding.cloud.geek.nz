@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="37.35.165.201"
+ claimedauthor="aL"
+ subject="all this is great but..."
+ date="2016-10-24T11:31:58Z"
+ content="""
+sudo apt install xul-ext-refcontrol
+
+and then set default to block or use base url as referrer
+
+
+"""]]
