@@ -44,7 +44,7 @@ Armed with the `Referer` information, analytics tools can figure out:
 - how users are navigating the site.
 
 Another place where the `Referer` is useful is as a mitigation against
-[cross-site request forgeries](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet#Checking_The_Referer_Header).
+[cross-site request forgeries](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF\)_Prevention_Cheat_Sheet#Checking_the_Referer_Header).
 In that case, a website receiving a form submission can reject that form
 submission if the request originated from a different website.
 
