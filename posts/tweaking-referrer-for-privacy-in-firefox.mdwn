@@ -1,0 +1,168 @@
+[[!meta title="Tweaking Referrers For Privacy in Firefox"]]
+[[!meta date="2016-10-23T20:00:00.000-04:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+The [Referer header](https://tools.ietf.org/html/rfc7231#section-5.5.2) has
+been a part of the web for a long time. Websites rely on it for a few
+different purposes (e.g. analytics, ads, CSRF protection) but it can be
+quite problematic from a privacy perspective.
+
+Thankfully, there are now tools in Firefox to help users and developers
+mitigate some of these problems.
+
+# Description
+
+In a nutshell, the browser adds a `Referer` header to all outgoing HTTP
+requests, revealing to the server on the other end the URL of the page you
+were on when you placed the request. For example, it tells the server where
+you were when you followed a link to that site, or what page you
+were on when you requested an image or a script. There are, however, a few
+limitations to this simplified explanation.
+
+First of all, by default, browsers won't send a referrer if you place a
+request from an HTTPS page to an HTTP page. This would reveal potentially
+confidential information (such as the URL path and query string which could
+contain session tokens or other secret identifiers) from a secure page over
+an insecure HTTP channel. Firefox will however include a `Referer` header in
+HTTPS to HTTPS transitions unless `network.http.sendSecureXSiteReferrer`
+(removed in Firefox 52) is set to `false` in `about:config`.
+
+Secondly, using the new
+[Referrer Policy specification](https://www.w3.org/TR/referrer-policy/) web
+developers can override the default behaviour for their pages, including on
+a per-element basis. This can be used both to increase or reduce the amount
+of information present in the referrer.
+
+# Legitimate Uses
+
+Because the `Referer` header has been around for so long, a number of
+techniques rely on it.
+
+Armed with the `Referer` information, analytics tools can figure out:
+
+- where website traffic comes from, and
+- how users are navigating the site.
+
+Another place where the `Referer` is useful is as a mitigation against
+[cross-site request forgeries](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet#Checking_The_Referer_Header).
+In that case, a website receiving a form submission can reject that form
+submission if the request originated from a different website.
+
+It's worth pointing out that this CSRF mitigation might be better implemented
+via a [separate header](http://crypto.stanford.edu/websec/csrf/) that could
+be restricted to particularly dangerous requests (i.e. POST and DELETE
+requests) and only include the information required for that security check
+(i.e. the [origin](https://tools.ietf.org/html/rfc6454)).
+
+# Problems with the Referrer
+
+Unfortunately, this header also creates significant privacy and security
+concerns.
+
+The most obvious one is that it leaks part of your browsing history to sites
+you visit as well as all of the resources they pull in (e.g. ads and
+third-party scripts). It can be quite complicated to
+[fix these leaks in a cross-browser way](https://www.facebook.com/notes/facebook-engineering/protecting-privacy-with-referrers/392382738919).
+
+These leaks can also lead to exposing private personally-identifiable
+information when they are part of the query string. One of the most
+high-profile example is
+[the accidental leakage of user searches by healthcare.gov](https://www.eff.org/deeplinks/2015/01/healthcare.gov-sends-personal-data).
+
+# Solutions for Firefox Users
+
+While web developers can use the new mechanisms exposed through the Referrer
+Policy, Firefox users can also take steps to limit the amount of information
+they send to websites, advertisers and trackers.
+
+In addition to enabling Firefox's built-in
+[tracking protection](https://feeding.cloud.geek.nz/posts/how-tracking-protection-works-in-firefox/)
+by setting `privacy.trackingprotection.enabled` to `true` in `about:config`,
+which will prevent all network connections to known trackers, users can
+control **when the `Referer` header is sent** by setting
+`network.http.sendRefererHeader` to:
+
+- `0` to never send the header
+- `1` to send the header only when clicking on links and similar elements
+- `2` (default) to send the header on all requests (e.g. images, links, etc.)
+
+It's also possible to put a **limit on the maximum amount of information** that
+the header will contain by setting the `network.http.referer.trimmingPolicy`
+to:
+
+- `0` (default) to send the full URL
+- `1` to send the URL without its query string
+- `2` to only send the scheme, host and port
+
+or using the `network.http.referer.XOriginTrimmingPolicy` option (added in
+Firefox 52) to only **restrict the contents of referrers attached to
+cross-origin requests**.
+
+Site owners can opt to share less information with other sites, but they
+can't share any more than what the user trimming policies allow.
+
+Another approach is to **disable the `Referer` when doing cross-origin
+requests** (from one site to another). The
+`network.http.referer.XOriginPolicy` preference can be set to:
+
+- `0` (default) to send the referrer in all cases
+- `1` to send a referrer only when the [base domains](https://en.wikipedia.org/wiki/Public_Suffix_List) are the same
+- `2` to send a referrer only when the full hostnames match
+
+# Breakage
+
+If you try to remove all referrers (i.e. `network.http.sendRefererHeader = 0`,
+you will most likely run into problems on a number of sites, for
+example:
+
+- anything that uses the default [Django authentication](https://code.djangoproject.com/ticket/16870)
+- [Launchpad logins](https://bugs.launchpad.net/launchpad/+bug/560246)
+- [AMD driver downloads](https://bugzilla.mozilla.org/show_bug.cgi?id=970092#c7)
+- some [CDN-hosted images](https://www.capbridge.com/visit/shuttle-service/)
+
+The first two have been worked-around successfully by setting
+`network.http.referer.spoofSource` to `true`, an advanced setting
+which always sends the destination URL as the referrer, thereby not leaking
+anything about the original page.
+
+Unfortunately, the last two are examples of the kind of breakage that can
+only be fixed through a whitelist (an approach supported by the [smart
+referer add-on](https://addons.mozilla.org/firefox/addon/smart-referer/)) or
+by temporarily using a different [browser
+profile](https://support.mozilla.org/kb/profile-manager-create-and-remove-firefox-profiles).
+
+# My Recommended Settings
+
+As with my
+[cookie recommendations](https://feeding.cloud.geek.nz/posts/tweaking-cookies-for-privacy-in-firefox/),
+I recommend strengthening your referrer settings but not disabling (or
+spoofing) it entirely.
+
+While spoofing does solve many the breakage problems mentioned above, it
+also effectively disables the anti-CSRF protections that some sites may rely
+on and that have tangible user benefits. A better approach is to limit the
+amount of information that leaks through cross-origin requests.
+
+If you are willing to live with some amount of breakage, you can simply
+restrict referrers to the same site by setting:
+
+    network.http.referer.XOriginPolicy = 2
+
+or to sites which belong to the same organization (i.e. same
+[ETLD/public suffix](https://en.wikipedia.org/wiki/Public_Suffix_List))
+using:
+
+    network.http.referer.XOriginPolicy = 1
+
+This prevent leaks to third-parties while giving websites all of the
+information that they can already see in their own server logs.
+
+On the other hand, if you prefer a weaker but more compatible solution, you
+can trim cross-origin referrers down to just the scheme, hostname and port:
+
+    network.http.referer.XOriginTrimmingPolicy = 2
+
+I have not yet found user-visible breakage using this last configuration.
+Let me know if you find any!
+
+[[!tag firefox]] [[!tag debian]] [[!tag nzoss]] [[!tag mozilla]] [[!tag privacy]]
