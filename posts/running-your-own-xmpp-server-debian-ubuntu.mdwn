@@ -99,7 +99,7 @@ firewall:
 to restart ejabberd once a day to ensure it doesn't stop responding
 to requests after running for a while:
 
-      0 11 * * *      root    /bin/systemctl restart ejabberd.service
+      0 4 * * *      root    /bin/systemctl restart ejabberd.service
 
 # Client setup
 
