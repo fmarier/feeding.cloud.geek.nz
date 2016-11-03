@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ avatar="http://fmarier.org/avatar/0110e86fdb31486c22dd381326d99de9"
+ subject="Re: comment 1"
+ date="2016-11-03T15:57:10Z"
+ content="""
+> We're now in 2016. Why isn't the complete sha256 hash trasferred in the initial list?
+> 
+> The complete list is usually downloaded only once (or may also be shipped with the browser) and updates can be applied as differential updates thus reducing size.
+
+This is what we do for small lists (all of the [Tracking Protection](https://feeding.cloud.geek.nz/posts/how-tracking-protection-works-in-firefox/) lists, as well as the certificate whitelist on Windows: `goog-downloadwhite-digest256`).
+
+As for the other lists (the ones that end in `-shavar` instead of `-digest256`), it's not practical the ship the whole list to each user because they are enormous and change a lot.
+"""]]
