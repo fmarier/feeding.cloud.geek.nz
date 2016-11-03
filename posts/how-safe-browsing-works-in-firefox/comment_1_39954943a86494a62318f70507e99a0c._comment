@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="91.89.253.64"
+ subject="comment 1"
+ date="2016-11-03T12:41:39Z"
+ content="""
+> When requesting complete hashes for a 32-bit prefix, Firefox throws in a number of extra \"noise\" entries to obfuscate the original URL further.
+
+We're now in 2016. Why isn't the complete sha256 hash trasferred in the initial list?
+
+The complete list is usually downloaded only once (or may also be shipped with the browser)
+and updates can be applied as differential updates thus reducing size.
+
+This eliminates the 2nd step where the complete hash of the url is sent to the safe browsing provider.
+"""]]
