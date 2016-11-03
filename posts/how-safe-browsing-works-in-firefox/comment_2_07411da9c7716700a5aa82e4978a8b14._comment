@@ -5,7 +5,7 @@
  subject="Re: comment 1"
  date="2016-11-03T15:57:10Z"
  content="""
-> We're now in 2016. Why isn't the complete sha256 hash trasferred in the initial list?
+> Why isn't the complete sha256 hash trasferred in the initial list?
 > 
 > The complete list is usually downloaded only once (or may also be shipped with the browser) and updates can be applied as differential updates thus reducing size.
 
