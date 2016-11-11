@@ -127,7 +127,7 @@ libdirs: []
 # extra library and plugin directory (searched after libdirs)
 libdir: /home/b-feedingthecloud/.ikiwiki
 # environment variables
-#ENV: ''
+ENV: {}
 # time zone name
 timezone: America/Vancouver
 # regexp of normally excluded files to include
@@ -213,6 +213,8 @@ created: 1351997051
 ipv6_disabled: 0
 # redirect from http to https?
 redirect_to_https: 1
+# use Lets Encrypt to generate http certificate?
+use_letsencrypt: 1
 
 # inline plugin
 # enable rss feeds by default?
@@ -338,8 +340,8 @@ po_link_to: default
 
 ######################################################################
 # web plugins
-#   (404, attachment, comments, editdiff, edittemplate, google, goto,
-#    mirrorlist, remove, rename, repolist, search, theme, userlist,
+#   (404, attachment, comments, editdiff, edittemplate, getsource, google,
+#    goto, mirrorlist, remove, rename, repolist, search, theme, userlist,
 #    websetup, wmd)
 ######################################################################
 
@@ -364,6 +366,10 @@ comments_allowauthor: 1
 comments_commit: 1
 # Restrict formats for comments to (no restriction if empty)
 comments_allowformats: mdwn txt
+
+# getsource plugin
+# Mime type for returned source.
+#getsource_mimetype: text/plain; charset=utf-8
 
 # mirrorlist plugin
 # list of mirrors
