@@ -19,8 +19,37 @@ records:
     _xmpp-client._tcp    SRV      5 0 5222 jabber-gw.fmarier.org.
     _xmpp-server._tcp    SRV 	  5 0 5269 jabber-gw.fmarier.org.
 
-Then I went to get a free XMPP SSL certificate for `jabber-gw.fmarier.org`
-from [StartSSL](https://startssl.com). This is how I generated the CSR
+Then I went to get a free TLS certificate for `jabber-gw.fmarier.org` and `fmarier.org`.
+
+## Let's Encrypt
+
+The easiest way to get a certificate is to install [certbot](https://certbot.eff.org/) from
+[debian-backports](https://backports.debian.org/) by adding the following to
+your `/etc/apt/sources.list`:
+
+    deb http://httpredir.debian.org/debian jessie-backports main contrib non-free
+
+and then installing the package:
+
+    apt update && apt install certbot
+
+Then, shutdown your existing webserver if you have one running and request
+a cert like this:
+
+    certbot certonly -d jabber-gw.fmarier.org,fmarier.org --standalone
+
+Once you have the cert, you can merge the private and public keys
+into the file that ejabberd expects:
+
+    cat /etc/letsencrypt/live/jabber-gw.fmarier.org/privkey.pem /etc/letsencrypt/live/jabber-gw.fmarier.org/fullchain.pem > ejabberd.pem
+
+and then restart the service:
+
+    systemctl restart ejabberd.service
+
+## StartSSL
+
+I have also used [StartSSL](https://startssl.com) successfully. This is how I generated the CSR
 (Certificate Signing Request) on a high-entropy machine:
 
     openssl req -new -newkey rsa:2048 -sha256 -nodes -out ssl.csr -keyout ssl.key -subj "/C=NZ/CN=jabber-gw.fmarier.org"
