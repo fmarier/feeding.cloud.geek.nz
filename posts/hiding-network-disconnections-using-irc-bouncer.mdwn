@@ -26,18 +26,15 @@ The first step is to install [znc](http://wiki.znc.in/ZNC):
 Make sure you get the 1.0 series (in **jessie or trusty**, not wheezy
 or precise) since it has much better [multi-network support](http://wiki.znc.in/FAQ#Networks).
 
-Then, as a **non-root** user, generate a self-signed TLS certificate for it:
+Then, generate a Let's Encrypt TLS certificate for it:
 
-    openssl req -x509 -sha256 -newkey rsa:2048 -keyout znc.pem -nodes -out znc.crt -days 365
-
-and make sure you use something like `irc.example.com` as the *subject
-name*, that is the URL you will be connecting to from your IRC client.
+    apt install certbot
+    certbot certonly -d irc.example.com --standalone
 
 Then install the certificate in the right place:
 
     mkdir ~/.znc
-    mv znc.pem ~/.znc/
-    cat znc.crt >> ~/.znc/znc.pem
+    cat /etc/letsencrypt/live/irc.example.com/privkey.pem /etc/letsencrypt/live/irc.example.com/fullchain.pem > ~/.znc/znc.pem
 
 Once that's done, you're ready to create a config file for znc using the
 `znc --makeconf` command, again as the same non-root user:
@@ -68,7 +65,6 @@ and `irc.mozilla.org`):
         port = "6697";
         use_ssl = "yes";
         ssl_verify = "yes";
-        ssl_cafile = "~/.irssi/certs/znc.crt";
       },
       {
         address = "irc.example.com";
@@ -77,12 +73,8 @@ and `irc.mozilla.org`):
         port = "6697";
         use_ssl = "yes";
         ssl_verify = "yes";
-        ssl_cafile = "~/.irssi/certs/znc.crt";
       }
     );
-
-Of course, you'll need to copy your `znc.crt` file from the server into
-`~/.irssi/certs/znc.crt`.
 
 Make sure that you're no longer authenticating with the `nickserv` from
 within irssi. That's znc's job now.
