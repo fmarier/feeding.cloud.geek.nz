@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="193.40.192.10"
+ subject="onliy if dump is cutom tump"
+ date="2016-11-26T16:19:02Z"
+ content="""
+For these type of operations the dump file should be in the postgresql custom format created with pg_dump:
+
+pg_dump -Fc
+
+Then you can restore a single table with pg_restore
+
+pg_restore --table=dancing_core_spice dump_full.sql > dancing_core_spice.sql
+"""]]
