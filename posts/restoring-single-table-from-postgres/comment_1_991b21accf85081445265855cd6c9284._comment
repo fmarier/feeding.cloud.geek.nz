@@ -6,7 +6,7 @@
  content="""
 Generally, it's better to do your dumping via  
   
-pg_dump -Fc  
+    pg_dump -Fc  
   
 which lets you then use the full power of pg_restore.
 

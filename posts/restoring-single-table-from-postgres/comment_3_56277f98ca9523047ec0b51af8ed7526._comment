@@ -6,7 +6,7 @@
  content="""
 Following this STACKOVERFLOW's [question](http://stackoverflow.com/questions/1013852/can-i-restore-a-single-table-from-a-full-mysql-mysqldump-file), if the dump format is text
 
-$ sed -n -e '/COPY.*mytable/,/CREATE TABLE/p' pg_whole.dump > mytable.dump
+    sed -n -e '/COPY.*mytable/,/CREATE TABLE/p' pg_whole.dump > mytable.dump
 
-works fine
+works fine.
 """]]
