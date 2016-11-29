@@ -1,0 +1,136 @@
+[[!meta title="Persona Guiding Principles"]]
+[[!meta date="2016-11-29T11:42:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Given the
+[impending shutdown of Persona](https://wiki.mozilla.org/Identity/Persona_Shutdown_Guidelines_for_Reliers)
+and the lack of a clear alternative to it, I decided to write about some of
+the principles that guided its design and development in the hope that it
+may influence future efforts in some way.
+
+# Permission-less system
+
+There was no need for reliers (sites relying on Persona to log their users
+in) to ask for permission before using Persona. Just like a site doesn't
+need to ask for permission before creating a link to another site, reliers
+didn't need to apply for an API key before they got started and authenticated
+their users using Persona.
+
+Similarly, identity providers (the services vouching for their users
+identity) didn't have to be whitelisted by reliers in order to be useful to
+their users.
+
+# Federation at the domain level
+
+Just like email, Persona was federated at the domain name level and put
+domain owners in control. Just like they can choose who gets to manage
+emails for their domain, they could:
+
+- run their own identity provider, or
+- delegate to their favourite provider.
+
+Site owners were also in **control of the mechanism and policies** involved
+in authenticating their users. For example, a security-sensitive corporation
+could decide to require 2-factor authentication for everyone or put a very
+short expiry on the certificates they issued.
+
+Alternatively, a low-security domain could get away with a much simpler
+login mechanism (including a "0-factor" mechanism in the case of
+<http://mockmyid.com>!).
+
+# Privacy from your identity provider
+
+While identity providers were the ones vouching for their users' identity,
+they didn't need to know the websites that their users are visiting. This is
+a potential source of control or censorship and the design of Persona was
+able to eliminate this.
+
+The downside of this design of course is that it becomes impossible for an
+identity provider to provide their users with a list of all of the sites
+where they successfully logged in for audit purposes, something that
+centralized systems can provide easily.
+
+# The browser as a trusted agent
+
+The browser, whether it had native support for the
+[BrowserID protocol](https://developer.mozilla.org/Persona/Protocol_Overview)
+or not, was the agent that the user needed to trust. It connected
+reliers (sites using Persona for logins) and identity providers together and
+got to see all aspects of the login process.
+
+It also held your private keys and therefore was the only party that could
+impersonate you. This is of course a power which it already held by virtue
+of its role as the web browser.
+
+Additionally, since it was the one generating and holding the private keys,
+your browser could also choose how long these keys are valid and may choose to
+vary that amount of time depending on factors like a shared computer
+environment or Private Browsing mode.
+
+Other clients/agents would likely be necessary as well, especially
+when it comes to interacting with mobile applications or native desktop
+applications. Each client would have its own key, but they would all be
+signed by the identity provider and therefore valid.
+
+# Bootstrapping a complex system requires fallbacks
+
+Persona was a complex system which involved a number of different actors. In
+order to slowly roll this out without waiting on every actor to implement
+the BrowserID protocol (something that would have taken an infinite amount of
+time), fallbacks were deemed necessary:
+
+- client-side JavaScript implementation for browsers without built-in support
+- centralized fallback identity provider for domains without native support
+  or a working delegation
+- centralized verifier until local verification is done within
+  authentication libraries
+
+In addition, to lessen the burden on the centralized identity provider
+fallback, Persona experimented with a number of bridges to provide
+quasi-native support for a few large email providers.
+
+# Support for multiple identities
+
+User research has shown that many users choose to present a different
+identity to different websites. An identity system that would restrict them
+to a single identity wouldn't work.
+
+Persona handled this naturally by linking identities to email addresses.
+Users who wanted to present a different identity to a website could simply use
+a different email address. For example, a work address and a personal
+address.
+
+# No lock-in
+
+Persona was an identity system which didn't stand between a site and its
+users. It exposed email address to sites and allowed them to control the
+relationship with their users.
+
+Sites wanting to move away from Persona can use the email addresses they
+have to both:
+
+- notify users of the new login system, and
+- allow users to reset (or set) their password via an email flow.
+
+Websites should not have to depend on the operator of an identity system in
+order to be able to talk to their users.
+
+# Short-lived certificates instead of revocation
+
+Instead of relying on the correct use of revocation systems, Persona used
+short-lived certificates in an effort to simplify this critical part of any
+cryptographic system.
+
+It offered three ways to limit the lifetime of crypto keys:
+
+- assertion expiry (set by the client)
+- key expiry (set by the client)
+- certificate expiry (set by the identify provider)
+
+The main drawback of such a pure expiration-based system is the increased
+window of time between a password change (or a similar signal that the user
+would like to revoke access) and the actual termination of all sessions. A
+short expirty can mitigate this problem, but it cannot be eliminated
+entirely unlike in a centralized identity system.
+
+[[!tag nzoss]] [[!tag mozilla]] [[!tag browserid]] [[!tag indieweb]] [[!tag web]]
