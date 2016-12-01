@@ -115,7 +115,7 @@ and add a timeout for root sessions by putting this in `/root/.bash_profile`:
 # Security checks
 
     apt-get install logcheck logcheck-database fcheck tiger debsums corekeeper mcelog rkhunter
-    apt-get remove --purge john john-data rpcbind tripwire
+    apt-get remove --purge john john-data rpcbind tripwire unhide unhide.rb
 
 Logcheck is the main tool I use to keep an eye on log files, which is why I
 add a few additional log files to the default list in
@@ -190,7 +190,7 @@ While the harden packages are configuration-free, AppArmor must be [manually ena
     update-grub
 
 In addition, certain kernel security features can be enabled by putting the
-following in `/etc/sysctl.conf` to
+following in `/etc/sysctl.d/local.conf` to
 [hide kernel pointers and messages](https://www.kernel.org/doc/Documentation/sysctl/kernel.txt)
 from unprivileged processes:
 
@@ -332,7 +332,7 @@ test the whole setup using `mail root`.
 
 To [reduce the server's contribution to
 bufferbloat](https://lwn.net/Articles/616241/) I change the default kernel
-queueing discipline (jessie or later) by putting the following in `/etc/sysctl.conf`:
+queueing discipline (jessie or later) by putting the following in `/etc/sysctl.d/local.conf`:
 
     net.core.default_qdisc=fq_codel
 
