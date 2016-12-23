@@ -3,5 +3,5 @@
  subject="--worktree-attributes"
  date="2015-02-03T18:18:02Z"
  content="""
-nah dog, if you commit the .gitattributes file first you don't need that option. go look up the definition of worktree as it relates to git
+nah, if you commit the .gitattributes file first you don't need that option. go look up the definition of worktree as it relates to git
 """]]
