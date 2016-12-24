@@ -9,7 +9,9 @@ Since [Wikipedia](http://ubuntard.com/2010/03/wikipedia-notability-and-open-sour
 </tr>
 <tr><td><a href="http://act.mongueurs.net/">A Conference Toolkit</a></td><td>YAPC::Eu</td><td><a href="http://www.perlfoundation.org/artistic_license_2_0">Artistic License</a></td><td><a href="http://www.perl.org/">Perl</a></td>
 </tr>
-<tr><td><a href="http://github.com/herlo/ConMan">ConMan</a></td><td><a href="http://utosc.com/">Utah Open Source Conference</a>, <a href="http://www.texaslinuxfest.org/">Texax Linux Fest</a></td><td><a href="http://www.gnu.org/licenses/gpl.html">GPL</a></td><td><a href="http://www.python.org/">Python</a> (<a href="http://www.djangoproject.com/">Django</a>)</td>
+<tr><td><a href="http://github.com/herlo/ConMan">ConMan</a></td><td><a href="http://utosc.com/">Utah Open Source Conference</a>, <a href="http://www.texaslinuxfest.org/">Texas Linux Fest</a></td><td><a href="http://www.gnu.org/licenses/gpl.html">GPL</a></td><td><a href="http://www.python.org/">Python</a> (<a href="http://www.djangoproject.com/">Django</a>)</td>
+</tr>
+<tr><td><a href="https://frab.github.io/frab/">Frab</a></td><td><a href="http://www.froscon.org/">FrOSCon</a></td><td><a href="https://github.com/frab/frab/blob/master/LICENSE">Permissive</a></td><td><a href="http://www.rubyonrails.org/">Ruby on Rails</a></td>
 </tr>
 <tr><td><a href="http://pkp.sfu.ca/?q=ocs">Open Conference Systems</a></td><td>various academic conferences</td><td><a href="http://www.gnu.org/licenses/gpl.html">GPL</a></td><td><a href="http://www.php.org/">PHP</a></td>
 </tr>
