@@ -1,0 +1,62 @@
+[[!meta title="Using iptables with NetworkManager"]]
+[[!meta date="2016-12-26T17:05:00.000-05:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I used to rely on [ifupdown](https://packages.debian.org/stable/ifupdown) to
+bring up my [iptables](https://packages.debian.org/stable/iptables) firewall
+automatically using a config like this in `/etc/network/interfaces`:
+
+    allow-hotplug eth0
+    iface eth0 inet dhcp
+        pre-up /sbin/iptables-restore /etc/network/iptables.up.rules
+        pre-up /sbin/ip6tables-restore /etc/network/ip6tables.up.rules
+
+    allow-hotplug wlan0
+    iface wlan0 inet dhcp
+        pre-up /sbin/iptables-restore /etc/network/iptables.up.rules
+        pre-up /sbin/ip6tables-restore /etc/network/ip6tables.up.rules
+
+but that doesn't seem to work very well in the brave new
+[NetworkManager](https://wiki.gnome.org/Projects/NetworkManager/)
+world.
+
+What does work reliably is a "pre-up" NetworkManager script, something
+that gets run before a network interface is brought up. However,
+despite what the
+[documentation](https://developer.gnome.org/NetworkManager/unstable/NetworkManager.html)
+says, a dispatcher script in `/etc/NetworkManager/dispatched.d/` won't
+work on my Debian and Ubuntu machines. Instead, I had to create a new
+`iptables` script in `/etc/NetworkManager/dispatcher.d/pre-up.d/`:
+
+    #!/bin/sh
+    
+    LOGFILE=/var/log/iptables.log
+    
+    if [ "$1" = lo ]; then
+        echo "$0: ignoring $1 for \`$2'" >> $LOGFILE
+        exit 0
+    fi
+    
+    case "$2" in
+        pre-up)
+            echo "$0: restoring iptables rules for $1" >> $LOGFILE
+            /sbin/iptables-restore /etc/network/iptables.up.rules >> $LOGFILE 2>&1
+            /sbin/ip6tables-restore /etc/network/ip6tables.up.rules >> $LOGFILE 2>&1
+            ;;
+        *)
+            echo "$0: nothing to do with $1 for \`$2'" >> $LOGFILE
+            ;;
+    esac
+    
+    exit 0
+
+and then make that script executable:
+
+    chmod a+x /etc/NetworkManager/dispatcher.d/pre-up.d/iptables
+
+With this in place, I can put my iptables rules in the usual place
+(`/etc/network/iptables.up.rules` and `/etc/network/ip6tables.up.rules`) and
+use the handy `iptables-apply` and `ip6tables-apply` commands to test
+any changes to my firewall rules.
+
+[[!tag nzoss]] [[!tag debian]] [[!tag iptables]]
