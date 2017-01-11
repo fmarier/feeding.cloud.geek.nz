@@ -1,0 +1,11 @@
+[[!comment format=txt
+ ip="163.172.62.104"
+ subject="comment 6"
+ date="2017-01-11T01:32:33Z"
+ content="""
+@Jonathan
+
+Because programs other than browsers use dns.
+
+Or maybe because you do local dns lookups while using a socks proxy for the https requests.
+"""]]
