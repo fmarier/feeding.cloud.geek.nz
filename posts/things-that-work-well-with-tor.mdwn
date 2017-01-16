@@ -20,8 +20,38 @@ around is quite useful for those applications that support HTTP
 proxies but not [SOCKS](https://en.wikipedia.org/wiki/SOCKS) proxies.
 
 On Debian, it's just a matter of installing the
-[polipo](http://packages.debian.org/wheezy/polipo) package and then
-configuring it as [it used to be recommended by the Tor project](https://gitweb.torproject.org/torbrowser.git/blob/21e3c22670f0ceb1760b3403ff1a217301112e9d:/build-scripts/config/polipo.conf).
+[polipo](http://packages.debian.org/stable/polipo) package and then
+setting the following in `/etc/polipo/config`:
+
+    logSyslog = true
+    logFile = /var/log/polipo/polipo.log
+    
+    # Configure polipo for use with tor
+    proxyAddress = "127.0.0.1"
+    proxyPort = 8008
+    allowedClients = 127.0.0.1
+    allowedPorts = 1-65535
+    proxyName = "localhost"
+    cacheIsShared = false
+    socksParentProxy = "localhost:9050"
+    socksProxyType = socks5
+    chunkHighMark = 67108864
+    diskCacheRoot = ""
+    localDocumentRoot = ""
+    disableLocalInterface = true
+    disableConfiguration = true
+    dnsQueryIPv6 = no
+    dnsUseGethostbyname = yes
+    disableVia = true
+    censoredHeaders = from,accept-language,x-pad,link
+    censorReferer = maybe
+    
+    # Suggestions from Incognito configuration
+    maxConnectionAge = 5m
+    maxConnectionRequests = 120
+    serverMaxSlots = 8
+    serverSlots = 2
+    tunnelAllowedPorts = 1-65535
 
 # RSS feeds
 
