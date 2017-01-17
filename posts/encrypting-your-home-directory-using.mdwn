@@ -42,4 +42,4 @@ If you happen to have `/home` on a separate partition already (`/dev/sda5` in th
 That's it. Now to fully secure your laptop against theft, you should think about an [encrypted backup strategy](http://packages.debian.org/sid/duplicity) for your data...
 
 
-[[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]]
+[[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag luks]]

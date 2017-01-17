@@ -33,4 +33,4 @@ You will of course want to replace `/dev/hda2` with the partition that currently
 (This is loosely based on a similar [procedure for Ubuntu 6.10](http://www.c3l.de/linux/howto-completly-encrypted-harddisk-including-suspend-to-encrypted-disk-with-ubuntu-6.10-edgy-eft.html).)
 
 
-[[!tag debian]] [[!tag security]] [[!tag ubuntu]] 
+[[!tag debian]] [[!tag security]] [[!tag ubuntu]] [[!tag luks]]
