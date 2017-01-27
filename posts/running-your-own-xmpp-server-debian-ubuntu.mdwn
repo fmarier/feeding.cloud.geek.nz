@@ -124,23 +124,27 @@ by adding `starttls_required` to this block:
       s2s_dhfile: /etc/ssl/ejabberd/dh2048.pem
       s2s_ciphers: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256"
 
-4. Restart the ejabberd
+4. Create the required dh2048.pem file:
+
+      openssl dhparam -out /etc/ssl/ejabberd/dh2048.pem 2048
+
+5. Restart the ejabberd
 daemon:
 
       /etc/init.d/ejabberd restart
 
-5. Create a new user account for
+6. Create a new user account for
 yourself:
 
       ejabberdctl register me fmarier.org P@ssw0rd1!
 
-6. Open up the following ports on the server's
+7. Open up the following ports on the server's
 firewall:
 
       iptables -A INPUT -p tcp --dport 5222 -j ACCEPT
       iptables -A INPUT -p tcp --dport 5269 -j ACCEPT
 
-7. Optionally create a cronjob in `/etc/cron.d/restart-ejabberd`
+8. Optionally create a cronjob in `/etc/cron.d/restart-ejabberd`
 to restart ejabberd once a day to ensure it doesn't stop responding
 to requests after running for a while:
 
