@@ -1,0 +1,135 @@
+[[!meta title="Creating a home music server using mpd"]]
+[[!meta date="2017-01-29T22:20:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently setup a music server on my home server using the [Music Player
+Daemon](https://www.musicpd.org/), a cross-platform [free
+software](https://www.gnu.org/philosophy/free-sw.html) project which has
+been around for a long time.
+
+# Basic setup
+
+Start by installing the server and the client package:
+
+    apt install mpd mpc
+
+then open `/etc/mpd.conf` and set these:
+
+    music_directory    "/path/to/music/"
+    bind_to_address    "192.168.1.2"
+    bind_to_address    "/run/mpd/socket"
+    zeroconf_enabled   "yes"
+    password           "Password1"
+
+before replacing the alsa output:
+
+    audio_output {
+       type    "alsa"
+       name    "My ALSA Device"
+    }
+
+with a pulseaudio one:
+
+    audio_output {
+       type    "pulse"
+       name    "Pulseaudio Output"
+    }
+
+In order for the automatic detection (zeroconf) of your music server
+to work, you need to [prevent systemd from creating the network
+socket](https://www.mail-archive.com/mpd-devel@musicpd.org/msg00239.html):
+
+    systemctl stop mpd.service
+    systemctl stop mpd.socket
+    systemctl disable mpd.socket
+
+otherwise you'll see this in `/var/log/mpd/mpd.log`:
+
+    zeroconf: No global port, disabling zeroconf
+
+Once all of that is in place, start the mpd daemon:
+
+    systemctl start mpd.service
+
+and create an index of your music files:
+
+    MPD_HOST=Password1@/run/mpd/socket mpc update
+
+while watching the logs to notice any files that the mpd user doesn't have
+access to:
+
+    tail -f /var/log/mpd/mpd.log
+
+# Enhancements
+
+I also added the following in `/etc/logcheck/ignore.server.d/local-mpd` to
+silence unnecessary log messages in
+[logcheck](https://packages.debian.org/stable/logcheck) emails:
+
+    ^\w{3} [ :0-9]{11} [._[:alnum:]-]+ systemd\[1\]: Started Music Player Daemon.$
+    ^\w{3} [ :0-9]{11} [._[:alnum:]-]+ systemd\[1\]: Stopped Music Player Daemon.$
+    ^\w{3} [ :0-9]{11} [._[:alnum:]-]+ systemd\[1\]: Stopping Music Player Daemon...$
+
+and created a cronjob in `/etc/cron.d/mpd-francois` to update the database
+daily and stop the music automatically in the evening:
+
+    # Refresh DB once a day
+    5 1 * * *  mpd  MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet update
+    # Think of the neighbours
+    0 22 * * 0-4  mpd  MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet stop
+    0 23 * * 5-6  mpd  MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet stop
+
+# Clients
+
+To let anybody on the local network connect, I opened **port 6600** on the
+firewall (`/etc/network/iptables.up.rules` since I'm using Debian's
+`iptables-apply`):
+
+    -A INPUT -s 192.168.1.0/24 -p tcp --dport 6600 -j ACCEPT
+
+Then I looked at [the long list of clients](http://mpd.wikia.com/wiki/Clients) on the mpd wiki.
+
+## Desktop
+
+The official website [suggests two
+clients](https://www.musicpd.org/clients/) which are available in Debian and
+Ubuntu:
+
+- [Ario](http://ario-player.sourceforge.net/) (`apt install ario`)
+- [GNOME Music Player Client](http://gmpclient.org/) (`apt install gmpc gmpc-plugins`)
+
+Both of them work well, but haven't had a release since 2011, even though
+there is some activity
+in [2013](https://sourceforge.net/p/ario-player/code/HEAD/tree/)
+and [2015](http://repo.or.cz/w/gmpc.git) in their respective source control
+repositories.
+
+Ario has a simpler user interface but gmpc has cover art download
+working out of the box, which is why I might stick with it.
+
+In both cases, it is possible to [configure a polipo
+proxy](https://feeding.cloud.geek.nz/posts/things-that-work-well-with-tor/)
+so that any external resources are fetched via
+[Tor](https://www.torproject.org/).
+
+## Android
+
+On Android, I got these two to work:
+
+- [M.A.L.P.](https://f-droid.org/repository/browse/?fdfilter=malp&fdid=org.gateshipone.malp) (requires Android 5 or later)
+- [MPDroid](https://f-droid.org/repository/browse/?fdfilter=mpdroid&fdid=com.namelessdev.mpdroid)
+
+I picked M.A.L.P. since it includes a nice widget for the homescreen.
+
+## iOS
+
+On iOS, these are the most promising clients I found:
+
+- [MPDRemote](https://github.com/Nyx0uf/MPDRemote) (free software, not on the AppStore)
+- [MPDluxe](http://kineticfactory.com/MPDluxe/) (proprietary, sold on the [AppStore](https://itunes.apple.com/app/mpdluxe/id991758069?mt=8))
+
+since [MPoD](http://www.katoemba.net/makesnosenseatall/mpod/) and
+[MPaD](http://www.katoemba.net/makesnosenseatall/mpad/) don't appear to be
+available on the AppStore anymore.
+
+[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag mpd]] [[!tag ios]] [[!tag android]] [[!tag tor]]
