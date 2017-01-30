@@ -95,4 +95,4 @@ connection:
          cipher AES-256-CBC
          auth SHA384
 
-[[!tag openvpn]]
+[[!tag openvpn]] [[!tag ios]] [[!tag osx]]
