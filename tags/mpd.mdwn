@@ -1,0 +1,4 @@
+[[!meta title="pages tagged mpd"]]
+
+[[!inline pages="tagged(mpd)" actions="no" archive="yes"
+feedshow=10]]
