@@ -27,8 +27,8 @@ doesn't seem work on Linode or Rackspace virtual servers.
 # Generating the keys
 
 Make sure you run the following on a machine with good entropy and not a VM!
-I personally use a machine fitted with an
-[Entropy Key](http://www.entropykey.co.uk/).
+I personally use a machine fitted with a
+[Chaos Key](http://shop.gag.com/logo-items/chaoskey.html).
 
 The first step is to install the required package:
 

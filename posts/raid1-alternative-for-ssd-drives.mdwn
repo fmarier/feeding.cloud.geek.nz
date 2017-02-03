@@ -50,7 +50,7 @@ Finally, after reading this [excellent LWN article](http://lwn.net/Articles/4084
       echo noop &gt; /sys/block/<i>sda</i>/queue/scheduler
       echo 1 &gt; /sys/block/<i>sda</i>/queue/iosched/fifo_batch
 
-* Turn off [entropy gathering](http://www.entropykey.co.uk/) (for kernels 2.6.36 or later) by adding this line to `/etc/rc.local`:
+* Turn off entropy gathering (for kernels 2.6.36 or later) by adding this line to `/etc/rc.local`:
 
       echo 0 &gt; /sys/block/<i>sda</i>/queue/add_random
   
