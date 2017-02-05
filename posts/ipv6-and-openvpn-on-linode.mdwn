@@ -1,0 +1,132 @@
+[[!meta title="IPv6 and OpenVPN on Linode Debian/Ubuntu VPS"]]
+[[!meta date="2017-02-05T21:20:00.000+08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here is how I managed to extend my
+[OpenVPN setup on my Linode VPS](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
+to include [IPv6](https://community.openvpn.net/openvpn/wiki/IPv6) traffic.
+This ensures that clients can route all of their traffic through the VPN and
+avoid leaking IPv6 traffic, for example. It also enables clients on
+IPv4-only networks to receive a routable IPv6 address and connect to
+[IPv6-only servers](https://ipv6.google.com) (i.e. running your own IPv6 broker).
+
+# Request an additional IPv6 block
+
+The first thing you need to do is get a new IPv6 address block (or "pool" as
+Linode calls it) from which you can allocate a single address to each VPN
+client that connects to the server.
+
+If you are using a
+[Linode VPS](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff),
+there are
+[instructions on how to request a new IPv6 pool](https://www.linode.com/docs/networking/native-ipv6-networking#additional-ipv6-addresses).
+Note that you need to get an address block **between `/64` and `/112`**. A
+`/116` like Linode offers won't work in [OpenVPN](https://openvpn.net/). Thankfully, Linode
+is happy to allocate you an extra `/64` for free.
+
+# Setup the new IPv6 address
+
+If your server only has an single IPv4 address and a single IPv6 address,
+then a simple DHCP-backed network configuration will work fine.
+To add the second IPv6 block on the other hand, I had to change my network
+configuration (`/etc/network/interfaces`) to this:
+
+    auto lo
+    iface lo inet loopback
+    
+    allow-hotplug eth0
+    iface eth0 inet dhcp
+    	pre-up iptables-restore /etc/network/iptables.up.rules
+    
+    iface eth0 inet6 static
+    	address 2600:3c01::xxxx:xxxx:xxxx:939f/64
+    	gateway fe80::1
+    	pre-up ip6tables-restore /etc/network/ip6tables.up.rules
+    
+    iface tun0 inet6 static
+    	address 2600:3c01:xxxx:xxxx::/64
+    	pre-up ip6tables-restore /etc/network/ip6tables.up.rules
+
+where `2600:3c01::xxxx:xxxx:xxxx:939f/64` (bound to `eth0`) is your main
+IPv6 address and
+`2600:3c01:xxxx:xxxx::/64` (bound to `tun0`) is the new block you
+requested.
+
+Once you've setup the new IPv6 block, test it from another IPv6-enabled host
+using:
+
+    ping6 2600:3c01:xxxx:xxxx::1
+
+# OpenVPN configuration
+
+The only thing I had to change in my
+[OpenVPN configuration](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
+(`/etc/openvpn/server.conf`) was to change:
+
+    proto udp
+
+to:
+
+    proto udp6
+
+in order to make the VPN server
+[available over both IPv4 and IPv6](https://serverfault.com/questions/651832/openvpn-with-mixed-ipv4-and-ipv6-clients),
+and to add the following lines:
+
+    server-ipv6 2600:3c01:xxxx:xxxx::/64
+    push "route-ipv6 2000::/3"
+
+to bind to the right V6 address and to tell clients to tunnel all V6 Internet
+traffic through the VPN.
+
+In addition to updating the OpenVPN config, you will need to add the
+following line to `/etc/sysctl.d/openvpn.conf`:
+
+    net.ipv6.conf.all.forwarding=1
+
+and the following to your firewall (e.g. `/etc/network/ip6tables.up.rules`):
+ 
+    # openvpn
+    -A INPUT -p udp --dport 1194 -j ACCEPT
+    -A FORWARD -m state --state NEW -i tun0 -o eth0 -s 2600:3c01:xxxx:xxxx::/64 -j ACCEPT
+    -A FORWARD -m state --state NEW -i eth0 -o tun0 -d 2600:3c01:xxxx:xxxx::/64 -j ACCEPT
+    -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+in order to ensure that
+[IPv6 packets are forwarded from the `eth0` network interface to `tun0`](https://unix.stackexchange.com/questions/170598/openvpn-using-ipv6-on-vps/187867#187867)
+on the VPN server.
+
+With all of this done, apply the settings by running:
+
+    sysctl -p /etc/sysctl.d/openvpn.conf
+    ip6tables-apply
+    systemctl restart openvpn.service
+
+# Testing the connection
+
+Now connect to the VPN using your desktop client and check that the default
+IPv6 route is set correctly using `ip -6 route`.
+
+Then you can ping the server's new IP address:
+
+    ping6 2600:3c01:xxxx:xxxx::1
+
+and from the server, you can ping the client's IP (which you can see in the
+network settings):
+
+    ping6 2600:3c01:xxxx:xxxx::1002
+
+Once both ends of the tunnel can talk to each other, you can try pinging an
+IPv6-only server from your client:
+
+    ping6 ipv6.google.com
+
+and then pinging your client from an IPv6-enabled host somewhere:
+
+    ping6 2600:3c01:xxxx:xxxx::1002
+
+If that works, other [online](http://test-ipv6.com/)
+[tests](http://ipv6-test.com/) should also work.
+
+[[!tag ipv6]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag openvpn]]
+

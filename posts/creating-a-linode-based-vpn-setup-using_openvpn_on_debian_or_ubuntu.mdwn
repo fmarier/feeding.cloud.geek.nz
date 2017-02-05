@@ -105,7 +105,7 @@ and set the following in `/etc/openvpn/server.conf` (which includes recommendati
 
 Finally, I added the following to these configuration files:
 
-* `/etc/sysctl.conf`:
+* `/etc/sysctl.d/openvpn.conf`:
 
       net.ipv4.ip_forward=1
 
@@ -189,8 +189,12 @@ usually enough to solve the problem.
 
 # Next steps
 
+With the basics working, you could now
+[add support for IPv6](https://feeding.cloud.geek.nz/posts/ipv6-and-openvpn-on-linode/)
+to your VPN.
+
 The next thing I'm going to add to this VPN setup is a
-[local unbound DNS resolver](http://feeding.cloud.geek.nz/posts/setting-up-your-own-dnssec-aware/)
+[local unbound DNS resolver](https://feeding.cloud.geek.nz/posts/setting-up-your-own-dnssec-aware/)
 that will be offered to all clients.
 
 Is there anything else you have in your setup and that I should consider
