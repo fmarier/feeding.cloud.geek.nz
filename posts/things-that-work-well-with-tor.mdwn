@@ -9,7 +9,9 @@ connections, an unfortunate performance-privacy trade-off which means that
 few users choose to do all of their browsing through Tor.
 
 Here are a few things that I have found work quite well through Tor. If
-there are any other interesting use cases I've missed, please leave a comment!
+there are any other interesting use cases I've missed (e.g.
+[reviewing academic papers](http://matt.might.net/articles/why-peer-reviewers-should-use-tor/)),
+please leave a comment!
 
 # Tor setup
 
