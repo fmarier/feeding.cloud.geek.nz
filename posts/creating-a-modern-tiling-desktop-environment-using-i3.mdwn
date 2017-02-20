@@ -92,7 +92,7 @@ A few applications make too many assumptions about window placement and are just
 
 You can get the Xorg class of the offending application by running this command:
 
-    xprop | grep WM_CLASS
+    xprop WM_CLASS
 
 before clicking on the window.
 
