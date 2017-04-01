@@ -1,0 +1,151 @@
+[[!meta title="Manually expanding a RAID1 array on Ubuntu"]]
+[[!meta date="2017-03-31T23:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here are the notes I took while manually expanding an non-LVM encrypted
+RAID1 array on an Ubuntu machine.
+
+My original setup consisted of a 1 TB drive along with a 2 TB drive, which
+meant that the RAID1 array was 1 TB in size and the second drive had 1 TB of
+unused capacity. This is how I replaced the old 1 TB drive with a new 3 TB
+drive and expanded the RAID1 array to 2 TB (leaving 1 TB unused on the new 3
+TB drive).
+
+# Partition the new drive
+
+In order to partition the new 3 TB drive, I started by creating a
+**temporary partition** on the old 2 TB drive (`/dev/sdc`) to use up all of
+the capacity on that drive:
+
+    $ parted /dev/sdc
+    unit s
+    print
+    mkpart
+    print
+
+Then I initialized the partition table and creating the EFI partition
+partition on the new drive (`/dev/sdd`):
+
+    $ parted /dev/sdd
+    unit s
+    mktable gpt
+    mkpart
+
+Since I want to have the RAID1 array be as large as the smaller of the two
+drives, I made sure that the second partition (`/home`) on the
+new 3 TB drive had:
+
+- the same **start position** as the second partition on the old drive
+- the **end position** of the third partition (the temporary one I just
+  created) on the old drive
+
+I created the partition and flagged it as a RAID one:
+
+    mkpart
+    toggle 2 raid
+
+and then deleted the temporary partition on the old 2 TB drive:
+
+    $ parted /dev/sdc
+    print
+    rm 3
+    print
+
+# Create a temporary RAID1 array on the new drive
+
+With the new drive properly partitioned, I created a new RAID array for it:
+
+    mdadm /dev/md10 --create --level=1 --raid-devices=2 /dev/sdd1 missing
+
+and added it to `/etc/mdadm/mdadm.conf`:
+
+    mdadm --detail --scan >> /etc/mdadm/mdadm.conf
+
+which required manual editing of that file to remove duplicate entries.
+
+# Create the encrypted partition
+
+With the new RAID device in place, I created the encrypted LUKS partition:
+
+    cryptsetup -h sha256 -c aes-xts-plain64 -s 512 luksFormat /dev/md10
+    cryptsetup luksOpen /dev/md10 chome2
+
+I took the UUID for the temporary RAID partition:
+
+    blkid /dev/md10
+
+and put it in `/etc/crypttab` as `chome2`.
+
+Then, I formatted the new LUKS partition and mounted it:
+
+    mkfs.ext4 -m 0 /dev/mapper/chome2
+    mkdir /home2
+    mount /dev/mapper/chome2 /home2
+
+# Copy the data from the old drive
+
+With the home paritions of both drives mounted, I copied the files over to
+the new drive:
+
+    eatmydata nice ionice -c3 rsync -axHAX --progress /home/* /home2/
+
+making use of
+[wrappers that preserve system reponsiveness](https://feeding.cloud.geek.nz/posts/three-wrappers-to-run-commands-without-impacting-the-rest-of-the-system/)
+during I/O-intensive operations.
+
+# Switch over to the new drive
+
+After the copy, I switched over to the new drive in a step-by-step way:
+
+1. Changed the UUID of `chome` in `/etc/crypttab`.
+2. Changed the UUID and name of `/dev/md1` in `/etc/mdadm/mdadm.conf`.
+3. Rebooted with both drives.
+4. Checked that the new drive was the one used in the encrypted `/home` mount using: `df -h`.
+
+
+# Add the old drive to the new RAID array
+
+With all of this working, it was time to clear the mdadm superblock from the
+old drive:
+
+    mdadm --zero-superblock /dev/sdc1
+
+and then change the second partition of the old drive to make it the same
+size as the one on the new drive:
+
+    $ parted /dev/sdc
+    rm 2
+    mkpart
+    toggle 2 raid
+    print
+
+before adding it to the new array:
+
+    mdadm /dev/md1 -a /dev/sdc1
+
+# Rename the new array
+
+To
+[change the name of the new RAID array](https://askubuntu.com/questions/63980/how-do-i-rename-an-mdadm-raid-array#64356)
+back to what it was on the old drive, I first had to stop both the old and
+the new RAID arrays:
+
+    umount /home
+    cryptsetup luksClose chome
+    mdadm --stop /dev/md10
+    mdadm --stop /dev/md1
+
+before running this command:
+
+    mdadm --assemble /dev/md1 --name=mymachinename:1 --update=name /dev/sdd2
+
+and updating the name in `/etc/mdadm/mdadm.conf`.
+
+The last step was to regenerate the initramfs:
+
+    update-initramfs -u
+
+before rebooting into something that looks exactly like the original RAID1
+array but with twice the size.
+
+[[!tag nzoss]] [[!tag sysadmin]] [[!tag debian]] [[!tag raid]] [[!tag ubuntu]]
