@@ -66,8 +66,13 @@ logins, so you'll need to log into the console:
     sudo lxc-stop -n sid64
     sudo lxc-start -n sid64 -F
 
-then install a text editor inside the container because the root image
-doesn't have one by default:
+Since the root password is randomly generated, you'll need to reset it before
+you can login as root:
+
+    sudo lxc-attach -n sid64 passwd
+
+Then login as root and install a text editor inside the container because the
+root image doesn't have one by default:
 
     apt install vim
 
