@@ -64,7 +64,7 @@ The ssh server is configured to require pubkey-based authentication for root
 logins, so you'll need to log into the console:
 
     sudo lxc-stop -n sid64
-    sudo lxc-start -n sid64
+    sudo lxc-start -n sid64 -F
 
 then install a text editor inside the container because the root image
 doesn't have one by default:
