@@ -79,6 +79,19 @@ by typing this command:
 
     sudo lxc-ls --fancy
 
+# Mounting your home directory inside a container
+
+In order to have my home directory available within the container, I
+created a user account for myself inside the container and then added
+the following to the container config file (`/var/lib/lxc/sid64/config`):
+
+    lxc.mount.entry=/home/francois /var/lib/lxc/sid64/rootfs/home/francois none bind 0 0
+
+before restarting the container:
+
+    lxc-stop -n sid64
+    lxc-start -n sid64 -d
+
 # Fixing locale errors
 
 If you see a bunch of errors like these when you start your container:
@@ -122,5 +135,12 @@ and then start up it later once the locales have been updates:
     lxc-stop -n sid64
     service apparmor start
     lxc-start -n sid64 -d
+
+# AppArmor support
+
+If you are running AppArmor, your container probably won't start until you
+add the following to the container config (`/var/lib/lxc/sid64/config`):
+
+    lxc.aa_allow_incomplete = 1
 
 [[!tag debian]] [[!tag lxc]] [[!tag nzoss]]
