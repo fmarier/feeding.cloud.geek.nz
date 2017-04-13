@@ -1,0 +1,59 @@
+[[!meta title="Automatically renewing Let's Encrypt TLS certificates on Debian using Certbot"]]
+[[!meta date="2017-04-13T08:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I use [Let's Encrypt](https://letsencrypt.org/)
+[TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) certificates
+on my Debian servers along with the [Certbot](https://certbot.eff.org/)
+tool. Since I use the "temporary webserver" method of proving domain
+ownership via the [ACME protocol](https://ietf-wg-acme.github.io/acme/), I
+cannot use the cert renewal cronjob built into Certbot.
+
+Instead, this is the script I put in `/etc/cron.daily/certbot-renew`:
+
+    #!/bin/bash
+
+    /usr/sbin/apache2ctl stop
+    /usr/bin/certbot renew --quiet
+    /usr/sbin/apache2ctl start
+
+    pushd /etc/ > /dev/null
+    /usr/bin/git add letsencrypt
+    DIFFSTAT="$(/usr/bin/git diff --cached --stat)"
+    if [ -n "$DIFFSTAT" ] ; then
+        /usr/bin/git commit --quiet -m "Renewed letsencrypt certs"
+        echo "$DIFFSTAT"
+    fi
+    popd > /dev/null
+
+It temporarily disables my [Apache](https://httpd.apache.org/) webserver while it renews the
+certificates and then only outputs something to STDOUT (since my cronjob
+will email me any output) if certs have been renewed.
+
+Since I'm using [etckeeper](https://etckeeper.branchable.com/) to keep track of config changes on my
+servers, my renewal script also commits to the repository if any certs have
+changed.
+
+# External Monitoring
+
+In order to catch mistakes or oversights, I use
+[ssl-cert-check](https://packages.debian.org/stable/ssl-cert-check) to
+monitor my domains once a day:
+
+    ssl-cert-check -s fmarier.org -p 443 -q -a -e francois@fmarier.org
+
+I also signed up with [Cert Spotter](https://sslmate.com/certspotter/) which
+watches the
+[Certificate Transparency](https://www.certificate-transparency.org/) log
+and notifies me of any newly-issued certificates for my domains.
+
+In other words, I get notified:
+
+- if my cronjob fails and a cert is about to expire, or
+- as soon as a new cert is issued.
+
+The whole thing seems to work well, but if there's anything I could be doing
+better, feel free to leave a comment!
+
+[[!tag nzoss]] [[!tag sysadmin]] [[!tag debian]] [[!tag mozilla]]
+[[!tag ubuntu]] [[!tag ssl]] [[!tag apache]] [[!tag letsencrypt]]
