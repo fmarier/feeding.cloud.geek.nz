@@ -13,9 +13,7 @@ Instead, this is the script I put in `/etc/cron.daily/certbot-renew`:
 
     #!/bin/bash
 
-    /usr/sbin/apache2ctl stop
-    /usr/bin/certbot renew --quiet
-    /usr/sbin/apache2ctl start
+    /usr/bin/certbot renew --quiet --pre-hook "/usr/sbin/apache2ctl stop" --post-hook "/usr/sbin/apache2ctl start"
 
     pushd /etc/ > /dev/null
     /usr/bin/git add letsencrypt
