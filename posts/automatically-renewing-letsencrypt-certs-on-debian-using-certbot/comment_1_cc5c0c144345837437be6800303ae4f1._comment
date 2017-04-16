@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="78.60.202.182"
+ claimedauthor="Marius Gedminas"
+ url="https://gedmin.as"
+ subject="Why stop Apache?"
+ date="2017-04-14T13:17:59Z"
+ content="""
+You could use the Apache or webroot plugins to do the renewals without stopping Apache.  Is there anything that prevents you from doing that?
+"""]]
