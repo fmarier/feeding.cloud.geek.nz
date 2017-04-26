@@ -114,18 +114,10 @@ be updated and it keeps doing that until the system is fully up-to-date.
 The only thing missing from this is getting a reminder whenever a package
 update (usually the kernel) **requires a reboot** to take effect. That's
 where the
-[update-notifier-common](https://packages.debian.org/wheezy/update-notifier-common)
+[reboot-notifier](https://feeding.cloud.geek.nz/posts/introducing-reboot-notifier/)
 package comes in.
 
-Because that package will add a hook that will create the
-`/var/run/reboot-required` file whenever a kernel update has been installed,
-all you need to do is create a cronjob like this in
-`/etc/cron.daily/reboot-required`:
-
-    #!/bin/sh
-    cat /var/run/reboot-required 2> /dev/null || true
-
-assuming of course that you are already receiving emails sent to the root
+This assumes that you are already receiving emails sent to the root
 user (if not, add the appropriate alias in `/etc/aliases` and run
 `newaliases`).
 
