@@ -86,7 +86,7 @@ whether or not the rest of the hash matches the entry on the Safe Browsing
 list.
 
 In order resolve such conflicts, Firefox requests from the Safe Browsing
-server (`browser.safebrowsing.provider.mozilla.gethashURL`) all of the
+server (`browser.safebrowsing.provider.google.gethashURL`) all of the
 hashes that start with the affected 32-bit prefix and adds these full-length
 hashes to its local database. Turn on `browser.safebrowsing.debug` to see
 some debugging information on the terminal while these "completion" requests
