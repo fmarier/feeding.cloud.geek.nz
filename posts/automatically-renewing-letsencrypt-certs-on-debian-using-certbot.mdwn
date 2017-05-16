@@ -24,6 +24,12 @@ Instead, this is the script I put in `/etc/cron.daily/certbot-renew`:
     fi
     popd > /dev/null
 
+    # Generate the right certs for ejabberd and znc
+    if test /etc/letsencrypt/live/jabber-gw.fmarier.org/privkey.pem -nt /etc/ejabberd/ejabberd.pem ; then
+        cat /etc/letsencrypt/live/jabber-gw.fmarier.org/privkey.pem /etc/letsencrypt/live/jabber-gw.fmarier.org/fullchain.pem > /etc/ejabberd/ejabberd.pem
+    fi
+    cat /etc/letsencrypt/live/irc.fmarier.org/privkey.pem /etc/letsencrypt/live/irc.fmarier.org/fullchain.pem > /home/francois/.znc/znc.pem
+
 It temporarily disables my [Apache](https://httpd.apache.org/) webserver while it renews the
 certificates and then only outputs something to STDOUT (since my cronjob
 will email me any output) if certs have been renewed.
@@ -31,6 +37,17 @@ will email me any output) if certs have been renewed.
 Since I'm using [etckeeper](https://etckeeper.branchable.com/) to keep track of config changes on my
 servers, my renewal script also commits to the repository if any certs have
 changed.
+
+Finally, since my
+[XMPP server](https://feeding.cloud.geek.nz/posts/running-your-own-xmpp-server-debian-ubuntu/)
+and
+[IRC bouncer](https://feeding.cloud.geek.nz/posts/hiding-network-disconnections-using-irc-bouncer/)
+need the private key and the full certificate chain to be in the same file,
+so I regenerate these files at the end of the script. In the case of
+ejabberd, I only do so if the certificates have actually changed since
+overwriting `ejabberd.pem` changes its timestamp and triggers an
+[fcheck](https://packages.debian.org/stable/fcheck) notification (since it
+watches all files under `/etc`).
 
 # External Monitoring
 
