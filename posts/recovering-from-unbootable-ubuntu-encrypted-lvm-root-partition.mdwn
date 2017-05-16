@@ -1,0 +1,93 @@
+[[!meta title="Recovering from an unbootable Ubuntu encrypted LVM root partition"]]
+[[!meta date="2017-05-15T21:10:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+A laptop that was installed using the default Ubuntu 16.10 (xenial)
+[full-disk encryption](https://www.eff.org/deeplinks/2012/11/privacy-ubuntu-1210-full-disk-encryption)
+option stopped booting after receiving a
+kernel update somewhere on the way to Ubuntu 17.04 (zesty).
+
+After showing the boot screen for about 30 seconds, a busybox shell pops up:
+
+    BusyBox v.1.21.1 (Ubuntu 1:1.21.1-1ubuntu1) built-in shell (ash)
+    Enter 'help' for list of built-in commands.
+    
+    (initramfs)
+
+Typing `exit` will display more information about the failure before
+bringing us back to the same busybox shell:
+
+    Gave up waiting for root device. Common problems:
+      - Boot args (cat /proc/cmdline)
+        - Check rootdelay= (did the system wait long enough?)
+        - Check root= (did the system wait for the right device?)
+      - Missing modules (cat /proc/modules; ls /dev)
+    ALERT! /dev/mapper/ubuntu--vg-root does not exist. Dropping to a shell! 
+    
+    BusyBox v.1.21.1 (Ubuntu 1:1.21.1-1ubuntu1) built-in shell (ash)   
+    Enter 'help' for list of built-in commands.  
+    
+    (initramfs)
+
+which now complains that the `/dev/mapper/ubuntu--vg-root` root partition
+(which uses
+[LUKS](https://gitlab.com/cryptsetup/cryptsetup/blob/master/README.md) and
+[LVM](https://www.sourceware.org/lvm2/)) cannot be found.
+
+There is some [comprehensive advice out there](https://askubuntu.com/questions/567730/gave-up-waiting-for-root-device-ubuntu-vg-root-doesnt-exist#567897)
+but it didn't quite work for me. This is how I ended up resolving the problem.
+
+# Boot using a USB installation disk
+
+First, create bootable USB disk using the latest Ubuntu installer:
+
+1. [Download an desktop image](https://www.ubuntu.com/download/desktop).
+2. Copy the ISO directly on the USB stick (overwriting it in the process):
+
+        dd if=ubuntu.iso of=/dev/sdc1
+
+and boot the system using that USB stick ([hold the `option` key during boot on Apple hardware](https://support.apple.com/en-us/HT201255)).
+
+# Mount the encrypted partition
+
+Assuming a drive which is partitioned this way:
+
+- `/dev/sda1`: EFI partition
+- `/dev/sda2`: unencrypted boot partition
+- `/dev/sda3`: encrypted LVM partition
+
+Open a terminal and [mount the required partitions](https://superuser.com/questions/165116/mount-dev-proc-sys-in-a-chroot-environment):
+
+    cryptsetup luksOpen /dev/sda3 sda3_crypt
+    vgchange -ay
+    mount /dev/mapper/ubuntu--vg-root /mnt
+    mount /dev/sda2 /mnt/boot
+    mount -t proc proc /mnt/proc
+    mount -o bind /dev /mnt/dev
+
+Note:
+
+- When running `cryptsetup luksOpen`, you must use the same name as the one
+  that is in `/etc/crypttab` on the root parition (`sda3_crypt` in this
+  example).
+
+- All of these partitions must be present (**including `/proc` and `/dev`**) for
+  the initramfs scripts to do all of their work. If you see errors or
+  warnings, you must resolve them.
+
+# Regenerate the initramfs on the boot partition
+
+Then "enter" the root partition using:
+
+    chroot /mnt
+
+and make sure that the [lvm2](https://launchpad.net/ubuntu/+source/lvm2)
+package is installed:
+
+    apt install lvm2
+
+before regenerating the initramfs for all of the installed kernels:
+
+    update-initramfs -c -k all
+
+[[!tag debian]] [[!tag nzoss]] [[!tag ubuntu]] [[!tag luks]] [[!tag lvm]]
