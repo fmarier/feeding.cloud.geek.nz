@@ -7,4 +7,4 @@
 [[!inline pages="page(./posts/*) and !*/Discussion" show="10"
 actions=yes rootpage="posts"]]
 
-[[!meta  field="flattr:id" param="4j6y0v"]]
+[[!meta flattr:id="4j6y0v"]]
