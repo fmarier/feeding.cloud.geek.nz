@@ -1,5 +1,3 @@
-[[!meta name="flattr:id" content="4j6y0v"]]
-
 # Subscribe to this blog
 
 <a href="https://feeding.cloud.geek.nz/index.rss"><img src="/feed-icon.png" height="32" width="32" align="left">Subscribe in a reader</a>
