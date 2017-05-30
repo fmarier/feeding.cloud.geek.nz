@@ -189,7 +189,7 @@ and these to `/etc/rkhunter.conf.local`:
 
 # General hardening
 
-    apt install harden-clients harden-environment harden-servers apparmor apparmor-profiles apparmor-profiles-extra libpam-tmpdir
+    apt install apparmor apparmor-profiles apparmor-profiles-extra libpam-tmpdir
 
 While the harden packages are configuration-free, AppArmor must be [manually enabled](https://wiki.debian.org/AppArmor/HowToUse#Enable_AppArmor):
 
