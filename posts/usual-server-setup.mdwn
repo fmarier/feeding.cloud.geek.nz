@@ -9,7 +9,7 @@ how I customize recent releases of Debian on those servers.
 
 # Hardware tests
 
-    apt-get install memtest86+ smartmontools e2fsprogs
+    apt install memtest86+ smartmontools e2fsprogs
 
 Prior to spending any time configuring a new physical server, I like to
 ensure that the hardware is fine.
@@ -24,7 +24,7 @@ Then I check the hard drives using:
 
 # Configuration
 
-    apt-get install etckeeper git sudo vim
+    apt install etckeeper git sudo vim
 
 To keep track of the configuration changes I make in `/etc/`, I use etckeeper
 to keep that directory in a git repository and make the following changes to
@@ -52,7 +52,7 @@ following to `/etc/vim/vimrc.local`:
 
 # ssh
 
-    apt-get install openssh-server mosh fail2ban
+    apt install openssh-server mosh fail2ban
 
 Since most of my servers are set to UTC time, I like to [use my local
 timezone](http://petereisentraut.blogspot.com/2012/04/setting-time-zone-on-remote-ssh-hosts.html)
@@ -121,8 +121,8 @@ and add a timeout for root sessions by putting this in `/root/.bash_profile`:
 
 # Security checks
 
-    apt-get install logcheck logcheck-database fcheck tiger debsums corekeeper mcelog rkhunter
-    apt-get remove --purge john john-data rpcbind tripwire unhide unhide.rb
+    apt install logcheck logcheck-database fcheck tiger debsums corekeeper mcelog rkhunter
+    apt remove --purge john john-data rpcbind tripwire unhide unhide.rb
 
 Logcheck is the main tool I use to keep an eye on log files, which is why I
 add a few additional log files to the default list in
@@ -189,7 +189,7 @@ and these to `/etc/rkhunter.conf.local`:
 
 # General hardening
 
-    apt-get install harden-clients harden-environment harden-servers apparmor apparmor-profiles apparmor-profiles-extra libpam-tmpdir
+    apt install harden-clients harden-environment harden-servers apparmor apparmor-profiles apparmor-profiles-extra libpam-tmpdir
 
 While the harden packages are configuration-free, AppArmor must be [manually enabled](https://wiki.debian.org/AppArmor/HowToUse#Enable_AppArmor):
 
@@ -216,7 +216,7 @@ before reloading these settings using `sysctl -p`.
 
 # Entropy and timekeeping
 
-    apt-get install haveged rng-tools ntp
+    apt install haveged rng-tools ntp
 
 To keep the system clock accurate and increase the amount of entropy
 available to the server, I install the above packages and add the `tpm_rng`
@@ -224,7 +224,7 @@ module to `/etc/modules`.
 
 # Preventing mistakes
 
-    apt-get install molly-guard safe-rm sl
+    apt install molly-guard safe-rm sl
 
 The above packages are all about catching mistakes (such as
 [accidental deletions](http://feeding.cloud.geek.nz/posts/preventing-accidental-deletion-of/)).
@@ -233,7 +233,7 @@ manually [apply a patch](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=705397
 
 # Package updates
 
-    apt-get install apticron unattended-upgrades deborphan debfoster apt-listchanges update-notifier-common aptitude popularity-contest needrestart
+    apt install apticron unattended-upgrades deborphan debfoster apt-listchanges update-notifier-common aptitude popularity-contest needrestart
 
 These tools help me keep packages up to date and remove unnecessary or
 obsolete packages from servers. On Rackspace servers, a small [configuration
@@ -259,14 +259,14 @@ you need to restart a daemon using an obsolete library.
 
 # Handy utilities
 
-    apt-get install renameutils atool iotop sysstat lsof mtr-tiny mc
+    apt install renameutils atool iotop sysstat lsof mtr-tiny mc
 
 Most of these tools are configuration-free, except for sysstat, which requires
 enabling data collection in `/etc/default/sysstat` to be useful.
 
 # Apache configuration
 
-    apt-get install apache2-mpm-event
+    apt install apache2-mpm-event
 
 While configuring apache is often specific to each server and the services
 that will be running on it, there are a few common changes I make.
@@ -302,7 +302,7 @@ and then run:
 
 # Mail
 
-    apt-get install postfix
+    apt install postfix
 
 Configuring mail properly is tricky but the following has worked for me.
 
