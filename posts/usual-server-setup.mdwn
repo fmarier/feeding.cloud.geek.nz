@@ -274,6 +274,7 @@ and then run:
 # Mail
 
     apt install postfix
+    apt purge exim4-base exim4-daemon-light exim4-config
 
 Configuring mail properly is tricky but the following has worked for me.
 
