@@ -57,6 +57,12 @@ install the [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page)
 package. It keeps an eye on the ssh log file (`/var/log/auth.log`) and
 temporarily blocks IP addresses after a number of failed login attempts.
 
+To prevent your own IP addresses from being blocked, add them to
+`/etc/fail2ban/jail.conf`:
+
+    [DEFAULT]
+    ignoreip = 127.0.0.1/8 1.2.3.4
+
 Another approach is to hide the ssh service using
 [Single-Packet Authentication](http://en.wikipedia.org/wiki/Single_Packet_Authorization). I
 have [fwknop](http://www.cipherdyne.org/fwknop/) installed on some of my

@@ -99,6 +99,13 @@ work](https://github.com/paramiko/paramiko/issues/509), I also add the following
     KexAlgorithms ...,diffie-hellman-group-exchange-sha1
     MACs ...,hmac-sha1
 
+Since [fail2ban](http://www.fail2ban.org/) is used to rate-limit attempts to
+brute-force ssh connections, you may want to whitelist your own IP addresses
+by adding them to `/etc/fail2ban/jail.conf`:
+
+    [DEFAULT]
+    ignoreip = 127.0.0.1/8 1.2.3.4
+
 Then I remove the "Accepted" filter in `/etc/logcheck/ignore.d.server/ssh`
 (first line) to get a notification whenever anybody successfully logs into
 my server.
