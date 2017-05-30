@@ -85,14 +85,6 @@ and end up with the following settings in `/etc/ssh/sshd_config` (jessie):
     LogLevel VERBOSE
     AllowGroups sshuser
 
-or the following for wheezy servers:
-
-    HostKey /etc/ssh/ssh_host_rsa_key
-    HostKey /etc/ssh/ssh_host_ecdsa_key
-    KexAlgorithms ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
-    Ciphers aes256-ctr,aes192-ctr,aes128-ctr
-    MACs hmac-sha2-512,hmac-sha2-256
-
 On those servers where I need [duplicity/paramiko to
 work](https://github.com/paramiko/paramiko/issues/509), I also add the following:
 
@@ -228,30 +220,20 @@ module to `/etc/modules`.
 
 The above packages are all about catching mistakes (such as
 [accidental deletions](http://feeding.cloud.geek.nz/posts/preventing-accidental-deletion-of/)).
-However, in order to extend the molly-guard protection to mosh sessions, one needs to
-manually [apply a patch](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=705397).
 
 # Package updates
 
-    apt install apticron unattended-upgrades deborphan debfoster apt-listchanges update-notifier-common aptitude popularity-contest needrestart
+    apt install apticron unattended-upgrades deborphan debfoster apt-listchanges reboot-notifier popularity-contest needrestart
 
 These tools help me keep packages up to date and remove unnecessary or
 obsolete packages from servers. On Rackspace servers, a small [configuration
 change](http://feeding.cloud.geek.nz/posts/using-unattended-upgrades-on-rackspace-debian-ubuntu-servers/)
 is needed to automatically update the monitoring tools.
 
-In addition to this, I use the `update-notifier-common` package along with
-the following cronjob in `/etc/cron.daily/reboot-required`:
-
-    #!/bin/sh
-    cat /var/run/reboot-required 2> /dev/null || true
-
+On jessie or later, I install
+[reboot-notifier](http://feeding.cloud.geek.nz/posts/introducing-reboot-notifier/)
 to send me a notification whenever a kernel update requires a reboot to take
 effect.
-
-If you're on jessie or later, simply install
-[reboot-notifier](http://feeding.cloud.geek.nz/posts/introducing-reboot-notifier/)
-instead of `update-notifier-common` and you're done!
 
 In addition to knowing when you need to reboot your machine, the
 `needrestart` package will let you know (and offer to do it for you) when
@@ -266,7 +248,8 @@ enabling data collection in `/etc/default/sysstat` to be useful.
 
 # Apache configuration
 
-    apt install apache2-mpm-event
+    apt install apache2
+    a2enmod mpm_event
 
 While configuring apache is often specific to each server and the services
 that will be running on it, there are a few common changes I make.
@@ -279,18 +262,6 @@ I enable these in `/etc/apache2/conf-enabled/security.conf`:
     </Directory>
     ServerTokens Prod
     ServerSignature Off
-
-or `/etc/apache2/conf.d/security` on wheezy):
-
-    <Directory />
-        AllowOverride None
-        Order Deny,Allow
-        Deny from all
-    </Directory>
-    ServerTokens Prod
-    ServerSignature Off
-
-and remove cgi-bin directives from `/etc/apache2/sites-enabled/000-default`.
 
 I also create a new `/etc/apache2/conf-available/servername.conf` which contains:
 
