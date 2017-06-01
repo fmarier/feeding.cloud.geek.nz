@@ -57,7 +57,7 @@ go through a similar process.
       <html>
       <body>
       <p>We are migrating to a new server. See you soon!</p>
-      <p>- <a href="http://identi.ca/libravatar">@libravatar</a></p>
+      <p>- <a href="https://identi.ca/libravatar">@libravatar</a></p>
       </body>
       </html>
 
