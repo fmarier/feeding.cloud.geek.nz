@@ -29,7 +29,7 @@ go through a similar process.
 
 # Preparing the old server
 
-* Prepare a static "under migration" Apache config in `/etc/apache2/sites-enables.static/`:
+* Prepare a static "under migration" Apache config in `/etc/apache2/sites-enabled.static/default.conf`:
 
       <VirtualHost *:80>
           RewriteEngine On
@@ -38,24 +38,21 @@ go through a similar process.
 
       <VirtualHost *:443>
           SSLEngine on
-          SSLProtocol TLSv1
-          SSLHonorCipherOrder On
-          SSLCipherSuite RC4-SHA:HIGH:!kEDH
       
           SSLCertificateFile /etc/libravatar/www.crt
           SSLCertificateKeyFile /etc/libravatar/www.pem
           SSLCertificateChainFile /etc/libravatar/www-chain.pem
       
           RewriteEngine On
-          RewriteRule ^ /var/www/migration.html [last]
+          RewriteRule ^ /var/www/html/migration.html [last]
       
-          <Directory /var/www>
+          <Directory /var/www/html>
               Allow from all
               Options -Indexes
           </Directory>
       </VirtualHost>
 
-* Put this static file in /var/www/migration.html:
+* Put this static file in /var/www/html/migration.html:
 
       <html>
       <body>
@@ -68,7 +65,7 @@ go through a similar process.
 
       a2enmod rewrite
 
-* Prepare an Apache config proxying to the new server in `/etc/apache2/sites-enabled.proxy/`:
+* Prepare an Apache config proxying to the new server in `/etc/apache2/sites-enabled.proxy/default.conf`:
 
       <VirtualHost *:80>
           RewriteEngine On
@@ -77,9 +74,6 @@ go through a similar process.
       
       <VirtualHost *:443>
           SSLEngine on
-          SSLProtocol TLSv1
-          SSLHonorCipherOrder On
-          SSLCipherSuite RC4-SHA:HIGH:!kEDH
       
           SSLCertificateFile /etc/libravatar/www.crt
           SSLCertificateKeyFile /etc/libravatar/www.pem
