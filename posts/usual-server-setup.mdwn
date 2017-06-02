@@ -64,6 +64,10 @@ the list of generated locales:
 
     dpkg-reconfigure locales
 
+Make sure the default locale is **using the UTF-8** encoding since that will
+ensure that things like Postgres default to the One True Encoding when you
+install/bootstrap them.
+
 Other than that, I [harden the ssh configuration](http://feeding.cloud.geek.nz/posts/hardening-ssh-servers/)
 and end up with the following settings in `/etc/ssh/sshd_config` (jessie):
 
