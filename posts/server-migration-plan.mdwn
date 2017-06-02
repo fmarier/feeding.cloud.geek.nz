@@ -95,9 +95,25 @@ go through a similar process.
 * [Tweet](https://twitter.com/libravatar/status/364659172983308288) and [dent](https://identi.ca/libravatar/note/UFBI9ne8SsOftkYlSKPHQQ) about the upcoming migration.
 
 * Enable the static file config on the old server (disabling the Django app).
-
-* Copy the database from the old server and restore it on the new server.
+* Disable pgbouncer to ensure that Django cannot access postgres anymore.
+* Copy the database from the old server and restore it on the new server **making sure it's in the UTF8 encoding**.
 * Copy `/var/lib/libravatar` from the old server to the new one.
+  * On the new server:
+
+        chmod a+w /var/lib/libravatar/avatar
+        chmod a+w /var/lib/libravatar/user
+
+  * From laptop:
+
+        rsync -a -H -v husavik.libravatar.org:/var/lib/libravatar/avatar .
+        rsync -a -H -v husavik.libravatar.org:/var/lib/libravatar/user .
+        rsync -a -H -v avatar/* selfoss.libravatar.org:/var/lib/libravatar/avatar/
+        rsync -a -H -v user/* selfoss.libravatar.org:/var/lib/libravatar/avatar/
+
+  * On the new server:
+
+        chmod go-w /var/lib/libravatar/avatar
+        chmod go-w /var/lib/libravatar/user
 
 # Disable mirror sync
 
