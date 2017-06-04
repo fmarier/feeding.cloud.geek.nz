@@ -13,7 +13,7 @@ go through a similar process.
 # Prepare DNS
 
 * Change the TTL on the DNS entry for `libravatar.org` to 3600 seconds.
-* Remove the mirrors I don't control from the DNS load balancer (`cdn` and `seccdn`).
+* Remove the mirrors I don't control from the DNS load balancer (`cdn` **and** `seccdn`).
 * Remove the main server from `cdn` and `seccdn` in DNS.
 
 # Preparing the new server
