@@ -16,7 +16,7 @@ Instead, this is the script I put in `/etc/cron.daily/certbot-renew`:
     /usr/bin/certbot renew --quiet --pre-hook "/bin/systemctl stop apache2.service" --post-hook "/bin/systemctl start apache2.service"
 
     pushd /etc/ > /dev/null
-    /usr/bin/git add letsencrypt
+    /usr/bin/git add letsencrypt ejabberd
     DIFFSTAT="$(/usr/bin/git diff --cached --stat)"
     if [ -n "$DIFFSTAT" ] ; then
         /usr/bin/git commit --quiet -m "Renewed letsencrypt certs"
