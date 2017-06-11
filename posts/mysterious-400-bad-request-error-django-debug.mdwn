@@ -1,0 +1,71 @@
+[[!meta title="Mysterious 400 Bad Request in Django debug mode"]]
+[[!meta date="2017-06-10T17:20:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+While upgrading [Libravatar](https://www.libravatar.org) to a more recent
+version of [Django](https://www.djangoproject.com/), I ran into a
+mysterious 400 error.
+
+In debug mode, my site was working fine, but with `DEBUG = False`, I would
+only a page containing this error:
+
+    Bad Request (400)
+
+with no extra details in the web server logs.
+
+# Turning on extra error logging
+
+To see the full error message, I [configured logging to a
+file](https://docs.djangoproject.com/en/1.11/topics/logging/#examples) by
+adding this to `settings.py`:
+
+```
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+```
+
+Then I got the following error message:
+
+    Invalid HTTP_HOST header: 'www.example.com'. You may need to add u'www.example.com' to ALLOWED_HOSTS.
+
+# Temporary hack
+
+Sure enough, putting this in `settings.py` would make it work outside of debug mode:
+
+    ALLOWED_HOSTS = ['*']
+
+which means that there's a mismatch between the HTTP_HOST from Apache and
+[the one that Django expects](https://docs.djangoproject.com/en/1.11/topics/security/#host-headers-virtual-hosting).
+
+# Root cause
+
+The underlying problem was that the
+[Libravatar config file was missing the square brackets](https://git.launchpad.net/~libravatar/libravatar/commit/?id=a8c1002a39e7a1ef7d0ed7e5fb2ecf536ad4eede)
+around the
+[`ALLOWED_HOSTS` setting](https://docs.djangoproject.com/en/1.11/ref/settings/#allowed-hosts).
+
+I had this:
+
+    ALLOWED_HOSTS = 'www.example.com'
+
+instead of:
+
+    ALLOWED_HOSTS = ['www.example.com']
+
+[[!tag django]] [[!tag nzoss]] [[!tag debian]] [[!tag libravatar]]
