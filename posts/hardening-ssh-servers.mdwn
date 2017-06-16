@@ -108,23 +108,11 @@ You may also want to include the following options to each entry:
 
 # Increasing the amount of logging
 
-The first thing I'd recommend is to increase the level of verbosity in
-`/etc/ssh/sshd_config`:
-
-    LogLevel VERBOSE
-
-which will, amongst other things, log the fingerprints of keys used to login:
-
-    sshd: Connection from 192.0.2.2 port 39671
-    sshd: Found matching RSA key: de:ad:be:ef:ca:fe
-    sshd: Postponed publickey for francois from 192.0.2.2 port 39671 ssh2 [preauth]
-    sshd: Accepted publickey for francois from 192.0.2.2 port 39671 ssh2 
-
-Secondly, if you run [logcheck](https://packages.debian.org/stable/logcheck)
+Ff you run [logcheck](https://packages.debian.org/stable/logcheck)
 and would like to whitelist the "Accepted publickey" messages on your
 server, you'll have to start by deleting the first line of
 `/etc/logcheck/ignore.d.server/sshd`. Then you can add an entry for all of
-the usernames and IP addresses that you expect to see.
+the usernames, IP addresses and ssh keys that you expect to see.
 
 Finally, it is also possible to
 [log all commands issued by a specific user over ssh](http://beardyjay.co.uk/logging-all-ssh-commands/logging-ssh)
