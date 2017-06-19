@@ -212,7 +212,7 @@ before reloading these settings using `sysctl -p`.
 
 # Entropy and timekeeping
 
-    apt install haveged rng-tools ntp
+    apt install rng-tools ntp
 
 To keep the system clock accurate and increase the amount of entropy
 available to the server, I install the above packages and add the `tpm_rng`
