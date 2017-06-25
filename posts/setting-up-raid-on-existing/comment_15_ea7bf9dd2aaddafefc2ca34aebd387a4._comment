@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ ip="83.208.32.87"
+ claimedauthor="TyNyT"
+ subject="Proper Grub approach"
+ date="2017-06-25T18:33:53Z"
+ content="""
+Hi, I found the Grub reconfig too complex and not working well in case the /boot is on a separate partition, failing to rescue mode.
+
+Instead of fiddling with the grub console, one can fix the issue before reboot - just to chroot into the mounted md partitions (be aware, CHOOSE TO INSTALL GRUB TO MD-ENABLED DRIVE _ONLY_, just not to touch the \"source\" drive):
+
+    mount -t proc /proc /mnt/mntroot/proc
+    mount --rbind /sys /mnt/mntroot/sys
+    mount --make-rslave /mnt/mntroot/sys
+    mount --rbind /dev /mnt/mntroot/dev
+    mount --make-rslave /mnt/mntroot/dev
+    chroot /mnt/mntroot /bin/bash
+    source /etc/profile
+    dpkg-reconfigure grub-pc  
+
+I consider this approach to be much cleaner.
+"""]]
