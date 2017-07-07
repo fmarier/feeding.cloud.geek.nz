@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="109.163.234.2"
+ claimedauthor="Martin"
+ url="blog.mdosch.de"
+ subject="Captive Portal"
+ date="2017-07-07T14:34:50Z"
+ content="""
+I'm doing a lot of business trips so I'm using a lot of Airport and Hotel WiFis. So far I could reach all the captive portals when directly typing http://1.1.1.1 into my browser address bar. I don't know if this a standard but so far it seems all the captive portals are reachable this way.
+If it won't work I would have a look at the IP DHCP gave, e.g. 192.168.10.42, and then would try to acces 192.168.10.1 (but I never needed to try this as 1.1.1.1 always worked for me).
+"""]]
