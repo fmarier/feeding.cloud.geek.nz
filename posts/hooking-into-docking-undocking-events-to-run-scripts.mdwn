@@ -32,9 +32,9 @@ Secondly, `/etc/acpi/events/thinkpad-undock`:
     event=ibm/hotkey LEN0068:00 00000080 00004011
     action=su francois -c "/home/francois/bin/external-monitor undock"
 
-then restart udev:
+then restart acpid:
 
-    sudo service udev restart
+    sudo systemctl restart acpid.service
 
 ## Finding the right events
 
@@ -46,7 +46,7 @@ and ensure that your script is actually running by adding:
 
     logger "ACPI event: $*"
 
-at the begininng of it and then looking in `/var/log/syslog` for this lines
+at the begininng of it and then looking in `/var/log/syslog` for lines
 like:
 
     logger: external-monitor undock
