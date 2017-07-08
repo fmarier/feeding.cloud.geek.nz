@@ -45,4 +45,4 @@ partition name, for the USB stick):
 then restart and boot from the USB stick by pressing Enter, then F12 when
 you see the Lenovo logo.
 
-[[!tag debian]] [[!tag nzoss]] [[!tag lenovo]] [[!tag thinkpad]]
+[[!tag debian]] [[!tag nzoss]] [[!tag thinkpad]]
