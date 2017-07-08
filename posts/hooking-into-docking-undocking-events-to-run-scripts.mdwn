@@ -24,7 +24,7 @@ as [suggested in this guide](http://phihag.de/2012/thinkpad-docking.html).
 
 Firstly, `/etc/acpi/events/thinkpad-dock`:
 
-    event=ibm/hotkey LEN0068:00 00000080 00004010
+    event=ibm/hotkey LEN0068:00 00000080 00006030
     action=su francois -c "/home/francois/bin/external-monitor dock"
 
 Secondly, `/etc/acpi/events/thinkpad-undock`:
@@ -35,6 +35,9 @@ Secondly, `/etc/acpi/events/thinkpad-undock`:
 then restart acpid:
 
     sudo systemctl restart acpid.service
+
+Note that I'm not using the real "docking" event (`ibm/hotkey LEN0068:00 00000080 00004010`)
+because it seems to be triggered too early and the new displays aren't ready.
 
 ## Finding the right events
 
