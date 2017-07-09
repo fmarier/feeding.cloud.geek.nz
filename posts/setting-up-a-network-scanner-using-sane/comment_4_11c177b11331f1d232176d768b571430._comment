@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="184.155.20.14"
+ claimedauthor="Paul K"
+ subject="Re: Point of Network Scanner... Windows"
+ date="2017-07-09T01:26:59Z"
+ content="""
+sane is supported on windows (Xsane for win32, SwingSane), but only as a network client. You can't plug a scanner into a windows machine with USB and use sane, but you can plug a scanner into a linux machine, run saned, and then connect sane on windows to that.
+
+Why would you do this? HP Multifunction printers are notorious for not supporting the latest version of windows. HP will make a \"universal print driver\" and ignore the scanner. So anyone with an older device (something made for XP or Win9x) can't scan from windows normally. saned keeps these devices alive.
+"""]]
