@@ -1,0 +1,108 @@
+[[!meta title="Toggling Between Pulseaudio Outputs when Docking a Laptop"]]
+[[!meta date="2017-07-11T22:00:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In addition to
+[selecting the right monitor after docking my ThinkPad](https://feeding.cloud.geek.nz/posts/hooking-into-docking-undocking-events-to-run-scripts/),
+I wanted to set the correct sound output since I have headphones connected
+to my Ultra Dock. This can be done fairly easily using
+[Pulseaudio](https://www.freedesktop.org/wiki/Software/PulseAudio/).
+
+# Switching to a different pulseaudio output
+
+To find the device name and the output name I need to provide to `pacmd`, I
+ran `pacmd list-sinks`:
+
+    2 sink(s) available.
+    ...
+      * index: 1
+    	name: <alsa_output.pci-0000_00_1b.0.analog-stereo>
+    	driver: <module-alsa-card.c>
+    ...
+    	ports:
+    		analog-output: Analog Output (priority 9900, latency offset 0 usec, available: unknown)
+    			properties:
+    				
+    		analog-output-speaker: Speakers (priority 10000, latency offset 0 usec, available: unknown)
+    			properties:
+    				device.icon_name = "audio-speakers"
+
+From there, I extracted the soundcard name
+(`alsa_output.pci-0000_00_1b.0.analog-stereo`) and the names of the two
+output ports (`analog-output` and `analog-output-speaker`).
+
+To switch between the headphones and the speakers, I can therefore run the
+following commands:
+
+    pacmd set-sink-port alsa_output.pci-0000_00_1b.0.analog-stereo analog-output
+    pacmd set-sink-port alsa_output.pci-0000_00_1b.0.analog-stereo analog-output-speaker
+
+# Listening for headphone events
+
+Then I looked for the ACPI event triggered when my headphones are detected
+by the laptop after docking.
+
+After looking at the output of `acpi_listen`, I found `jack/headphone HEADPHONE plug`.
+
+Combining this with the above pulseaudio names, I put the following in
+`/etc/acpi/events/thinkpad-dock-headphones`:
+
+    event=jack/headphone HEADPHONE plug
+    action=su francois -c "pacmd set-sink-port alsa_output.pci-0000_00_1b.0.analog-stereo analog-output"
+
+to automatically switch to the headphones when I dock my laptop.
+
+# Finding out whether or not the laptop is docked
+
+While it is possible to
+[hook into the docking and undocking ACPI events and run scripts](https://feeding.cloud.geek.nz/posts/hooking-into-docking-undocking-events-to-run-scripts/),
+there doesn't seem to be an easy way from a shell script to tell whether or
+not the laptop is docked.
+
+In the end, I settled on detecting the presence of USB devices.
+
+I ran `lsusb` twice (once docked and once undocked) and then compared the
+output:
+
+    lsusb  > docked 
+    lsusb  > undocked 
+    colordiff -u docked undocked 
+
+This gave me a number of differences since I have a bunch of peripherals
+attached to the dock:
+
+    --- docked	2017-07-07 19:10:51.875405241 -0700
+    +++ undocked	2017-07-07 19:11:00.511336071 -0700
+    @@ -1,15 +1,6 @@
+     Bus 001 Device 002: ID 8087:8000 Intel Corp. 
+     Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+    -Bus 003 Device 081: ID 0424:5534 Standard Microsystems Corp. Hub
+    -Bus 003 Device 080: ID 17ef:1010 Lenovo 
+     Bus 003 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+    -Bus 002 Device 041: ID xxxx:xxxx ...
+    -Bus 002 Device 040: ID xxxx:xxxx ...
+    -Bus 002 Device 039: ID xxxx:xxxx ...
+    -Bus 002 Device 038: ID 17ef:100f Lenovo 
+    -Bus 002 Device 037: ID xxxx:xxxx ...
+    -Bus 002 Device 042: ID 0424:2134 Standard Microsystems Corp. Hub
+    -Bus 002 Device 036: ID 17ef:1010 Lenovo 
+     Bus 002 Device 002: ID xxxx:xxxx ...
+     Bus 002 Device 004: ID xxxx:xxxx ...
+     Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+I picked `17ef:1010` as it appeared to be some internal bus on the Ultra
+Dock (none of my USB devices were connected to Bus 003) and then ended up
+with the following
+[port toggling script](https://github.com/fmarier/user-scripts/blob/master/toggle-pulseaudio-port):
+
+    #!/bin/bash
+    
+    if /usr/bin/lsusb | grep 17ef:1010 > /dev/null ; then
+        # docked
+        pacmd set-sink-port alsa_output.pci-0000_00_1b.0.analog-stereo analog-output
+    else
+        # undocked
+        pacmd set-sink-port alsa_output.pci-0000_00_1b.0.analog-stereo analog-output-speaker
+    fi
+
+[[!tag debian]] [[!tag nzoss]] [[!tag thinkpad]]
