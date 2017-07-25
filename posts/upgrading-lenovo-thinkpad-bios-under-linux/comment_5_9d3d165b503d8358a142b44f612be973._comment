@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ ip="88.214.186.65"
+ subject="enable UEFI"
+ date="2017-07-25T16:28:17Z"
+ content="""
+Also, you need to enable UEFI boot, so the usb or cd can boot... and plug in the AC power
+"""]]
