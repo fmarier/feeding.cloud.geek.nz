@@ -117,16 +117,17 @@ example:
 
 - anything that uses the default [Django authentication](https://code.djangoproject.com/ticket/16870)
 - [Launchpad logins](https://bugs.launchpad.net/launchpad/+bug/560246)
+- Atlassian's [JIRA and Confluence](https://github.com/pyllyukko/user.js/issues/329)
 - [AMD driver downloads](https://bugzilla.mozilla.org/show_bug.cgi?id=970092#c7)
 - some [CDN-hosted images](https://www.capbridge.com/visit/shuttle-service/)
 - [Google Hangouts](https://github.com/pyllyukko/user.js/issues/328)
 
-The first two have been worked-around successfully by setting
+The first three have been worked-around successfully by setting
 `network.http.referer.spoofSource` to `true`, an advanced setting
 which always sends the destination URL as the referrer, thereby not leaking
 anything about the original page.
 
-Unfortunately, the last three are examples of the kind of breakage that can
+Unfortunately, the others are examples of the kind of breakage that can
 only be fixed through a whitelist (an approach supported by the [smart
 referer add-on](https://addons.mozilla.org/firefox/addon/smart-referer/)) or
 by temporarily using a different [browser
