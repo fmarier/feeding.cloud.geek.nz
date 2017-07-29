@@ -97,7 +97,7 @@ work](https://github.com/paramiko/paramiko/issues/509), I also add the following
 
 Since [fail2ban](http://www.fail2ban.org/) is used to rate-limit attempts to
 brute-force ssh connections, you may want to whitelist your own IP addresses
-by adding them to `/etc/fail2ban/jail.conf`:
+by adding them to `/etc/fail2ban/jail.d/local.conf`:
 
     [DEFAULT]
     ignoreip = 127.0.0.1/8 1.2.3.4

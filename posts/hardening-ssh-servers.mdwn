@@ -58,7 +58,7 @@ package. It keeps an eye on the ssh log file (`/var/log/auth.log`) and
 temporarily blocks IP addresses after a number of failed login attempts.
 
 To prevent your own IP addresses from being blocked, add them to
-`/etc/fail2ban/jail.conf`:
+`/etc/fail2ban/jail.d/local.conf`:
 
     [DEFAULT]
     ignoreip = 127.0.0.1/8 1.2.3.4
