@@ -164,6 +164,7 @@ then click the "Avanced" button and set the following:
    * Cipher: `AES-256-CBC`
    * HMAC Authentication: `SHA-384`
 * TLS Authentication
+   * Server Certificate Check: Verify name exactly
    * Subject Match: `server`
    * Verify peer (server) certificate usage signature: `YES`
      * Remote peer certificate TLS type: `Server`
