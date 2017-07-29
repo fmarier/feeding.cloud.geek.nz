@@ -110,7 +110,7 @@ by adding `starttls_required` to this block:
             - "cipher_server_preference"
           ciphers: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256"
           tls_compression: false
-          dhfile: "/etc/ssl/ejabberd/dh2048.pem"
+          dhfile: "/etc/ejabberd/dh2048.pem"
           max_stanza_size: 65536
           shaper: c2s_shaper
           access: c2s
@@ -121,7 +121,7 @@ by adding `starttls_required` to this block:
         - "no_tlsv1"
         - "no_tlsv1_1"
         - "cipher_server_preference"
-      s2s_dhfile: /etc/ssl/ejabberd/dh2048.pem
+      s2s_dhfile: "/etc/ejabberd/dh2048.pem"
       s2s_ciphers: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256"
 
 5. Create the required dh2048.pem file:
