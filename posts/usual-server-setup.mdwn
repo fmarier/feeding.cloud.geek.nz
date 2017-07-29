@@ -227,7 +227,7 @@ The above packages are all about catching mistakes (such as
 
 # Package updates
 
-    apt install apticron unattended-upgrades deborphan debfoster apt-listchanges reboot-notifier popularity-contest needrestart
+    apt install apticron unattended-upgrades deborphan debfoster apt-listchanges reboot-notifier popularity-contest needrestart debian-security-support
 
 These tools help me keep packages up to date and remove unnecessary or
 obsolete packages from servers. On Rackspace servers, a small [configuration
