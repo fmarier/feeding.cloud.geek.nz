@@ -8,13 +8,19 @@ hook into the ACPI events and run arbitrary scripts.
 
 This was tested on a T420 with a [ThinkPad Dock Series
 3](http://www.thinkwiki.org/wiki/ThinkPad_Port_Replicator_Series_3) as well
-as a T440p with a [ThinkPad Ultra
+as a T440p and a T460p with a [ThinkPad Ultra
 Dock](http://www.thinkwiki.org/wiki/ThinkPad_Ultra_Dock).
 
-The only requirement is the ThinkPad ACPI kernel module which you can find in
-the [tp-smapi-dkms
-package](https://packages.debian.org/stable/tp-smapi-dkms) in Debian. That's
-what generates the `ibm/hotkey` events we will listen for.
+The only requirement is the ThinkPad kernel module. On most ThinkPads
+it's the [`tp_smapi` module](http://www.thinkwiki.org/wiki/Tp_smapi)
+(which you can find in the [tp-smapi-dkms
+package](https://packages.debian.org/stable/tp-smapi-dkms) in Debian)
+but on newer hardware, [that interface is
+gone](https://github.com/evgeni/tp_smapi/issues/24) and you can simply
+use the [`thinkpad_acpi`
+module](http://www.thinkwiki.org/wiki/Thinkpad-acpi) built into the
+kernel. That's what generates the `ibm/hotkey` events we will listen
+for.
 
 ## Hooking into the events
 
