@@ -245,7 +245,7 @@ you need to restart a daemon using an obsolete library.
 
 # Handy utilities
 
-    apt install renameutils atool iotop sysstat lsof mtr-tiny mc netcat-openbsd command-not-found
+    apt install renameutils atool iotop sysstat lsof mtr-tiny mc netcat-openbsd command-not-found nocache
 
 Most of these tools are configuration-free, except for sysstat, which requires
 enabling data collection in `/etc/default/sysstat` to be useful.
