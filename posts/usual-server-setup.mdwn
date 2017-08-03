@@ -250,6 +250,11 @@ you need to restart a daemon using an obsolete library.
 Most of these tools are configuration-free, except for sysstat, which requires
 enabling data collection in `/etc/default/sysstat` to be useful.
 
+Also, [`command-not-found` won't work until you update the apt cache](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=857090):
+
+    apt update
+    update-command-not-found
+
 # Apache configuration
 
     apt install apache2
