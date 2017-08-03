@@ -29,6 +29,9 @@ detects your scanner:
 
     scanimage -L
 
+Note that you'll need to be in the `scanner` group for this to work
+(`adduser username scanner`).
+
 This should give you output similar to this:
 
     device `genesys:libusb:001:006' is a Canon LiDE 220 flatbed scanner
@@ -41,7 +44,7 @@ USB stack:
 
 and that its USB ID shows up in the SANE backend it needs:
 
-    $ grep 190f /etc/sane.d/genesys.conf 
+    $ grep 190f /etc/sane.d/genesys.conf
     usb 0x04a9 0x190f
 
 To do a test scan, simply run:
