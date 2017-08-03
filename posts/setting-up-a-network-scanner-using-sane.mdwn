@@ -112,4 +112,32 @@ and successfully perform a test scan using this command:
 
     scanimage > test.ppm
 
+# Troubleshooting broken
+
+If you see the following error in your logs (`systemctl status saned.socket`):
+
+    saned.socket: Too many incoming connections (1), dropping connection.
+
+then you can work around [this bug in the systemd
+unit](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=850649) by
+[overriding the systemd unit that comes with the
+package](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sect-Managing_Services_with_systemd-Unit_Files.html#sect-Managing_Services_with_systemd-Unit_File_Modify):
+
+    cp /lib/systemd/system/saned.socket /etc/systemd/system/saned.socket
+
+then replace:
+
+    [Socket]
+    MaxConnections=1
+
+with:
+
+    [Socket]
+    MaxConnections=64
+
+before finally restarting the service:
+
+    systemctl daemon-reload
+    systemctl restart saned.socket
+
 [[!tag debian]] [[!tag sane]]
