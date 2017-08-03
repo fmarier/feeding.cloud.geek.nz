@@ -112,7 +112,7 @@ and successfully perform a test scan using this command:
 
     scanimage > test.ppm
 
-# Troubleshooting broken
+# Troubleshooting connection problems
 
 If you see the following error in your logs (`systemctl status saned.socket`):
 
