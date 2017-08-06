@@ -140,4 +140,4 @@ before finally restarting the service:
     systemctl daemon-reload
     systemctl restart saned.socket
 
-[[!tag debian]] [[!tag sane]]
+[[!tag debian]] [[!tag sane]] [[!tag systemd]]

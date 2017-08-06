@@ -122,4 +122,4 @@ Finally, because X sometimes fail to detect my external monitor when docking/und
 
     bindsym XF86Display exec /home/francois/bin/external-monitor
 
-[[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]]
+[[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]] [[!tag systemd]]

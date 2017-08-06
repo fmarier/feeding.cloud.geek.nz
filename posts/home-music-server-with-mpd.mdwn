@@ -132,4 +132,4 @@ since [MPoD](http://www.katoemba.net/makesnosenseatall/mpod/) and
 [MPaD](http://www.katoemba.net/makesnosenseatall/mpad/) don't appear to be
 available on the AppStore anymore.
 
-[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag mpd]] [[!tag ios]] [[!tag android]] [[!tag tor]]
+[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag mpd]] [[!tag ios]] [[!tag android]] [[!tag tor]] [[!tag systemd]]
