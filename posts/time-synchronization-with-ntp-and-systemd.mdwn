@@ -1,0 +1,93 @@
+[[!meta title="Time Synchronization with NTP and systemd"]]
+[[!meta date="2017-08-06T13:10:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently ran into problems with generating
+[TOTP](https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm)
+2-factor codes on my laptop. The fact that some of the codes would work and
+some wouldn't suggested a problem with time keeping on my laptop.
+
+This was surprising since I've been running [NTP](http://www.ntp.org/) for a
+many years and have therefore never had to think about time synchronization.
+After looking into this though, I realized that the move to
+[systemd](https://freedesktop.org/wiki/Software/systemd/) had changed how
+this is meant to be done.
+
+# The new systemd time synchronization daemon
+
+On a machine running systemd, there is no need to run the full-fledged
+`ntpd` daemon anymore. The built-in `systemd-timesyncd` can do the basic
+time synchronization job just fine.
+
+However, I noticed that the daemon wasn't actually running:
+
+    $ systemctl status systemd-timesyncd.service 
+    ● systemd-timesyncd.service - Network Time Synchronization
+       Loaded: loaded (/lib/systemd/system/systemd-timesyncd.service; enabled; vendor preset: enabled)
+      Drop-In: /lib/systemd/system/systemd-timesyncd.service.d
+               └─disable-with-time-daemon.conf
+       Active: inactive (dead)
+    Condition: start condition failed at Thu 2017-08-03 21:48:13 PDT; 1 day 20h ago
+         Docs: man:systemd-timesyncd.service(8)
+
+referring instead to a mysterious "failed condition". Attempting to restart
+the service did provide more details though:
+
+    $ systemctl restart systemd-timesyncd.service 
+    $ systemctl status systemd-timesyncd.service 
+    ● systemd-timesyncd.service - Network Time Synchronization
+       Loaded: loaded (/lib/systemd/system/systemd-timesyncd.service; enabled; vendor preset: enabled)
+      Drop-In: /lib/systemd/system/systemd-timesyncd.service.d
+               └─disable-with-time-daemon.conf
+       Active: inactive (dead)
+    Condition: start condition failed at Sat 2017-08-05 18:19:12 PDT; 1s ago
+               └─ ConditionFileIsExecutable=!/usr/sbin/ntpd was not met
+         Docs: man:systemd-timesyncd.service(8)
+
+The above check for the presence of `/usr/sbin/ntpd` points to a conflict
+between `ntpd` and `systemd-timesyncd`. The solution of course is to remove
+the former before enabling the latter:
+
+    apt purge ntp
+    systemctl enable systemd-timesyncd.service
+    systemctl restart systemd-timesyncd.service
+
+# Enabling time synchronization with NTP
+
+Once the `ntp` package has been removed, it is time to enable NTP support in
+`timesyncd`.
+
+Start by choosing the [NTP server pool](http://www.pool.ntp.org/en/) nearest
+you and put it in `/etc/systemd/timesyncd.conf`. For example, mine reads
+like this:
+
+    [Time]
+    NTP=ca.pool.ntp.org
+
+before restarting the daemon:
+
+    systemctl restart systemd-timesyncd.service 
+
+That may not be enough on your machine though. To check whether or not the
+time has been synchronized with NTP servers, run the following:
+
+    $ timedatectl status
+    ...
+     Network time on: yes
+    NTP synchronized: no
+     RTC in local TZ: no
+
+If NTP is not enabled, then you can enable it by running this command:
+
+    timedatectl set-ntp true
+
+Once that's done, everything should be in place and time should be kept
+correctly:
+
+    $ timedatectl status
+    ...
+     Network time on: yes
+    NTP synchronized: yes
+     RTC in local TZ: no
+
+[[!tag debian]] [[!tag nzoss]] [[!tag systemd]] [[!tag ntp]]
