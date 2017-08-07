@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="217.193.164.68"
+ claimedauthor="EVD"
+ subject="comment 1"
+ date="2017-08-07T06:13:28Z"
+ content="""
+Not sure why, but on my freshly installed Stretch I have ntpd installed in /usr/sbin/ntpd and systemd-timesyncd seems to be running fine. Actually it looks like both are running in top?
+"""]]
