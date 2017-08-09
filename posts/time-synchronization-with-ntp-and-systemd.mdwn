@@ -9,9 +9,9 @@ some wouldn't suggested a problem with time keeping on my laptop.
 
 This was surprising since I've been running [NTP](http://www.ntp.org/) for a
 many years and have therefore never had to think about time synchronization.
-After looking into this though, I realized that the move to
-[systemd](https://freedesktop.org/wiki/Software/systemd/) had changed how
-this is meant to be done.
+After realizing that `ntpd` had stopped working on my machine for some reason,
+I found that [systemd](https://freedesktop.org/wiki/Software/systemd/)
+provides an easier way to keep time synchronized.
 
 # The new systemd time synchronization daemon
 
@@ -49,8 +49,6 @@ between `ntpd` and `systemd-timesyncd`. The solution of course is to remove
 the former before enabling the latter:
 
     apt purge ntp
-    systemctl enable systemd-timesyncd.service
-    systemctl restart systemd-timesyncd.service
 
 # Enabling time synchronization with NTP
 
