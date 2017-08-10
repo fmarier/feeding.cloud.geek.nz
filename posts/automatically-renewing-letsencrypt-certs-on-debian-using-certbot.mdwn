@@ -9,7 +9,12 @@ tool. Since I use the "temporary webserver" method of proving domain
 ownership via the [ACME protocol](https://ietf-wg-acme.github.io/acme/), I
 cannot use the cert renewal cronjob built into Certbot.
 
-Instead, this is the script I put in `/etc/cron.daily/certbot-renew`:
+To disable the built-in cronjob, I ran the following:
+
+    systemctl disable certbot.service
+    systemctl disable certbot.timer
+
+Then I put my own renewal script in `/etc/cron.daily/certbot-renew`:
 
     #!/bin/bash
 
