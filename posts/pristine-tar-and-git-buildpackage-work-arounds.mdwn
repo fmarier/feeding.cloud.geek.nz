@@ -1,0 +1,92 @@
+[[!meta title="pristine-tar and git-buildpackage Work-arounds"]]
+[[!meta date="2017-08-09T22:25:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently ran into problems trying to package the
+[latest version](https://launchpad.net/planetfilter/trunk/0.7.4) of my
+[planetfilter](https://feeding.cloud.geek.nz/posts/keeping-up-with-noisy-blog-aggregators-using-planetfilter/)
+tool.
+
+This is how I was able to temporarily work-around bugs in my tools and still
+produce a [package](https://tracker.debian.org/news/860953) that can be
+built reproducibly from source and that contains a verifiable upstream
+signature.
+
+# pristine-tar being is unable to reproduce a tarball
+
+After importing the
+[latest upstream tarball](https://pypi.python.org/pypi/planetfilter/0.7.4)
+using `gbp import-orig`, I tried to build the package but ran into this
+[`pristine-tar`](https://packages.debian.org/sid/pristine-tar) error:
+
+    $ gbp buildpackage
+    gbp:error: Pristine-tar couldn't checkout "planetfilter_0.7.4.orig.tar.gz": xdelta3: target window checksum mismatch: XD3_INVALID_INPUT
+    xdelta3: normally this indicates that the source file is incorrect
+    xdelta3: please verify the source file with sha1sum or equivalent
+    xdelta3 decode failed! at /usr/share/perl5/Pristine/Tar/DeltaTools.pm line 56.
+    pristine-tar: command failed: pristine-gz --no-verbose --no-debug --no-keep gengz /tmp/user/1000/pristine-tar.mgnaMjnwlk/wrapper /tmp/user/1000/pristine-tar.EV5aXIPWfn/planetfilter_0.7.4.orig.tar.gz.tmp
+    pristine-tar: failed to generate tarball
+
+So I decided to throw away what I had, re-import the tarball and try again.
+This time, I got a different `pristine-tar` error:
+
+    $ gbp buildpackage
+    gbp:error: Pristine-tar couldn't checkout "planetfilter_0.7.4.orig.tar.gz": xdelta3: target window checksum mismatch: XD3_INVALID_INPUT
+    xdelta3: normally this indicates that the source file is incorrect
+    xdelta3: please verify the source file with sha1sum or equivalent
+    xdelta3 decode failed! at /usr/share/perl5/Pristine/Tar/DeltaTools.pm line 56.
+    pristine-tar: command failed: pristine-gz --no-verbose --no-debug --no-keep gengz /tmp/user/1000/pristine-tar.mgnaMjnwlk/wrapper /tmp/user/1000/pristine-tar.EV5aXIPWfn/planetfilter_0.7.4.orig.tar.gz.tmp
+    pristine-tar: failed to generate tarball
+
+After looking through the
+[list of open bugs](https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=pristine-tar;dist=unstable#_0_4_4),
+I thought it was probably not worth filing a bug given how many similar ones
+are waiting to be addressed.
+
+So as a work-around, I simply symlinked the upstream tarball I already had
+and then built the package using the tarball directly instead of the
+`upstream` git branch:
+
+    ln -s ~/deve/remote/planetfilter/dist/planetfilter-0.7.4.tar.gz ../planetfilter_0.7.4.orig.tar.gz
+    gbp buildpackage --git-tarball-dir=..
+
+Given that only the `upstream` and `master` branches are signed, the
+[.delta file](https://anonscm.debian.org/cgit/collab-maint/planetfilter.git/tree/planetfilter_0.7.4.orig.tar.gz.delta?h=pristine-tar)
+on the
+[`pristine-tar` branch](https://anonscm.debian.org/cgit/collab-maint/planetfilter.git/tree/?h=pristine-tar)
+could be fixed at any time in the future by committing a new `.delta` file
+once `pristine-tar` gets fixed. This therefore seems like a reasonable
+work-around.
+
+# git-buildpackage doesn't import the upstream tarball signature
+
+The second problem I ran into was a missing upstream signature after
+building the package with
+[`git-buildpackage`](https://packages.debian.org/sid/git-buildpackage):
+
+    $ lintian -i planetfilter_0.7.4-1_amd64.changes
+    E: planetfilter changes: orig-tarball-missing-upstream-signature planetfilter_0.7.4.orig.tar.gz
+    N: 
+    N:    The packaging includes an upstream signing key but the corresponding
+    N:    .asc signature for one or more source tarballs are not included in your
+    N:    .changes file.
+    N:    
+    N:    Severity: important, Certainty: certain
+    N:    
+    N:    Check: changes-file, Type: changes
+    N: 
+
+This problem (and the lintian error I suspect) is fairly new and [hasn't been
+solved yet](https://lists.debian.org/debian-devel/2017/07/msg00451.html).
+
+So until `gbp import-orig` gets proper support for upstream signatures, my
+work-around was to copy the upstream signature in the `export-dir` output
+directory (which I set in `~/.gbp.conf`) so that it can be picked up by the
+final stages of `gbp buildpackage`:
+
+    ln -s ~/deve/remote/planetfilter/dist/planetfilter-0.7.4.tar.gz.asc ../build-area/planetfilter_0.7.4.orig.tar.gz.asc
+
+If there's a better way to do this, please feel free to leave a comment
+(authentication not required)!
+
+[[!tag debian]] [[!tag nzoss]] [[!tag packaging]]
