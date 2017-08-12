@@ -38,12 +38,10 @@ This time, I got a different `pristine-tar` error:
     pristine-tar: command failed: pristine-gz --no-verbose --no-debug --no-keep gengz /tmp/user/1000/pristine-tar.mgnaMjnwlk/wrapper /tmp/user/1000/pristine-tar.EV5aXIPWfn/planetfilter_0.7.4.orig.tar.gz.tmp
     pristine-tar: failed to generate tarball
 
-After looking through the
-[list of open bugs](https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=pristine-tar;dist=unstable#_0_4_4),
-I thought it was probably not worth filing a bug given how many similar ones
-are waiting to be addressed.
+I filed [bug 871938](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=871938)
+for this.
 
-So as a work-around, I simply symlinked the upstream tarball I already had
+As a work-around, I simply symlinked the upstream tarball I already had
 and then built the package using the tarball directly instead of the
 `upstream` git branch:
 
