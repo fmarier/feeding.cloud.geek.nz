@@ -290,6 +290,12 @@ Configuring mail properly is tricky but the following has worked for me.
 In `/etc/hostname`, put the bare hostname (no domain), but in
 `/etc/mailname` put the fully qualified hostname.
 
+In `/etc/hosts`, make sure that the fully qualified hostname is the
+first alias for `127.0.0.1`, followed by the bare hostname and then
+anything else. For example:
+
+    127.0.0.1 hostname.example.com hostname localhost
+
 Change the following in `/etc/postfix/main.cf`:
 
     inet_interfaces = loopback-only
