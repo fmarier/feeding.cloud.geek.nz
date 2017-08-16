@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="162.243.251.96"
+ subject="OpenVPN settings"
+ date="2017-08-16T06:28:48Z"
+ content="""
+Dear François,
+
+Thank you so much for this! What changes need to be made to /etc/openvpn/server.conf in order to use Unbound from within the VPN tunnel when connected to the server from an external client?
+
+Thanks for your help, François!
+"""]]
