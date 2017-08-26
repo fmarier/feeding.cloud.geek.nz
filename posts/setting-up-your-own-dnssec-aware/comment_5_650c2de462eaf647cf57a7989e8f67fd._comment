@@ -1,0 +1,42 @@
+[[!comment format=mdwn
+ ip="162.243.251.96"
+ subject="Re: OpenVPN settings"
+ date="2017-08-26T22:19:01Z"
+ content="""
+We figured it out:
+
+In order for OpenVPN to use the locally installed Unbound DNS resolver, do this:
+
+First check for the IP we should use with: sudo ifconfig
+
+The IP we need is the one listed at 
+
+tun0: inet 10.8.0.1 
+
+UNBOUND
+
+Add this to /etc/unbound/unbound.conf
+
+server:
+    interface: 127.0.0.1
+    interface: 10.8.0.1
+    access-control: 127.0.0.1 allow
+    access-control: 10.8.0.1/24 allow
+
+Then restart Unbound with: sudo service unbound restart
+
+Test with: dig @10.8.0.1 google.com
+(SERVER should read: SERVER: 10.8.0.1#53(10.8.0.1))
+
+OPENVPN
+
+Add this to (or modify) /etc/openvpn/server.conf
+
+push \"redirect-gateway def1 bypass-dhcp\"
+push \"dhcp-option DNS 10.8.0.1\"
+push \"register-dns\"
+
+Then restart OpenVPN with: sudo service openvpn restart
+
+OpenVPN clients should now be using Unbound. Test at http://dnsleak.com/
+"""]]
