@@ -9,7 +9,7 @@ Now that the root DNS servers are [signed,](http://www.root-dnssec.org/2010/07/1
 Being already packaged in [Debian](http://packages.debian.org/source/unstable/unbound) and [Ubuntu](https://launchpad.net/ubuntu/+source/unbound), unbound is only an `apt-get` away:
 
 
-    apt-get install unbound
+    apt install unbound
 
 ## Optional settings
 
@@ -76,7 +76,6 @@ If you're not using DHCP, then you simply need to put this in your `/etc/resolv.
 
 
     nameserver 127.0.0.1
-  
 
 ## Testing DNSSEC resolution
 
@@ -94,4 +93,31 @@ $ dig +dnssec A www.dnssec.cz | grep ad
   
 Are there any other ways of making sure that DNSSEC is fully functional?
 
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag dns]] [[!tag dnssec]]
+## Integration with OpenVPN
+
+If you are [running your own OpenVPN server](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/),
+you can tell clients to connect to the local unbound DNS client by putting the following in `/etc/unbound/unbound.conf.d/openvpn.conf`:
+
+    server:
+        interface: 127.0.0.1
+        interface: 10.8.0.1
+        access-control: 127.0.0.1 allow
+        access-control: 10.8.0.1/24 allow
+
+the following in `/etc/openvpn/server.conf`:
+
+    push "dhcp-option DNS 10.8.0.1"
+    push "register-dns"
+
+and opening the following port on your firewall (typically `/etc/network/iptables.up.rules` on Debian):
+
+    -A INPUT -p udp --dport 53 -s 10.8.0.0/24 -j ACCEPT
+
+Then restart both services and everything should work:
+
+    systemctl restart unbound.service
+    systemctl restart openvpn.service
+
+You can test it on <http://dnsleak.com>.
+
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag dns]] [[!tag dnssec]] [[!tag openvpn]]
