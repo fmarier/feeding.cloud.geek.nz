@@ -38,8 +38,9 @@ and turned on prefetching to hopefully keep in cache the sites I visit regularly
 
 Finally, I also enabled the control interface:
 
-    control-enable: yes
-    control-interface: 127.0.0.1
+    remote-control:
+        control-enable: yes
+        control-interface: 127.0.0.1
 
 and increased the amount of debugging information:
 
