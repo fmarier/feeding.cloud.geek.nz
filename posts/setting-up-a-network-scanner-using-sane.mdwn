@@ -61,10 +61,11 @@ by adding the client IP addresses to `/etc/sane.d/saned.conf`:
     ## Access list
     192.168.1.3
 
-and then opening the appropriate port on your firewall
+and then opening the appropriate ports on your firewall
 (typically `/etc/network/iptables` in Debian):
 
     -A INPUT -s 192.168.1.3 -p tcp --dport 6566 -j ACCEPT
+    -A INPUT -s 192.168.1.3 -p udp -j ACCEPT
 
 Then you need to ensure that the SANE server is running by setting the
 following in `/etc/default/saned`:
@@ -98,7 +99,7 @@ where `myserver` is the hostname or IP address of the server running saned.
 If you have a firewall runnning on the client, make sure you allow
 SANE traffic from the server:
 
-    -A INPUT -s 192.168.1.2 -p tcp --sport 6566  -j ACCEPT
+    -A INPUT -s 192.168.1.2 -p tcp --sport 6566 -j ACCEPT
 
 # Test the scanner remotely
 
