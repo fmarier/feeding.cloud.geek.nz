@@ -29,8 +29,8 @@ detects your scanner:
 
     scanimage -L
 
-Note that you'll need to be in the `scanner` group for this to work
-(`adduser username scanner`).
+Note that you may need to be **root** for this to work. We'll fix that in
+the next section.
 
 This should give you output similar to this:
 
@@ -52,6 +52,33 @@ To do a test scan, simply run:
     scanimage > test.ppm
 
 and then take a look at the (greyscale) image it produced (`test.ppm`).
+
+# Letting normal users access the scanner
+
+In order for users to be able to see the scanner, they will need to be in
+the `scanner` group:
+
+    adduser francois scanner
+    adduser saned scanner
+
+with the second one being for remote users.
+
+Next, you'll need to put this in `/etc/udev/rules.d/55-libsane.rules`:
+
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="04a9", MODE="0660", GROUP="scanner", ENV{libsane_matched}="yes"
+
+and then restart udev:
+
+    systemctl restart udev.service
+
+That `04a9` ID is the first part of what you saw in `lsusb`, but you can
+also see it in the output of `sane-find-scanner`.
+
+Finally, test the scanner as your normal user:
+
+    scanimage > test.ppm
+
+to confirm that everything is working.
 
 # Configure the server
 
