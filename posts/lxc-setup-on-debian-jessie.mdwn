@@ -21,8 +21,14 @@ change needed here):
     lxc.network.hwaddr = 00:FF:AA:xx:xx:xx
     lxc.network.ipv4 = 0.0.0.0/24
 
-but I had to make sure that the "guests" could connect to the outside world
-through the "host":
+That configuration requires that the `veth` kernel module be loaded. If
+you have any kinds of module-loading restrictions enabled, you probably
+need to add the following to `/etc/modules` and **reboot**:
+
+    veth
+
+Next, I had to make sure that the "guests" could connect to the outside
+world through the "host":
 
 1. Enable IPv4 forwarding by putting this in `/etc/sysctl.conf`:
 
