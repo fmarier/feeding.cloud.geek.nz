@@ -1,0 +1,82 @@
+[[!meta title="TLS Authentication on Freenode and OFTC"]]
+[[!meta date="2017-09-08T21:50:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to easily authenticate with IRC networks such as
+[OFTC](https://www.oftc.net/NickServ/CertFP/) and
+[Freenode](https://freenode.net/kb/answer/certfp), it is possible to use
+*client TLS certificates* (also known as *SSL certificates*). In fact, it
+turns out that it's very easy to setup both on [irssi](https://irssi.org/)
+and on [znc](https://wiki.znc.in/).
+
+# Generate your TLS certificate
+
+On a machine with [good entropy](http://altusmetrum.org/ChaosKey/), run the
+following command to create a keypair that will last for 10 years:
+
+    openssl req -nodes -newkey rsa:2048 -keyout user.pem -x509 -days 3650 -out user.pem -subj "/CN=<your nick>"
+
+Then extract your key fingerprint using this command:
+
+    openssl x509 -sha1 -noout -fingerprint -in user.pem | sed -e 's/^.*=//;s/://g'
+
+# Share your fingerprints with NickServ
+
+On each IRC network, do this:
+
+    /msg NickServ IDENTIFY Password1!
+    /msg NickServ CERT ADD <your fingerprint>
+
+in order to add your fingerprint to the access control list.
+
+# Configure ZNC
+
+To configure znc, start by putting the key in the right place:
+
+    cp user.pem ~/.znc/users/<your nick>/networks/oftc/moddata/cert/
+
+and then enable the built-in [cert plugin](https://wiki.znc.in/Cert) for
+each network in `~/.znc/configs/znc.conf`:
+
+    <Network oftc>
+        ...
+                LoadModule = cert
+        ...
+	</Network>
+        <Network freenode>
+        ...
+                LoadModule = cert
+        ...
+	</Network>
+
+# Configure irssi
+
+For irssi, do the same thing but put the cert in `~/.irssi/user.pem` and
+then change the OFTC entry in `~/.irssi/config` to look like this:
+
+    {
+      address = "irc.oftc.net";
+      chatnet = "OFTC";
+      port = "6697";
+      use_tls = "yes";
+      tls_cert = "~/.irssi/user.pem";
+      tls_verify = "yes";
+      autoconnect = "yes";
+    }
+
+and the Freenode one to look like this:
+
+    {
+      address = "chat.freenode.net";
+      chatnet = "Freenode";
+      port = "7000";
+      use_tls = "yes";
+      tls_cert = "~/.irssi/user.pem";
+      tls_verify = "yes";
+      autoconnect = "yes";
+    }
+
+That's it. That's all you need to replace password authentication with a
+much stronger alternative.
+
+[[!tag debian]] [[!tag nzoss]] [[!tag irc]] [[!tag irssi]] [[!tag znc]]

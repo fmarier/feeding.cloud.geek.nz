@@ -107,4 +107,5 @@ kernel update, I keep the bouncer running. At the end of the day, I say yes
 to killing the bouncer. That way, I don't have a backlog to go through when
 I wake up the next day.
 
-[[!tag mozilla]] [[!tag debian]] [[!tag irc]] [[!tag irssi]] [[!tag nzoss]] [[!tag letsencrypt]]
+[[!tag mozilla]] [[!tag debian]] [[!tag irc]] [[!tag irssi]] [[!tag nzoss]]
+[[!tag letsencrypt]] [[!tag znc]]
