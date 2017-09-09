@@ -1,0 +1,4 @@
+[[!meta title="pages tagged znc"]]
+
+[[!inline pages="tagged(znc)" actions="no" archive="yes"
+feedshow=10]]
