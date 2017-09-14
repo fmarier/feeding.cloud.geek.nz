@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ ip="38.109.115.130"
+ claimedauthor="Daniel Kahn Gillmor"
+ subject="Followup: "
+ date="2017-09-13T21:57:33Z"
+ content="""
+Thanks to this discussion, i just opened a [bug report on irssi](https://github.com/irssi/irssi/issues/756) to try to resolve the second issue above by sending client certificates in a renegotiated handshake.
+
+I've tested irssi, and it definitely does leak the user's public certificate to a passive network monitor.
+
+I haven't tested ZNC yet -- If someone wanted to open a similar report for ZNC, i'd appreciate it.
+
+If you want to test to see whether it's dumping traffic, you can do this with tshark:
+
+    tshark -O ssl  -Y 'ssl.handshake.certificates_length > 1 && ssl.record.content_type == 22'  -o http.ssl.port:6697 port 6697
+
+I don't have a patch to propose for either irssi or ZNC yet, and don't have much time to work on it myself.  I'd be happy to see that happen, because it would remove one of the major downsides to using certificates for IRC.
+"""]]
