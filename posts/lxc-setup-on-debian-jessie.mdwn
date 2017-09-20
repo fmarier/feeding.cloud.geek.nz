@@ -8,7 +8,7 @@ a few things to get the networking to work on my machine.
 
 Start by installing (as root) the necessary packages:
 
-    apt install lxc libvirt-bin debootstrap
+    apt install lxc libvirt-clients debootstrap
 
 # Network setup
 
