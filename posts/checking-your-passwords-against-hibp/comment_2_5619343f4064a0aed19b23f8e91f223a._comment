@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="2a00:23c5:69ce:df00:b7:aa91:48db:f9da"
+ claimedauthor="Jonathan"
+ url="jmtd.net"
+ subject="magnet URL for data"
+ date="2017-10-17T09:22:11Z"
+ content="""
+If it helps, I can vouch that this torrent magnet URL corresponds to the initial release of the password list. I found it the most convenient way to obtain the data. magnet:?xt=urn:btih:88145066d8d89cf426a22cfbeb1983dacb2a45d7&dn=pwned-passwords-1.0.txt.7z&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969
+"""]]

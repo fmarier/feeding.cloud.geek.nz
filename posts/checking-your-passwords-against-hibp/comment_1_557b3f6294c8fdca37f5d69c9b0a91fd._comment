@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ ip="202.61.72.50"
+ claimedauthor="Russell Stuart"
+ subject="Taking a sledgehammer to an egg?"
+ date="2017-10-19T03:47:28Z"
+ content="""
+That pwned list of a password is a fantastic resource.  Thanks for posting a pointer to it.
+
+But Egad! - using postgres to index and search it??  You must have the patience of a saint.
+
+Given a false positive isn't a death sentence, a bloom filter is a better choice.  Setting the parameters to give a false positive range of 1e-9 (roughly 50/50 chance of getting 1 false positive if I checked a password with it every second for my entire life), the resulting filter occupies 2.6G - about 1/2 the size of the compressed original.  Creating the filter takes about 3 hours on my laptop (please forgive the butt ugly inline python):
+
+    sudo apt-get install python, python-pybloomfilter
+    wget http://.../pwned-*.txt.7z; for f in *.7z; do 7z x $f; done
+    python -c \"import pybloomfilter, sys; b = pybloomfilter.BloomFilter(500000000, 0.000000001, 'pwned.bf'); [b.update(open(f)) for f in sys.argv[1:]]\" pwned-passwords-*.txt
+
+Querying it:
+
+    python -c 'import hashlib,sys,pybloomfilter; b = pybloomfilter.BloomFilter.open(\"pwned.bf\"); sys.stdout.write(\"\".join(\"%s is pwned: %r\n\" % (p, hashlib.sha1(p).hexdigest().upper() + \"\r\n\" in b) for p in sys.argv[1:]))' password1 password2 ...
+
+"""]]
