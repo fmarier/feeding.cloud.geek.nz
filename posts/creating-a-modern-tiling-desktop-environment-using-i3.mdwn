@@ -64,6 +64,23 @@ To make it work, I wrote [a simple shell script](https://github.com/fmarier/user
 
     bindsym $mod+u exec /home/francois/bin/toggle-xkbmap
 
+# Keyboard backlight
+
+To control the keyboard backlight on my ThinkPad, I added the following
+shortcut:
+
+    bindsym Ctrl+Mod1+k exec /home/francois/bin/toggle-kbdlight
+
+That
+[script](https://github.com/fmarier/user-scripts/blob/master/toggle-kbdlight)
+simply cycles through these states: off, half brightness and full
+brightness.
+
+Because normal users can't control this setting though, I had to add the
+following to `/etc/sudoers`:
+
+    francois ALL=(ALL) NOPASSWD: /usr/bin/tee /proc/acpi/ibm/kbdlight
+
 # Suspend script
 
 Since I run lots of things in the background, I have set my laptop to avoid suspending when the lid is closed by putting the following in `/etc/systemd/login.conf`:
@@ -122,4 +139,4 @@ Finally, because X sometimes fail to detect my external monitor when docking/und
 
     bindsym XF86Display exec /home/francois/bin/external-monitor
 
-[[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]] [[!tag systemd]]
+[[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]] [[!tag systemd]] [[!tag thinkpad]]
