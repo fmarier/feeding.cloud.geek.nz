@@ -14,7 +14,7 @@ As soon as I log into my desktop, my [startup script](https://github.com/fmarier
 * [gnome-keyring-daemon](https://packages.debian.org/stable/gnome-keyring): remembers ssh public keys for the duration of my session
 * [gnome-screensaver](https://packages.debian.org/stable/gnome-screensaver): locks the screen when I'm not around
 * [nm-applet](https://packages.debian.org/stable/network-manager-gnome): handles wifi and VPN connections
-* [git-annex](http://git-annex.branchable.com/): keeps my folders synchronized between machines
+* [syncthing](https://www.syncthing.net/): keeps my folders synchronized between machines
 
 Because of [a bug in gnome-settings-daemon](https://ask.fedoraproject.org/en/question/31186/my-mouse-cursor-dissapears-when-using-gnome3/) which makes the mouse cursor disappear as soon as gnome-settings-daemon is started, I had to run the following to disable the offending gnome-settings-daemon plugin:
 
@@ -98,9 +98,9 @@ before clicking on the window.
 
 ## Keeping IM windows on the first workspace
 
-I run [Pidgin](http://pidgin.im) on my first workspace and I have the following rule to keep any new window that pops up (e.g. in response to a new incoming message) on the same workspace:
+I run [Gajim](https://gajim.org/) on my first workspace and I have the following rule to keep any new window that pops up (e.g. in response to a new incoming message) on the same workspace:
 
-    assign [class="Pidgin"] 1
+    assign [class="Gajim"] 1
 
 ## Automatically moving workspaces when docking
 
