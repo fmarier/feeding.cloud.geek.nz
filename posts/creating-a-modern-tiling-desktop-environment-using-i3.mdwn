@@ -20,6 +20,11 @@ Because of [a bug in gnome-settings-daemon](https://ask.fedoraproject.org/en/que
 
     dconf write /org/gnome/settings-daemon/plugins/cursor/active false
 
+While my startup script doesn't run this tool directly, installing the
+[dunst package](https://packages.debian.org/stable/dunst) is required to receive desktop notifications:
+
+    apt install dunst
+
 # Screensaver
 
 In addition, gnome-screensaver didn't automatically lock my screen, so I installed [xautolock](https://packages.debian.org/stable/xautolock) and added it to my startup script:
