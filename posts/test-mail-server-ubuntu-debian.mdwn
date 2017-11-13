@@ -1,0 +1,37 @@
+[[!meta title="Test mail server on Ubuntu and Debian"]]
+[[!meta date="2017-11-13T17:30:00:00.000+08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I wanted to setup a mailserver on a staging server that would send all
+outgoing emails to a local mailbox. This avoids sending emails out to real
+users when running the stating server using production data.
+
+First, install the [postfix](http://www.postfix.org/) mail server:
+
+    apt install postfix
+
+and choose the "Local only" mail server configuration type.
+
+Then change the following in `/etc/postfix/main.cf`:
+
+    default_transport = error
+
+to:
+
+    default_transport = local:root
+
+and restart postfix:
+
+    systemctl restart postfix.service
+
+Once that's done, you can find all of the emails in `/var/mail/root`.
+
+So you can install mutt:
+
+    apt install mutt
+
+and then view the mailbox like this:
+
+    mutt -f /var/mail/root
+
+[[!tag debian]] [[!tag nzoss]] [[!tag postfix]]
