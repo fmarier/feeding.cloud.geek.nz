@@ -2,9 +2,9 @@
 [[!meta date="2017-11-13T17:30:00:00.000+08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-I wanted to setup a mailserver on a staging server that would send all
+I wanted to setup a mail service on a staging server that would send all
 outgoing emails to a local mailbox. This avoids sending emails out to real
-users when running the stating server using production data.
+users when running the staging server using production data.
 
 First, install the [postfix](http://www.postfix.org/) mail server:
 
@@ -26,7 +26,7 @@ and restart postfix:
 
 Once that's done, you can find all of the emails in `/var/mail/root`.
 
-So you can install mutt:
+So you can install [mutt](http://mutt.org):
 
     apt install mutt
 
