@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ ip="2607:f2c0:f00f:8f00:ed49:1678:801c:8c76"
+ claimedauthor="anarcat"
+ url="https://anarc.at/"
+ subject="what about auto-discovery?"
+ date="2017-11-15T23:44:58Z"
+ content="""
+i also wonder if we could get this simplified somehow. i don't mind configuring the server so much, but it's kind of painful to have to edit config files by hand on each client that needs to be configured...
+
+can't Avahi take care of this for us, just like it does for CUPS and printing? i looked around for this feature but so far all I've found are bug reports saying that it doesn't work ([ubuntu LP#508866](https://bugs.launchpad.net/ubuntu/+source/sane-backends/+bug/508866), [debian #743420](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=743420)). and indeed, with `SANE_DEBUG_NET=128 scanimage -L` says:
+
+    [net] sane_get_devices: local_only = 0
+    [net] sane_get_devices: finished (0 devices)
+    [net] net_avahi_browse_callback: CACHE_EXHAUSTED
+    [net] net_avahi_browse_callback: ALL_FOR_NOW
+    
+    No scanners were identified.
+
+So I'm not sure what's going on, but clearly this is not working...
+"""]]
