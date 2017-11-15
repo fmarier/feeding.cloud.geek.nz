@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="2607:f2c0:f00f:8f00:ed49:1678:801c:8c76"
+ claimedauthor="anarcat"
+ url="https://anarc.at/"
+ subject="why network and central docs"
+ date="2017-11-15T22:47:34Z"
+ content="""
+i setup a network scanner here because it is also a printer and already connected, by USB, to a print server so that many people can print on it without having to worry about cabling.
+
+yes, they need to move their feet to get actual paper in and out of there. crazy physics. but it beats fiddling with wires. :)
+
+also i figured i would mention there is a similar [guide in the Debian wiki](https://wiki.debian.org/SaneOverNetwork) - which seems to have slightly better SEO, so it comes up first. Therefore, I have reworked it to include the excellent suggestions here that were missing there. See if you can improve it further! :)
+"""]]

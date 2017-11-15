@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ ip="107.77.202.230"
+ subject="Question"
+ date="2017-09-27T17:41:15Z"
+ content="""
+This command:
+git push /tmp/myrepo.git master
+
+Seems to be pushing an empty repo.  What am I missing?
+
+You touched a file in myrepo1, correct?
+
+Second:
+Don’t you need to specify the origin of myrepo1? Before pushing it?
+"""]]
