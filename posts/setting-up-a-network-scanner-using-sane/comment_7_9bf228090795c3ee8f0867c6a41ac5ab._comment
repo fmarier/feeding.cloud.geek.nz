@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ ip="80.177.21.246"
+ claimedauthor="copernicus"
+ subject="systemd and the scanner group"
+ date="2017-11-18T18:55:52Z"
+ content="""
+> In order for users to be able to see the scanner, they will need to be in the scanner group:
+
+On Debian jessie and stretch there is no need for a user to be in the scanner group.
+
+<https://wiki.debian.org/Scanner>
+
+Cheers,
+
+Brian
+"""]]
