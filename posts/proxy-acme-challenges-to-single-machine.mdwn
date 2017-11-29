@@ -1,0 +1,93 @@
+[[!meta title="Proxy ACME challenges to a single machine"]]
+[[!meta date="2017-11-28T22:10:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+The [Libravatar mirrors](https://wiki.libravatar.org/run_a_mirror/) are
+setup using [DNS round-robin](https://en.wikipedia.org/wiki/Round-robin_DNS)
+which makes it a little challenging to automatically provision [Let's
+Encrypt](https://letsencrypt.org/) certificates.
+
+In order to be able to use [Certbot](https://certbot.eff.org/)'s
+[webroot](https://certbot.eff.org/docs/using.html#webroot) plugin, I need to
+be able to simultaneously host a randomly-named file into the webroot of
+each mirror. The reason is that the verifier will connect to
+`seccdn.libravatar.org`, but there's no way to know which of the DNS entries
+it will hit. I could copy the file over to all of the mirrors, but that
+would be annoying since some of the mirrors are run by volunteers and I
+don't have direct access to them.
+
+Thankfully, [Scott Helme](https://scotthelme.co.uk) has shared his elegant
+solution:
+[proxy the `.well-known/acme-challenge/` directory from all of the mirrors to a single validation host](https://scotthelme.ghost.io/lets-encrypt-with-dns-round-robin/).
+Here's the exact configuration I ended up with.
+
+# DNS Configuration
+
+In order to serve the certbot validation files separately from the main
+service, I created a new hostname, `acme.libravatar.org`, pointing to the
+main Libravatar server:
+
+    CNAME acme libravatar.org.
+
+# Mirror Configuration
+
+On each mirror, I created a new Apache vhost on port 80 to proxy the acme challenge
+files by putting the following in the existing port 443 vhost config
+(`/etc/apache2/sites-available/libravatar-seccdn.conf`):
+
+    <VirtualHost *:80>
+        ServerName __SECCDNSERVERNAME__
+        ServerAdmin __WEBMASTEREMAIL__
+    
+        ProxyPass /.well-known/acme-challenge/ http://acme.libravatar.org/.well-known/acme-challenge/
+        ProxyPassReverse /.well-known/acme-challenge/ http://acme.libravatar.org/.well-known/acme-challenge/
+    </VirtualHost>
+
+Then I enabled the right modules and restarted Apache:
+
+    a2enmod proxy
+    a2enmod proxy_http
+    systemctl restart apache2.service
+
+Finally, I added a cronjob in `/etc/cron.daily/commit-new-seccdn-cert` to
+commit the new cert to
+[etckeeper](https://packages.debian.org/sid/etckeeper) automatically:
+
+    #!/bin/sh
+    cd /etc/libravatar
+    /usr/bin/git commit --quiet -m "New seccdn cert" seccdn.crt seccdn.pem seccdn-chain.pem > /dev/null || true
+
+# Main Configuration
+
+On the main server, I created a new webroot:
+
+    mkdir -p /var/www/acme/.well-known
+
+and a new vhost in `/etc/apache2/sites-available/acme.conf`:
+
+    <VirtualHost *:80>
+        ServerName acme.libravatar.org
+        ServerAdmin webmaster@libravatar.org
+        DocumentRoot /var/www/acme
+        <Directory /var/www/acme>
+            Options -Indexes
+        </Directory>
+    </VirtualHost>
+
+before enabling it and restarting Apache:
+
+    a2ensite acme
+    systemctl restart apache2.service
+
+# Registering a new TLS certificate
+
+With all of this in place, I was able to register the cert easily using the
+webroot plugin on the main server:
+
+    certbot certonly --webroot -w /var/www/acme -d seccdn.libravatar.org
+
+The resulting certificate will then be
+[automatically renewed before it expires](https://feeding.cloud.geek.nz/posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/).
+
+[[!tag debian]] [[!tag nzoss]] [[!tag letsencrypt]] [[!tag sysadmin]]
+[[!tag apache]] [[!tag ssl]]
