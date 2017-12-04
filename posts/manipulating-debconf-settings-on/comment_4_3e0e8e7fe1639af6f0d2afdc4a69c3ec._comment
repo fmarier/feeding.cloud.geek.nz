@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ ip="131.247.54.65"
+ claimedauthor="draeath"
+ subject="workaround"
+ date="2017-12-04T22:05:56Z"
+ content="""
+You can edit /var/cache/debconf/config.dat manually instead, but be aware that you can really break things by editing this.
+
+The file it uses for configuration is defined in /etc/debconf.conf, should it not be where you expect on your system
+
+    # World-readable, and accepts everything but passwords.
+    Name: config
+    Driver: File
+    Mode: 644
+    Reject-Type: password
+    Filename: /var/cache/debconf/config.dat
+"""]]
