@@ -16,7 +16,7 @@ This setup has the benefit of using a very small SSD to speed up the main partit
 
 The first thing I did, given that I purchased a second-hand drive, was to **completely erase the drive** and mark all sectors as empty using an [ATA secure erase](http://en.wikipedia.org/wiki/Write_amplification#Secure_erase). Because SSDs have a tendency to get slower as data is added to them, it is necessary to clear the drive in a way that will let the controller know that every byte is now free to be used again.  
   
-There is a lot of advice on the web on how to do this and many tutorials refer to an old piece of software called [Secure Erase](http://cmrr.ucsd.edu/people/Hughes/SecureErase.shtml). There is a much better solution on Linux: [issuing the commands directly using **hdparm**](https://ata.wiki.kernel.org/index.php/ATA_Secure_Erase).  
+There is a lot of advice on the web on how to do this and many tutorials refer to an old piece of software called [Secure Erase](https://web.archive.org/web/20130511064320/http://cmrr.ucsd.edu:80/people/Hughes/SecureErase.shtml). There is a much better solution on Linux: [issuing the commands directly using **hdparm**](https://ata.wiki.kernel.org/index.php/ATA_Secure_Erase).  
   
 
 ## Partitioning the SSD
