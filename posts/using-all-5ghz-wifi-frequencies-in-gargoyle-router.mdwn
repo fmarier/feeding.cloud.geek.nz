@@ -1,0 +1,76 @@
+[[!meta title="Using all of the 5 GHz WiFi frequencies in a Gargoyle Router"]]
+[[!meta date="2017-12-10T18:00:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+WiFi in the 2.4 GHz range is usually fairly congested in urban environments.
+The 5 GHz band used to be better, but an increasing number of routers now
+support it and so it has become fairly busy as well. It turns out that there
+are a
+[number of channels on that band](https://en.wikipedia.org/wiki/List_of_WLAN_channels#5_GHz_.28802.11a.2Fh.2Fj.2Fn.2Fac.29)
+that nobody appears to be using despite being legal in my region.
+
+## Why are the middle channels unused?
+
+I'm not entirely sure why these channels are completely empty in my area,
+but I would speculate that access point manufacturers don't want to deal
+with the extra complexity of the middle channels. Indeed these channels are
+not entirely unlicensed. They are also used by weather radars, for example.
+If you look at the regulatory rules that ship with your OS:
+
+    $ iw reg get
+    global
+    country CA: DFS-FCC
+    	(2402 - 2472 @ 40), (N/A, 30), (N/A)
+    	(5170 - 5250 @ 80), (N/A, 17), (N/A), AUTO-BW
+    	(5250 - 5330 @ 80), (N/A, 24), (0 ms), DFS, AUTO-BW
+    	(5490 - 5600 @ 80), (N/A, 24), (0 ms), DFS
+    	(5650 - 5730 @ 80), (N/A, 24), (0 ms), DFS
+    	(5735 - 5835 @ 80), (N/A, 30), (N/A)
+
+you will see that these channels are flagged with "DFS". That stands for
+[Dynamic Frequency Selection](http://wifi-insider.com/wlan/dfs.htm) and it
+means that WiFi equipment needs to be able to detect when the frequency is
+used by radars (by detecting their pulses) and automaticaly switch to a
+different channel for a few minutes.
+
+So an access point needs extra hardware and extra code to avoid interfering
+with priority users. Additionally, different channels have
+[different bandwidth limits](http://www.radio-electronics.com/info/wireless/wi-fi/80211-channels-number-frequencies-bandwidth.php)
+so that's something else to consider if you want to use 40/80 MHz at once.
+
+## Using all legal channels in Gargoyle
+
+The first time I tried setting my access point channel to one of the middle
+5 GHz channels, the SSID wouldn't show up in scans and the channel was still
+empty in [WiFi Analyzer](https://f-droid.org/packages/com.vrem.wifianalyzer/).
+
+I tried changing the channel again, but this time, I ssh'd into my router
+and looked at the errors messages using this command:
+
+    logread -f
+
+I found a number of errors claiming that these channels were not authorized
+for the "world" regulatory authority.
+
+Because [Gargoyle](https://www.gargoyle-router.com/) is based on
+[OpenWRT](https://openwrt.org/), there are a lot more
+nn[wireless configuration options](https://wiki.openwrt.org/doc/uci/wireless)
+available than what's exposed in the Web UI.
+
+In this case, the solution was to explicitly set my country in the wireless
+options by putting:
+
+    country 'CA'
+
+(where `CA` is the
+[country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) where the
+router is physically located) in the 5 GHz radio section of
+`/etc/config/wireless` on the router.
+
+Then I rebooted and I was able to set the channel successfully via the Web UI.
+
+If you are interested, there is a lot more information about how all of this
+works in the
+[kernel documentation for the wireless stack](https://wireless.wiki.kernel.org/en/developers/regulatory/processing_rules#country_definition).
+
+[[!tag debian]] [[!tag nzoss]] [[!tag openwrt]] [[!tag gargoyle]]
