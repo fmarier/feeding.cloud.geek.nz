@@ -64,6 +64,7 @@ I used the following trick:
 
 Then, I recreated my RAID0 swap partition like this:
 
+    mdadm --stop /dev/md1
     mdadm /dev/md1 --create --level=0 --raid-devices=2 /dev/sda3 /dev/sdb3
     mkswap /dev/md1
 
