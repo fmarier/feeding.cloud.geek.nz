@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="91.123.239.210"
+ claimedauthor="Andrew McMillan"
+ url="https://plus.google.com/+andrewmcmillan"
+ subject="How long after enabling NTP should it show sync?"
+ date="2018-01-05T16:30:00Z"
+ content="""
+systemd-timesyncd seems to have some nice features - it touches `/var/lib/systemd/clock` (or perhaps `/var/lib/systemd/timesync/clock` on Debian) after each successful sync, so it will at least move forward after reboot even before the network is up.
+
+On the other hand there are situations where I would like a whole set of services to have a hard dependency on a successful time synchronisation before they will even try and start up, and this does not seem to be well-supported by systemd (see https://github.com/systemd/systemd/issues/5097 for more detail).
+
+You say you had to `timedatectl set-ntp true` after you got timesyncd running, but that's not working for me and I'm curious about how long I should spend watching it before I see a \"Yes\" in the NTP sync status, and I wonder what I might be missing if I'm not seeing this even though timesyncd appears to be running without errors.
+"""]]

@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="181.169.244.161"
+ claimedauthor="julio"
+ subject="LUKS key"
+ date="2017-12-04T23:46:28Z"
+ content="""
+Good post and good comments.
+I was wondering about the passphrase LUKS requires to decrypt.
+
+Where should I setup it up to decrypt files upon user login?
+
+Thanks!
+"""]]

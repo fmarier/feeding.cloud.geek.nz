@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="173.174.116.184"
+ claimedauthor="Graham"
+ subject="tumesyncd logging"
+ date="2017-12-06T14:05:52Z"
+ content="""
+In Jessie, systemd-timesyncd put out some logging information to syslog, everytime that it pinged the time server that gave you a time stamp, time correction and frequency correction information.  With Stretch, these log reports have been suppressed. Does anyone know how to get them back? I can't find anything in the documentation. 
+Thanks,
+--- Graham
+
+==
+"""]]
