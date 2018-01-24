@@ -1,0 +1,157 @@
+[[!meta title="LXC setup on Debian jessie"]]
+[[!meta date="2018-01-23T21:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here's how to setup LXC-based "chroots" on Debian stretch. While I [wrote about this on Debian jessie](https://feeding.cloud.geek.nz/posts/lxc-setup-on-debian-jessie/), I
+had to make some [networking changes for stretch](https://wiki.debian.org/LXC#Networked_quickstart_for_Debian_Stretch_.28testing_as_of_Q3_2016.29)
+and so here are the full steps that should work on stretch.
+
+Start by installing (as root) the necessary packages:
+
+    apt install lxc libvirt-clients debootstrap
+
+# Network setup
+
+I decided to use the default `/etc/lxc/default.conf` configuration (no
+change needed here):
+
+    lxc.network.type = veth
+    lxc.network.link = lxcbr0
+    lxc.network.flags = up
+    lxc.network.hwaddr = 00:FF:AA:xx:xx:xx
+
+That configuration requires that the `veth` kernel module be loaded. If
+you have any kinds of module-loading restrictions enabled, you probably
+need to add the following to `/etc/modules` and **reboot**:
+
+    veth
+
+Next, I had to make sure that the "guests" could connect to the outside
+world through the "host":
+
+1. Enable IPv4 forwarding by putting this in `/etc/sysctl.conf`:
+
+       net.ipv4.ip_forward=1
+
+2. and then applying it using:
+
+       sysctl -p
+
+3. Restart the network bridge:
+
+       systemctl restart lxc-net.service
+
+4. and ensure that it's not blocked by the host firewall, by putting this in `/etc/network/iptables.up.rules`:
+
+       -A FORWARD -d 10.0.3.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+       -A FORWARD -s 10.0.3.0/24 -j ACCEPT
+       -A INPUT -d 224.0.0.251 -s 10.0.3.1 -j ACCEPT
+       -A INPUT -d 10.0.3.255 -s 10.0.3.1 -j ACCEPT
+       -A INPUT -d 10.0.3.1 -s 10.0.3.0/24 -j ACCEPT
+
+5. and applying the rules using:
+
+       iptables-apply
+
+# Creating a container
+
+Creating a new container (in `/var/lib/lxc/`) is simple:
+
+    sudo MIRROR=http://httpredir.debian.org/debian lxc-create -n sid64 -t debian -- -r sid -a amd64
+
+You can start or stop it like this:
+
+    sudo lxc-start -n sid64
+    sudo lxc-stop -n sid64
+
+# Connecting to a guest using ssh
+
+The ssh server is configured to require pubkey-based authentication for root
+logins, so you'll need to log into the console:
+
+    sudo lxc-stop -n sid64
+    sudo lxc-start -n sid64 -F
+
+Since the root password is randomly generated, you'll need to reset it before
+you can login as root:
+
+    sudo lxc-attach -n sid64 passwd
+
+Then login as root and install a text editor inside the container because the
+root image doesn't have one by default:
+
+    apt install vim
+
+then paste your public key in `/root/.ssh/authorized_keys`.
+
+Then you can exit the console (using `Ctrl+a q`) and ssh into the
+container. You can find out what IP address the container received from DHCP
+by typing this command:
+
+    sudo lxc-ls --fancy
+
+# Mounting your home directory inside a container
+
+In order to have my home directory available within the container, I
+created a user account for myself inside the container and then added
+the following to the container config file (`/var/lib/lxc/sid64/config`):
+
+    lxc.mount.entry=/home/francois /var/lib/lxc/sid64/rootfs/home/francois none bind 0 0
+
+before restarting the container:
+
+    lxc-stop -n sid64
+    lxc-start -n sid64 -d
+
+# Fixing locale errors
+
+If you see a bunch of errors like these when you start your container:
+
+    perl: warning: Setting locale failed.
+    perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LANG = "fr_CA.utf8"
+        are supported and installed on your system.
+    perl: warning: Falling back to the standard locale ("C").
+
+then log into the container as root and use:
+
+    dpkg-reconfigure locales
+
+to enable the same locales as the ones you have configured in the host.
+
+If you see these errors while reconfiguring the `locales` package:
+
+    Generating locales (this might take a while)...
+      en_US.UTF-8...cannot change mode of new locale archive: No such file or directory
+     done
+      fr_CA.UTF-8...cannot change mode of new locale archive: No such file or directory
+     done
+    Generation complete.
+
+and see the following `dmesg` output on the host:
+
+    [235350.947808] audit: type=1400 audit(1441664940.224:225): apparmor="DENIED" operation="chmod" info="Failed name lookup - deleted entry" error=-2 profile="/usr/bin/lxc-start" name="/usr/lib/locale/locale-archive.WVNevc" pid=21651 comm="localedef" requested_mask="w" denied_mask="w" fsuid=0 ouid=0
+
+then AppArmor is interfering with the `locale-gen` binary and the
+work-around I found is to temporarily shutdown AppArmor on the host:
+
+    lxc-stop -n sid64
+    systemctl stop apparmor
+    lxc-start -n sid64 -d
+
+and then start up it later once the locales have been updated:
+
+    lxc-stop -n sid64
+    systemctl start apparmor
+    lxc-start -n sid64 -d
+
+# AppArmor support
+
+If you are running AppArmor, your container probably won't start until you
+add the following to the container config (`/var/lib/lxc/sid64/config`):
+
+    lxc.aa_allow_incomplete = 1
+
+[[!tag debian]] [[!tag lxc]] [[!tag nzoss]]
