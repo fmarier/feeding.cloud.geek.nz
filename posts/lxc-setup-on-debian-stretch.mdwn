@@ -1,4 +1,4 @@
-[[!meta title="LXC setup on Debian jessie"]]
+[[!meta title="LXC setup on Debian stretch"]]
 [[!meta date="2018-01-23T21:30:00.000-08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
@@ -101,7 +101,7 @@ the following to the container config file (`/var/lib/lxc/sid64/config`):
 before restarting the container:
 
     lxc-stop -n sid64
-    lxc-start -n sid64 -d
+    lxc-start -n sid64
 
 # Fixing locale errors
 
@@ -139,13 +139,13 @@ work-around I found is to temporarily shutdown AppArmor on the host:
 
     lxc-stop -n sid64
     systemctl stop apparmor
-    lxc-start -n sid64 -d
+    lxc-start -n sid64
 
 and then start up it later once the locales have been updated:
 
     lxc-stop -n sid64
     systemctl start apparmor
-    lxc-start -n sid64 -d
+    lxc-start -n sid64
 
 # AppArmor support
 
