@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ ip="193.203.232.31"
+ claimedauthor="risca"
+ url="http://wiki.risca.eu"
+ subject="lxc-net configuration"
+ date="2018-01-24T10:10:54Z"
+ content="""
+Hi,
+
+about network configuration on LXC in debian stretch, it is possible to easy the setup through the lxc-net script (it's shipped with-in the lxc package itself). This way you only need:
+
+- to fill parameters in /etc/default/lxc-net
+- add bridge configuration for lxcbr0 in /etc/network/interfaces
+
+All of other steps pointed out in your \"Network setup\" are done by lxc-net itself.
+
+The only downside of the script is that it would be nice to use, instead of a script, an horde of systemd units (if using systemd). I tried to fill a request for it [1] but it's still a work in progress.
+
+[1] https://github.com/lxc/lxc/issues/2083
+"""]]
