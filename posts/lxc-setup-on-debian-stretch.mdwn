@@ -96,7 +96,7 @@ In order to have my home directory available within the container, I
 created a user account for myself inside the container and then added
 the following to the container config file (`/var/lib/lxc/sid64/config`):
 
-    lxc.mount.entry=/home/francois /var/lib/lxc/sid64/rootfs/home/francois none bind 0 0
+    lxc.mount.entry=/home/francois home/francois none bind 0 0
 
 before restarting the container:
 
