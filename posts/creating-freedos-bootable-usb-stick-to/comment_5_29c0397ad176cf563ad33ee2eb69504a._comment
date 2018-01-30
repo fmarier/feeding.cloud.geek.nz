@@ -1,7 +1,0 @@
-[[!comment format=mdwn
- ip="142.177.126.65"
- subject="untried suggestions"
- date="2014-10-28T21:41:29Z"
- content="""
-Please if you are going to make a suggestion, make sure it does what is asked in the question. The OP wanted to add files to a FreeDOS USB stick, so he could update a BIOS. Presumably he would need the particular BIOS update executable plus a new BIOS image and possibly the ability to save a copy of the current BIOS in case something goes awry. The poster who suggested using balder10.img obviously hadn't tested it and didn't know that it boots as a 1.44 Mb floppy image.
-"""]]
