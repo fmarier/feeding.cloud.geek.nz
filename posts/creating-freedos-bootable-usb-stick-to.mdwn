@@ -1,67 +1,59 @@
 [[!meta title="Creating a FreeDOS bootable USB stick to upgrade BIOS"]]
 [[!meta date="2012-03-13T08:00:00.000+13:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
-I have an old motherboard that requires creating a DOS boot floppy in order to upgrade its BIOS. Fortunately, it's not too hard to do this with [FreeDOS](http://www.freedos.org/) and a USB stick.  
-  
-_The instructions below are based on an [FDos wiki article](http://wiki.fdos.info/Installation/BootDiskCreateUSB)._  
-  
+I have an old motherboard that requires creating a DOS boot floppy in order to upgrade its BIOS. Fortunately, it's not too hard to do this with [FreeDOS](http://www.freedos.org/) and a USB stick.
+
+_The instructions below are based on an [old FDos wiki article](https://web.archive.org/web/20090301055636/http://wiki.fdos.org/Installation/BootDiskCreateUSB).
+You maye have more luck with the [latest instructions from the official wiki](http://wiki.freedos.org/wiki/index.php/USB)_
+
 
 ### Downloading the dependencies
 
-The first step is to download the required files from your motherboard manufacturer:  
+The first step is to download the required files from your motherboard manufacturer:
 
   * the latest BIOS image
   * the BIOS flashing program
 
-and then install the tools you'll need:  
-
+and then install the tools you'll need:
 
     apt-get install makebootfat syslinux
 
-
-  
-
 ### Preparing the "floppy" image
 
-Start by collecting all of the files you need to install FreeDOS on the USB stick:  
+Start by collecting all of the files you need to install FreeDOS on the USB stick:
 
-
-    cd /tmp  
-      
-    wget http://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/pkgs/commandx.zip  
-    wget http://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/pkgs/kernels.zip  
-    wget http://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/pkgs/substx.zip  
-    wget http://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/pkgs/unstablx.zip  
-      
-    for ZIP in *.zip; do unzip $ZIP; done  
-      
-    cp ./source/ukernel/boot/fat16.bin  .  
-    cp ./source/ukernel/boot/fat12.bin .  
-    cp ./source/ukernel/boot/fat32lba.bin .  
-      
+    cd /tmp
+    
+    wget https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/pkgs/commandx.zip
+    wget https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/pkgs/kernels.zip
+    wget https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/pkgs/substx.zip
+    wget https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/pkgs/unstablx.zip
+    
+    for ZIP in *.zip; do unzip $ZIP; done
+    
+    cp ./source/ukernel/boot/fat16.bin  .
+    cp ./source/ukernel/boot/fat12.bin .
+    cp ./source/ukernel/boot/fat32lba.bin .
+    
     cp /usr/lib/syslinux/mbr.bin .
-
 
 and then create a directory for the files that will end up in the root directory of the "floppy":
 
-    mkdir /tmp/fs-root  
-    cp ./bin/command.com /tmp/fs-root/  
-    cp ./bin/kernel.sys  /tmp/fs-root/  
-    
+    mkdir /tmp/fs-root
+    cp ./bin/command.com /tmp/fs-root/
+    cp ./bin/kernel.sys  /tmp/fs-root/
 
-
-and copy the BIOS image and update program into that same directory (`/tmp/fs-root/`).  
-  
+and copy the BIOS image and update program into that same directory (`/tmp/fs-root/`).
 
 ### Creating a bootable USB stick
 
-Plug in a [FAT](https://en.wikipedia.org/wiki/File_Allocation_Table)-formatted USB stick and look for the device it uses (`/dev/sdb` in the example below).  
-  
-Finally, run `makebootfat`:  
+Plug in a [FAT](https://en.wikipedia.org/wiki/File_Allocation_Table)-formatted USB stick and look for the device it uses (`/dev/sdb` in the example below).
+
+Finally, run `makebootfat`:
 
 <pre>
 /usr/bin/makebootfat -o <i>/dev/sdb</i> -E 255 -1 fat12.bin -2 fat16.bin -3 fat32lba.bin -m mbr.bin /tmp/fs-root
 </pre>
 
 
-[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] 
+[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]]
