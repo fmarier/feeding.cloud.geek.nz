@@ -8,7 +8,7 @@ While there is real progress being made towards
 Internet service that still usually relies on unauthenticated cleartext.
 There are however a few efforts to try and fix this problem. Here is the
 setup I use on my Debian laptop to make use of both
-[DNSSEC](http://www.dnssec.net/) and [DNSCrypt](https://dnscrypt.org/).
+[DNSSEC](http://www.dnssec.net/) and [DNSCrypt](https://dnscrypt.info/).
 
 # DNSCrypt
 
@@ -29,7 +29,7 @@ if you are using a static network configuration or in
 if you rely on dynamic network configuration via [DHCP](https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol).
 
 There are two things you might want to keep in mind when choosing your
-[DNSCrypt resolver](https://github.com/jedisct1/dnscrypt-proxy/blob/master/dnscrypt-resolvers.csv):
+[DNSCrypt resolver](https://github.com/DNSCrypt/dnscrypt-resolvers/tree/master/v1):
 
 - whether or not they keep any logs of the DNS traffic
 - whether or not they support DNSSEC
