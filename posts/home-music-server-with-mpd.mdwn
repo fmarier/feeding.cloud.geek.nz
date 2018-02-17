@@ -125,7 +125,7 @@ I picked M.A.L.P. since it includes a nice widget for the homescreen.
 
 On iOS, these are the most promising clients I found:
 
-- [MPDRemote](https://github.com/Nyx0uf/MPDRemote) (free software, not on the AppStore)
+- [MPDRemote](https://github.com/Nyx0uf/MPDRemote) (free software, sold on the [AppStore](https://itunes.apple.com/us/app/mpdremote/id1202933180?ls=1&mt=8))
 - [MPDluxe](http://kineticfactory.com/MPDluxe/) (proprietary, sold on the [AppStore](https://itunes.apple.com/app/mpdluxe/id991758069?mt=8))
 
 since [MPoD](http://www.katoemba.net/makesnosenseatall/mpod/) and
