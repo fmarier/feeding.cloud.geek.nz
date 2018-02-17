@@ -79,12 +79,39 @@ daily and stop the music automatically in the evening:
     0 22 * * 0-4  mpd  test -r /run/mpd/socket && MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet stop
     0 23 * * 5-6  mpd  test -r /run/mpd/socket && MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet stop
 
+## Album covers
+
+In order to supply album cover art to clients which support grabbing covers
+from a local web server I have installed
+[Apache](https://httpd.apache.org/):
+
+    apt install apache2
+
+and configured it to serve the covers by putting the following in
+`/etc/apache2/conf-available/mpd.conf`:
+
+    <Directory /path/to/music>
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+and then the following line in the default vhost section of
+`/etc/apache2/sites-available/000-default.conf`:
+
+    Alias /music /path/to/music
+
+Finally, I enabled the new configuration and restarted Apache:
+
+    a2enconf mpd.conf
+    systemctl restart apache2.service
+
 # Clients
 
-To let anybody on the local network connect, I opened **port 6600** on the
-firewall (`/etc/network/iptables.up.rules` since I'm using Debian's
+To let anybody on the local network connect, I opened **ports 80 and 6600**
+on the firewall (`/etc/network/iptables.up.rules` since I'm using Debian's
 `iptables-apply`):
 
+    -A INPUT -s 192.168.1.0/24 -p tcp --dport 80 -j ACCEPT
     -A INPUT -s 192.168.1.0/24 -p tcp --dport 6600 -j ACCEPT
 
 Then I looked at [the long list of clients](http://mpd.wikia.com/wiki/Clients) on the mpd wiki.
@@ -119,7 +146,12 @@ On Android, I got these two to work:
 - [M.A.L.P.](https://f-droid.org/repository/browse/?fdfilter=malp&fdid=org.gateshipone.malp) (requires Android 5 or later)
 - [MPDroid](https://f-droid.org/repository/browse/?fdfilter=mpdroid&fdid=com.namelessdev.mpdroid)
 
-I picked M.A.L.P. since it includes a nice widget for the homescreen.
+I picked M.A.L.P. since it includes a nice widget for the homescreen. In the
+profile settings, I enabled *Prefer [HTTP cover
+files](https://github.com/gateship-one/malp/wiki/FAQ#application-usage)* and
+used this URL:
+
+    http://192.168.1.2/%d
 
 ## iOS
 
