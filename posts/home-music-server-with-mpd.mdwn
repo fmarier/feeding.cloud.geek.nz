@@ -164,4 +164,9 @@ since [MPoD](http://www.katoemba.net/makesnosenseatall/mpod/) and
 [MPaD](http://www.katoemba.net/makesnosenseatall/mpad/) don't appear to be
 available on the AppStore anymore.
 
+Of these, MPDRemote appears to be the better one. It also supports album art
+if you configure the profile with the following cover URL:
+
+    http://192.168.1.2/
+
 [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag mpd]] [[!tag ios]] [[!tag android]] [[!tag tor]] [[!tag systemd]]
