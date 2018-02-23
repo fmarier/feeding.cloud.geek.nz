@@ -34,7 +34,7 @@ After logging into the router via ssh, I ran the following commands:
 
 
     uci set system.@system[0].log_ip=192.168.1.2  
-    uci set system.@system[0].conloglevel=7  
+    uci set system.@system[0].cronloglevel=7
     uci commit
 
 
