@@ -1,0 +1,47 @@
+[[!meta title="Redirecting an entire site except for the certbot webroot"]]
+[[!meta date="2018-03-01T21:40:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to be able to use the [webroot
+plugin](https://certbot.eff.org/docs/using.html#webroot) for
+[certbot](https://certbot.eff.org/) and automatically renew the [Let's
+Encrypt](https://letsencrypt.org/) certificate for `libravatar.org`, I
+had to put together an Apache config that would do the following on port 80:
+
+- Let `/.well-known/acme-challenge/*` through on the bare domain
+  (`http://libravatar.org/`).
+- Redirect anything else to `https://www.libravatar.org/`.
+
+The reason for this is that the main
+[Libravatar](https://www.libravatar.org) service listens on
+`www.libravatar.org` and not `libravatar.org`, but that cerbot needs to
+ascertain control of the bare domain.
+
+This is the configuration I ended up with:
+
+    <VirtualHost *:80>
+        DocumentRoot /var/www/acme
+        <Directory /var/www/acme>
+            Options -Indexes
+        </Directory>
+    
+        RewriteEngine on
+        RewriteCond "/var/www/acme%{REQUEST_URI}" !-f
+        RewriteRule ^(.*)$ https://www.libravatar.org/ [last,redirect=301]
+    </VirtualHost>
+
+The trick I used here is to make the redirection `RewriteRule` conditional
+on the requested file (`%{REQUEST_URI}`) not existing in the `/var/www/acme`
+directory, the one where I tell certbot to drop its temporary files.
+
+Here are the relevant portions of `/etc/letsencrypt/renewal/www.libravatar.org.conf`:
+
+    [renewalparams]
+    authenticator = webroot
+    account = 
+    
+    [[webroot_map]]
+    libravatar.org = /var/www/acme
+    www.libravatar.org = /var/www/acme
+
+[[!tag debian]] [[!tag letsencrypt]] [[!tag nzoss]] [[!tag apache]] [[!tag ssl]]
