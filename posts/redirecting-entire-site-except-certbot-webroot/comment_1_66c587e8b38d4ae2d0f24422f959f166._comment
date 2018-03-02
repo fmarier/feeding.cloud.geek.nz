@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="2a02:8071:b581:3afc:25b1:3686:15d9:fce3"
+ claimedauthor="Uwe Kleine-König"
+ subject="conditions for letsencrypt certs"
+ date="2018-03-02T08:42:11Z"
+ content="""
+Hello,
+
+according to my experience having a redirect for `/.well-known/acme-challenge` works fine. So an unconditional redirect from `http://libravatar.org/(.*)` to `http://www.libravatar.org/$1` should do the trick a bit easier.
+
+Best regards
+Uwe
+"""]]

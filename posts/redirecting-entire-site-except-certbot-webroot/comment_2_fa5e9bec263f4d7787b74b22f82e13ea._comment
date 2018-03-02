@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="2a02:810d:4740:cc10:6e29:95ff:fe7c:2bad"
+ claimedauthor="Philipp Kern"
+ subject="HTTP redirects should be fine?"
+ date="2018-03-02T08:37:07Z"
+ content="""
+I was under the impression that 301 redirects will be followed by the CA. Is that not the case?
+"""]]
