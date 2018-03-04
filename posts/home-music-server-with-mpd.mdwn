@@ -76,8 +76,12 @@ daily and stop the music automatically in the evening:
     # Refresh DB once an hour
     5 * * * *  mpd  test -r /run/mpd/socket && MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet update
     # Think of the neighbours
-    0 22 * * 0-4  mpd  test -r /run/mpd/socket && MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet stop
-    0 23 * * 5-6  mpd  test -r /run/mpd/socket && MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet stop
+    0 22 * * 0-4  mpd  test -r /run/mpd/socket && MPD_HOST=Password1@/run/mpd/socket /usr/local/bin/mpc-fade
+    0 23 * * 5-6  mpd  test -r /run/mpd/socket && MPD_HOST=Password1@/run/mpd/socket /usr/local/bin/mpc-fade
+
+My [`mpc-fade` script](https://github.com/fmarier/user-scripts/blob/master/mpc-fade),
+heavily inspired by [Guillaume's](http://guillaumeplayground.net/mpd-mpc-fade-in-out-script/),
+gradually brings the volume down instead of stopping the music abrutly.
 
 ## Album covers
 
