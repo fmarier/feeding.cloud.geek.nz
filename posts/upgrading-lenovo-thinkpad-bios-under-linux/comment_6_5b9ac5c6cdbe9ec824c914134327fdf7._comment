@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="176.147.239.109"
+ claimedauthor="BigFan"
+ subject="faster dd"
+ date="2018-03-17T11:52:27Z"
+ content="""
+Use option 'bs=4M' for faster write to the usb key (otherwise it will take several minutes):  
+    $ dd bs=4M if=bios.img of=/dev/sdX
+
+"""]]
