@@ -88,3 +88,5 @@ The IP for that machine should now be visible on the [No-IP control
 panel](https://www.noip.com/members/dns/) and in DNS lookups:
 
     dig +short machinename.dyn.fmarier.org
+
+[[!tag debian]] [[!tag nzoss]] [[!tag dns]]
