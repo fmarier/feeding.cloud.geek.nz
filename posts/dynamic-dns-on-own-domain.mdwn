@@ -1,0 +1,90 @@
+[[!meta title="Dynamic DNS on your own domain"]]
+[[!meta date="2018-03-18T13:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently moved my dynamic DNS hostnames from
+[dyndns.org](https://dyn.com/dns/) (now owned by Oracle) to
+[No-IP](https://www.noip.com/remote-access). In the process, I moved all of
+my hostnames under a sub-domain that I control in case I ever want to
+self-host the authoritative DNS server for it.
+
+# Creating an account
+
+In order to use my own existing domain, I registered for the [Plus Managed
+DNS](https://www.noip.com/remote-access) service and provided my top-level
+domain (`fmarier.org`).
+
+Then I created a [support ticket](https://www.noip.com/ticket/) to ask for
+the **sub-domain feature**. Without that, No-IP expects you to delegate your
+entire domain to them, whereas I only wanted to delegate `*.dyn.fmarier.org`.
+
+Once that got enabled, I was able to create hostnames like `machine.dyn` in
+the No-IP control panel. Without the sub-domain feature, you can't have dots
+in hostnames.
+
+I used a bogus IP address (e.g. `1.2.3.4`) for all of the hostnames I
+created in order to easily confirm that the client software is working.
+
+# DNS setup
+
+On my registrar's side, here are the DNS records I had to add to delegate
+anything under `dyn.fmarier.org` to No-IP:
+
+    dyn NS ns1.no-ip.com.
+    dyn NS ns2.no-ip.com.
+    dyn NS ns3.no-ip.com.
+    dyn NS ns4.no-ip.com.
+    dyn NS ns5.no-ip.com.
+
+# Client setup
+
+In order to update its IP address whenever it changes, I installed
+[ddclient](https://sourceforge.net/p/ddclient/wiki/Home/) on each of my
+machines:
+
+    apt install ddclient
+
+While the [ddclient package](https://packages.debian.org/stretch/ddclient)
+[won't help you
+configure](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=625715) your
+No-IP service during installation or [enable the web IP lookup
+method](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=285007), this can
+all be done by editing the configuration after the fact.
+
+I put the following in `/etc/ddclient.conf`:
+
+    ssl=yes
+    protocol=noip
+    use=web, web=checkip.dyndns.com, web-skip='IP Address'
+    server=dynupdate.no-ip.com
+    login=myusername
+    password='Password1!'
+    machinename.dyn.fmarier.org
+
+and the following in `/etc/default/ddclient`:
+
+    run_dhclient="false"
+    run_ipup="false"
+    run_daemon="true"
+    daemon_interval="3600"
+
+Then restart the service:
+
+    systemctl restart ddclient.service
+
+Note that you do need to change the default update interval or the
+`checkip.dyndns.com` server [will ban your IP
+address](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=489997).
+
+# Testing
+
+To test that the client software is working, wait 6 minutes (there is an
+internal check which cancels any client invocations within 5 minutes of
+another), then run it manually:
+
+    ddclient --verbose --debug
+
+The IP for that machine should now be visible on the [No-IP control
+panel](https://www.noip.com/members/dns/) and in DNS lookups:
+
+    dig +short machinename.dyn.fmarier.org
