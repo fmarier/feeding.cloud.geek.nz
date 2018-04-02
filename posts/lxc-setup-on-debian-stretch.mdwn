@@ -20,6 +20,10 @@ change needed here):
     lxc.network.flags = up
     lxc.network.hwaddr = 00:FF:AA:xx:xx:xx
 
+and enable networking by putting the following in a new `/etc/default/lxc-net` file:
+
+    USE_LXC_BRIDGE="true"
+
 That configuration requires that the `veth` kernel module be loaded. If
 you have any kinds of module-loading restrictions enabled, you probably
 need to add the following to `/etc/modules` and **reboot**:
