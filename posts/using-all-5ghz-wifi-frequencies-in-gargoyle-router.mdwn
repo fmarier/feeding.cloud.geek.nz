@@ -57,15 +57,9 @@ Because [Gargoyle](https://www.gargoyle-router.com/) is based on
 nn[wireless configuration options](https://wiki.openwrt.org/doc/uci/wireless)
 available than what's exposed in the Web UI.
 
-In this case, the solution was to explicitly set my country in the wireless
-options by putting:
-
-    country 'CA'
-
-(where `CA` is the
-[country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) where the
-router is physically located) in the 5 GHz radio section of
-`/etc/config/wireless` on the router.
+In this case, the solution was to explicitly [set my country in the wireless options](https://feeding.cloud.geek.nz/posts/setting-wifi-regulatory-domain-linux-openwrt/) (where `CA` is the
+[country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) for Canada, where my
+router is physically located).
 
 Then I rebooted and I was able to set the channel successfully via the Web UI.
 
