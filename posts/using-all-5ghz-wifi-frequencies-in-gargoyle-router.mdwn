@@ -54,7 +54,7 @@ for the "world" regulatory authority.
 
 Because [Gargoyle](https://www.gargoyle-router.com/) is based on
 [OpenWRT](https://openwrt.org/), there are a lot more
-nn[wireless configuration options](https://wiki.openwrt.org/doc/uci/wireless)
+[wireless configuration options](https://wiki.openwrt.org/doc/uci/wireless)
 available than what's exposed in the Web UI.
 
 In this case, the solution was to explicitly [set my country in the wireless options](https://feeding.cloud.geek.nz/posts/setting-wifi-regulatory-domain-linux-openwrt/) (where `CA` is the
