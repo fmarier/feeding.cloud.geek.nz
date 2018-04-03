@@ -1,0 +1,175 @@
+[[!meta title="Looking back on starting Libravatar"]]
+[[!meta date="2018-04-02T18:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+As noted on the [official Libravatar
+blog](https://blog.libravatar.org/posts/Libravatar.org_is_shutting_down_on_2018-09-01/),
+I will be shutting the service down on 2018-09-01.
+
+It has been an [incredible
+journey](https://ourincrediblejourney.tumblr.com/) but Libravatar has been
+more-or-less in maintenance mode for 5 years, so it's somewhat outdated in
+its technological stack and I no longer have much interest in doing the work
+that's required every two years when migrating to a new version of
+Debian/Django. The free software community prides itself on transparency and
+so while it is a [difficult decision to
+make](https://blog.liw.fi/posts/2017/08/13/retiring_obnam/), it's time to
+be upfront with the users who depend on the project and admit that the
+project is not sustainable in its current form.
+
+# Many things worked well
+
+The most motivating aspect of running Libravatar has been the steady organic
+growth within the FOSS community. Both in terms of traffic (in March 2018,
+we served a total of 5 GB of images and 12 GB of `302` redirects to
+Gravatar), integration with other sites and projects (Fedora, Debian,
+Mozilla, Linux kernel, Gitlab, Liberapay and many others), but also in terms
+of users:
+
+![](/posts/looking-back-on-starting-libravatar/cumulative_user_accounts.png)
+
+In addition, I wanted to validate that it is possible to run a FOSS service
+without having to pay for anything out-of-pocket, so that it would be
+financially sustainable. Hosting and domain registrations have been entirely
+funded by the community, thanks to the generosity of sponsors and donors.
+Most of the donations came through [Gittip/Gratipay](https://gratipay.com/)
+and [Liberapay](https://liberapay.com/). While Gratipay has now [shut
+down](https://gratipay.news/the-end-cbfba8f50981), I encourage you to
+[support Liberapay](https://liberapay.com/Liberapay/donate).
+
+Finally, I made an effort to host Libravatar on FOSS infrastructure. That
+meant shying away from popular proprietary services in order to make a point
+that these convenient and well-known services aren't actually needed to run
+a successful project.
+
+# A few things didn't pan out
+
+On the other hand, there were also a few disappointments.
+
+A lot of the [libraries and plugins](https://wiki.libravatar.org/libraries/)
+never implemented [DNS federation](https://wiki.libravatar.org/api/). That
+was the key part of the protocol that made Libravatar a decentralized
+service but unfortunately the rest of the protocol was must easier to
+implement and therefore many clients stopped there.
+
+In addition, it turns out that while the DNS system is essentially a
+federated caching system for IP addresses, many DNS resolvers aren't doing a
+good job caching records and that created unnecessary latency for clients
+that chose to support DNS federation.
+
+The main disappointment was that very few people stepped up to run mirrors.
+I designed the service so that it could scale easily in the same way that
+Linux distributions have coped with increasing user bases: "ftp" mirrors. By
+making the actual serving of images only require Apache and `mod_rewrite`, I
+had hoped that anybody running Apache would be able to add an extra vhost to
+their setup and start serving our static files. A few people did sign up for
+this over the years, but it mostly didn't work. Right now, there are no
+third-party mirrors online.
+
+The other aspect that was a little disappointing was the lack of code
+contributions. There were a handful from friends in the first couple of
+months, but it's otherwise been a one-man project. I suppose that when a
+service works well for what people use it for, there are less opportunities
+for contributions (or less desire for it). The fact [dev environment
+setup](https://wiki.libravatar.org/development_environment/) was not the
+easiest could definitely be a contributing factor, but I've only ever had a
+single person ask about it so it's not clear that this was the limiting
+factor. Also, while our source code repository was hosted on Github and open
+for pull requests, we never even received a single drive-by contribution,
+hinting at the fact that Github is not the magic bullet for community
+contributions that many people think it is.
+
+Finally, it turns out that it is harder to delegate sysadmin work (you need
+root, for one thing) which consumes the majority of the time in a mature
+project. The general administration and maintenance of Libravatar has never
+moved on beyond its core team of one. I don't have a lot of ideas here, but
+I do want to join
+[others](http://scanlime.org/2011/05/cia-vc-service-is-down-indefinitely/)
+who have flagged this as an area for "future work" in terms of project
+sustainability.
+
+# Personal goals
+
+While I was originally inspired by [Evan Prodromou's
+vision](http://static.fsf.org/nosvn/Evan_Prodromou_-_identi.ca_-_LibrePlanet_2009.spx)
+of a suite of FOSS services to replace the proprietary stack that everybody
+relies on, starting a free software project is an inherently personal
+endeavour: the shape of the project will be influenced by the personal goals
+of the founder.
+
+When I started the project in 2011, I had a few goals:
+
+- I wanted to get experience with Python, Django, and Bazaar.
+
+- I wanted to speak at a [Kiwi PyCon](https://python.nz/) which [I
+  did](https://web.archive.org/web/20110808005944/http://nz.pycon.org/2010/talks/talk/72/),
+  [twice](https://www.youtube.com/watch?v=wfDhGAMPS1g), but my Libravatar
+  experience also led to speak at
+  [DebConf](http://penta.debconf.org/dc10_schedule///////events/682.en.html)
+  [twice](https://summit.debconf.org/debconf14/meeting/16/outsourcing-your-webapp-maintenance-to-debian/),
+  [linux.conf.au](https://www.youtube.com/watch?v=ufkYjt9HV64) and
+  [OSCON](https://conferences.oreilly.com/oscon/oscon2011/public/schedule/detail/18773).
+
+- Career-wise, I wanted to move beyond PHP development, which I successfully
+  achieved by working for a [new client](https://logger.paua.org.nz/) while
+  I was at [Catalyst](https://catalyst.net.nz) and then getting hired by
+  [Mozilla](https://mozilla.org) to work on
+  [Persona](https://en.wikipedia.org/wiki/Mozilla_Persona) until it was
+  de-staffed following a [Mozilla reorg](http://arewereorganizedyet.com/).
+
+This project personally taught me a lot of different technologies and
+allowed me to try out various web development techniques I wanted to explore
+at the time. That was intentional: I chose my technologies so that even if
+the project was a complete failure, I would still have gotten something out
+of it.
+
+# A few things I've learned
+
+I learned many things along the way, but here are a few that might be useful
+to other people starting a new free software project:
+
+- Speak about your new project at every user group you can. It's important
+  to validate that you can get other people excited about your project. User
+  groups are a great (and cheap) way to kickstart your word of mouth
+  marketing.
+
+- When speaking about your project, ask simple things of the attendees (e.g.
+  create an account today, join the IRC channel). Often people want to
+  support you but they can't commit to big tasks. Make sure to take
+  advantage of all of the support you can get, especially early on.
+
+- Having your friends join (or lurk on!) an IRC channel means it's vibrant,
+  instead of empty, and there are people around to field simple questions or
+  tell people to wait until you're around. Nobody wants to be alone in a
+  channel with a stranger.
+
+# Thank you
+
+I do want to sincerely thank all of the people who contributed to the
+project over the years:
+
+- Jonathan Harker and Brett Wilkins for productive hack sessions in the
+  Catalyst office.
+- Lars Wirzenius, Andy Chilton and Jesse Noller for graciously hosting the
+  service.
+- Christian Weiske, Melissa Draper, Thomas Goirand and Kai Hendry for
+  running mirrors on their servers.
+- Chris Forbes, fr33domlover, Kang-min Liu and strk for writing and
+  maintaining client libraries.
+- The Wellington Perl Mongers for their invaluable feedback on an early prototype.
+- The `#equifoss` group for their ongoing suppport and numerous ideas.
+- Nigel Babu and Melissa Draper for producing the first (and only) project
+  stikers, as well as Chris Cormack for spreading so effectively.
+- Adolfo Jayme, Alfredo Hernández, Anthony Harrington, Asier Iturralde
+  Sarasola, Besnik, Beto1917, Daniel Neis, Eduardo Battaglia, Fernando P
+  Silveira, Gabriele Castagneti, Heimen Stoffels, Iñaki Arenaza, Jakob
+  Kramer, Jorge Luis Gomez, Kristina Hoeppner, Laura Arjona Reina, Léo
+  POUGHON, Marc Coll Carrillo, Mehmet Keçeci, Milan Horák, Mitsuhiro
+  Yoshida, Oleg Koptev, Rodrigo Díaz, Simone G, Stanislas Michalak, Volkan
+  Gezer, VPablo, Xuacu Saturio, Yuri Chornoivan, yurchor and zapman for
+  making Libravatar speak so many languages.
+
+I'm sure I have forgotten people who have helped over the years. If your
+name belongs in here and it's not, please email me or leave a comment.
+
+[[!tag debian]] [[!tag nzoss]] [[!tag libravatar]] [[!tag indieweb]]
