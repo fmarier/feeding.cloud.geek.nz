@@ -50,6 +50,7 @@ world through the "host":
        -A FORWARD -d 10.0.3.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
        -A FORWARD -s 10.0.3.0/24 -j ACCEPT
        -A INPUT -d 224.0.0.251 -s 10.0.3.1 -j ACCEPT
+       -A INPUT -d 239.255.255.250 -s 10.0.3.1 -j ACCEPT
        -A INPUT -d 10.0.3.255 -s 10.0.3.1 -j ACCEPT
        -A INPUT -d 10.0.3.1 -s 10.0.3.0/24 -j ACCEPT
 
