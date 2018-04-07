@@ -50,7 +50,7 @@ work on my Debian and Ubuntu machines. Instead, I had to create a new
     
     exit 0
 
-and then make that script executable:
+and then **make that script executable** (otherwise it won't run):
 
     chmod a+x /etc/NetworkManager/dispatcher.d/pre-up.d/iptables
 
@@ -58,5 +58,9 @@ With this in place, I can put my iptables rules in the usual place
 (`/etc/network/iptables.up.rules` and `/etc/network/ip6tables.up.rules`) and
 use the handy `iptables-apply` and `ip6tables-apply` commands to test
 any changes to my firewall rules.
+
+Looking at `/var/log/iptables.log`, you'll be able to confirm that
+it is being called correctly for each network interface as they
+are started.
 
 [[!tag nzoss]] [[!tag debian]] [[!tag iptables]]
