@@ -1,0 +1,101 @@
+[[!meta title="Using a Kenwood TH-D72A with Pat on Linux and ax25"]]
+[[!meta date="2018-04-19T22:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here is how I managed to get my [Kenwood
+TH-D72A](http://www.kenwood.com/usa/com/amateur/th-d72a/) radio working with
+[Pat](http://getpat.io) on Linux using the built-in
+[TNC](https://en.wikipedia.org/wiki/Terminal_node_controller) and the
+[AX.25](http://linuxdocs.org/HOWTOs/AX25-HOWTO.html) mode
+
+# Installing Pat
+
+First of all, download and install the [latest Pat
+package](https://github.com/la5nta/pat/releases) from the GitHub project
+page.
+
+    dpkg -i pat_x.y.z_amd64.deb
+
+Then, follow the [installation
+instructions](https://github.com/la5nta/pat/wiki/AX25-Linux) for the AX.25
+mode and install the necessary packages:
+
+    apt install ax25-tools ax25-apps
+
+along with the systemd script that comes with Pat:
+
+    /usr/share/pat/ax25/install-systemd-ax25-unit.bash
+
+# Configuration
+
+Once the packages are installed, it's time to configure everything
+correctly:
+
+1. Power cycle the radio.
+2. Enable TNC in `packet12` mode (**band A***).
+3. Tune band A to [VECTOR
+   channel](https://vectorradio.ca/ops/frequency-list/) 420
+   (or [421](https://www.repeaterbook.com/repeaters/details.php?state_id=CA02&ID=3586)
+   if you can't reach `VA7EOC` on simplex).
+4. Put the following in `/etc/ax25/axports` (replacing `CALLSIGN` with your
+   own callsign):
+
+        wl2k    CALLSIGN    9600    128    4    Winlink
+
+5. Set `HBAUD` to **`1200`** in `/etc/default/ax25`.
+6. Download and compile the [`tmd710_tncsetup`
+   script](http://www.trinityos.com/HAM/CentosDigitalModes/usr/src/misc/D710/tmd710_tncsetup.c)
+   mentioned in a comment in `/etc/default/ax25`:
+
+        gcc -o tmd710_tncsetup tmd710_tncsetup.c
+
+7. Add the `tmd710_tncsetup` script in `/etc/default/ax25` and use these command
+   line parameters (`-B 0` specifies band A, use `-B 1` for band B):
+
+        tmd710_tncsetup -B 0 -S $DEV -b $HBAUD -s
+
+8. Start ax25 driver:
+
+        systemctl start ax25.service
+
+# Connecting to a winlink gateway
+
+To monitor what is being received and transmitted:
+
+    axlisten -cart
+
+Then create aliases like these in `~/.wl2k/config.json`:
+
+    {
+      "connect_aliases": {
+        "ax25-VA7EOC": "ax25://wl2k/VA7EOC-10",
+        "ax25-VE7LAN": "ax25://wl2k/VE7LAN-10"
+      },
+    }
+
+and use them to connect to your preferred Winlink gateways.
+
+# Troubleshooting
+
+If it doesn't look like ax25 can talk to the radio (i.e. the TX light
+doesn't turn ON), then it's possible that the `tmd710_tncsetup` script isn't
+being run at all, in which case the TNC isn't initialized correctly.
+
+On the other hand, if you can see the radio transmitting but are not seeing
+any **incoming packets** in `axlisten` then double check that the speed is
+set correctly:
+
+- `HBAUD` in `/etc/default/ax25` should be set to **1200**
+- line speed in `/etc/ax25/axports` should be set to **9600**
+- `SERIAL_SPEED` in `tmd710_tncsetup` should be set to **9600**
+- radio displays `packet12` in the top-left corner, not `packet96`
+
+If you can establish a connection, but it's very **unreliable**, make sure that
+you have enabled software flow control (the `-s` option in
+`tmd710_tncsetup`).
+
+If you can't connect to `VA7EOC-10` on UHF, you could also try the VHF BCFM
+repeater on Mt Seymour, [VE7LAN](http://www.bcfmca.bc.ca/lanvhf.php) (VECTOR
+channel 65).
+
+[[!tag ham]]
