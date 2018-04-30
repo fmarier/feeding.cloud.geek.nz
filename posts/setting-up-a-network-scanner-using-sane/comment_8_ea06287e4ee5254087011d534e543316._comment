@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="216.162.65.24"
+ claimedauthor="ajeh"
+ url="linuxlies.mee.nu"
+ subject="This still works well under Fedora 26 and Windows 7"
+ date="2018-04-29T15:10:44Z"
+ content="""
+The instructions in this blog are spot on: everything worked right away (well, except the FW rule, but this is a very minor issue) and I ended up doing some googling for the Windows SANE client and found SANEWinDS on source forge. Works standalone and from Open Office and I am happy camper.
+
+Thanks a lot for putting together this concise instruction, it saves my users from moving files around from the scanner sharing machine!
+"""]]
