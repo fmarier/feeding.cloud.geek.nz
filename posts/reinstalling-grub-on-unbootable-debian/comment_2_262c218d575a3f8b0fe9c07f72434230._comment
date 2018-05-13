@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="108.200.55.112"
+ claimedauthor="Toan Tran"
+ subject="Need one extra step on Debian Jessie"
+ date="2018-05-13T20:26:19Z"
+ content="""
+I followed your instruction but it did not work.  It turns out that I need to run one additional command, \"grub-mkconfig\" (because I have changed the boot partition).  After that, the computer was able to boot successfully.
+"""]]
