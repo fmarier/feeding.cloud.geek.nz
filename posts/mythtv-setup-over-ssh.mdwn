@@ -1,0 +1,30 @@
+[[!meta title="Running mythtv-setup over ssh"]]
+[[!meta date="2018-05-13T13:55:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to configure a remote [MythTV](https://www.mythtv.org/) server, I
+had to run `mythtv-setup` remotely over an ssh connection with X forwarding:
+
+    ssh -X mythtv@machine
+
+For most config options, I can either use the configuration menus inside of
+of `mythfrontend` (over a [vnc
+connection](https://feeding.cloud.geek.nz/posts/high-latency-vnc-tech-support/))
+or the *Settings* section of
+[MythWeb](https://www.mythtv.org/detail/mythweb), but some of the backend
+and tuner settings are only available through the main setup program.
+
+Unfortunately, `mythtv-setup` won't work over an ssh connection by default
+and prints the following error in the terminal:
+
+    $ mythtv-setup
+    ...
+    W  OpenGL: Could not determine whether Sync to VBlank is enabled.
+    Handling Segmentation fault
+    Segmentation fault (core dumped)
+
+The fix for this was to specify a different theme engine:
+
+    mythtv-setup -O ThemePainter=qt
+
+[[!tag mythtv]]
