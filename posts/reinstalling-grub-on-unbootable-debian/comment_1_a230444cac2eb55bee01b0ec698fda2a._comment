@@ -15,7 +15,7 @@ Or, if you'd rather just boot into the system and fix it from there, I use somet
   
     configfile (hd0,0)/boot/grub/menu.lst
 
-<press escape>
+(press escape)
 
 
 """]]
