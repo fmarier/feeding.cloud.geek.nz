@@ -16,7 +16,7 @@ VPN is a faster way to connect to sites that already know you.
 
 Here are my instructions for setting up [OpenVPN](http://openvpn.net/) on
 Debian / Ubuntu machines where the VPN server is located on a cheap
-[Linode](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff)
+[Linode](https://www.linode.com/)
 virtual private server. They are largely based on the
 [instructions found on the Debian wiki](https://wiki.debian.org/openvpn%20for%20server%20and%20client).
 
@@ -70,9 +70,7 @@ and generate the keys:
 
 # Configuring the server
 
-On my server, a
-[Linode VPS](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff)
-called `hafnarfjordur.fmarier.org`, I installed the
+On my server, called `hafnarfjordur.fmarier.org`, I installed the
 [openvpn package](http://packages.debian.org/stable/openvpn):
 
     apt-get install openvpn

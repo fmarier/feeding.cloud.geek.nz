@@ -4,13 +4,13 @@
 
 In order to [investigate a bug I was running into](https://github.com/mozilla/rr/issues/1537), I recently had to give
 [my colleague](http://robert.ocallahan.org/) ssh access to my laptop behind a firewall. The easiest way
-I found to do this was to create an account for him on my laptop and setup a
-[pagekite](https://pagekite.net/wiki/OpenSource/) frontend on my
-[Linode server](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff) and a pagekite backend on my laptop.
+I found to do this was to create an account for him on my laptop, and setup a
+[pagekite](https://pagekite.net/wiki/OpenSource/) frontend on my personal server
+and a pagekite backend on my laptop.
 
 # Frontend setup
 
-Setting up my Linode server in order to make the ssh service accessible and
+Setting up my server in order to make the ssh service accessible and
 proxy the traffic to my laptop was fairly straightforward.
 
 First, I had to install the

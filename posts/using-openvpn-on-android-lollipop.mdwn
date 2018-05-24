@@ -2,9 +2,7 @@
 [[!meta date="2015-04-03T16:45:00.000+13:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-I use my
-[Linode VPS](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff)
-as a VPN endpoint for my laptop when I'm using untrusted networks and I
+I use my personal server as a VPN endpoint for my laptop when I'm using untrusted networks and I
 wanted to do the same on my Android 5 (Lollipop) phone.
 
 It turns out that it's quite easy to do (doesn't require rooting your phone)

@@ -3,8 +3,7 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In order to get closer to my goal of reducing my dependence on centralized
-services, I decided to setup my own XMPP / Jabber server on a
-[Linode VPS](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff)
+services, I decided to setup my own XMPP / Jabber server on a server
 running [Debian wheezy](http://www.debian.org/releases/wheezy/). I chose
 [ejabberd](http://www.ejabberd.im/) since it was recommended by the
 [RTC Quick Start](http://www.rtcquickstart.org/) website and here's how I

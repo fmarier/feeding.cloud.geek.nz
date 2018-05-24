@@ -16,9 +16,7 @@ The first thing you need to do is get a new IPv6 address block (or "pool" as
 Linode calls it) from which you can allocate a single address to each VPN
 client that connects to the server.
 
-If you are using a
-[Linode VPS](https://www.linode.com/?r=4f882417aa3809652b227d6d9c25b2a0472c6cff),
-there are
+If you are using a [Linode VPS](https://www.linode.com/), there are
 [instructions on how to request a new IPv6 pool](https://www.linode.com/docs/networking/native-ipv6-networking#additional-ipv6-addresses).
 Note that you need to get an address block **between `/64` and `/112`**. A
 `/116` like Linode offers won't work in [OpenVPN](https://openvpn.net/). Thankfully, Linode
