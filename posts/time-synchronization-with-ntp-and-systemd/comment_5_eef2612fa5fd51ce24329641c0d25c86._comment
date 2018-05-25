@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="128.171.1.2"
+ claimedauthor="Robin"
+ subject="&quot;NTP synchronized&quot; => &quot;systemd-timesyncd.service active&quot;"
+ date="2018-05-25T03:01:43Z"
+ content="""
+NOTE: This commit changed the output:
+
+https://github.com/systemd/systemd/commit/3ec530a1890925efe347f739917dd4078c1b1942
+
+\"NTP synchronized\" => \"systemd-timesyncd.service active\"
+"""]]
