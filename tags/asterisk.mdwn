@@ -1,0 +1,4 @@
+[[!meta title="pages tagged asterisk"]]
+
+[[!inline pages="tagged(asterisk)" actions="no" archive="yes"
+feedshow=10]]
