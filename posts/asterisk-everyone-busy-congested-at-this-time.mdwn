@@ -1,0 +1,101 @@
+[[!meta title="Running mythtv-setup over ssh"]]
+[[!meta date="2018-06-10T18:55:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I was trying to figure out why I was getting a BUSY signal from
+[Asterisk](https://www.asterisk.org/) while trying to ring a SIP phone even
+though that phone was not in use.
+
+My asterisk setup looks like this:
+
+    phone 1 <--SIP--> asterisk 1 <==IAX2==> asterisk 2 <--SIP--> phone 2
+
+While I couldn't call SIP phone #2 from SIP phone #1, the reverse was
+working fine (ringing #1 from #2). So it's not a network/firewall problem.
+The two SIP phones can talk to one another through their respective Asterisk
+servers.
+
+This is the error message I could see on the second asterisk server:
+
+    $ asterisk -r
+    ...
+      == Using SIP RTP TOS bits 184
+      == Using SIP RTP CoS mark 5
+        -- Called SIP/12345
+        -- SIP/12345-00000002 redirecting info has changed, passing it to IAX2/iaxuser-6347
+        -- SIP/12345-00000002 is busy
+      == Everyone is busy/congested at this time (1:1/0/0)
+        -- Executing [12345@local:2] Goto("IAX2/iaxuser-6347", "in12345-BUSY,1") in new stack
+        -- Goto (local,in12345-BUSY,1)
+        -- Executing [in12345-BUSY@local:1] Hangup("IAX2/iaxuser-6347", "17") in new stack
+      == Spawn extension (local, in12345-BUSY, 1) exited non-zero on 'IAX2/iaxuser-6347'
+        -- Hungup 'IAX2/iaxuser-6347'
+
+where:
+
+- `12345` is the extension of SIP phone #2 on Asterisk server #2
+- `iaxuser` is the user account on server #2 that server #1 uses
+- `local` is the *context* that for incoming IAX calls on server #1
+
+This `Everyone is busy/congested at this time (1:1/0/0)` was surprising
+since looking at each SIP channel on that server showed nobody as busy:
+
+    asterisk2*CLI> sip show inuse
+    * Peer name               In use          Limit           
+    12345                     0/0/0           2               
+
+So I enabled the raw SIP debug output and got the following (edited for
+clarity):
+
+    asterisk2*CLI> sip set debug on
+    SIP Debugging enabled
+    
+      == Using SIP RTP TOS bits 184
+      == Using SIP RTP CoS mark 5
+    
+    INVITE sip:12345@192.168.0.4:2048;line=m2vlbuoc SIP/2.0
+    Via: SIP/2.0/UDP 192.168.0.2:5060
+    From: "Francois Marier" <sip:67890@192.168.0.2>
+    To: <sip:12345@192.168.0.4:2048;line=m2vlbuoc>
+    CSeq: 102 INVITE
+    User-Agent: Asterisk PBX
+    Contact: <sip:67890@192.168.0.2:5060>
+    Content-Length: 274
+    
+        -- Called SIP/12345
+    
+    <--- SIP read from UDP:192.168.0.4:2048 --->
+    SIP/2.0 100 Trying
+    Via: SIP/2.0/UDP 192.168.0.2:5060
+    From: "Francois Marier" <sip:67890@192.168.0.2>
+    To: <sip:12345@192.168.0.4:2048;line=m2vlbuoc>
+    CSeq: 102 INVITE
+    User-Agent: snom300
+    Contact: <sip:12345@192.168.0.4:2048;line=m2vlbuoc>
+    Content-Length: 0
+    
+    <------------->
+    --- (9 headers 0 lines) ---
+    
+    <--- SIP read from UDP:192.168.0.4:2048 --->
+    SIP/2.0 480 Do Not Disturb
+    Via: SIP/2.0/UDP 192.168.0.2:5060
+    From: "Francois Marier" <sip:67890@192.168.0.2>
+    To: <sip:12345@192.168.0.4:2048;line=m2vlbuoc>
+    CSeq: 102 INVITE
+    User-Agent: snom300
+    Contact: <sip:12345@192.168.0.4:2048;line=m2vlbuoc>
+    Content-Length: 0
+
+where:
+
+- `12345` is the extension of SIP phone #2 on Asterisk server #2
+- `67890` is the extension of SIP phone #1 on Asterisk server #2
+- `192.168.0.4` is the IP address of SIP phone #2
+- `192.168.0.1` is the IP address of Asterisk server #2
+
+From there, I can see that SIP phone #2 is returning a status of `408 Do Not
+Disturb`. That's what the problem was: **the phone itself was in DnD mode
+and set to reject all incoming calls**.
+
+[[!tag asterisk]] [[!tag nzoss]]
