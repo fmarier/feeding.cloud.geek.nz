@@ -1,4 +1,4 @@
-[[!meta title="Mysterious \"everybody is busy/congested at this time\" error in Asterisk"]]
+[[!meta title='Mysterious "everybody is busy/congested at this time" error in Asterisk']]
 [[!meta date="2018-06-10T18:55:00.000-07:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
