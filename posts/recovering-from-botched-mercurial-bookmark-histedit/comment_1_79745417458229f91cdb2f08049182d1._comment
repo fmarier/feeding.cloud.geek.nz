@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="50.100.182.11"
+ claimedauthor="Connor"
+ subject="comment 1"
+ date="2018-07-27T14:04:56Z"
+ content="""
+You should check out the evolve extension. `pip install hg-evolve`
+"""]]
