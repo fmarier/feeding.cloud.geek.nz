@@ -1,0 +1,92 @@
+[[!meta title="Recovering from a botched hg histedit on a mercurial bookmark"]]
+[[!meta date="2018-07-26T22:42:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If you are in the middle of a failed
+[Mercurial](https://www.mercurial-scm.org/) `hg histedit`, you can normally
+do `hg histedit --abort` to cancel it, though sometimes you also have to
+reach out for `hg update -C`. This is the equivalent of
+[git](https://git-scm.com/)'s `git rebase --abort` and it does what you'd
+expect.
+
+However, if you go ahead and finish the history rewriting and only notice
+problems later, it's not as straighforward. With git, I'd look into the
+[reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflog)
+(`git reflog`) for the previous value of the branch pointer and simply `git
+reset --hard` to that value. Done.
+
+Based on a [Stack Overflow
+answer](https://stackoverflow.com/questions/43742808/how-do-i-recover-from-a-botched-histedit-in-mercurial),
+I thought I could undo my botched histedit using:
+
+    hg unbundle ~/devel/mozilla-unified/.hg/strip-backup/47906774d58d-ae1953e1-backup.hg
+
+but it didn't seem to work. Maybe it doesn't work when using
+[bookmarks](https://www.mercurial-scm.org/wiki/Bookmarks).
+
+Here's what I ended up doing to fully revert my botched Mercurial
+[histedit](https://www.mercurial-scm.org/wiki/HisteditExtension). If you
+know of a simpler way to do this, feel free to leave a comment.
+
+# Collecting the commits to restore
+
+The first step was to collect all of the commits hashes I needed to restore.
+Luckily, I had sumitted my patch to
+[Try](https://wiki.mozilla.org/ReleaseEngineering/TryServer) before changing
+it and so I was able to look at the
+[pushlog](https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/hashstore-crash-1434206)
+to get all of the commits at once.
+
+If I didn't have that, I could also go to the [last bookmark I
+pushed](https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/hashstore-crash-1434206)
+and click on parent commits until I hit the [first one that's not
+mine](https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/ff8505d177b9).
+Then I could collect all of the commits using the browser's back button:
+
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/3c31c543e736>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/7ddfe5ae2fa6>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/c04b620136c7>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/2d1bf04fd155>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/e194843f5b7a>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/47906774d58d>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/f6a657bca64f>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/0d7a4e1c0079>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/976e25b49758>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/a1a382f2e773>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/b1565f3aacdb>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/3fdd157bb698>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/b1b041990577>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/220bf5cd9e2a>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/c927a5205abe>
+- <https://hg.mozilla.org/users/fmarier_mozilla.com/mozilla-unified/rev/4140cd9c67b0>
+
+For that last one, I had to click on the changeset commit hash link in order to
+get the commit hash instead of the name of the bookmark (`/rev/hashstore-crash-1434206`).
+
+# Recreating the branch from scratch
+
+This is what did to export patches for each commit and then re-import them
+one after the other:
+
+    for c in 3c31c543e736 7ddfe5ae2fa6 c04b620136c7 2d1bf04fd155 e194843f5b7a 47906774d58d f6a657bca64f 0d7a4e1c0079 976e25b49758 a1a382f2e773 b1565f3aacdb 3fdd157bb698 b1b041990577 220bf5cd9e2a c927a5205abe ; do hg export $c > ~/$c.patch ; done
+    hg up ff8505d177b9
+    hg bookmarks hashstore-crash-1434206-new
+    for c in 3c31c543e736 7ddfe5ae2fa6 c04b620136c7 2d1bf04fd155 e194843f5b7a 47906774d58d f6a657bca64f 0d7a4e1c0079 976e25b49758 a1a382f2e773 b1565f3aacdb 3fdd157bb698 b1b041990577 220bf5cd9e2a c927a5205abe 4140cd9c67b0 ; do hg import ~/$c.patch ; done
+
+# Copying a bookmark
+
+As an aside, if you want to make a copy of a bookmark before you do an `hg
+histedit`, it's not as simple as:
+
+    hg up hashstore-crash-1434206
+    hg bookmarks hashstore-crash-1434206-copy
+    hg up hashstore-crash-1434206
+
+While that seemed to work at the time, the `histedit` ended up messing with
+both of them.
+
+An alternative that works is to push the bookmark to another machine. That
+way if worse comes to worse, you can `hg clone` from there and `hg export`
+the commits you want to re-import using `hg import`.
+
+[[!tag mozilla]] [[!tag mercurial]]
