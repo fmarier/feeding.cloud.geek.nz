@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="sphink@fbb18a7777e2e0ef4afb7f7c664405c496334047"
+ nickname="sphink"
+ avatar="http://cdn.libravatar.org/avatar/d269c0228684029dedb75d73b81a64c3"
+ subject="alternative"
+ date="2018-07-28T00:09:31Z"
+ content="""
+I would expect that you would do the unbundle, then move your bookmark back to 'tip' (which should be last unbundled changeset). I would think:
+
+    hg unbundle ~/devel/mozilla-unified/.hg/strip-backup/47906774d58d-ae1953e1-backup.hg
+    hg bookmark -r tip hashstore-crash-1434206-recovered
+
+though I would probably do `hg log -G` to verify it's the one you want. Or `hg log --template list -G`.
+
+"""]]
