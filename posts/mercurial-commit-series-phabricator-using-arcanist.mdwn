@@ -1,0 +1,110 @@
+[[!meta title="Mercurial commit series in Phabricator using Arcanist"]]
+[[!meta date="2018-08-01T09:00:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[Phabricator](https://www.phacility.com/phabricator/) supports multi-commit
+patch series, but it's not yet obvious how to do it using Mercurial. So this
+the "hg" equivalent of [this blog post for git
+users](https://smacleod.ca/posts/commit-series-with-phabricator/ ).
+
+Note that other people have written [tools and
+plugins](https://groups.google.com/d/topic/mozilla.dev.platform/o9f2S0vO47k/discussion)
+to do the same thing and that [an official client is coming
+soon](https://groups.google.com/d/msg/mozilla.dev.platform/LhUq1EUvcfg/yLuTpAhvCAAJ).
+
+# Initial setup
+
+I'm going to assume that you've setup arcanist and gotten an account on the
+[Mozilla Phabricator instance](https://phabricator.services.mozilla.com/).
+If you haven't, follow this [video
+introduction](https://www.youtube.com/watch?reload=9&v=3e-eaeeIDXk) or the
+[excellent
+documentation](https://moz-conduit.readthedocs.io/en/latest/phabricator-user.html)
+for it (Bryce also wrote additionnal [instructions for Windows
+users](https://www.brycevandyk.com/setting-up-arcanist-for-mozilla-development-on-windows/)).
+
+# Make a list of commits to submit
+
+First of all, use `hg histedit` to make a list of the commits that are needed:
+
+    pick ee4d9e9fcbad 477986 Bug 1461515 - Split tracking annotations from tracki...
+    pick 5509b5db01a4 477987 Bug 1461515 - Fix and expand tracking annotation tes...
+    pick e40312debf76 477988 Bug 1461515 - Make TP test fail if it uses the wrong...
+
+# Create Phabricator revisions
+
+Now, create a Phabricator *revision* for each commit (in order, from
+earliest to latest):
+
+    ~/devel/mozilla-unified (annotation-list-1461515)$ hg up ee4d9e9fcbad
+    5 files updated, 0 files merged, 0 files removed, 0 files unresolved
+    (leaving bookmark annotation-list-1461515)
+
+    ~/devel/mozilla-unified (ee4d9e9)$ arc diff --no-amend
+    Linting...
+    No lint engine configured for this project.
+    Running unit tests...
+    No unit test engine is configured for this project.
+     SKIP STAGING  Phabricator does not support staging areas for this repository.
+    Created a new Differential revision:
+            Revision URI: https://phabricator.services.mozilla.com/D2484
+
+    Included changes:
+      M       modules/libpref/init/all.js
+      M       netwerk/base/nsChannelClassifier.cpp
+      M       netwerk/base/nsChannelClassifier.h
+      M       toolkit/components/url-classifier/Classifier.cpp
+      M       toolkit/components/url-classifier/SafeBrowsing.jsm
+      M       toolkit/components/url-classifier/nsUrlClassifierDBService.cpp
+      M       toolkit/components/url-classifier/tests/UrlClassifierTestUtils.jsm
+      M       toolkit/components/url-classifier/tests/mochitest/test_trackingprotection_bug1312515.html
+      M       xpcom/base/ErrorList.py
+
+    ~/devel/mozilla-unified (ee4d9e9)$ hg up 5509b5db01a4
+    3 files updated, 0 files merged, 0 files removed, 0 files unresolved
+
+    ~/devel/mozilla-unified (5509b5d)$ arc diff --no-amend
+    Linting...
+    No lint engine configured for this project.
+    Running unit tests...
+    No unit test engine is configured for this project.
+     SKIP STAGING  Phabricator does not support staging areas for this repository.
+    Created a new Differential revision:
+            Revision URI: https://phabricator.services.mozilla.com/D2485
+
+    Included changes:
+      M       toolkit/components/url-classifier/tests/UrlClassifierTestUtils.jsm
+      M       toolkit/components/url-classifier/tests/mochitest/test_trackingprotection_bug1312515.html
+      M       toolkit/components/url-classifier/tests/mochitest/trackingRequest.html
+
+    ~/devel/mozilla-unified (5509b5d)$ hg up e40312debf76
+    2 files updated, 0 files merged, 0 files removed, 0 files unresolved
+
+    ~/devel/mozilla-unified (e40312d)$ arc diff --no-amend
+    Linting...
+    No lint engine configured for this project.
+    Running unit tests...
+    No unit test engine is configured for this project.
+     SKIP STAGING  Phabricator does not support staging areas for this repository.
+    Created a new Differential revision:
+            Revision URI: https://phabricator.services.mozilla.com/D2486
+
+    Included changes:
+      M       toolkit/components/url-classifier/tests/mochitest/classifiedAnnotatedPBFrame.html
+      M       toolkit/components/url-classifier/tests/mochitest/test_privatebrowsing_trackingprotection.html
+
+# Link all revisions together
+
+In order to ensure that these commits depend on one another, lick on that
+last [`phabricator.services.mozilla.com`
+link](https://phabricator.services.mozilla.com/D2486), then click "Related
+Revisions" then "Edit Parent Revisions" in the right-hand side bar and then
+add the previous commit
+([D2485](https://phabricator.services.mozilla.com/D2485) in this example).
+
+Then go to [that parent
+revision](https://phabricator.services.mozilla.com/D2485) and repeat the
+same steps to set [D2484](https://phabricator.services.mozilla.com/D2484) as
+its parent.
+
+[[!tag mozilla]] [[!tag mercurial]]
