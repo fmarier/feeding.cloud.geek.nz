@@ -95,7 +95,7 @@ earliest to latest):
 
 # Link all revisions together
 
-In order to ensure that these commits depend on one another, lick on that
+In order to ensure that these commits depend on one another, click on that
 last [`phabricator.services.mozilla.com`
 link](https://phabricator.services.mozilla.com/D2486), then click "Related
 Revisions" then "Edit Parent Revisions" in the right-hand side bar and then
@@ -106,5 +106,58 @@ Then go to [that parent
 revision](https://phabricator.services.mozilla.com/D2485) and repeat the
 same steps to set [D2484](https://phabricator.services.mozilla.com/D2484) as
 its parent.
+
+# Amend one of the commits
+
+As it turns out my first patch wasn't perfect and I needed to amend the
+middle commit to fix some test failures that came up after [pushing to
+Try](https://treeherder.mozilla.org/#/jobs?repo=try&revision=5ec6dd24172c11d5fc498dfcc9e5a0287ade312e).
+I ended up with the following commits (as viewed in `hg histedit`):
+
+    pick ee4d9e9fcbad 477986 Bug 1461515 - Split tracking annotations from tracki...
+    pick c24f4d9e75b9 477992 Bug 1461515 - Fix and expand tracking annotation tes...
+    pick 1840f68978a7 477993 Bug 1461515 - Make TP test fail if it uses the wrong...
+
+which highlights that the last two commits changed and that I would have two
+revisions ([D2485](https://phabricator.services.mozilla.com/D2485) and
+[D2486](https://phabricator.services.mozilla.com/D2486)) to update in
+Phabricator.
+
+However, since the only reason why the third patch has a different commit
+hash is because its parent changed, theres's no need to upload it again to
+Phabricator. [Lando](https://lando.services.mozilla.com/) doesn't care about
+the parent **hash** and relies instead on the parent **revision ID**. It
+essentially applies diffs one at a time.
+
+The trick was to pass the `--update DXXXX` argument to `arc diff`:
+
+    ~/devel/mozilla-unified (annotation-list-1461515)$ hg up c24f4d9e75b9
+    2 files updated, 0 files merged, 0 files removed, 0 files unresolved
+    (leaving bookmark annotation-list-1461515)
+
+    ~/devel/mozilla-unified (c24f4d9)$ arc diff --no-amend --update D2485
+    Linting...
+    No lint engine configured for this project.
+    Running unit tests...
+    No unit test engine is configured for this project.
+     SKIP STAGING  Phabricator does not support staging areas for this repository.
+    Updated an existing Differential revision:
+            Revision URI: https://phabricator.services.mozilla.com/D2485
+
+    Included changes:
+      M       browser/base/content/test/general/trackingPage.html
+      M       netwerk/test/unit/test_trackingProtection_annotateChannels.js
+      M       toolkit/components/antitracking/test/browser/browser_imageCache.js
+      M       toolkit/components/antitracking/test/browser/browser_subResources.js
+      M       toolkit/components/antitracking/test/browser/head.js
+      M       toolkit/components/antitracking/test/browser/popup.html
+      M       toolkit/components/antitracking/test/browser/tracker.js
+      M       toolkit/components/url-classifier/tests/UrlClassifierTestUtils.jsm
+      M       toolkit/components/url-classifier/tests/mochitest/test_trackingprotection_bug1312515.html
+      M       toolkit/components/url-classifier/tests/mochitest/trackingRequest.html
+
+Note that changing the commit message will not automatically update the
+revision details in Phabricator. This has to be done manually in the Web UI
+if required.
 
 [[!tag mozilla]] [[!tag mercurial]]
