@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ ip="195.166.157.111"
+ claimedauthor="Standard8"
+ subject="Missing a useful part"
+ date="2018-08-02T13:31:35Z"
+ content="""
+I think you're missing one useful part to commit series updates.
+
+It is unclear if you let it prompt you for the commit messages & data when you upload, but if you do, then you can follow this slightly easier process.
+
+* upload first patch with `arc diff`, set the reviewer and bug number.
+* Note the \"Dnnnn\" number.
+* upload the second patch, again with `arc diff`. Also set the reviewer and bug number, but this time add to the summary \"Depends on Dnnnn\" (where Dnnnn is the id of the previous patch).
+
+Then you can avoid linking the commits in the phabricator UI.
+
+Also when you then need to update a diff, you can simply do `arc diff` to generate the new version as it already knows what it depends on.
+"""]]
