@@ -140,6 +140,11 @@ and fixing the log rotation configuration by adding the following to
 
     create 644 root adm
 
+I usually create these empty files to silence logcheck errors:
+
+    touch /var/log/mail.{err,warn}
+    chown root:adm /var/log/mail.{err,warn}
+
 I also modify the main logcheck configuration file
 (`/etc/logcheck/logcheck.conf`):
 
