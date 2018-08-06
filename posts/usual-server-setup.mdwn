@@ -86,7 +86,6 @@ and end up with the following settings in `/etc/ssh/sshd_config` (jessie):
     PermitRootLogin no
 
     AcceptEnv LANG LC_* TZ
-    LogLevel VERBOSE
     AllowGroups sshuser
 
 On those servers where I need [duplicity/paramiko to
