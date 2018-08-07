@@ -122,12 +122,13 @@ go through a similar process.
 
 # Testing the main site
 
-* Hack my local `/etc/hosts` file to point to the new server's IP address:
+* Hack my local `/etc/hosts` file to point to the new server's IPv4 address:
 
-      xxx.xxx.xxx.xxx www.libravatar.org stats.libravatar.org cdn.libravatar.org
+      xxx.xxx.xxx.xxx www.libravatar.org stats.libravatar.org cdn.libravatar.org seccdn.libravatar.org
 
 * Test all functionality on the new site.
-* If testing is successful, update DNS to point to the new server with a short TTL (in case we need to revert).
+* Do a basic version of the previous test using IPv6.
+* If testing is successful, update DNS A and AAAA records to point to the new server with a short TTL (in case we need to revert).
 
 * Enable the proxy config on the old server.
 * Hack my local `/etc/hosts` file to point to the old server's IP address.
