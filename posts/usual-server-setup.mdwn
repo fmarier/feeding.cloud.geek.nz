@@ -222,6 +222,8 @@ To keep the system clock accurate and increase the amount of entropy
 available to the server, I install the above packages and add the `tpm_rng`
 module to `/etc/modules`.
 
+I also set the server timezone to **UTC** using `dpkg-reconfigure tzdata`.
+
 # Preventing mistakes
 
     apt install molly-guard safe-rm sl
