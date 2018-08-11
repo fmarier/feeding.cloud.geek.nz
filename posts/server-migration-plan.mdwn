@@ -133,7 +133,7 @@ go through a similar process.
 * Enable the proxy config on the old server.
 * Hack my local `/etc/hosts` file to point to the old server's IP address.
 * Test basic functionality going through the proxy.
-* Remove local `/etc/hosts/` hacks.
+* Remove local `/etc/hosts` hacks.
 
 # Re-enable mirror sync
 
