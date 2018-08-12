@@ -116,7 +116,9 @@ go through a similar process.
   * On the new server:
 
         chmod a+w /var/lib/libravatar/avatar
+        rm -rf /var/lib/libravatar/avatar/*
         chmod a+w /var/lib/libravatar/user
+        rm -rf /var/lib/libravatar/user/*
 
   * From laptop:
 
