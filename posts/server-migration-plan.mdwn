@@ -94,9 +94,24 @@ go through a similar process.
 
 * [Tweet](https://twitter.com/libravatar/status/364659172983308288) and [dent](https://identi.ca/libravatar/note/UFBI9ne8SsOftkYlSKPHQQ) about the upcoming migration.
 
-* Enable the static file config on the old server (disabling the Django app).
-* Disable pgbouncer to ensure that Django cannot access postgres anymore.
-* Copy the database from the old server and restore it on the new server **making sure it's in the UTF8 encoding**.
+* Enable the static file config on the old server (disabling the Django app):
+
+      cd /etc/apache2/
+      mv sites-enabled sites-enabled.django
+      mv sites-enabled.static sites-enabled
+      apache2ctl configtest
+      systemctl restart apache2.service
+
+* Disable pgbouncer to ensure that Django cannot access postgres anymore:
+
+      systemctl stop pgbouncer.service
+
+* Copy the database from the old server and restore it on the new server **making sure it's in the UTF8 encoding**:
+
+      dropdb libravatar
+      createdb -O djangouser -E utf8 libravatar
+      pg_restore -d libravatar libravatar20180812.pg
+
 * Copy `/var/lib/libravatar` from the old server to the new one.
   * On the new server:
 
@@ -131,6 +146,13 @@ go through a similar process.
 * If testing is successful, update DNS A and AAAA records to point to the new server with a short TTL (in case we need to revert).
 
 * Enable the proxy config on the old server.
+
+      cd /etc/apache2/
+      mv sites-enabled sites-enabled.static
+      mv sites-enabled.proxy/ sites-enabled
+      apache2ctl configtest
+      systemctl restart apache2.service
+
 * Hack my local `/etc/hosts` file to point to the old server's IP address.
 * Test basic functionality going through the proxy.
 * Remove local `/etc/hosts` hacks.
