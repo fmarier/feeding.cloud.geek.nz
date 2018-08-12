@@ -122,10 +122,10 @@ go through a similar process.
 
   * From laptop:
 
-        rsync -a -H -v husavik.libravatar.org:/var/lib/libravatar/avatar .
-        rsync -a -H -v husavik.libravatar.org:/var/lib/libravatar/user .
-        rsync -a -H -v avatar/* selfoss.libravatar.org:/var/lib/libravatar/avatar/
-        rsync -a -H -v user/* selfoss.libravatar.org:/var/lib/libravatar/avatar/
+        rsync -a -H -v old.libravatar.org:/var/lib/libravatar/avatar .
+        rsync -a -H -v old.libravatar.org:/var/lib/libravatar/user .
+        rsync -a -H -v avatar/* new.libravatar.org:/var/lib/libravatar/avatar/
+        rsync -a -H -v user/* new.libravatar.org:/var/lib/libravatar/user/
 
   * On the new server:
 
