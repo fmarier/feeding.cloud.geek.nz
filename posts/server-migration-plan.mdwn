@@ -131,6 +131,7 @@ go through a similar process.
 
         chmod go-w /var/lib/libravatar/avatar
         chmod go-w /var/lib/libravatar/user
+        chown -R root:root /var/lib/libravatar/avatar/* /var/lib/libravatar/user/*
 
 # Disable mirror sync
 
