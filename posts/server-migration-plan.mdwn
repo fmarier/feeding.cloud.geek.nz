@@ -135,8 +135,8 @@ go through a similar process.
 
 # Disable mirror sync
 
-* Log into each mirror and comment out the sync cron jobs in `/etc/cron.d/libravatar-slave`.
-* Make sure mirrors are no longer able to connect to the old server by deleting `/var/lib/libravatar/master/.ssh/authorized_keys` on the old server.
+* Log into each mirror and comment out the update cron jobs in `/etc/cron.d/libravatar-slave`.
+* Make sure mirrors are no longer able to connect to the old server by moving `/var/lib/libravatar/master/.ssh/authorized_keys` to the new server and removing it from the old server.
 
 # Testing the main site
 
