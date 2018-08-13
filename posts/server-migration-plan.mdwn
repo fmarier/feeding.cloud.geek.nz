@@ -92,7 +92,7 @@ go through a similar process.
 
 # Migrating servers
 
-* [Tweet](https://twitter.com/libravatar/status/364659172983308288) and [dent](https://identi.ca/libravatar/note/UFBI9ne8SsOftkYlSKPHQQ) about the upcoming migration.
+* [Tweet](https://twitter.com/libravatar/status/1028767128227205120) and [dent](https://identi.ca/libravatar/note/UFBI9ne8SsOftkYlSKPHQQ) about the upcoming migration.
 
 * Enable the static file config on the old server (disabling the Django app):
 
