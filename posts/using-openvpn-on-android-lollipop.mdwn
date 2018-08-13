@@ -57,8 +57,7 @@ Authentication/Encryption:
 - Use TLS Authentication: `YES`
 - TLS Auth File: `ta.key`
 - TLS Direction: `1`
-- Encryption cipher: `AES-256-CBC`
-- Packet authentication: `SHA384` (**not** `SHA-384`)
+- Encryption cipher: `AES-256-GCM`
 
 Advanced:
 

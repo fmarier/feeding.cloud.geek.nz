@@ -93,9 +93,10 @@ and set the following in `/etc/openvpn/server.conf` (which includes recommendati
     push "dhcp-option DNS 74.207.241.5"
     push "dhcp-option DNS 74.207.242.5"
     tls-auth ta.key 0
-    tls-cipher DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-CAMELLIA256-SHA:DHE-RSA-AES256-SHA:DHE-RS
-    cipher AES-256-CBC
-    auth SHA384
+    tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384
+    tls-version-min 1.2
+    cipher AES-256-GCM
+    ncp-disable
     user nobody
     group nogroup
 
@@ -159,8 +160,7 @@ then click the "Avanced" button and set the following:
 * General
    * Use LZO data compression: `YES`
 * Security
-   * Cipher: `AES-256-CBC`
-   * HMAC Authentication: `SHA-384`
+   * Cipher: `AES-256-GCM`
 * TLS Authentication
    * Server Certificate Check: `Verify name exactly`
    * Subject Match: `server`

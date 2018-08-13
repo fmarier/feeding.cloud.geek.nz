@@ -58,8 +58,7 @@ Here is the config I successfully used to connect to my server:
     ca ca.crt
     cert iphone.crt
     key iphone.key
-    cipher AES-256-CBC
-    auth SHA384
+    cipher AES-256-GCM
     comp-lzo yes
     proto udp
     tls-remote server
@@ -92,7 +91,6 @@ connection:
 - **Advanced**
    - add the following extra OpenVPN configuration commands:
 
-         cipher AES-256-CBC
-         auth SHA384
+         cipher AES-256-GCM
 
 [[!tag openvpn]] [[!tag ios]] [[!tag osx]]
