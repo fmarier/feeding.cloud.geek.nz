@@ -280,7 +280,7 @@ I enable these in `/etc/apache2/conf-enabled/security.conf`:
 
 I also create a new `/etc/apache2/conf-available/servername.conf` which contains:
 
-    ServerName machine_hostname
+    ServerName machine_hostname.example.com
 
 and then run:
 
