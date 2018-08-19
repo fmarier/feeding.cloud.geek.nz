@@ -77,6 +77,23 @@ If you're not using DHCP, then you simply need to put this in your `/etc/resolv.
 
     nameserver 127.0.0.1
 
+or on more recent distros, the following in `/etc/systemd/resolved.conf`:
+
+    [Resolve]
+    DNS=127.0.0.1
+    DNSSEC=no
+
+Yes, you need `DNSSEC=no` because otherwise it will break insecure
+delegations and you'll see messages like this one in your logs:
+
+    systemd-resolved[1161]: DNSSEC validation failed for question dyn.fmarier.org IN SOA: no-signature
+
+You can test that
+[systemd-resolved](https://www.freedesktop.org/wiki/Software/systemd/resolved/)
+is configured properly using:
+
+    systemd-resolve --status
+
 ## Testing DNSSEC resolution
 
 Once everything is configured properly, the best way I found to test that this setup was actually working is to use a web browser to visit these sites:
