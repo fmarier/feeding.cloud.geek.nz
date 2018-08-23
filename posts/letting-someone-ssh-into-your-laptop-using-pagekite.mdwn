@@ -88,4 +88,4 @@ before restarting the pagekite daemon using:
 
     systemctl restart pagekite
 
-[[!tag mozilla]] [[!tag debian]] [[!tag sysadmin]] [[!tag ssh]] [[!tag nzoss]]
+[[!tag mozilla]] [[!tag debian]] [[!tag sysadmin]] [[!tag ssh]] [[!tag nzoss]] [[!tag pagekite]]
