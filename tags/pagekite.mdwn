@@ -1,0 +1,4 @@
+[[!meta title="pages tagged pagekite"]]
+
+[[!inline pages="tagged(pagekite)" actions="no" archive="yes"
+feedshow=10]]
