@@ -37,6 +37,18 @@ I can also trigger it manually using the following shortcut defined in my `~/.i3
 
     bindsym Ctrl+Mod1+l exec xautolock -locknow
 
+# Wallpaper
+
+To set the wallpaper, I use [feh](https://packages.debian.org/stretch/feh). The first step is to run it once:
+
+    feh --bg-scale /usr/share/images/desktop-base/desktop-grub.png
+
+so that it generates a script for itself at `~/.fehbg`.
+
+Then you can add that to your startup script or to `~/.i3/config`:
+
+    exec --no-startup-id ~/.fehbg
+
 # Keyboard shortcuts
 
 While keyboard shortcuts can be configured in GNOME, they don't work within i3, so I added a few more bindings to my `~/.i3/config`:
