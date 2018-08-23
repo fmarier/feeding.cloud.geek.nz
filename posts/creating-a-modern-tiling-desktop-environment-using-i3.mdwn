@@ -75,6 +75,10 @@ Since I run lots of things in the background, I have set my laptop to avoid susp
 
     HandleLidSwitch=lock
 
+though you might want to have the laptop suspend if it's running on battery, using the following setting instead:
+
+    HandleLidSwitchExternalPower=lock
+
 Instead, when I want to suspend to ram, I use the following keyboard shortcut:
 
     bindsym Ctrl+Mod1+s exec /home/francois/bin/s2ram
