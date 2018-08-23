@@ -86,6 +86,6 @@ as well as removing the following lines from `/etc/pagekite.d/10_account.rc`:
 
 before restarting the pagekite daemon using:
 
-    service pagekite restart
+    systemctl restart pagekite
 
 [[!tag mozilla]] [[!tag debian]] [[!tag sysadmin]] [[!tag ssh]] [[!tag nzoss]]
