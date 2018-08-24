@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="172.221.247.189"
+ claimedauthor="B. Shea"
+ subject="LetsEncrypt"
+ date="2018-08-24T17:20:44Z"
+ content="""
+Looking for good install guide. The only drawback I see in reading your directions (I haven't done this yet) is the fact that you are concatenating key/bundle/csr to static file - and LE certs expire quickly. You will have to repeat this every 90 days. I suppose I could come up with a root cronjob to do it as a certbot cron.d 'post-renew' job, but I am guessing there is a better way.. if I find I will post again.
+"""]]
