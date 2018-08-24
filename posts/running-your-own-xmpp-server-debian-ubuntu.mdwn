@@ -46,6 +46,8 @@ and then restart the service:
 
     systemctl restart ejabberd.service
 
+I wrote a [cronjob to renew this certificate automatically using certbot](https://feeding.cloud.geek.nz/posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/).
+
 ## StartSSL
 
 I have also used [StartSSL](https://startssl.com) successfully. This is how I generated the CSR
