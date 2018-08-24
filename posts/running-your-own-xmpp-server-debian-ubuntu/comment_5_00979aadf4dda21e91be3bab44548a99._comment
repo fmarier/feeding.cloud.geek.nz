@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: LetsEncrypt"
+ date="2018-08-24T21:24:56Z"
+ content="""
+> I suppose I could come up with a root cronjob to do it
+
+Indeed, that's exactly how I have my letsencrypt certs set to [renew automatically using certbot](https://feeding.cloud.geek.nz/posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/).
+"""]]
