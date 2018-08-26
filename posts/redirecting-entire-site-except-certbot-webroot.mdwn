@@ -40,7 +40,7 @@ Here are the relevant portions of `/etc/letsencrypt/renewal/www.libravatar.org.c
     authenticator = webroot
     account = 
     
-    [[webroot_map]]
+    \[[webroot_map]]
     libravatar.org = /var/www/acme
     www.libravatar.org = /var/www/acme
 
