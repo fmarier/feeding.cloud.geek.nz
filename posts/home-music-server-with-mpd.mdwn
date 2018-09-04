@@ -33,7 +33,14 @@ with a pulseaudio one:
     audio_output {
        type    "pulse"
        name    "Pulseaudio Output"
+       server  "127.0.0.1"
     }
+
+and exposing pulseaudio to localhost via `/etc/pulse/default.pa`:
+
+    ### Network access (may be configured with paprefs, so leave this commented
+    ### here if you plan to use paprefs)
+    load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
 
 In order for the automatic detection (zeroconf) of your music server
 to work, you need to [prevent systemd from creating the network
