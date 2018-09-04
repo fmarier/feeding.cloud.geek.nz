@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ ip="73.221.3.163"
+ claimedauthor="Andrew Schwartzmeyer"
+ url="https://andschwa.com"
+ subject="Trimming breaks Google Play Music web app"
+ date="2018-09-04T18:41:31Z"
+ content="""
+Ah, I found some breakage with just:
+
+```
+network.http.referer.XOriginTrimmingPolicy = 2
+```
+
+With this set, the Google Play Music web app errors with \"couldn't fetch recommendations, please try again\" (found the idea that it might by my referer policy [here](https://productforums.google.com/forum/#!topic/play/AvyGY6MHo7Q)).
+"""]]
