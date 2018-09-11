@@ -182,4 +182,24 @@ Finally, to ensure that your TLS settings are reasonable, use this
 [automated tool](https://xmpp.net/) to test both the client-to-server (c2s)
 and the server-to-server (s2s) flows.
 
+# Spam protection
+
+If you start having problems with spammers sending messages or subscription
+requests to your users, you can whitelist the servers that are allowed to
+federate with yours by putting the following in
+`/etc/ejabberd/ejabberd.yml`:
+
+    acl:
+      trusted_servers:
+        server:
+          - "cheogram.com"
+          - "conference.soprani.ca"
+          - "conversations.im"
+
+    access:
+      s2s:
+        trusted_servers: allow
+        all: deny
+    s2s_access: s2s
+
 [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag xmpp]] [[!tag letsencrypt]] [[!tag ejabberd]]
