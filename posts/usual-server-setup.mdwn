@@ -117,7 +117,7 @@ and add a timeout for root sessions by putting this in `/root/.bash_profile`:
 # Security checks
 
     apt install logcheck logcheck-database fcheck tiger debsums systemd-coredump rkhunter
-    apt remove --purge john john-data rpcbind tripwire unhide unhide.rb
+    apt purge john john-data rpcbind tripwire unhide unhide.rb
 
 Logcheck is the main tool I use to keep an eye on log files, which is why I
 add a few additional log files to the default list in
