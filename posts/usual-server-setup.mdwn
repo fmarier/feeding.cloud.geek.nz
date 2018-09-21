@@ -116,7 +116,7 @@ and add a timeout for root sessions by putting this in `/root/.bash_profile`:
 
 # Security checks
 
-    apt install logcheck logcheck-database fcheck tiger debsums corekeeper mcelog rkhunter
+    apt install logcheck logcheck-database fcheck tiger debsums systemd-coredump mcelog rkhunter
     apt remove --purge john john-data rpcbind tripwire unhide unhide.rb
 
 Logcheck is the main tool I use to keep an eye on log files, which is why I
@@ -216,7 +216,7 @@ before reloading these settings using `sysctl -p`.
 
 # Entropy and timekeeping
 
-    apt install rng-tools ntp
+    apt install rng-tools chrony
 
 To keep the system clock accurate and increase the amount of entropy
 available to the server, I install the above packages and add the `tpm_rng`
