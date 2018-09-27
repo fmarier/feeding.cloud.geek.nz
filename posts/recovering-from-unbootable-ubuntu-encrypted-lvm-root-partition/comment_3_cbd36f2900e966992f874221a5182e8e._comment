@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="2607:fea8:a51f:f592::2"
+ claimedauthor="JC"
+ subject="Got mine back with a Btrfs root"
+ date="2018-09-27T20:41:52Z"
+ content="""
+I got the same problem after upgrading to 18.04, I don't use LVM but Btrfs, all I had to change was
+
+```apt install btrfs-progs```
+
+Everything else was exactly the same.
+
+Thank you.
+"""]]

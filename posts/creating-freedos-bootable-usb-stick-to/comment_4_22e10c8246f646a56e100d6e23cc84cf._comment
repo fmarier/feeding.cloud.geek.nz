@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="2a02:1810:3f24:700:fdf1:b732:6e67:2697"
+ claimedauthor="Hamid"
+ subject="Awesome tutorial"
+ date="2018-09-25T07:10:16Z"
+ content="""
+I was looking into this so bad. My Bios update images are big enough to not fit into the default floppy or usb installer of freedos specially that I want to boot it over pxe. This definitely helped me.
+Thank you.
+"""]]
