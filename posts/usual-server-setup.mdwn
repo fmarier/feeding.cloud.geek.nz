@@ -33,6 +33,16 @@ the default `/etc/etckeeper/etckeeper.conf`:
 - turn off daily auto-commits
 - turn off auto-commits before package installs
 
+and then put these config files in `/etc/.gitignore`:
+
+    /aliases.db
+    /group-
+    /gshadow-
+    /passwd-
+    /shadow-
+    /subgid-
+    /subuid-
+
 To get more control over the various packages I install, I change the
 default debconf level to medium:
 
