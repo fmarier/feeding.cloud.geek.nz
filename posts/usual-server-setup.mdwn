@@ -43,6 +43,11 @@ and then put these config files in `/etc/.gitignore`:
     /subgid-
     /subuid-
 
+and this in `/etc/.git/config`:
+
+    [commit]
+        gpgsign = false
+
 To get more control over the various packages I install, I change the
 default debconf level to medium:
 
