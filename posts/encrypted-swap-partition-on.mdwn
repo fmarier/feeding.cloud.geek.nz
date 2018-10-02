@@ -3,33 +3,22 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 The swap partition can hold a lot of unencrypted confidential information and the fact that it persists after shutting down the computer can be a problem.  
   
-Encrypting a swap partition however is slightly tricky if one wants to also support suspend-to-disk (also called hibernation). Here's a procedure that worked for me on both Debian Lenny and Ubuntu 7.10 (Gutsy Gibbon):  
+Encrypting a swap partition however is slightly tricky if one wants to also support suspend-to-disk (also called hibernation). Here's a procedure that worked for me on both Debian Stretch and Ubuntu 18.04 (Bionic Beaver):
   
 1. Install the cryptsetup package:  
 
-       apt-get install cryptsetup
-
-1. Setup the encrypted partition as root:  
-
-       swapoff -a
-       cryptsetup -h sha256 -c aes-cbc-essiv:sha256 -s 256 luksFormat /dev/hda2
-       cryptsetup luksOpen /dev/hda2 cswap
-       mkswap /dev/mapper/cswap
+       apt install cryptsetup
 
 2. Add this line to /etc/crypttab:  
 
-       cswap /dev/hda2 none swap,luks,timeout=30
+       sda2_crypt /dev/sda2 /dev/urandom cipher=aes-xts-plain64,size=256,swap,discard
 
 3. Set the swap partition to be this in /etc/fstab:  
 
-       /dev/mapper/cswap none swap sw 0 0
+       /dev/mapper/sda2_crypt none swap sw 0 0
 
-4. Configure uswsusp to use **/dev/mapper/cswap** and **write unencrypted data**  
+You will of course want to replace `/dev/sda2` with the partition that currently holds your unencrypted swap.  
 
-       dpkg-reconfigure -plow uswsusp
-
-You will of course want to replace `/dev/hda2` with the partition that currently holds your unencrypted swap.  
-  
-(This is loosely based on a similar [procedure for Ubuntu 6.10](http://www.c3l.de/linux/howto-completly-encrypted-harddisk-including-suspend-to-encrypted-disk-with-ubuntu-6.10-edgy-eft.html).)
+This is loosely based on a similar [procedure for Ubuntu 6.10](http://www.c3l.de/linux/howto-completly-encrypted-harddisk-including-suspend-to-encrypted-disk-with-ubuntu-6.10-edgy-eft.html), but I don't use suspend-to-disk and so I simplified the setup and use a random encryption key instead of a passphrase.
 
 [[!tag debian]] [[!tag security]] [[!tag ubuntu]] [[!tag luks]]
