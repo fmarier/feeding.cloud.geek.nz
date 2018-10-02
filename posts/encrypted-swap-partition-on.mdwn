@@ -5,15 +5,15 @@ The swap partition can hold a lot of unencrypted confidential information and th
   
 Encrypting a swap partition however is slightly tricky if one wants to also support suspend-to-disk (also called hibernation). Here's a procedure that worked for me on both Debian Stretch and Ubuntu 18.04 (Bionic Beaver):
   
-1. Install the cryptsetup package:  
+1. Install the [cryptsetup package](https://packages.debian.org/stable/cryptsetup):
 
        apt install cryptsetup
 
-2. Add this line to /etc/crypttab:  
+2. Add this line to `/etc/crypttab`:
 
        sda2_crypt /dev/sda2 /dev/urandom cipher=aes-xts-plain64,size=256,swap,discard
 
-3. Set the swap partition to be this in /etc/fstab:  
+3. Set the swap partition to be this in `/etc/fstab`:
 
        /dev/mapper/sda2_crypt none swap sw 0 0
 
