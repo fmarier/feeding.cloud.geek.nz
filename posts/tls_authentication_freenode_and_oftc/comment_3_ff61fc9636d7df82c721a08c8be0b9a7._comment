@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="185.220.102.6"
+ claimedauthor="austere"
+ subject="tls authentication freenode and oftc"
+ date="2018-10-08T00:55:14Z"
+ content="""
+Has the irssi certificate leakage been fixed yet?
+"""]]
