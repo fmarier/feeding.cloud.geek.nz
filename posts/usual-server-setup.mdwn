@@ -352,6 +352,25 @@ To monitor that mail never stops flowing, add this machine to a free
 
     0 1 * * * root echo "ping" | mail xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@hchk.io
 
+# Monitoring
+
+    apt install --no-install-recommends mon libfilesys-diskspace-perl
+
+In order to ensure that the root partition never has less than 1G of free
+space, I put the following in `/etc/mon/mon.cf`:
+
+    watch localhost
+        service freespace
+            interval 10m
+            monitor freespace.monitor /:1048576 ;;
+            period
+                numalerts 10
+                alert mail.alert root
+                upalert mail.alert root
+                alertevery 60m
+
+and then `systemctl restart mon.service`.
+
 # Network tuning
 
 To [reduce the server's contribution to
