@@ -359,6 +359,10 @@ To monitor that mail never stops flowing, add this machine to a free
 In order to ensure that the root partition never has less than 1G of free
 space, I put the following in `/etc/mon/mon.cf`:
 
+    serverbind = 127.0.0.1
+    trapbind = 127.0.0.1
+    clientallow = 127.0.0.1
+    
     watch localhost
         service freespace
             interval 10m
