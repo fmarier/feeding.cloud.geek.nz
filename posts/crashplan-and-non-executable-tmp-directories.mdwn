@@ -65,6 +65,12 @@ machine), by adding something like this to the `SRV_JAVA_OPTS` variable of
 
     -Djava.io.tmpdir=/var/tmp/crashplan
 
+To ensure that the directory exists, you can put the following in `/etc/rc.local`:
+
+    #!/bin/sh -e
+    mkdir -p /var/tmp/crashplan
+    exit 0
+
 Finally, it seems like you **need to restart the machine** before this
 starts working. I'm not sure why restarting crashplan isn't enough.
 
