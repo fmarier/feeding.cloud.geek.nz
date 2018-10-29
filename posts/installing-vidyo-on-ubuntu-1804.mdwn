@@ -1,0 +1,60 @@
+[[!meta title="Installing Vidyo on Ubuntu 18.04"]]
+[[!meta date="2018-10-29T15:45:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Following [these
+instructions](http://information-technology.web.cern.ch/services/fe/howto/users-use-vidyo-linux)
+as well as the comments in there, I was able to get
+[Vidyo](https://www.vidyo.com/), the proprietary videoconferencing system
+that Mozilla uses internally, to work on [Ubuntu](https://www.ubuntu.com/)
+18.04 (Bionic Beaver). The same instructions should work on recent versions
+of [Debian](https://www.debian.org/) too.
+
+# Installing dependencies
+
+First of all, install all of the package dependencies:
+
+    sudo apt install libqt4-designer libqt4-opengl libqt4-svg libqtgui4 libqtwebkit4 sni-qt overlay-scrollbar-gtk2 libcanberra-gtk-module
+
+Then, ensure you have a [system tray application
+running](https://bugzilla.mozilla.org/show_bug.cgi?id=989811#c3). This
+should be the case for most desktop environments.
+
+# Building a custom Vidyo package
+
+Download [version 3.6.3](https://vidyoportal.cern.ch/upload/VidyoDesktopInstaller-ubuntu64-TAG_VD_3_6_3_017.deb)
+from the [CERN Vidyo
+Portal](https://vidyoportal.cern.ch/download.html?lang=en) but don't expect
+to be able to install it right away.
+
+You need to first hack the package in order to [remove obsolete
+dependencies](https://support.vidyocloud.com/hc/en-us/articles/226103528-VidyoDesktop-3-6-3-for-Linux-and-Ubuntu-15-04-and-higher).
+
+Once that's done, install the resulting package:
+
+    sudo dpkg -i vidyodesktop-custom.deb
+
+# Packaging fixes and configuration
+
+There are a few more things to fix before it's ready to be used.
+
+First, fix the ownership on the main executable:
+
+    sudo chown root:root /usr/bin/VidyoDesktop
+
+Then disable autostart since you don't probably don't want to keep the
+client running all of the time (and listening on the network) given it
+hasn't received any updates in a long time and has apparently been abandoned
+by Vidyo:
+
+    sudo rm /etc/xdg/autostart/VidyoDesktop.desktop
+
+Remove any old configs in your home directory that could interfere with this
+version:
+
+    rm -rf ~/.vidyo ~/.config/Vidyo
+
+Finally, launch `VidyoDesktop` and go into the settings to check "Always use
+VidyoProxy".
+
+[[!tag mozilla]] [[!tag vidyo]]
