@@ -1,0 +1,4 @@
+[[!meta title="pages tagged vidyo"]]
+
+[[!inline pages="tagged(vidyo)" actions="no" archive="yes"
+feedshow=10]]
