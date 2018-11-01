@@ -1,0 +1,83 @@
+[[!meta title="Lean data in practice"]]
+[[!meta date="2018-11-01T08:05:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Mozilla has been promoting the idea of [lean
+data](https://www.mozilla.org/about/policy/lean-data/) for a while. It's
+about recognizing both that data is valuable and that it is a dangerous
+thing to hold on to. Following these lean data principles forces you to
+clarify the questions you want to answer and think hard about the minimal
+set of information you need to answer these questions.
+
+Out of these general principles came the [Firefox data collection
+guidelines](https://wiki.mozilla.org/Firefox/Data_Collection). These are the
+guidelines that every team must follow when they want to collect [data about
+our users](https://data.firefox.com/) and that are enforced through the data
+stewardship program.
+
+As one of the data steward for Firefox, I have reviewed hundreds of data
+collection requests and can attest to the fact that Mozilla does follow the
+lean data principles it promotes. Mozillians are already aware of the
+problems with collecting large amounts of data, but the Firefox data review
+process provides an additional opportunity for an outsider to question the
+necessity of each piece of data. In my experience, this system is quite
+effective at reducing the data footprint of Firefox.
+
+What does lean data look like in practice? Here are a few examples of
+changes that were made to restrict the data collected by Firefox to what is
+truly needed:
+
+- Collecting a user's country is not particularly identifying in the case of
+  large countries likes the USA, but it can be when it comes to very small
+  island nations. How many Firefox users are there in
+  [Niue](https://en.wikipedia.org/wiki/Niue)? Hard to know, but it's
+  definitely less than the number of Firefox users in Germany. After I
+  raised that issue, the team decided to [put all of the small countries
+  into a single "other"
+  bucket](https://github.com/mozilla/activity-stream/pull/3877/commits/9a48cbec1cc1686758fec5cdfae5995f10918904).
+
+- Similarly, cities generally have enough users to be non-identifying.
+  However, some municipalities are quite small and can lead to the same
+  problems. There are lots of Firefox users in [Portland,
+  Oregon](https://en.wikipedia.org/wiki/Portland,_Oregon) for example, but
+  probably not that many in [Portland,
+  Arkansas](https://en.wikipedia.org/wiki/Portland,_Arkansas) or [Portland,
+  Pennsylvania](https://en.wikipedia.org/wiki/Portland,_Pennsylvania). If
+  you want to tell the [Oregonian
+  Portlanders](https://www.youtube.com/watch?v=cnVjkE87FDY) apart, it might
+  be sufficient to bucket Portland users into "Oregon" and "not Oregon",
+  instead of recording both the city and the state.
+
+- When collecting window sizes and other pixel-based measurements, it's
+  easier to collect the exact value. However, that exact value could be
+  stable for a while and create a temporary
+  [fingerprint](https://en.wikipedia.org/wiki/Device_fingerprint) for a
+  user. In most cases, teams wanting to collect this kind of data have
+  agreed to round the value in order to increase the number of users in each
+  "bucket" without affecting their ability to answer their underlying
+  questions.
+
+- Firefox occasionally runs studies which involve collecting specific URLs
+  that users have consented to share with us (e.g. "this site crashes my
+  Firefox"). In most cases though, the full URL is not needed and so I have
+  often been able to get teams to restrict the collection to the hostname,
+  or to at least remove the query string, which could include username and
+  passwords on badly-designed websites.
+
+- When [making use of Google
+  Analytics](https://hacks.mozilla.org/2016/01/google-analytics-privacy-and-event-tracking/),
+  it may not be necessary to collect everything it supports by default. For
+  example, my [suggestion to trim the
+  referrers](https://github.com/mozilla-services/screenshots/issues/2579)
+  was implemented by one of the teams using Google Analytics since while it
+  would have been an interesting data point, it wasn't necessary to answer
+  the questions they had in mind.
+
+Some of these might sound like small wins, but to me they are a sign that
+the process is working. In most cases, requests are
+very easy to approve because developers have already done the hard work of
+data minimization. In a few cases, by asking questions and getting familiar
+with the problem, the data steward can point out opportunities for further
+reductions in data collection that the team may have missed.
+
+[[!tag mozilla]] [[!tag privacy]]
