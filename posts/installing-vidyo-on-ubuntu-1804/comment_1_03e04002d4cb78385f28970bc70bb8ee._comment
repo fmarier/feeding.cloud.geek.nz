@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="2620:101:80f8:224:b92d:19e8:b46d:ea95"
+ subject="comment 1"
+ date="2018-11-07T19:02:03Z"
+ content="""
+    sudo chown root:root /usr/bin/VidyoDesktop  
+Why, specifically, does it need to be root?  Simple chown-to-root is operationally sloppy/Windows-think.  Do you have a setcap(8) procedure that could yield a viable result?
+"""]]
