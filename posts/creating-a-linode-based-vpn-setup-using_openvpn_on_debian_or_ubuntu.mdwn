@@ -78,6 +78,7 @@ On my server, called `hafnarfjordur.fmarier.org`, I installed the
 and then copied the following files from my high-entropy machine:
 
     cp ca.crt dh2048.pem server.key server.crt ta.key /etc/openvpn/
+    touch /etc/openvpn/crl.pem
     chown root:root /etc/openvpn/*
     chmod 600 /etc/openvpn/ta.key /etc/openvpn/server.key
 
@@ -99,6 +100,7 @@ and set the following in `/etc/openvpn/server.conf` (which includes recommendati
     ncp-disable
     user nobody
     group nogroup
+    crl-verify crl.pem
 
 (These DNS servers are the ones I found in `/etc/resolv.conf` on my Linode VPS.)
 
