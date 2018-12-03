@@ -159,8 +159,6 @@ connection of type "OpenVPN":
 
 then click the "Avanced" button and set the following:
 
-* General
-   * Use LZO data compression: `YES`
 * Security
    * Cipher: `AES-256-GCM`
 * TLS Authentication

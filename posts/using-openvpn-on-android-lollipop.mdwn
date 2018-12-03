@@ -36,7 +36,6 @@ you'll need to use on your phone:
 
 Basic:
 
-- LZO Compression: `YES`
 - Type: `Certificates`
 - CA Certificate: `ca.crt`
 - Client Certificate: `nexus6.crt`

@@ -59,7 +59,6 @@ Here is the config I successfully used to connect to my server:
     cert iphone.crt
     key iphone.key
     cipher AES-256-GCM
-    comp-lzo yes
     proto udp
     tls-remote server
     remote-cert-tls server
@@ -85,7 +84,6 @@ connection:
    - direction: 1
 - **Options**
    - peer certificate: require server nsCertType
-   - compression: turn LZO on
 - **Networking**
    - send all traffic on VPN
 - **Advanced**
