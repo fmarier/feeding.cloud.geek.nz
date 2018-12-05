@@ -2,12 +2,10 @@
 [[!meta date="2010-09-12T18:00:00.000+12:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 Now that the root DNS servers are [signed,](http://www.root-dnssec.org/2010/07/16/status-update-2010-07-16/) I thought it was time I started using [DNSSEC](https://secure.wikimedia.org/wikipedia/en/wiki/Dnssec) on my own PC. However, not wanting to wait for my ISP to enable it, I decided to setup a private recursive DNS resolver for myself using [Unbound](http://unbound.net/).  
-  
 
 ## Installing Unbound
 
 Being already packaged in [Debian](http://packages.debian.org/source/unstable/unbound) and [Ubuntu](https://launchpad.net/ubuntu/+source/unbound), unbound is only an `apt-get` away:
-
 
     apt install unbound
 
@@ -15,26 +13,27 @@ Being already packaged in [Debian](http://packages.debian.org/source/unstable/un
 
 In `/etc/unbound/unbound.conf.d/francois.conf`, I enabled the following security options:
 
-    harden-below-nxdomain: yes
-    harden-referral-path: yes
-    harden-algo-downgrade: no # false positives with improperly configured zones
-    use-caps-for-id: no # makes lots of queries fail
-    hide-identity: yes
-    hide-version: yes
+    server:
+        harden-below-nxdomain: yes
+        harden-referral-path: yes
+        harden-algo-downgrade: no # false positives with improperly configured zones
+        use-caps-for-id: no # makes lots of queries fail
+        hide-identity: yes
+        hide-version: yes
 
 and turned on prefetching to hopefully keep in cache the sites I visit regularly:
 
-
-    prefetch: yes
-    prefetch-key: yes
-    msg-cache-size: 128k
-    msg-cache-slabs: 2
-    rrset-cache-size: 8m
-    rrset-cache-slabs: 2
-    key-cache-size: 32m
-    key-cache-slabs: 2
-    cache-min-ttl: 3600
-    num-threads: 2
+    server:
+        prefetch: yes
+        prefetch-key: yes
+        msg-cache-size: 128k
+        msg-cache-slabs: 2
+        rrset-cache-size: 8m
+        rrset-cache-slabs: 2
+        key-cache-size: 32m
+        key-cache-slabs: 2
+        cache-min-ttl: 3600
+        num-threads: 2
 
 Finally, I also enabled the control interface:
 
@@ -44,36 +43,30 @@ Finally, I also enabled the control interface:
 
 and increased the amount of debugging information:
 
-    val-log-level: 2
-    use-syslog: yes
-    verbosity: 1
+    server:
+        val-log-level: 2
+        use-syslog: yes
+        verbosity: 1
 
 before running `sudo unbound-control-setup` to generate the necessary keys.
   
 Once unbound is restarted (`sudo service unbound restart`) stats can be queried to make sure that the DNS resolver is working:
 
-
     unbound-control stats
   
-
 ## Overriding DHCP settings
 
 In order to use my own unbound server for DNS lookups and not the one received via [DHCP](https://secure.wikimedia.org/wikipedia/en/wiki/Dhcp), I added this line to `/etc/dhcp/dhclient.conf`:
 
-
     supersede domain-name-servers 127.0.0.1;
 
-
 and restarted dhclient:
-
 
     sudo killall dhclient
     sudo killall dhclient
     sudo /etc/init.d/network-manager restart
 
-
 If you're not using DHCP, then you simply need to put this in your `/etc/resolv.conf`:
-
 
     nameserver 127.0.0.1
 
@@ -134,7 +127,5 @@ Then restart both services and everything should work:
 
     systemctl restart unbound.service
     systemctl restart openvpn.service
-
-You can test it on <http://dnsleak.com>.
 
 [[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag dns]] [[!tag dnssec]] [[!tag openvpn]]
