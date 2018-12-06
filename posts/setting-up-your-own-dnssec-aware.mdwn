@@ -7,7 +7,7 @@ Now that the root DNS servers are [signed,](http://www.root-dnssec.org/2010/07/1
 
 Being already packaged in [Debian](http://packages.debian.org/source/unstable/unbound) and [Ubuntu](https://launchpad.net/ubuntu/+source/unbound), unbound is only an `apt-get` away:
 
-    apt install unbound
+    apt install unbound ca-certificates
 
 ## Optional settings
 
@@ -102,6 +102,33 @@ $ dig +dnssec A www.dnssec.cz | grep ad
 ```
   
 Are there any other ways of making sure that DNSSEC is fully functional?
+
+## Using DNS-over-TLS using Cloudflare's `1.1.1.1`
+
+In order to make use of [DNS over
+TLS](https://en.wikipedia.org/wiki/DNS_over_TLS) and effectively hide DNS
+queries from anybody looking at your network traffic, one option is to
+forward your queries to [Cloudflare's
+`1.1.1.1`](https://cloudflare-dns.com):
+
+    server:
+        tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+    
+    forward-zone:
+        name: "."
+        forward-tls-upstream: yes
+        # Cloudflare DNS
+        forward-addr: 2606:4700:4700::1111@853#cloudflare-dns.com
+        forward-addr: 1.1.1.1@853#cloudflare-dns.com
+        forward-addr: 2606:4700:4700::1001@853#cloudflare-dns.com
+        forward-addr: 1.0.0.1@853#cloudflare-dns.com
+
+While Unbound appears to support DNS over TLS natively, it's not clear to me
+that it will connect to DNS servers over TLS while doing a recursive name
+resolution. Additionally, it will leak queries to non-encrypted servers to
+your ISP and other potential on-path attackers. Therefore, forwarding
+traffic to a non-logging trusted recursive resolver appears to be the best
+solution at the moment.
 
 ## Integration with OpenVPN
 
