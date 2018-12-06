@@ -383,4 +383,10 @@ queueing discipline (jessie or later) by putting the following in `/etc/sysctl.d
 
     net.core.default_qdisc=fq_codel
 
+and the following to improve congestion control and
+[HTTP/2 prioritization](https://blog.cloudflare.com/http-2-prioritization-with-nginx/):
+
+    net.ipv4.tcp_congestion_control = bbr
+    net.ipv4.tcp_notsent_lowat = 16384
+
 [[!tag sysadmin]] [[!tag debian]] [[!tag nzoss]]
