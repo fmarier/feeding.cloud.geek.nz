@@ -83,7 +83,8 @@ connection:
    - Tls-Auth: `ta.key`
    - direction: 1
 - **Options**
-   - peer certificate: require server nsCertType
+   - peer certificate: Require certificate was signed for server use
+   - Compression: Off
 - **Networking**
    - send all traffic on VPN
 - **Advanced**
