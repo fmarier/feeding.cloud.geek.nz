@@ -1,0 +1,117 @@
+[[!meta title="Restricting outgoing HTTP traffic in a web application using a squid proxy"]]
+[[!meta date="2018-12-27T18:00:00.000-05:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently had to fix a [Server-Side Request Forgery
+bug](https://bugs.launchpad.net/libravatar/+bug/1808720) in Libravatar's
+[OpenID](https://en.wikipedia.org/wiki/OpenID) support. In addition to
+**enabling authentication on internal services** whenever possible, I also
+forced all outgoing network requests from the Django web-application to go
+through a restrictive egress proxy.
+
+# OpenID logins are prone to SSRF
+
+[Server-Side Request
+Forgeries](https://www.acunetix.com/blog/articles/server-side-request-forgery-vulnerability/)
+are vulnerabilities which allow attackers to issue arbitrary [GET
+requests](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods)
+on the server side. Unlike a [Cross-Site Request
+Forgery](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF%29),
+SSRF requests do not include user credentials (e.g. cookies). On the other
+hand, since these requests are done by the server, they typically originate
+from inside the firewall.
+
+This allows attackers to target internal resources and issue arbitrary GET
+requests to them. One could use this to leak information, especially when
+error reports include the request payload, tamper with the state of internal
+services or portscan an internal network.
+
+OpenID 1.x logins are prone to these vulnerabilities because of the way they
+are initiated:
+
+1. Users visit a site's login page.
+2. They enter their OpenID URL in a text field.
+3. The server fetches the given URL to discover the OpenID endpoints.
+4. The server redirects the user to their OpenID provider to continue the
+   rest of the login flow.
+
+The third step is the potentially problematic one since it requires a
+server-side fetch.
+
+# Filtering URLs in the application is not enough
+
+At first, I thought I would filter out undesirable URLs inside the
+application:
+
+- hostnames like `localhost`, `127.0.0.1` or `::1`
+- non-HTTP schemes like `file` or `gopher`
+- non-standard ports like `5432` or `11211`
+
+However this filtering is going to be very easy to bypass:
+
+1. Add a hostname in your DNS zone which resolves to `127.0.0.1`.
+2. Setup a redirect to a blacklisted URL such as `file:///etc/passwd`.
+
+Applying the filter on the original URL is clearly not enough.
+
+# Install and configure a Squid proxy
+
+In order to fully restrict outgoing OpenID requests from the web
+application, I used a [Squid](http://www.squid-cache.org) HTTP proxy.
+
+First, install the package:
+
+    apt install squid3
+
+and set the following in `/etc/squid3/squid.conf`:
+
+    acl to_localnet dst 0.0.0.1-0.255.255.255 # RFC 1122 "this" network (LAN)
+    acl to_localnet dst 10.0.0.0/8            # RFC 1918 local private network (LAN)
+    acl to_localnet dst 100.64.0.0/10         # RFC 6598 shared address space (CGN)
+    acl to_localnet dst 169.254.0.0/16        # RFC 3927 link-local (directly plugged) machines
+    acl to_localnet dst 172.16.0.0/12         # RFC 1918 local private network (LAN)
+    acl to_localnet dst 192.168.0.0/16        # RFC 1918 local private network (LAN)
+    acl to_localnet dst fc00::/7              # RFC 4193 local private network range
+    acl to_localnet dst fe80::/10             # RFC 4291 link-local (directly plugged) machines
+    
+    acl SSL_ports port 443
+    acl Safe_ports port 80
+    acl Safe_ports port 443
+    acl CONNECT method CONNECT
+    
+    http_access deny !Safe_ports
+    http_access deny CONNECT !SSL_ports
+    http_access deny manager
+    http_access deny to_localhost
+    http_access deny to_localnet
+    http_access allow localhost
+    http_access deny all
+    
+    http_port 127.0.0.1:3128
+
+Ideally, I would like to use a whitelist approach to restrict requests to a
+small set of valid URLs, but in the case of OpenID, the set of valid URLs is
+not fixed. Therefore the only workable approach is a blacklist. The above
+snippet whitelists port numbers (`80` and `443`) and blacklists requests to
+`localhost` (a built-in squid
+[acl](http://www.squid-cache.org/Doc/config/acl/) variable which resolves to
+`127.0.0.1` and `::1`) as well as known local IP ranges.
+
+# Expose the proxy to Django in the WSGI configuration
+
+In order to force all outgoing requests from Django to [go through the
+proxy](https://stackoverflow.com/questions/14284824/working-with-django-proxy-setup),
+I put the following in my [WSGI](http://wsgi.org/) application
+(`/etc/libravatar/django.wsgi`):
+
+    os.environ['ftp_proxy'] = "http://127.0.0.1:3128"
+    os.environ['http_proxy'] = "http://127.0.0.1:3128"
+    os.environ['https_proxy'] = "http://127.0.0.1:3128"
+
+The whole thing seemed to work well in my limited testing. There is however
+[a bug in urllib2](https://bugs.python.org/issue24311) with proxying HTTPS
+URLs that include a port number, and there is [an open issue in
+python-openid](https://github.com/openid/python-openid/issues/83) around
+proxies and OpenID.
+
+[[!tag libravatar]] [[!tag openid]] [[!tag web]] [[!tag owasp]] [[!tag squid]] [[!tag django]]
