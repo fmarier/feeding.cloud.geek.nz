@@ -114,4 +114,4 @@ URLs that include a port number, and there is [an open issue in
 python-openid](https://github.com/openid/python-openid/issues/83) around
 proxies and OpenID.
 
-[[!tag libravatar]] [[!tag openid]] [[!tag web]] [[!tag owasp]] [[!tag squid]] [[!tag django]]
+[[!tag libravatar]] [[!tag openid]] [[!tag web]] [[!tag owasp]] [[!tag squid]] [[!tag django]] [[!tag nzoss]]
