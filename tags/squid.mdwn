@@ -1,0 +1,4 @@
+[[!meta title="pages tagged squid"]]
+
+[[!inline pages="tagged(squid)" actions="no" archive="yes"
+feedshow=10]]
