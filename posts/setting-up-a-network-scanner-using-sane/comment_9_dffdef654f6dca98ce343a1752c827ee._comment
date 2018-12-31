@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="96.37.225.11"
+ claimedauthor="Bgstack15"
+ url="https://bgstack15.wordpress.com/"
+ subject="CentOS 7, systemd units, and usb permission"
+ date="2018-12-28T21:06:26Z"
+ content="""
+Thank you for the useful instructions. This page alone provided all the steps that helped me share my scanner on CentOS 7 to a Fedora client. I struggled with my scanner trying to print something, and I didn't realize it for the longest time, but once I canceled that job, it all works with the instructions here, even with selinux.
+"""]]

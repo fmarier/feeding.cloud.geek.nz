@@ -1,0 +1,37 @@
+[[!comment format=mdwn
+ ip="82.137.54.181"
+ claimedauthor="johanna"
+ url="doe"
+ subject="ideapad BIOS update under Linux"
+ date="2018-12-31T18:49:05Z"
+ content="""
+Hello,
+
+After some searching online I tried to update the BIOS on an Ideapad 120s via USB bootable stick with DOS.
+
+How to flash via DOS boot usb.........
+
+
+01. First you need Rufus and an 1GB USB stick - what I had for a stick
+
+01a. create a usb dos boot disk with rufus
+
+02. You need the BIOS, ex 6gcn25ww.exe
+
+03. on an Linux machine you use innoextract to extract the executable fron the auto-unpacking archive. will have same name and extension
+
+04. you put the newly obtained exec in the root of the dos boot usb stick
+
+05. boot the machine with said usb stick
+
+06. type the name of .exe file at the promt, wait for extract process, wait for reboot, let the exe do its job - a new boot window will appear with the progress bar.....wait some more.....wait til machine reboots......check new bios......success !
+
+
+finish
+
+My 2 cents for people with noob skills on Linux.
+
+I hope it will help someone....
+
+Best regards
+"""]]
