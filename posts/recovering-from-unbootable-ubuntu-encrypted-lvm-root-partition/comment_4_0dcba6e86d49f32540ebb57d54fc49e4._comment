@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="75.133.119.91"
+ claimedauthor="thankful"
+ subject="Worked for me with minor tweaks"
+ date="2019-01-07T01:22:19Z"
+ content="""
+I didn't need to install lvm2, as it was on my unbootable system.  I also had some minor partition/volume differences.
+
+My issue is documented at the [Ubuntu forums](https://ubuntuforums.org/showthread.php?t=2409754)
+
+That all said, **I did have a major issue with DNS resolution not functioning** after this was done.  I'm wondering if \"update-initramfs\" lead to this issue specifically (I made other changes I can't recall clearly).
+
+If other experience loss of DNS via systemd.resolved failure, please note it here and on my post in the Ubuntu Forums.  My fix is listed there, although I'm effectively disabling systemd.resolved.
+"""]]
