@@ -1,0 +1,54 @@
+[[!meta title="Erasing Persistent Storage Securely on Linux"]]
+[[!meta date="2019-01-08T08:55:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here are some notes on how to securely delete computer data in a way that
+makes it impractical for anybody to recover that data. This is an important
+thing to do before giving away (or throwing away) old disks.
+
+Ideally though, it's better not to have to rely on secure erasure and start
+use full-disk encryption right from the start, for example, using
+[LUKS](TODO). That way if the secure deletion fails for whatever reason, or
+can't be performed (e.g. the drive is dead), then it's not a big deal.
+
+# Rotating hard drives
+
+With ATA or SCSI hard drives, [DBAN](https://sourceforge.net/projects/dban/)
+seems to be the ideal solution.
+
+1. Burn it on CD,
+2. boot with it,
+3. and following the instructions.
+
+Note that you should **disconnect any drives you don't want to erase**
+before booting with that CD.
+
+This is probably the most trustworth method of wiping since it uses free and
+open source software to write to each sector of the drive several times. The
+methods that follow rely on proprietary software built into the
+firmware of the devices and so you have to trust that it is implemented
+properly and not backdoored.
+
+# ATA / SATA solid-state drives
+
+Due to the nature of solid-state storage (i.e. the lifetime number of writes
+is limited), it's not a good idea to use DBAN for those. Instead, we must
+rely on the vendor's implementation of [ATA Secure
+Erase](https://ata.wiki.kernel.org/index.php/ATA_Secure_Erase).
+
+First, set a password on the drive:
+
+    hdparm --user-master u --security-set-pass p /dev/sdX
+
+and then issue a Secure Erase command:
+
+    hdparm --user-master u --security-erase-enhanced p /dev/sdX
+
+# NVMe solid-state drives
+
+For SSDs using an NVMe connector, simply request a [User Data
+Erase](https://www.mankier.com/1/nvme-format)
+
+    nvme format -s1 /dev/nvme0n1
+
+[[!tag debian]] [[!tag nzoss]] [[!tag luks]]
