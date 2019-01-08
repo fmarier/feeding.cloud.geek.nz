@@ -8,7 +8,7 @@ thing to do before giving away (or throwing away) old disks.
 
 Ideally though, it's better not to have to rely on secure erasure and start
 use full-disk encryption right from the start, for example, using
-[LUKS](TODO). That way if the secure deletion fails for whatever reason, or
+[LUKS](https://en.wikipedia.org/wiki/Linux_Unified_Key_Setup). That way if the secure deletion fails for whatever reason, or
 can't be performed (e.g. the drive is dead), then it's not a big deal.
 
 # Rotating hard drives
