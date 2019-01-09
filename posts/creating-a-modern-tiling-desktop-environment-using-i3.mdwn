@@ -97,10 +97,6 @@ Instead, when I want to suspend to ram, I use the following keyboard shortcut:
 
 which executes a [custom suspend script](https://github.com/fmarier/user-scripts/blob/master/s2ram) to clear the clipboards (using [xsel](https://packages.debian.org/stable/xsel)), flush writes to disk and lock the screen before going to sleep.
 
-To avoid having to type my sudo password every time [pm-suspend](https://packages.debian.org/stable/pm-utils) is invoked, I added the following line to `/etc/sudoers`:
-
-    francois  ALL=(ALL)  NOPASSWD:  /usr/sbin/pm-suspend
-
 # Window and workspace placement hacks
 
 While tiling window managers promise to manage windows for you so that you can focus on more important things, you will most likely want to customize window placement to fit your needs better.
