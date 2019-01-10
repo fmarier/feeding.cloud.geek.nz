@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="2a02:2f0b:bc0d:8000:7062:9de2:cda:370"
+ claimedauthor="Erwin"
+ url="www.astro.ro"
+ subject="comment 16"
+ date="2019-01-09T19:10:30Z"
+ content="""
+I've follow this tutorial, everything went OK but grub. This part was difficult because of two reasons: 
+1) I use the GPT and the error was that boot partition doesn't have the bios_grub flag - don't forget to assign when create partitions on the new disk  
+2) the new 16.04 system has different raid modules to be loaded at grub start like dm_raid, megaraid etc. This part should be updated. 
+"""]]
