@@ -139,4 +139,15 @@ Finally, because X sometimes fail to detect my external monitor when docking/und
 
     bindsym XF86Display exec /home/francois/bin/external-monitor
 
+## Putting the system tray on the right monitor
+
+If you find your systray on the wrong display after plugging an external monitor, try adding the following to your i3 config file:
+
+    bar {
+        status_command i3status
+        tray_output primary
+    }
+
+and then restarting i3.
+
 [[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]] [[!tag systemd]]
