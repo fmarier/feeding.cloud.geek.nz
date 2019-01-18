@@ -130,6 +130,9 @@ your ISP and other potential on-path attackers. Therefore, forwarding
 traffic to a non-logging trusted recursive resolver appears to be the best
 solution at the moment.
 
+To test that DNS queries are being correctly forwarded to Cloudflare, use
+their [official test page](https://1.1.1.1/help).
+
 ## Integration with OpenVPN
 
 If you are [running your own OpenVPN server](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/),
