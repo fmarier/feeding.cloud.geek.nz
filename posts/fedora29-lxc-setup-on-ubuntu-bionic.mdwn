@@ -1,0 +1,100 @@
+[[!meta title="Fedora 29 LXC setup on Ubuntu Bionic 18.04"]]
+[[!meta date="2019-01-26T08:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Similarly to what I wrote for [Debian stretch](https://feeding.cloud.geek.nz/posts/lxc-setup-on-debian-stretch/)
+and [jessie](https://feeding.cloud.geek.nz/posts/lxc-setup-on-debian-jessie/),
+here is how I was able to create a [Fedora](https://getfedora.org/) 29 LXC
+container on an Ubuntu 18.04 (bionic) laptop.
+
+# Setting up LXC on Ubuntu
+
+First of all, install lxc:
+
+    apt install lxc
+    echo "veth" >> /etc/modules
+    modprobe veth
+
+turn on bridged networking by putting the following in
+`/etc/sysctl.d/local.conf`:
+
+    net.ipv4.ip_forward=1
+
+and applying it using:
+
+    sysctl -p /etc/sysctl.d/local.conf
+
+Then allow the right traffic in your firewall
+(`/etc/network/iptables.up.rules` in my case):
+
+    # LXC containers
+    -A FORWARD -d 10.0.3.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -s 10.0.3.0/24 -j ACCEPT
+    -A INPUT -d 224.0.0.251 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 239.255.255.250 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 10.0.3.255 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 10.0.3.1 -s 10.0.3.0/24 -j ACCEPT
+
+and apply these changes:
+
+    iptables-apply
+
+before restarting the lxc networking:
+
+    systemctl restart lxc-net.service
+
+# Create the container
+
+Once that's in place, you can finally create the Fedora 29 container:
+
+    lxc-create -n fedora29 -t download -- -d fedora -r 29 -a amd64
+
+# Logging in as root
+
+Start up the container and get a login console:
+
+    lxc-start -n fedora29 -F
+
+In another terminal, set a password for the root user:
+
+    lxc-attach -n fedora29 passwd
+
+You can now use this password to log into the console you started earlier.
+
+# Logging in as an unprivileged user via ssh
+
+As root, install a few packages:
+
+    dnf install openssh-server vim sudo man
+
+and then create an unprivileged user with sudo access:
+
+    adduser francois -G wheel
+    passwd francois
+
+Now login as that user from the console and add an ssh public key:
+
+    mkdir .ssh
+    chmod 700 .ssh
+    echo "<your public key>" > .ssh/authorized_keys
+    chmod 644 .ssh/authorized_keys
+
+You can now login via ssh. The IP address to use can be seen in the output
+of:
+
+    lxc-ls --fancy
+
+# Enabling all necessary locales
+
+To ensure that you have all available locales and don't see ugly perl
+warnings such as:
+
+    perl: warning: Setting locale failed.
+    perl: warning: Falling back to the standard locale ("C").
+
+install the appropriate language packs:
+
+    dnf install langpacks-en.noarch
+    dnf reinstall dnf
+
+[[!tag debian]] [[!tag lxc]] [[!tag nzoss]] [[!tag ubuntu]]
