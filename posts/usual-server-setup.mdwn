@@ -237,6 +237,10 @@ and the following to harden the TCP stack:
 
 before reloading these settings using `sysctl -p`.
 
+I also restrict the use of cron to the `root` user by putting the following in `/etc/cron.allow`:
+
+    root
+
 # Entropy and timekeeping
 
     apt install rng-tools chrony
