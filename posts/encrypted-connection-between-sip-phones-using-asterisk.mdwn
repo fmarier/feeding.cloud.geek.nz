@@ -1,0 +1,150 @@
+[[!meta title="Encrypted connection between SIP phones using Asterisk"]]
+[[!meta date="2019-02-05T22:40:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here is the setup I put together to have two SIP phones connect together
+over an encrypted channel. Since the two phones do not support encryption, I
+used [Asterisk](https://www.asterisk.org/) to provide the encrypted channel
+over the Internet.
+
+# Installing Asterisk
+
+First of all, each VoIP phone is in a different physical location and so I
+installed an Asterisk server in each house.
+
+One of the server is a Debian stretch machine and the other runs Ubuntu
+bionic 18.04. Regardless, I used a fairly standard configuration and simply
+installed the `asterisk` package on both machines:
+
+    apt install asterisk
+
+# SIP phones
+
+The two phones, both [Snom 300](http://wiki.snom.com/Snom300/Documentation),
+connect to their local asterisk server on its local IP address and use the
+same details as I have put in `/etc/asterisk/sip.conf`:
+
+    [1000]
+    type=friend
+    qualify=yes
+    secret=password1
+    encryption=no
+    context=internal
+    host=dynamic
+    nat=no
+    canreinvite=yes
+    mailbox=1000@internal
+    vmexten=707
+    dtmfmode=rfc2833
+    call-limit=2
+    disallow=all
+    allow=g722
+    allow=ulaw
+
+# Dialplan and voicemail
+
+The extension number above (`1000`) maps to the following configuration
+blurb in `/etc/asterisk/extensions.conf`:
+
+    [home]
+    exten => 1000,1,Dial(SIP/1000,20)
+    exten => 1000,n,Goto(in1000-${DIALSTATUS},1)
+    exten => 1000,n,Hangup
+    exten => in1000-BUSY,1,Hangup(17)
+    exten => in1000-CONGESTION,1,Hangup(3)
+    exten => in1000-CHANUNAVAIL,1,VoiceMail(1000@mailboxes,su)
+    exten => in1000-CHANUNAVAIL,n,Hangup(3)
+    exten => in1000-NOANSWER,1,VoiceMail(1000@mailboxes,su)
+    exten => in1000-NOANSWER,n,Hangup(16)
+    exten => _in1000-.,1,Hangup(16)
+
+the `internal` [context](http://the-asterisk-book.com/1.6/der-context.html)
+maps to the following blurb in `/etc/asterisk/extensions.conf`:
+
+    [internal]
+    include => home
+    include => iax2users
+    exten => 707,1,VoiceMailMain(1000@mailboxes)
+
+and `1000@mailboxes` maps to the following entry in
+`/etc/asterisk/voicemail.conf`:
+
+    [mailboxes]
+    1000 => 1234,home,person@email.com
+
+(with `1234` being the voicemail PIN).
+
+# Encrypted IAX links
+
+In order to create a virtual link between the two servers using the
+[IAX](https://en.wikipedia.org/wiki/Inter-Asterisk_eXchange) protocol, I
+created user credentials on each server in `/etc/asterisk/iax.conf`:
+
+    [iaxuser]
+    type=user
+    auth=md5
+    secret=password2
+    context=iax2users
+    allow=g722
+    allow=speex
+    encryption=aes128
+    trunk=no
+
+then I created an entry for the other server in the same file:
+
+    [server2]
+    type=peer
+    host=server2.dyn.fmarier.org
+    auth=md5
+    secret=password2
+    username=iaxuser
+    allow=g722
+    allow=speex
+    encryption=yes
+    forceencrypt=yes
+    trunk=no
+    qualify=yes
+
+The second machine contains the same configuration with the exception of the
+server name (`server1` instead of `server2`) and hostname
+(`server1.dyn.fmarier.org` instead of `server2.dyn.fmarier.org`).
+
+# Speed dial for the other phone
+
+Finally, to allow each phone to ring one another by dialing `2000`, I put
+the following in `/etc/asterisk/extensions.conf`:
+
+    [iax2users]
+    include => home
+    exten => 2000,1,Set(CALLERID(all)=Francois Marier <2000>)
+    exten => 2000,2,Dial(IAX2/server1/1000)
+
+and of course a similar blurb on the other machine:
+
+    [iax2users]
+    include => home
+    exten => 2000,1,Set(CALLERID(all)=Other Person <2000>)
+    exten => 2000,2,Dial(IAX2/server2/1000)
+
+# Firewall rules
+
+Since we are using the IAX protocol instead of SIP, there is only one port
+to open in `/etc/network/iptables.up.rules` for the remote server:
+
+    # IAX2 protocol
+    -A INPUT -s x.x.x.x/y -p udp --dport 4569 -j ACCEPT
+
+where `x.x.x.x/y` is the IP range allocated to the ISP that the other
+machine is behind.
+
+If you want to restrict traffic on the local network as well, then these
+ports need to be open for the SIP phone to be able to connect to its local
+server:
+
+    # VoIP phones (internal)
+    -A INPUT -s 192.168.1.3/32 -p udp --dport 5060 -j ACCEPT
+    -A INPUT -s 192.168.1.3/32 -p udp --dport 10000:20000 -j ACCEPT
+
+where `192.168.1.3` is the static IP address allocated to the SIP phone.
+
+[[!tag debian]] [[!tag asterisk]] [[!tag nzoss]] [[!tag ubuntu]]
