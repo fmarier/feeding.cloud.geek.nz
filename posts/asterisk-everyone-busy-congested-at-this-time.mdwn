@@ -6,7 +6,7 @@ I was trying to figure out why I was getting a BUSY signal from
 [Asterisk](https://www.asterisk.org/) while trying to ring a SIP phone even
 though that phone was not in use.
 
-My asterisk setup looks like this:
+My [asterisk setup](https://feeding.cloud.geek.nz/posts/encrypted-connection-between-sip-phones-using-asterisk/) looks like this:
 
     phone 1 <--SIP--> asterisk 1 <==IAX2==> asterisk 2 <--SIP--> phone 2
 
