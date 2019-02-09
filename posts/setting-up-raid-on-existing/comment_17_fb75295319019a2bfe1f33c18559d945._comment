@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="219.85.234.104"
+ subject="good guide !"
+ date="2019-01-14T06:39:35Z"
+ content="""
+I have follow the guid to do in debian 9 , everything works perfectly , thanks !
+but in the modify /tmp/mntroot/etc/fstb section, debian 9 use UUID instead of sda , and everything rest were almost the same as the guide .
+"""]]

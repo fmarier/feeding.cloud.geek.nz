@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="31.16.63.150"
+ claimedauthor="mac"
+ subject="works fine"
+ date="2019-02-09T20:22:30Z"
+ content="""
+Thanks, works in ubuntu server 18.04.1 !
+but i need to set the md device --readwrite, too. 
+
+(this \"feature\" is unfixed for over 9 years )
+"""]]
