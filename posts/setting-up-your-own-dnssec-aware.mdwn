@@ -35,11 +35,12 @@ and turned on prefetching to hopefully keep in cache the sites I visit regularly
         cache-min-ttl: 3600
         num-threads: 2
 
-Finally, I also enabled the control interface:
+Finally, I also restricted the server to the local machine:
 
-    remote-control:
-        control-enable: yes
-        control-interface: 127.0.0.1
+    server:
+        interface: 127.0.0.1
+        access-control: 0.0.0.0/0 refuse
+        access-control: 127.0.0.1/32 allow
 
 and increased the amount of debugging information:
 
