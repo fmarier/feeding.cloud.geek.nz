@@ -12,7 +12,7 @@ go through a similar process.
 
 # Prepare DNS
 
-* Change the TTL on the DNS entry for `libravatar.org` (i.e. bare `A` and `AAAA` records) to **3600** seconds.
+* Change the TTL on the DNS entries for `libravatar.org` and `libravatar.com` (i.e. bare `A` and `AAAA` records) to **3600** seconds.
 * Remove the mirrors I don't control from the DNS load balancer (`cdn` **and** `seccdn`).
 * Remove the main server from `cdn` and `seccdn` in DNS.
 
@@ -146,7 +146,7 @@ go through a similar process.
 
 * Test all functionality on the new site.
 * Do a basic version of the previous test using IPv6.
-* If testing is successful, update DNS A and AAAA records to point to the new server with a short TTL (in case we need to revert).
+* If testing is successful, update DNS A and AAAA records (`libravatar.org` and `libravatar.com`) to point to the new server with a short TTL (in case we need to revert).
 
 * Enable the proxy config on the old server.
 
