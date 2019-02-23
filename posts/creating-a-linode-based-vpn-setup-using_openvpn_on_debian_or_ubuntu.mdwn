@@ -58,7 +58,15 @@ Create this symbolic link:
 
     ln -s openssl-1.0.0.cnf openssl.cnf
 
-and generate the keys:
+and set the following in `openssl.cnf`:
+
+    default_crl_days= 3650
+
+to avoid having the [CRL expire after one month](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=849909) and throw this error in the logs:
+
+    VERIFY ERROR: depth=0, error=CRL has expired:
+
+Finally, generate the keys:
 
     . ./vars
     ./clean-all
