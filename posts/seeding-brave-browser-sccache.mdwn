@@ -1,0 +1,60 @@
+[[!meta title="Seeding sccache for Faster Brave Browser Builds"]]
+[[!meta date="2019-03-22T16:25:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[Compiling the
+Brave Browser](https://github.com/brave/brave-browser/wiki#build-brave)
+(based on [Chromium](https://www.chromium.org/Home)) on Linux can take a
+really long time and so most developers use
+[sccache](https://github.com/brave/brave-browser/wiki/sccache-for-faster-builds)
+to cache objects files and speed up future re-compilations.
+
+Here's the cronjob I wrote to seed my local cache every work day to
+pre-compile the latest builds:
+
+    30 23 * * 0-4   francois  /usr/bin/chronic /home/francois/bin/seed-brave-browser-cache
+
+and here are the contents of that script:
+
+    #!/bin/bash
+    set -e
+    
+    # Set the path and sccache environment variables correctly
+    source ${HOME}/.bashrc-brave
+    export LANG=en_CA.UTF-8
+    
+    cd ${HOME}/devel/brave-browser-cache
+    
+    echo "Environment:"
+    echo "- HOME = ${HOME}"
+    echo "- PATH = ${PATH}"
+    echo "- PWD = ${PWD}"
+    echo "- SHELL = ${SHELL}"
+    echo "- BASH_ENV = ${BASH_ENV}"
+    echo
+    
+    echo $(date)
+    echo "=> Update repo"
+    git pull
+    npm install
+    npm run init
+    
+    echo $(date)
+    echo "=> Delete any old build output"
+    rm -rf src/out
+    
+    echo $(date)
+    echo "=> Debug build"
+    ionice nice timeout 4h npm run build
+    echo
+    
+    echo $(date)
+    echo "=>Release build"
+    ionice nice timeout 5h npm run build Release
+    echo
+    
+    echo $(date)
+    echo "=> Delete build output"
+    rm -rf src/out
+
+[[!tag brave]] [[!tag sccache]]
