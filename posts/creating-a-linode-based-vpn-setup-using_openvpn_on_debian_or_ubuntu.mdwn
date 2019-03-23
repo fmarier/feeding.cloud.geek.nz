@@ -95,7 +95,7 @@ Then I took the official configuration template:
     cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz /etc/openvpn/
     gunzip /etc/openvpn/server.conf.gz
 
-and set the following in `/etc/openvpn/server.conf` (which includes recommendations from [BetterCrypto.org](https://bettercrypto.org/)):
+and set the following in `/etc/openvpn/server.conf` (which includes recommendations from [BetterCrypto.org](https://bettercrypto.org/) and [Gert van Dijk](https://blog.g3rt.nl/openvpn-security-tips.html)):
 
     dh dh2048.pem
     push "redirect-gateway def1 bypass-dhcp"
