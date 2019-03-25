@@ -65,7 +65,12 @@ While keyboard shortcuts can be configured in GNOME, they don't work within i3, 
     # show battery stats
     bindsym XF86Battery exec gnome-power-statistics
 
-to make volume control, screen brightness and battery status buttons work as expected on my laptop.
+    # interactive screenshot by pressing printscreen
+    bindsym Print exec /usr/bin/gnome-screenshot -i
+    # crop-area screenshot by pressing Mod + printscreen
+    bindsym --release $mod+Print exec /usr/bin/gnome-screenshot -a
+
+to make volume control, screen brightness, battery status and print screen buttons work as expected on my laptop.
 
 These bindings require the following packages or scripts:
 
