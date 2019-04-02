@@ -1,5 +1,5 @@
 [[!meta title="TLS Authentication on Freenode and OFTC"]]
-[[!meta date="2017-09-08T21:50:00:00.000-07:00"]]
+[[!meta date="2017-09-08T21:50:00.000-07:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In order to easily authenticate with IRC networks such as

@@ -1,5 +1,5 @@
 [[!meta title="Test mail server on Ubuntu and Debian"]]
-[[!meta date="2017-11-13T17:30:00:00.000+08:00"]]
+[[!meta date="2017-11-13T17:30:00.000+08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I wanted to setup a mail service on a staging server that would send all

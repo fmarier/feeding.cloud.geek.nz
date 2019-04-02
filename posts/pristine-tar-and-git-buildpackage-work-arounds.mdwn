@@ -1,5 +1,5 @@
 [[!meta title="pristine-tar and git-buildpackage Work-arounds"]]
-[[!meta date="2017-08-09T22:25:00:00.000-07:00"]]
+[[!meta date="2017-08-09T22:25:00.000-07:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I recently ran into problems trying to package the

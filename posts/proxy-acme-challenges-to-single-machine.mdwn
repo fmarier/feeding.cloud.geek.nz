@@ -1,5 +1,5 @@
 [[!meta title="Proxy ACME challenges to a single machine"]]
-[[!meta date="2017-11-28T22:10:00:00.000-08:00"]]
+[[!meta date="2017-11-28T22:10:00.000-08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 The [Libravatar mirrors](https://wiki.libravatar.org/run_a_mirror/) are
