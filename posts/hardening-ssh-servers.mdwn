@@ -120,7 +120,7 @@ by enabling the `pam_tty_audit` module in `/etc/pam.d/sshd`:
 
 However this module is [not included in wheezy](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=699159) and has only recently been [re-added to Debian](http://packages.qa.debian.org/p/pam/news/20131021T001835Z.html).
 
-# Identitying stolen keys
+# Identifying stolen keys
 
 One thing I'd love to have is a way to identify a stolen public key. Given the IP
 restrictions described above, if a public key is stolen and used from a different IP,
