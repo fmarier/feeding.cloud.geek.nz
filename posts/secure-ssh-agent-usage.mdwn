@@ -1,0 +1,63 @@
+[[!meta title="Secure ssh-agent usage"]]
+[[!meta date="2019-04-13T06:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+`ssh-agent` was in the news recently due to the [matrix.org
+compromise](https://github.com/matrix-org/matrix.org/issues/371). The main
+takeaway from that incident was that one should [avoid the `ForwardAgent`
+(or `-A`) functionality when `ProxyCommand` can
+do](https://heipei.io/2015/02/26/SSH-Agent-Forwarding-considered-harmful/)
+and consider multi-factor authentication on the server-side, for example
+using
+[libpam-google-authenticator](https://wiki.archlinux.org/index.php/Google_Authenticator)
+or [libpam-yubico](https://developers.yubico.com/yubico-pam/YubiKey_and_SSH_via_PAM.html).
+
+That said, there are also two options to `ssh-add` that can help reduce the
+risk of someone else with elevated privileges hijacking your agent to make
+use of your ssh credentials.
+
+## Prompt before each use of a key
+
+The first option is `-c` which will require you to confirm each use of your
+ssh key by pressing Enter when a graphical prompt shows up.
+
+Simply install an `ssh-askpass` frontend like
+[ssh-askpass-gnome](https://packages.debian.org/stable/ssh-askpass-gnome):
+
+    apt install ssh-askpass-gnome
+
+and then use this to when adding your key to the agent:
+
+    ssh-add -c ~/.ssh/key
+
+## Automatically removing keys after a timeout
+
+`ssh-add -D` will remove all identities (i.e. keys) from your ssh agent, but
+requires that you remember to run it manually once you're done.
+
+That's where the second option comes in. Specifying `-t` when adding a key
+will automatically remove that key from the agent after a while.
+
+For example, I have found that this setting works well at work:
+
+    ssh-add -t 10h ~/.ssh/key
+
+where I don't want to have to type my ssh password everytime I push a git
+branch.
+
+At home on the other hand, my use of ssh is more sporadic and so I don't
+mind a shorter timeout:
+
+    ssh-add -t 4h ~/.ssh/key
+
+## Making these options the default
+
+I couldn't find a configuration file to make these settings the default and
+so I ended up putting the following line in my `~/.bash_aliases`:
+
+    alias ssh-add='ssh-add -c -t 4h'
+
+so that I can continue to use `ssh-add` as normal and have not remember
+to include these extra options.
+
+[[!tag debian]] [[!tag nzoss]] [[!tag mozilla ]] [[!tag ssh]] [[!tag sysadmin]] [[!tag security]]
