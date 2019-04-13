@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="96.86.171.70"
+ claimedauthor="db48x"
+ url="http://db48x.net/"
+ subject="comment 1"
+ date="2019-04-13T15:41:02Z"
+ content="""
+The -c option is a great recommendation, but I've been trying out https://github.com/StanfordSNR/guardian-agent and I like it even better; it gives you much more information about what is happening: which computer is asking for permission, which key they want to use, what server they're going to connect to, and what command they want to run using it. You can make a much more informed decision, and you can save those decisions so that you only have to decide for novel situations.
+
+Also, the ProxyJump command is much nicer than ProxyCommand, but also newer. It's easier to use and harder to misuse.
+"""]]
