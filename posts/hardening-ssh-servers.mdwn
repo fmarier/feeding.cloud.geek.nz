@@ -2,6 +2,9 @@
 [[!meta date="2014-02-20T23:52:00.000+13:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
+These are the settings that I use on my servers. You may want to also review
+the [settings that are used at Mozilla](https://infosec.mozilla.org/guidelines/openssh).
+
 # Basic configuration
 
 There are a few basic things that most admins will already know (and that
@@ -20,6 +23,7 @@ This is what `/etc/ssh/sshd_config` should contain:
     AuthenticationMethods publickey
     PasswordAuthentication no
     PermitRootLogin no
+    AuthorizedKeysFile      .ssh/authorized_keys
 
 Once you've done that, make sure you have all of the required host keys by running:
 
@@ -32,6 +36,16 @@ You may also want to ensure you are using [strong ciphers and hash functions](ht
     KexAlgorithms <insert Mozilla list>
     Ciphers <insert Mozilla list>
     MACs <insert Mozilla list>
+
+and that you deactivate short Diffie-Hellman moduli:
+
+    awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.tmp
+    mv /etc/ssh/moduli.tmp /etc/ssh/moduli
+
+Finally, if you don't need `sftp` support, Mozilla recommends disabling it,
+which can be done by commenting out this line:
+
+    #Subsystem     sftp    /usr/lib/openssh/sftp-server
 
 # Whitelist approach to giving users ssh access
 
