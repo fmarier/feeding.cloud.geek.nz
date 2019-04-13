@@ -7,5 +7,5 @@
  content="""
 You can also use 2facthor auth with ( for example ) google authenticator:
 
-http://www.howtogeek.com/121650/how-to-secure-ssh-with-google-authenticators-two-factor-authentication/
+<http://www.howtogeek.com/121650/how-to-secure-ssh-with-google-authenticators-two-factor-authentication/>
 """]]
