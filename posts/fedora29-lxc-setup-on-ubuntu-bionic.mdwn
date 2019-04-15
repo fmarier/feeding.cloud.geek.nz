@@ -49,6 +49,10 @@ Once that's in place, you can finally create the Fedora 29 container:
 
     lxc-create -n fedora29 -t download -- -d fedora -r 29 -a amd64
 
+To see a list of all distros available with the `download` template:
+
+    lxc-create --template=download -- --list
+
 # Logging in as root
 
 Start up the container and get a login console:
