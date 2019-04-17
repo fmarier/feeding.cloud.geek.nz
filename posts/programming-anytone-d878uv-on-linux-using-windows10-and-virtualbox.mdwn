@@ -1,0 +1,78 @@
+[[!meta title="Programming an AnyTone AT-D878UV on Linux using Windows 10 and VirtualBox"]]
+[[!meta date="2019-04-16T22:15:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently acquired an [AnyTone AT-D878UV DMR
+radio](https://www.bridgecomsystems.com/collections/amateur-handheld-radios/products/anytone-at-d878uv-dual-band-dmr-handheld-radio-w-gps-programming-cable)
+which is unfortunately not supported by
+[chirp](https://chirp.danplanet.com/projects/chirp/wiki/Home), my usual
+go-to free software package for programming amateur radios.
+
+Instead, I had to setup a Windows 10 virtual machine so that I could setup
+the radio using the manufacturer's computer programming software (CPS).
+
+# Install VirtualBox
+
+Install [VirtualBox](https://www.virtualbox.org):
+
+    apt install virtualbox virtualbox-guest-additions-iso
+
+and add your user account to the `vboxusers` group:
+
+    adduser francois vboxusers
+
+to make filesharing before the host and the guest work.
+
+Finally, **reboot** to ensure that group membership and kernel modules are
+all set.
+
+# Create a Windows 10 virtual machine
+
+Create a new Windows 10 virtual machine within VirtualBox. Then, [download Windows
+10](https://www.microsoft.com/en-in/software-download/windows10ISO) from
+Microsoft then start the virtual machine mounting the `.iso` file as an
+optical drive.
+
+Follow the instructions to install Windows 10, paying attention to the
+[various privacy options you will be
+offered](https://askleo.com/setting-up-windows-10-for-privacy/).
+
+Once Windows is installed, mount the host's
+`/usr/share/virtualbox/VBoxGuestAdditions.iso` as a virtual optical drive
+and install the VirtualBox guest additions.
+
+# Installing the CPS
+
+With Windows fully setup, it's time to download the latest version of the
+[computer programming
+software](https://www.bridgecomsystems.com/pages/anytone-at-d878uv-support-page).
+
+Unpack the downloaded file and then install it as Admin (right-click on the
+`.exe`).
+
+Do NOT install the GD driver update or the USB driver, they do not appear to
+be necessary.
+
+# Program the radio
+
+First, you'll want to download from the radio to get a starting configuration
+that you can change.
+
+To do this:
+
+1. Turn the radio on and wait until it has finished booting.
+2. Plug the USB programming cable onto the computer and the radio.
+3. From the CPS menu choose "Set COM port".
+4. From the CPS menu choose "Read from radio".
+
+**Save this original codeplug to a file as a backup** in case you need to
+easily reset back to the factory settings.
+
+To program the radio, follow this [handy third-party
+guide](https://www.bridgecomsystems.com/blogs/bridgecom-tx-rx-blog/anytone-868-878-programming-guide-v1-33)
+since it's much better than the official manual.
+
+You should be able to use the "Write to radio" menu option without any
+problems once you're done creating your codeplug.
+
+[[!tag ham]]
