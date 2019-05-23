@@ -45,12 +45,18 @@ and here are the contents of that script:
     
     echo $(date)
     echo "=> Debug build"
-    ionice nice timeout 4h npm run build
+    killall sccache || true
+    ionice nice timeout 4h npm run build || ionice nice timeout 4h npm run build
+    ionice nice ninja -C src/out/Debug brave_unit_tests
+    ionice nice ninja -C src/out/Debug brave_browser_tests
     echo
     
     echo $(date)
     echo "=>Release build"
-    ionice nice timeout 5h npm run build Release
+    killall sccache || true
+    ionice nice timeout 5h npm run build Release || ionice nice timeout 5h npm run build Release
+    ionice nice ninja -C src/out/Release brave_unit_tests
+    ionice nice ninja -C src/out/Release brave_browser_tests
     echo
     
     echo $(date)
