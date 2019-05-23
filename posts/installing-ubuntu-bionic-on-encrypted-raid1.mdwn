@@ -1,0 +1,186 @@
+[[!meta title="Installing Ubuntu 18.04 using both full-disk encryption and RAID1"]]
+[[!meta date="2019-05-22T21:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently setup a desktop computer with two SSDs using a software RAID1 and
+full-disk encryption (i.e. [LUKS](https://en.wikipedia.org/wiki/LUKS)).
+Since this is not a supported configuration in Ubuntu desktop, I had to use
+the server installation medium.
+
+This is my version of these [excellent
+instructions](https://askubuntu.com/questions/1066028/install-ubuntu-18-04-desktop-with-raid-1-and-lvm-on-machine-with-uefi-bios#1066041).
+
+## Server installer
+
+Start by downloading the [alternate server
+installer](http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/) and
+[verifying its
+signature](https://tutorials.ubuntu.com/tutorial/tutorial-how-to-verify-ubuntu):
+
+1. Download the required files:
+
+        wget http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04.2-server-amd64.iso
+        wget http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/SHA256SUMS
+        wget http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/SHA256SUMS.gpg
+
+2. Verify the signature on the hash file:
+
+        $ gpg --keyid-format long --keyserver hkps://keyserver.ubuntu.com --recv-keys 0xD94AA3F0EFE21092
+        $ gpg --verify SHA256SUMS.gpg SHA256SUMS
+        gpg: Signature made Fri Feb 15 08:32:38 2019 PST
+        gpg:                using RSA key D94AA3F0EFE21092
+        gpg: Good signature from "Ubuntu CD Image Automatic Signing Key (2012) <cdimage@ubuntu.com>" [undefined]
+        gpg: WARNING: This key is not certified with a trusted signature!
+        gpg:          There is no indication that the signature belongs to the owner.
+        Primary key fingerprint: 8439 38DF 228D 22F7 B374  2BC0 D94A A3F0 EFE2 1092
+
+3. Verify the hash of the ISO file:
+
+        $ sha256sum ubuntu-18.04.2-server-amd64.iso 
+        a2cb36dc010d98ad9253ea5ad5a07fd6b409e3412c48f1860536970b073c98f5  ubuntu-18.04.2-server-amd64.iso
+        $ grep ubuntu-18.04.2-server-amd64.iso SHA256SUMS
+        a2cb36dc010d98ad9253ea5ad5a07fd6b409e3412c48f1860536970b073c98f5 *ubuntu-18.04.2-server-amd64.iso
+
+Then copy it to a USB drive:
+
+    dd if=ubuntu-18.04.2-server-amd64.iso of=/dev/sdX
+
+and boot with it.
+
+Inside the installer, use manual partitioning to:
+
+1. Configure the physical partitions.
+2. Configure the RAID array second.
+2. Configure the encrypted partitions last
+
+Here's the exact configuration I used:
+
+- `/dev/sda1` is 512 MB and used as the EFI parition
+- `/dev/sdb1` is 512 MB but **not used for anything**
+- `/dev/sda2` and `/dev/sdb2` are both 4 GB (RAID)
+- `/dev/sda3` and `/dev/sdb3` are both 512 MB (RAID)
+- `/dev/sda4` and `/dev/sdb4` use up the rest of the disk (RAID)
+
+I only set `/dev/sda2` as the EFI partition because I found that **adding a
+second EFI partition would break the installer**.
+
+I created the following RAID1 arrays:
+
+- `/dev/sda2` and `/dev/sdb2` for `/dev/md2`
+- `/dev/sda3` and `/dev/sdb3` for `/dev/md0`
+- `/dev/sda4` and `/dev/sdb4` for `/dev/md1`
+
+I used `/dev/md0` as my **unencrypted** `/boot` partition.
+
+Then I created the following LUKS partitions:
+
+- `md1_crypt` as the `/` partition using `/dev/md1`
+- `md2_crypt` as the *swap* partition (4 GB) with a **random
+  encryption key** using `/dev/md2`
+
+## Post-installation configuration
+
+Once your new system is up, sync the EFI partitions using DD:
+
+    dd if=/dev/sda1 of=/dev/sdb1
+
+and create a second EFI boot entry:
+
+    efibootmgr -c -d /dev/sdb -p 1 -L "ubuntu2" -l \EFI\ubuntu\shimx64.efi
+
+Ensure that the RAID drives are fully sync'ed by keeping an eye on
+`/prod/mdstat` and then reboot, selecting "ubuntu2" in the UEFI/BIOS menu.
+
+Once you have rebooted, remove the following package to speed up future boots:
+
+    apt purge btrfs-progs
+
+To switch to the desktop variant of Ubuntu, install these meta-packages:
+
+    apt install ubuntu-desktop gnome
+
+then use `debfoster` to remove unnecessary packages (in particular the ones
+that only come with the default Ubuntu server installation).
+
+## Fixing booting with degraded RAID arrays
+
+Since I have run into [RAID startup problems in the
+past](https://feeding.cloud.geek.nz/posts/the-perils-of-raid-and-full-disk-encryption-on-ubuntu/),
+I expected having to fix up a few things to make degraded RAID arrays
+boot correctly.
+
+I did not use [LVM](https://en.wikipedia.org/wiki/LVM2) since I
+didn't really feel the need to add yet another layer of abstraction of top
+of my setup, but I found that the `lvm2` package must still be installed:
+
+    apt install lvm2
+
+with `use_lvmetad = 0` in `/etc/lvm/lvm.conf`.
+
+Then in order to automatically bring up the RAID arrays with 1 out of 2
+drives, I added the following script in
+`/etc/initramfs-tools/scripts/local-top/cryptraid`:
+
+     #!/bin/sh
+     PREREQ="mdadm"
+     prereqs()
+     {
+          echo "$PREREQ"
+     }
+     case $1 in
+     prereqs)
+          prereqs
+          exit 0
+          ;;
+     esac
+     
+     mdadm --run /dev/md0
+     mdadm --run /dev/md1
+     mdadm --run /dev/md2
+
+before making that script executable:
+
+    chmod +x /etc/initramfs-tools/scripts/local-top/cryptraid
+
+and refreshing the initramfs:
+
+    update-initramfs -u -k all
+
+## Disable suspend-to-disk
+
+Since I use a [random encryption key for the swap
+partition](https://feeding.cloud.geek.nz/posts/encrypted-swap-partition-on/)
+(to avoid having a second password prompt at boot time), it means that
+suspend-to-disk is not going to work and so I disabled it by putting the
+following in `/etc/initramfs-tools/conf.d/resume`:
+
+    RESUME=none
+
+and by adding `noresume` to the `GRUB_CMDLINE_LINUX` variable in
+`/etc/default/grub` before applying these changes:
+
+    update-grub
+    update-initramfs -u -k all
+
+## Test your configuration
+
+With all of this in place, you should be able to do a final test of your
+setup:
+
+1. Shutdown the computer and unplug the second drive.
+2. Boot with only the first drive.
+3. Shutdown the computer and plug the second drive back in.
+4. Boot with both drives and re-add the second drive to the RAID array:
+
+        mdadm /dev/md0 -a /dev/sdb3
+        mdadm /dev/md1 -a /dev/sdb4
+        mdadm /dev/md2 -a /dev/sdb2
+
+5. Wait until the RAID is done re-syncing and shutdown the computer.
+6. Repeat steps 2-5 with the first drive unplugged instead of the second.
+7. Reboot with both drives plugged in.
+
+At this point, you have a working setup that will gracefully degrade to a
+one-drive RAID array should one of your drives fail.
+
+[[!tag debian]] [[!tag nzoss]] [[!tag ubuntu]] [[!tag raid]]
