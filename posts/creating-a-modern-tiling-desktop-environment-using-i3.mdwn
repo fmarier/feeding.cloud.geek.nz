@@ -20,10 +20,23 @@ Because of [a bug in gnome-settings-daemon](https://ask.fedoraproject.org/en/que
 
     dconf write /org/gnome/settings-daemon/plugins/cursor/active false
 
+# Notifications
+
 While my startup script doesn't run this tool directly, installing the
 [dunst package](https://packages.debian.org/stable/dunst) is required to receive desktop notifications:
 
     apt install dunst
+
+You will probably also want to set the following in `/etc/xdg/dunst/dunstrc` to ensure that notifications use your default web browser:
+
+    browser = /usr/bin/sensible-browser
+
+Here are the keyboard shortcuts you'll need to interact with the notifications that popup:
+
+- `Ctrl-Space` to close the current notification
+- `Ctrl-Shift-Space` to close all notifications
+- `Ctrl-\`` to show the last notification
+- `Ctrl-Shift-.` to show the context menu for the current notification
 
 # Screensaver
 
