@@ -47,6 +47,8 @@ Then copy it to a USB drive:
 
 and boot with it.
 
+## Manual partitioning
+
 Inside the installer, use manual partitioning to:
 
 1. Configure the physical partitions.
