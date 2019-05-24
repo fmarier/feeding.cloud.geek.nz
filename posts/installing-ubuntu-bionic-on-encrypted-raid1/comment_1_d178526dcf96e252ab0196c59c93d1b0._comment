@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="82.141.154.4"
+ claimedauthor="random from planet debian"
+ subject="LVM"
+ date="2019-05-24T09:43:23Z"
+ content="""
+If you set up [MD-raid> LUKS > LVM > {pool/swap, pool/root etc}] stack then you get one PW prompt and suspend to disk still works...
+
+br: a random guy
+"""]]

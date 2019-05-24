@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="83.56.36.123"
+ claimedauthor="leplatrem"
+ subject="How to manage updates after review?"
+ date="2019-05-08T10:00:16Z"
+ content="""
+After everything is submitted, I made some changes to my commits.
+
+When I run `arc diff` for a particular commit, the process is really confusing. For example, with `arc diff --update DXXX`, I get prompted with the whole list of revisions... 
+
+
+"""]]
