@@ -1,0 +1,141 @@
+[[!comment format=mdwn
+ ip="88.207.218.2"
+ claimedauthor="Anonymous Coward"
+ subject="Revised configuration necessary for saned under systemd"
+ date="2019-05-29T21:11:00Z"
+ content="""
+After encoutering numerous problems in setting up SANED network access with systemd on a Linux Mint 18.3 , here are some important points 
+
+1) make sure you do not have saned configured to run under inetd or xinetd as might be the case from an upgraded installation
+
+2) systemd needs a file for socket and an instance service file.  To avoid loss of customizations with package upgrades, put these in /etc/systemd/system not overwrite those in /lib/systemd/system
+
+    #*****************************************************************************#
+    #|
+    #|  file : /etc/systemd/system/saned.socket
+    #|
+    #*---------------------------------------------------------------------------*#
+
+    [Unit]
+    Description=SANED network daemon activation socket
+
+    [Socket]
+    Accept=yes
+    ListenStream=6566
+    MaxConnections=1
+
+    [Install]
+    WantedBy=sockets.target
+
+    #*****************************************************************************#
+
+The second item it needs is an instance service file NOT a service file.  This means that the file name contains an \"@\" as in saned@.service and the contents
+
+    #*****************************************************************************#
+    #|
+    #|  file : /etc/systemd/system/saned@.service
+    #|
+    #*---------------------------------------------------------------------------*#
+
+    [Unit]
+    Description=SANE network daemon instance %i
+    Documentation=man:saned(8)
+    After=local-fs.target network-online.target
+    Requires=saned.socket
+
+    [Service]
+    Environment=SANE_CONFIG_DIR=/etc/sane.d
+    ExecStart=/usr/sbin/saned
+    Group=saned
+    User=saned
+    StandardInput=null
+    StandardOutput=syslog
+    StandardError=syslog
+
+    [Install]
+    Also=saned.socket
+
+    #*****************************************************************************#
+
+
+If you want to do debugging you can add additional Environment lines
+
+    Environment=SANE_DEBUG_DLL=255
+    Environment=SANE_DEBUG_NET=255
+
+For completeness, to mirror the setup in /lib/systemd/system and to emphasize the point when looking in /etc/systemd/system that the file is not missing and that saned@.service is not misnamed, symbolically link  /dev/null to /etc/lib/systemd/system/saned.service
+
+     /etc/systemd/system/saned.service -> /dev/null
+
+This is unecessary because of the link present in /lib/systemd/system, but it makes it clear when looking at the /etc/systemd/system directory the configuration being used.
+
+Do a systemctl enable of saned.socket and it will create a symbolic link under the socket.target.wants directory
+
+/etc/services should have the entry
+
+     sane-port		 6566/tcp	sane saned
+    
+Ensure that /proc/sys/net/ipv6/bindv6only is set to 0 (and not set to 1 due to some hack from an old bindipv6only.conf file /etc/sysctl.conf.d) if you are wanting network connections on IPv4 to work.
+
+It may be necessary to ensure that the \"net\" featured is turned on in /etc/sane.d/dll.d configuration file for your scanner if it is some non-standard configuration.
+
+In your /etc/sane.d/saned.conf ensure your have a \"localhost\" entry -- 127.0.0.1 should also work but when saned starts up it says checking for localhost, so this is to be consistent.
+Then add the host names or network IP address ranges permitted to access the service.
+
+Adjust your firewall rules if necessary.
+
+You do not need to add the host IP address to the /etc/sane.d/net.conf file, this will result in you being offered both a local and a network connection to the scanner from the host, so keep it simple for the server host, but do add the server host IP address or name to the net.conf file on the client hosts which need to access the service.
+
+If you then do a systemctl start saned.socket followed by a systemctl status saned.socket you should see
+
+     saned.socket - SANED network daemon activation socket
+       Loaded: loaded (/etc/systemd/system/saned.socket; enabled; vendor preset: enabled)
+       Active: active (listening) since Wed 2019-05-29 20:12:40 BST; 30min ago
+       Listen: [::]:6566 (Stream)
+     Accepted: 21; Connected: 0
+
+Now where the \"magic\" comes in, is that when a connection is made on the socket, systemd fires up an **instance** of the saned service using the socket name as the instance name
+(which is why the standard input is set to \"null\" and NOT \"socket\" in the saned@.service file).
+
+So if when a remote connection is made you do
+
+    systemctl -all -l --no-pager | grep saned you should see
+
+      saned@21-192.168.21.12:6566-192.168.11.12:49314.service                                    loaded    active   running   SANE network daemon instance 3 (192.168.11.12:49314)
+      system-saned.slice                                                                        loaded    active   active    system-saned.slice
+      saned.socket                                                                              loaded    active   listening SANED network daemon activation socket
+
+where the instance number increases by one for each connection.
+
+If you want to advertise the service via Avahi, you could add a service file under /etc/avahi/servvices
+
+    <?xml version=\"1.0\" standalone='no'?>
+    <!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">
+
+    <!-- #********************************************************************# -->
+    <!-- #|                                                                  |# -->
+    <!-- #|  file : /etc/avahi/services/saned.service                        |# -->
+    <!-- #|                                                                  |# -->
+    <!-- #|__________________________________________________________________|# -->
+
+    <service-group>
+
+	     <name replace-wildcards=\"yes\">%h.example.COM Network Scanning</name>
+
+        	<service>
+        		<domain-name>local</domain-name>
+        		<host-name>server_name.local</host-name>
+         		<port>6566</port>
+         		<type>_scanner._tcp</type>
+        	</service>
+
+      </service-group>
+
+     <!-- #********************************************************************# -->
+
+
+replacing example.COM and server_name as appropriate.  The value for \"type\" was taken from
+
+     http://www.dns-sd.org/ServiceTypes.html
+
+"""]]
