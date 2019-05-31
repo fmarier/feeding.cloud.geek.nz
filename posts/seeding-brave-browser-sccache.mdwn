@@ -34,14 +34,16 @@ and here are the contents of that script:
     echo
     
     echo $(date)
+    echo "=> Clean up repo and delete old build output"
+    rm -rf src/out node_modules src/brave/node_modules
+    git clean -f -d
+    git checkout HEAD package-lock.json
+    
+    echo $(date)
     echo "=> Update repo"
     git pull
     npm install
     npm run init
-    
-    echo $(date)
-    echo "=> Delete any old build output"
-    rm -rf src/out
     
     echo $(date)
     echo "=> Debug build"
