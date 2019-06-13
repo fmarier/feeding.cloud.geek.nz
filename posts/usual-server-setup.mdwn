@@ -64,6 +64,7 @@ following to `/etc/vim/vimrc.local`:
     syntax on
     set background=dark
     set visualbell
+    set nomodeline
 
 # ssh
 
