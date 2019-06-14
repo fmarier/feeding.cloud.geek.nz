@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="2001:610:120:3000::192:161"
+ claimedauthor="Frans Schreuder"
+ subject="Topicons plus"
+ date="2019-06-14T06:33:04Z"
+ content="""
+The instruction works, but one important thing is missing. On Ubuntu with Gnome (Both 18.04 and 19.04) you will need the gnome extention TopIcons Plus installed in order to launch VidyoDesktop, otherwise the application will fail to start (at least for me).
+"""]]
