@@ -4,5 +4,5 @@
  subject="Re: comment 1"
  date="2018-11-08T06:32:12Z"
  content="""
-I'm not sure why you're saying that it's sloppy for a system-wide binary to be owned by root. That's both [the policy in Debian](https://www.debian.org/doc/debian-policy/ch-files.html#permissions-and-owners) and also it prevents an ordinary user from tampering a binary that could be used by other users.
+I'm not sure why you're saying that it's sloppy for a system-wide binary to be owned by root. That's both [the policy in Debian](https://www.debian.org/doc/debian-policy/ch-files.html#permissions-and-owners) and also it prevents an ordinary user from tampering with a binary that could be used by other users.
 """]]
