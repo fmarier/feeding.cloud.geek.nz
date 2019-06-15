@@ -1,0 +1,101 @@
+[[!meta title="OpenSUSE 15 LXC setup on Ubuntu Bionic 18.04"]]
+[[!meta date="2019-06-14T20:15:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Similarly to what I wrote for [Fedora](https://feeding.cloud.geek.nz/posts/fedora29-lxc-setup-on-ubuntu-bionic/),
+here is how I was able to create an [OpenSUSE](https://www.opensuse.org) 15 LXC
+container on an Ubuntu 18.04 (bionic) laptop.
+
+# Setting up LXC on Ubuntu
+
+First of all, install lxc:
+
+    apt install lxc
+    echo "veth" >> /etc/modules
+    modprobe veth
+
+turn on bridged networking by putting the following in
+`/etc/sysctl.d/local.conf`:
+
+    net.ipv4.ip_forward=1
+
+and applying it using:
+
+    sysctl -p /etc/sysctl.d/local.conf
+
+Then allow the right traffic in your firewall
+(`/etc/network/iptables.up.rules` in my case):
+
+    # LXC containers
+    -A FORWARD -d 10.0.3.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -s 10.0.3.0/24 -j ACCEPT
+    -A INPUT -d 224.0.0.251 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 239.255.255.250 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 10.0.3.255 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 10.0.3.1 -s 10.0.3.0/24 -j ACCEPT
+
+and apply these changes:
+
+    iptables-apply
+
+before restarting the lxc networking:
+
+    systemctl restart lxc-net.service
+
+# Creating the container
+
+Once that's in place, you can finally create the OpenSUSE 15 container:
+
+    lxc-create -n opensuse15 -t download -- -d opensuse -r 15 -a amd64
+
+To see a list of all distros available with the `download` template:
+
+    lxc-create -n foo --template=download -- --list
+
+# Logging in as root
+
+Start up the container and get a login console:
+
+    lxc-start -n opensuse15 -F
+
+In another terminal, set a password for the root user:
+
+    lxc-attach -n opensuse15 passwd
+
+You can now use this password to log into the console you started earlier.
+
+# Logging in as an unprivileged user via ssh
+
+As root, install a few packages:
+
+    zypper install vim openssh sudo man
+    systemctl start sshd
+    systemctl enable sshd
+
+and then create an unprivileged user:
+
+    useradd francois
+    passwd francois
+    cd /home
+    mkdir francois
+    chown francois:100 francois/
+
+and give that user [sudo access](https://en.opensuse.org/SDB:Administer_with_sudo):
+
+    visudo  # uncomment "wheel" line
+    groupadd wheel
+    usermod -aG wheel francois
+
+Now login as that user from the console and add an ssh public key:
+
+    mkdir .ssh
+    chmod 700 .ssh
+    echo "<your public key>" > .ssh/authorized_keys
+    chmod 644 .ssh/authorized_keys
+
+You can now login via ssh. The IP address to use can be seen in the output
+of:
+
+    lxc-ls --fancy
+
+[[!tag debian]] [[!tag lxc]] [[!tag nzoss]] [[!tag ubuntu]]
