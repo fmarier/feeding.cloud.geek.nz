@@ -60,7 +60,7 @@ you and put it in `/etc/systemd/timesyncd.conf`. For example, mine reads
 like this:
 
     [Time]
-    NTP=ca.pool.ntp.org
+    NTP=time.cloudflare.com
 
 before restarting the daemon:
 
