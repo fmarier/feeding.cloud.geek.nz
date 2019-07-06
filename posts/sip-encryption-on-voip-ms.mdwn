@@ -1,0 +1,73 @@
+[[!meta title="SIP Encryption on VoIP.ms"]]
+[[!meta date="2019-07-06T16:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+My [VoIP provider](https://voip.ms) recently added [support for
+TLS/SRTP-based call
+encryption](https://wiki.voip.ms/article/Call_Encryption_-_TLS/SRTP). Here's
+what I did to enable this feature on my
+[Asterisk](https://www.asterisk.org/) server.
+
+First of all, I changed the registration line in `/etc/asterisk/sip.conf` to
+use the "tls" scheme:
+
+    [general]
+    register => tls://mydid:mypassword@servername.voip.ms
+
+then I enabled incoming TCP connections:
+
+    tcpenable=yes
+
+and TLS:
+
+    tlsenable=yes
+    tlscapath=/etc/ssl/certs/
+
+Finally, I changed my provider entry in the same file to:
+
+    [voipms]
+    type=friend
+    host=servername.voip.ms
+    secret=mypassword
+    username=mydid
+    context=from-voipms
+    allow=ulaw
+    allow=g729
+    insecure=port,invite
+    transport=tls
+    encryption=yes
+
+(Note the last two lines.)
+
+The dialplan didn't change and so I still have the following in
+`/etc/asterisk/extensions.conf`:
+
+    [pstn-voipms]
+    exten => _1NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <5551234567>)
+    exten => _1NXXNXXXXXX,n,Dial(SIP/voipms/${EXTEN})
+    exten => _1NXXNXXXXXX,n,Hangup()
+    exten => _NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <5551234567>)
+    exten => _NXXNXXXXXX,n,Dial(SIP/voipms/1${EXTEN})
+    exten => _NXXNXXXXXX,n,Hangup()
+    exten => _011X.,1,Set(CALLERID(all)=Francois Marier <5551234567>)
+    exten => _011X.,n,Authenticate(1234) ; require password for international calls
+    exten => _011X.,n,Dial(SIP/voipms/${EXTEN})
+    exten => _011X.,n,Hangup(16)
+
+## Server certificate
+
+The only thing I still need to fix is to make this error message go away in
+my logs:
+
+    asterisk[8691]: ERROR[8691]: tcptls.c:966 in __ssl_setup: TLS/SSL error loading cert file. <asterisk.pem>
+
+It appears to be related to the fact that I didn't set `tlscertfile` in
+`/etc/asterisk/sip.conf` and that it's using its default value of
+`asterisk.pem`, a non-existent file.
+
+Since my Asterisk server is only acting as a TLS *client*, and not a TLS
+*server*, there's probably no harm in not having a certificate. That said,
+it looks pretty easy to [use a Let's Encrypt cert with
+Asterisk](https://community.asterisk.org/t/has-anyone-used-letsencrypt-to-setup-ssl-for-asterisk/67145/6).
+
+[[!tag debian]] [[!tag asterisk]] [[!tag nzoss]] [[!tag letsencrypt]]
