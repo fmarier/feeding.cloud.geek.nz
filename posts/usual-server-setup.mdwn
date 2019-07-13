@@ -9,7 +9,7 @@ how I customize recent releases of Debian on those servers.
 
 # Hardware tests
 
-    apt install memtest86+ smartmontools e2fsprogs
+    apt install memtest86+ smartmontools e2fsprogs rasdaemon
 
 Prior to spending any time configuring a new physical server, I like to
 ensure that the hardware is fine.
