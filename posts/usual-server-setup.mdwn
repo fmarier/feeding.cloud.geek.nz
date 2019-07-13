@@ -238,6 +238,10 @@ and the following to harden the TCP stack:
 
 before reloading these settings using `sysctl -p`.
 
+Sandboxing in apt can be enabled by putting the following in `/etc/apt/apt.conf.d/30-seccomp`:
+
+    APT::Sandbox::Seccomp "true";
+
 I also restrict the use of cron to the `root` user by putting the following in `/etc/cron.allow`:
 
     root
