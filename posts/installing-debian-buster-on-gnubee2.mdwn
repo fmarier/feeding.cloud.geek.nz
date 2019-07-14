@@ -1,0 +1,192 @@
+[[!meta title="Installing Debian buster on a GnuBee PC 2"]]
+[[!meta date="2019-07-14T15:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here is how I installed [Debian 10 /
+buster](https://www.debian.org/releases/buster/) on my [GnuBee Personal
+Cloud 2](http://gnubee.org/), a free hardware device designed as a network
+file server / [NAS](https://en.wikipedia.org/wiki/Network-attached_storage).
+
+## Flashing the LibreCMC firmware with Debian support
+
+Before we can install Debian, we need a firmware that includes all of the
+necessary tools.
+
+On another machine, do the following:
+
+1. Download the [latest `librecmc-ramips-mt7621-gb-pc1-squashfs-sysupgrade_*.bin`](https://github.com/gnubee-git/gnubee-git.github.io/tree/master/debian).
+2. Mount a **vfat**-formatted USB stick.
+3. Copy the file onto it and rename it to `gnubee.bin`.
+4. Unmount the USB stick
+
+Then plug a network cable between your laptop and the **black network port**
+and plug the USB stick into the GnuBee before rebooting the GnuBee via ssh:
+
+    ssh 192.68.10.0
+    reboot
+
+If you have a [USB serial
+cable](https://github.com/gnubee-git/GnuBee_Docs/blob/master/USB_to_UART/README.md),
+you can use it to monitor the flashing process:
+
+    screen /dev/ttyUSB0 57600
+
+otherwise keep an eye on the [LEDs and wait until they are fully done
+flashing](https://github.com/gnubee-git/GnuBee_Docs/wiki/Install-firmware#via-usb-stick).
+
+## Getting ssh access to LibreCMC
+
+Once the firmware has been updated, turn off the GnuBee manually using the
+power switch and turn it back on.
+
+Now enable SSH access via the built-in [LibreCMC](https://librecmc.org)
+firmware:
+
+1. Plug a network cable between your laptop and the **black network port**.
+2. Open web-based admin panel at <http://192.168.10.0>.
+3. Go to *System | Administration*.
+4. Set a root password.
+5. Disable ssh password auth and root password logins.
+6. Paste in your **RSA** ssh public key.
+7. Click *Save & Apply*.
+8. Go to *Network | Firewall*.
+9. Select "accept" for WAN Input.
+10. Click *Save & Apply*.
+
+Finaly, go to *Network | Interfaces* and note the ipv4 address of the WAN
+port since that will be needed in the next step.
+
+## Installing Debian
+
+The first step is to [install Debian
+jessie](https://github.com/gnubee-git/GnuBee_Docs/wiki/Debian) on the
+GnuBee.
+
+Connect the **blue network port** into your router/switch and ssh into the
+GnuBee using the IP address you noted earlier:
+
+    ssh root@192.168.1.xxx
+
+and the root password you set in the previous section.
+
+Then use `fdisk /dev/sda` to create the following partition layout on the
+first drive:
+
+    Device       Start       End   Sectors   Size Type
+    /dev/sda1     2048   8390655   8388608     4G Linux swap
+    /dev/sda2  8390656 234441614 226050959 107.8G Linux filesystem
+
+Note that I used an 120GB solid-state drive as the system drive in order to
+minimize noise levels.
+
+Then format the swap partition:
+
+    mkswap /dev/sda1
+
+and download the latest version of the jessie installer:
+
+    wget --no-check-certificate https://raw.githubusercontent.com/gnubee-git/GnuBee_Docs/master/GB-PCx/scripts/jessie_3.10.14/debian-jessie-install
+
+(Yes, the `--no-check-certificate` is really unfortunate. Please leave a
+comment if you find a way to work around it.)
+
+The stock installer fails to bring up the correct networking configuration
+on my network and so I have [modified the
+install script](https://github.com/gnubee-git/GnuBee_Docs/pull/102) by changing
+the `eth0.1` blurb to:
+
+    auto eth0.1
+    iface eth0.1 inet static
+        address 192.168.10.1
+        netmask 255.255.255.0
+
+Then you should be able to run the installer succesfully:
+
+    sh ./debian-jessie-install
+
+and reboot:
+
+    reboot
+
+# Restore ssh access in Debian jessie
+
+Once the GnuBee has finished booting, login using the [serial console](https://github.com/gnubee-git/GnuBee_Docs/blob/master/USB_to_UART/README.md):
+
+- username: `root`
+- password: `GnuBee`
+
+and change the root password using `passwd`.
+
+Look for the IPv4 address of `eth0.2` in the output of the `ip addr` command
+and then ssh into the GnuBee from your desktop computer:
+
+    ssh root@192.168.1.xxx  # type password set above
+    mkdir .ssh
+    vim .ssh/authorized_keys  # paste your ed25519 ssh pubkey
+
+## Finish the jessie installation
+
+With this in place, you should be able to ssh into the GnuBee using your
+public key:
+
+    ssh root@192.168.1.172
+
+and then finish the jessie installation:
+
+    wget --no-check-certificate https://raw.githubusercontent.com/gnubee-git/gnubee-git.github.io/master/debian/debian-modules-install
+    bash ./debian-modules-install
+    reboot
+
+After rebooting, I made a few tweaks to make the system more pleasant to
+use:
+
+    update-alternatives --config editor  # choose vim.basic
+    dpkg-reconfigure locales  # enable the locale that your desktop is using
+
+## Upgrade to stretch and then buster
+
+To upgrade to stretch, put this in `/etc/apt/sources.list`:
+
+    deb http://httpredir.debian.org/debian stretch main
+    deb http://httpredir.debian.org/debian stretch-updates main
+    deb http://security.debian.org/ stretch/updates main
+
+Then upgrade the packages:
+
+    apt update
+    apt full-upgrade
+    apt autoremove
+    reboot
+
+To upgrade to buster, put this in `/etc/apt/sources.list`:
+
+    deb http://httpredir.debian.org/debian buster main
+    deb http://httpredir.debian.org/debian buster-updates main
+    deb http://security.debian.org/debian-security buster/updates main
+
+and upgrade the packages:
+
+    apt update
+    apt full-upgrade
+    apt autoremove
+    reboot
+
+## Next steps
+
+At this point, my GnuBee is running the latest version of Debian stable,
+however there are two remaining issues to fix:
+
+1. [openssh-server doesn't
+   work](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=932089) and I am
+   forced to access the GnuBee via the serial interface.
+
+2. The firmware is running an outdated version of the Linux kernel though
+   this is [being worked
+   on](https://groups.google.com/d/topic/gnubee/YVM08lfWUUc/discussion) by
+   community members.
+
+I hope to resolve these issues soon, and will update this blog post once I
+do, but you are more than welcome to leave a comment if you know of a
+solution I may have overlooked.
+
+[[!tag debian]] [[!tag gnubee]] [[!tag nzoss]]
