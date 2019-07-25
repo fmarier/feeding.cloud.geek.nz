@@ -38,9 +38,11 @@ and here are the contents of that script:
     rm -rf src/out node_modules src/brave/node_modules
     git clean -f -d
     git checkout HEAD package-lock.json
+    find -name "*.pyc" -delete
     
     echo $(date)
     echo "=> Update repo"
+    git fetch --prune origin
     git pull
     npm install
     npm run init
