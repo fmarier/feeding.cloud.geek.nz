@@ -72,7 +72,7 @@ It references a `~/.bashrc-brave` file which contains:
     #!/bin/sh
     export PATH="${PATH}:${HOME}/bin:${HOME}/devel/brave-browser/vendor/depot_tools:${HOME}/.cargo/bin"
     export SCCACHE_DIR="${HOME}/.cache/sccache"
-    export SCCACHE_CACHE_SIZE=100G
+    export SCCACHE_CACHE_SIZE=200G
     export NO_AUTH_BOTO_CONFIG="${HOME}/.boto"
 
 ## ccache instead of sccache
