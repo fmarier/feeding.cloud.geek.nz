@@ -75,4 +75,27 @@ It references a `~/.bashrc-brave` file which contains:
     export SCCACHE_CACHE_SIZE=100G
     export NO_AUTH_BOTO_CONFIG="${HOME}/.boto"
 
-[[!tag brave]] [[!tag sccache]]
+## ccache instead of sccache
+
+While I started using sccache for compiling Brave, I recently switched to
+[ccache](https://ccache.dev) as sccache turned out to be fairly
+[unreliable](https://github.com/brave/brave-browser/wiki/sccache-for-faster-builds#troubleshooting-the-install)
+at compiling Chromium.
+
+Switching to `ccache` is easy, simply install the package:
+
+    apt install ccache
+
+and then set the [environment
+variable](https://github.com/brave/brave-browser/wiki/sccache-for-faster-builds#setting-the-environment-variable)
+in `.npmrc`:
+
+    sccache = ccache
+
+Finally, you'll probably want to increase the maximum cache size:
+
+    ccache --max-size=200G
+
+in order to fit all of Chromium/Brave in the cache.
+
+[[!tag brave]] [[!tag sccache]] [[!tag ccache]]
