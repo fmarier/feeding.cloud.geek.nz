@@ -45,6 +45,8 @@ and here are the contents of that script:
     git fetch --prune origin
     git pull
     npm install
+    rm -rf src/brave/*
+    gclient sync -D
     npm run init
     
     echo $(date)
