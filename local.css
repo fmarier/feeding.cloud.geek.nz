@@ -1,4 +1,9 @@
 /* ikiwiki local style sheet */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 .blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions {
     display: none;
 }
