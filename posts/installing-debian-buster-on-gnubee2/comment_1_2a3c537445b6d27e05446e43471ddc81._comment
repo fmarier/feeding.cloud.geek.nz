@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="188.192.119.43"
+ claimedauthor="Hein Osenberg"
+ subject="Works for me"
+ date="2019-09-02T19:21:34Z"
+ content="""
+With Neil Browns new kernel (5.2.8 - see <http://neil.brown.name/gnubee/>), installed (see README) upgrading to Debian Buster worked perfectly for me. SSH access works
+out of the box without problems.
+"""]]
