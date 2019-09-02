@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="2601:280:4100:8254:9a3b:8fff:fec1:f25a"
+ claimedauthor="Chris Keller, K0SWE"
+ subject="Finally, USB works!"
+ date="2019-08-09T11:37:29Z"
+ content="""
+Thanks for writing this down! I've tried a Virtualbox VM several times for programming radios but could never get USB devices to be visible inside the VM. Turns out, I was missing the `vboxusers` group. This should open up a lot of possibilities!
+"""]]

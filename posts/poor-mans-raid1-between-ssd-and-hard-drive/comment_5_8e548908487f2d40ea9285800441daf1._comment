@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ ip="96.67.192.225"
+ claimedauthor="Alexis Wilke"
+ url="https://linux.m2osw.com/"
+ subject="Your title said RAID1..."
+ date="2019-09-01T23:03:01Z"
+ content="""
+I totally agree that a RAID1 would kill the speed of SSD. But then, your post title says RAID1... :-)
+
+Now, I wanted to mention that if you know the name of your device, you can check whether it's a rotational (HDD) or not (SSD). Here is an example of how you get the flag:
+
+alexis~$ cat /sys/block/sda/queue/rotational
+
+The file is either a 0 (SSD) or a 1 (HDD). What you need is the \"sda\" part of the path. In a shell script, it can be difficult to grab that info. Although a function such as \"df .\" give you the info, it's not that practical.
+
+Anyway, your solution is pretty much what I had in mind. Thank you.
+"""]]
