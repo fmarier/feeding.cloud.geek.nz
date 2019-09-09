@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: programming Anytone 878"
+ date="2019-09-02T21:11:37Z"
+ content="""
+> In the instruction you say turn on the radio. How do you do that if it is locked and can be only unlocked by programing?
+
+The radio being factory-locked shouldn't prevent you from turning it on using the right knob. If you're talking about the keypad being locked, then yes that's one of the things that can be [unlocked using the CPS](https://www.youtube.com/watch?v=dzFqEM-yC7A).
+"""]]
