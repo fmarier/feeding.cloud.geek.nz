@@ -1,0 +1,197 @@
+[[!meta title="Restricting third-party iframe widgets using the sandbox attribute, referrer policy and feature policy"]]
+[[!meta date="2019-09-20T20:15:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Adding third-party embedded widgets on a website is a common but potentially
+dangerous practice. Thankfully, the web platform offers a few controls that can help
+mitigate the risks. While this post uses the example of an embedded
+SurveyMonkey survey, the principles can be used for all kinds of other widgets.
+
+Note that this is by no means an endorsement of SurveyMonkey's proprietary
+service. If you are looking for a survey product, you should consider a free
+and open source alternative like [LimeSurvey](https://www.limesurvey.org/).
+
+# SurveyMonkey's snippet
+
+In order to embed a [survey on your
+website](https://www.surveymonkey.com/curiosity/how-to-embed-your-survey-on-a-website/),
+the SurveyMonkey interface will tell you to install the following [website
+collector](https://help.surveymonkey.com/articles/en_US/kb/Website-Collector) script:
+
+    <script>(function(t,e,s,n){var
+    o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src=["https:"===location.protocol?"https://":"http://","widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd9NxKf_2BhnTfDFrN34n_2BjT1Kk0sqrObugJL8ZXdb_2BaREa.js"].join(""),a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script><a
+    style="font: 12px Helvetica, sans-serif; color: #999; text-decoration:
+    none;" href=https://www.surveymonkey.com> Create your own user feedback
+    survey </a>
+
+which can be rewritten in a more understandable form as:
+
+    (
+    function (s) {
+      var scripts, last_script, new_script;
+      window.SMCX = window.SMCX || [],
+      document.getElementById("smcx-sdk") ||
+        (
+          scripts = document.getElementsByTagName("script"),
+          last_script = scripts[scripts.length - 1],
+          new_script = document.createElement("script"),
+          new_script.type = "text/javascript",
+          new_script.async = true,
+          new_script.id = "smcx-sdk",
+          new_script.src =
+            [
+              "https:" === location.protocol ? "https://" : "http://",
+              "widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd9NxKf_2BhnTfDFrN34n_2BjT1Kk0sqrObugJL8ZXdb_2BaREa.js"
+            ].join(""),
+          last_script.parentNode.insertBefore(new_script, last_script)
+        )
+      }
+    )();
+
+The fact that this adds a third-party script dependency to your website is
+problematic because it means that a security vulnerability in their
+infrastructure could lead to a complete compromise of your site, thanks to
+third-party scripts having full control over your website. Security issues
+aside though, this could also enable this third-party to violate your users'
+privacy expectations and extract any information displayed on your site for
+marketing purposes.
+
+However, if you embed the snippet on a test page and inspect it with the
+developer tools, you will find that it actually creates an
+[iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe):
+
+    <iframe
+        width="500"
+        height="500"
+        frameborder="0"
+        allowtransparency="true"
+        src="https://www.surveymonkey.com/r/D3KDY6R?embedded=1"
+    ></iframe>
+
+and you can use that directly on your site without having to load their
+script.
+
+## Mixed content anti-pattern
+
+As an aside, the script snippet they propose makes use of a common front-end
+anti-pattern:
+
+    "https:"===location.protocol?"https://":"http://"
+
+This is presumably meant to avoid inserting an HTTP script element into an
+HTTPS page, since that would be considered [mixed
+content](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content)
+and get blocked by browsers, however this is entirely unnecessary. One
+should only ever use the HTTPS version of such scripts anyways since an HTTP
+page [never prohibits embedding HTTPS
+content](https://www.w3.org/TR/mixed-content/#categorize-settings-object).
+
+In other words, the above code snippet can be simplified to:
+
+    "https://"
+
+# Restricting iframes
+
+Thanks to defenses which have been added to the web platform recently, there
+are a few things that can be done to constrain iframes.
+
+Firstly, you can choose to hide your full page URL from SurveyMonkey using
+the [referrer
+policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy):
+
+    referrerpolicy="strict-origin"
+
+This mean seem harmless, but page URLs sometimes include sensitive
+information in the URL path or query string, for example, search terms that
+a user might have typed. The `strict-origin` policy will limit the referrer
+to your site's hostname, port and protocol.
+
+Secondly, you can prevent the iframe from being able to access anything
+about its embedding page or to trigger popups and unwanted downloads using
+the [sandbox
+attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attr-sandbox):
+
+    sandbox="allow-scripts allow-forms"
+
+Ideally, the contents of this attribute would be empty so that all
+restrictions would be active, but SurveyMonkey is a JavaScript application
+and it of course needs to submit a form since that's the purpose of the widget.
+
+Finally, a new experimental capability is making its way into browsers:
+[feature policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
+In the context of untrusted iframes, it enables developers to explicitly
+disable [certain powerful
+features](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy#Directives):
+
+    allow="accelerometer 'none';
+           ambient-light-sensor 'none';
+           camera 'none';
+           display-capture 'none';
+           document-domain 'none';
+           fullscreen 'none';
+           geolocation 'none';
+           gyroscope 'none';
+           magnetometer 'none';
+           microphone 'none';
+           midi 'none';
+           payment 'none';
+           usb 'none';
+           vibrate 'none';
+           vr 'none';
+           webauthn 'none'"
+
+Putting it all together, we end up with the following HTML snippet:
+
+    <iframe
+        width="500"
+        height="500"
+        frameborder="0"
+        allowtransparency="true"
+        allow="accelerometer 'none'; ambient-light-sensor 'none';
+               camera 'none'; display-capture 'none';
+               document-domain 'none'; fullscreen 'none';
+               geolocation 'none'; gyroscope 'none'; magnetometer 'none';
+               microphone 'none'; midi 'none'; payment 'none'; usb 'none';
+               vibrate 'none'; vr 'none'; webauthn 'none'"
+        sandbox="allow-scripts allow-forms"
+        referrerpolicy="strict-origin"
+        src="https://www.surveymonkey.com/r/D3KDY6R?embedded=1"
+    ></iframe>
+
+# Content Security Policy
+
+Another advantage of using the iframe directly is that instead of loosening
+your site's [Content Security
+Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) by adding all
+of the following:
+
+* `script-src https://www.surveymonkey.com`
+* `img-src https://www.surveymonkey.com`
+* `frame-src  https://www.surveymonkey.com`
+
+you can limit the extra directives to just the frame controls:
+
+* `frame-src  https://www.surveymonkey.com`
+
+[CSP Embedded Enforcement](https://w3c.github.io/webappsec-cspee/) would be
+another nice mechanism to make use of, but looking at SurveyMonkey's CSP
+policy:
+
+    Content-Security-Policy:
+      default-src https: data: blob: 'unsafe-eval' 'unsafe-inline'
+          wss://*.hotjar.com 'self';
+      img-src https: http: data: blob: 'self';
+      script-src https: 'unsafe-eval' 'unsafe-inline' http://www.google-analytics.com http://ajax.googleapis.com
+          http://bat.bing.com http://static.hotjar.com http://www.googleadservices.com
+          'self';
+      style-src https: 'unsafe-inline' http://secure.surveymonkey.com 'self';
+      report-uri https://csp.surveymonkey.com/report?e=true&c=prod&a=responseweb
+
+it allows the injection of arbitrary Flash files, [inline
+scripts](https://developers.google.com/web/fundamentals/security/csp/#inline_code_is_considered_harmful),
+evals and any other scripts hosted on an HTTPS URL, which means that it
+[doesn't really provide any meaningful security
+benefits](https://csp-evaluator.withgoogle.com/).
+
+Embedded enforcement is thefore not a usable security control in this
+particular example until SurveyMonkey gets a stricter CSP policy.
