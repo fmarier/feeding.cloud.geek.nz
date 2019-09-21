@@ -195,3 +195,5 @@ benefits](https://csp-evaluator.withgoogle.com/).
 
 Embedded enforcement is thefore not a usable security control in this
 particular example until SurveyMonkey gets a stricter CSP policy.
+
+[[!tag web]] [[!tag security]] [[!tag csp]] [[!tag mozilla]]
