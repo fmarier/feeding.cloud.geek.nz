@@ -22,8 +22,7 @@ Because of [a bug in gnome-settings-daemon](https://ask.fedoraproject.org/en/que
 
 # Notifications
 
-While my startup script doesn't run this tool directly, installing the
-[dunst package](https://packages.debian.org/stable/dunst) is required to receive desktop notifications:
+I use the [dunst package](https://packages.debian.org/stable/dunst) to receive desktop notifications:
 
     apt install dunst
 
