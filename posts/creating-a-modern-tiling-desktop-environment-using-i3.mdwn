@@ -10,6 +10,7 @@ After experimenting with [awesome](http://awesome.naquadah.org/) for 2 years and
 
 As soon as I log into my desktop, my [startup script](https://github.com/fmarier/user-scripts/blob/master/startup) starts a few programs, including:
 
+* [dunst package](https://packages.debian.org/stable/dunst): displays desktop notifications
 * [gnome-settings-daemon](https://packages.debian.org/stable/gnome-settings-daemon): makes GTK applications look nice by applying my preferred theme amongst other things
 * [gnome-keyring-daemon](https://packages.debian.org/stable/gnome-keyring): remembers ssh public keys for the duration of my session
 * [i3lock](https://packages.debian.org/stable/i3lock): locks the screen when I'm not around
@@ -22,15 +23,11 @@ Because of [a bug in gnome-settings-daemon](https://ask.fedoraproject.org/en/que
 
 # Notifications
 
-I use the [dunst package](https://packages.debian.org/stable/dunst) to receive desktop notifications:
-
-    apt install dunst
-
 You will probably also want to set the following in `/etc/xdg/dunst/dunstrc` to ensure that notifications use your default web browser:
 
     browser = /usr/bin/sensible-browser
 
-Here are the keyboard shortcuts you'll need to interact with the notifications that popup:
+Here are the keyboard shortcuts you'll need to interact with the notifications that pop up:
 
 - `Ctrl-Space` to close the current notification
 - `Ctrl-Shift-Space` to close all notifications
