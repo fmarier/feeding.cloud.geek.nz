@@ -34,7 +34,7 @@ Here are the keyboard shortcuts you'll need to interact with the notifications t
 
 - `Ctrl-Space` to close the current notification
 - `Ctrl-Shift-Space` to close all notifications
-- `Ctrl-\`` to show the last notification
+- `Ctrl-<backtick>` to show the last notification
 - `Ctrl-Shift-.` to show the context menu for the current notification
 
 # Screensaver
