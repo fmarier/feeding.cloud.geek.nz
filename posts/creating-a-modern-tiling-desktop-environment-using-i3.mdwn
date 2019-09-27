@@ -12,7 +12,7 @@ As soon as I log into my desktop, my [startup script](https://github.com/fmarier
 
 * [gnome-settings-daemon](https://packages.debian.org/stable/gnome-settings-daemon): makes GTK applications look nice by applying my preferred theme amongst other things
 * [gnome-keyring-daemon](https://packages.debian.org/stable/gnome-keyring): remembers ssh public keys for the duration of my session
-* [gnome-screensaver](https://packages.debian.org/stable/gnome-screensaver): locks the screen when I'm not around
+* [i3lock](https://packages.debian.org/stable/i3lock): locks the screen when I'm not around
 * [nm-applet](https://packages.debian.org/stable/network-manager-gnome): handles wifi and VPN connections
 * [syncthing](https://www.syncthing.net/): keeps my folders synchronized between machines
 
@@ -39,11 +39,9 @@ Here are the keyboard shortcuts you'll need to interact with the notifications t
 
 # Screensaver
 
-In addition, gnome-screensaver didn't automatically lock my screen, so I installed [xautolock](https://packages.debian.org/stable/xautolock) and added it to my startup script:
+To make i3lock automatically lock my screen, I installed [xautolock](https://packages.debian.org/stable/xautolock) and added it to my startup script:
 
-    xautolock -time 30 -locker "gnome-screensaver-command --lock" &
-
-to lock the screen using gnome-screensaver after 30 minutes of inactivity.
+    xautolock -time 30 -locker "i3lock -c 000000 -f" &
 
 I can also trigger it manually using the following shortcut defined in my `~/.i3/config`:
 
