@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="82.6.2.26"
+ claimedauthor="Marcin"
+ url="mr-coffee.io"
+ subject="Saved my life"
+ date="2019-11-24T20:40:41Z"
+ content="""
+Very helpful, thanks a lot for that post! As a quick note, this also works for the Virtualbox related installation. Ony difference would be to mount the LiveCD in the Settings > Storage > Controller: IDE and start the VM. The other steps work as a charm!
+"""]]
