@@ -1,0 +1,4 @@
+[[!meta title="pages tagged turris"]]
+
+[[!inline pages="tagged(turris)" actions="no" archive="yes"
+feedshow=10]]
