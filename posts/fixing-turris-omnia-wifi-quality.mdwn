@@ -33,7 +33,7 @@ around inside the unit, as suggested by the poster.
 After opening the case however, I noticed that radios were already laid out
 in the optimal way:
 
-![](/posts/fixing-turris-omnia-wifi-quality/radios.png)
+![](/posts/fixing-turris-omnia-wifi-quality/radios.jpg)
 
 and that USB3 interference wasn't going to be the reason
 for my troubles.
@@ -46,12 +46,12 @@ radio](https://compex.com.sg/shop/wifi-module/802-11ac-wave-1/wle900vx/)
 radio](https://compex.com.sg/shop/wifi-module/802-11n/wle200n2/) (2.4 GHz
 only) was connected to only 2 of the 3 antennas:
 
-![](/posts/fixing-turris-omnia-wifi-quality/overall.png)
+![](/posts/fixing-turris-omnia-wifi-quality/overall.jpg)
 
 To make it possible for antennas 1 and 3 to carry the signal from both
 radios, a duplexer got inserted between the radios and the antenna:
 
-![](/posts/fixing-turris-omnia-wifi-quality/duplexer.png)
+![](/posts/fixing-turris-omnia-wifi-quality/duplexer.jpg)
 
 On one side is the 2.4 antenna port and on the other side is the 5 GHz port.
 
@@ -74,4 +74,4 @@ as I passed my advanced [amateur radio license
 exam](https://launchpad.net/canadian-ham-exam). I guess that was a good way
 to put the course material into practice!
 
-[[!tag nzoss]] [[!turris]]
+[[!tag nzoss]] [[!tag turris]]
