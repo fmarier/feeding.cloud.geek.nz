@@ -1,0 +1,77 @@
+[[!meta title="Fixing Turris Omnia WiFi Quality"]]
+[[!meta date="2019-11-24T22:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I was recently hoping to replace an aging proprietary router (upgraded to a
+[Gargoyle](https://www.gargoyle-router.com/) FOSS firmware). After rejecting
+a [popular brand with a disturbing GPL violation
+habit](https://sfconservancy.org/blog/2019/oct/02/cambium-ubiquiti-gpl-violations/),
+I settled on the [Turris Omnia router](https://www.turris.cz/en/omnia/),
+built on free software. Overall, I was pretty satisfied with the fact that
+it is free and comes with automatic updates, but I noticed a problem with
+the WiFi. Specifically, the 5 GHz access point was okay but the 2.4 GHz was
+awful.
+
+## False lead
+
+I initially thought that the 2.4 GHz radio wasn't working, but then I
+realized that putting my phone next to the router would allow it to connect
+and exchange data at a slow-but-steady rate. If I moved the phone more than
+3-4 meters away though, it would disconnect for lack of signal. To be frank,
+the wireless performance was much worse than my original router, even though
+the wired performance was, as expected, amazing:
+
+![](/posts/fixing-turris-omnia-wifi-quality/fast.png)
+
+I looked on the [official support forums](https://forum.turris.cz/) and found this intriguing
+thread about [interference between USB3 and 2.4 GHz
+radios](https://forum.turris.cz/t/slow-wifi-and-bad-signal-finally-solved/7372).
+This sounded a lot like what I was experiencing (working radio but terrible
+signal/interference) and so I decided to see if I could move the radios
+around inside the unit, as suggested by the poster.
+
+After opening the case however, I noticed that radios were already laid out
+in the optimal way:
+
+![](/posts/fixing-turris-omnia-wifi-quality/radios.png)
+
+and that USB3 interference wasn't going to be the reason
+for my troubles.
+
+## Real problem
+
+So I took a good look at the wiring and found that while the the [larger
+radio](https://compex.com.sg/shop/wifi-module/802-11ac-wave-1/wle900vx/)
+(2.4 / 5 GHz dual-bander) was connected to all three antennas, the [smaller
+radio](https://compex.com.sg/shop/wifi-module/802-11n/wle200n2/) (2.4 GHz
+only) was connected to only 2 of the 3 antennas:
+
+![](/posts/fixing-turris-omnia-wifi-quality/overall.png)
+
+To make it possible for antennas 1 and 3 to carry the signal from both
+radios, a duplexer got inserted between the radios and the antenna:
+
+![](/posts/fixing-turris-omnia-wifi-quality/duplexer.png)
+
+On one side is the 2.4 antenna port and on the other side is the 5 GHz port.
+
+Looking at the wiring though, it became clear that **my 2.4 GHz radio was
+connected to the 5 GHz ports of the two duplexers and the 5 GHz radio was
+connected to the 2.4 GHz ports of the duplexers**. This makes sense
+considering that I had okay 5 GHz performance (with one of the three chains
+connected to the right filter) and abysimal 2.4 GHz performance (with none
+of the two chains connected to the right filter).
+
+## Solution
+
+**Swapping the antenna connectors around completely fixed the problem.**
+With the 2.4 GHz radio connected to the 2.4 side of the duplexer and the
+dual-bander connected to the 5 GHz side, I was able to get the performance I
+would expect from such a high-quality router.
+
+Interestingly enough, I found the solution to this problem the same weekend
+as I passed my advanced [amateur radio license
+exam](https://launchpad.net/canadian-ham-exam). I guess that was a good way
+to put the course material into practice!
+
+[[!tag nzoss]] [[!turris]]
