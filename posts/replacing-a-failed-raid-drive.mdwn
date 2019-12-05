@@ -100,7 +100,10 @@ that everything is fine:
 
     cat /proc/mdstat
 
-Then I ran a full SMART test over the new replacement drive:
+# Testing the new drive
+
+Finally once everything was configured, I ran a full SMART test over the
+new replacement drive:
 
     smartctl -t long /dev/sdb
 
