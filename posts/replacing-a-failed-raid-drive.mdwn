@@ -78,8 +78,9 @@ to re-create it), I had to update two things:
 
 # Ensuring that I can boot with the replacement drive
 
-In order to be able to boot from both drives, I reinstalled the grub boot
-loader onto the replacement drive:
+In order to be able to boot from both drives, I made sure that the
+replacement drive was included in the list from `dpkg-reconfigure grub-pc`
+and then reinstalled the grub boot loader manually onto it:
 
     grub-install /dev/sdb
 
