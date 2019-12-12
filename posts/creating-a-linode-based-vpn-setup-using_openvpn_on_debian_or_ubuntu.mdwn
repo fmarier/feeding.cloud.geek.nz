@@ -117,6 +117,7 @@ Finally, I added the following to these configuration files:
 * `/etc/sysctl.d/openvpn.conf`:
 
       net.ipv4.ip_forward=1
+      net.ipv4.conf.all.rp_filter=1
 
 * `/etc/rc.local` (just before `exit 0`):
 
