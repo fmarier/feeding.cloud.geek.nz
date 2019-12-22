@@ -1,0 +1,4 @@
+[[!meta title="pages tagged duplicity"]]
+
+[[!inline pages="tagged(duplicity)" actions="no" archive="yes"
+feedshow=10]]
