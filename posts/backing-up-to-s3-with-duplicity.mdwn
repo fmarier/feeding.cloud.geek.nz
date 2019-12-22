@@ -1,0 +1,146 @@
+[[!meta title="Backing up to S3 with Duplicity"]]
+[[!meta date="2019-12-22T12:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here is how I setup [duplicity](http://duplicity.nongnu.org/) to use S3 as a
+backend while giving duplicity the minimum set of permissions to my Amazon
+Web Services account.
+
+# AWS Security Settings
+
+First of all, I enabled the following [general security
+settings](https://console.aws.amazon.com/iam/home#/security_credentials) in
+my AWS account:
+
+- MFA with a U2F device
+- no root user access keys
+
+Then I set a **password policy** in the [IAM Account
+Settings](https://console.aws.amazon.com/iam/home#/account_settings) and
+**turned off all public access** in the [S3 Account
+Settings](https://s3.console.aws.amazon.com/s3/settings).
+
+# Creating an S3 bucket
+
+As a destination for the backups, I created a new `backup-foobar` [S3
+bucket](https://s3.console.aws.amazon.com/s3/home) keeping all of the
+default options except for the
+[region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions)
+which I set to `ca-central-1` to ensure that my data would stay in
+Canada.
+
+The bucket name can be anything you want as long as:
+
+- it's not already taken by another AWS user
+- it's a valid hostname (i.e. alphanumeric characters or dashes)
+
+Note that I did _not_ enable S3 server-side encryption since I will be
+encrypting the backups client-side using the support built into duplicity
+instead.
+
+# Creating a restricted user account
+
+Then I went back into the [Identity and Access Managment
+console](https://console.aws.amazon.com/iam/home) and created a new
+`DuplicityBackup` **policy**:
+
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:PutObject",
+                    "s3:GetObject",
+                    "s3:ListBucketMultipartUploads",
+                    "s3:AbortMultipartUpload",
+                    "s3:CreateBucket",
+                    "s3:ListBucket",
+                    "s3:DeleteObject",
+                    "s3:ListMultipartUploadParts"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::backup-foobar",
+                    "arn:aws:s3:::backup-foobar/*"
+                ]
+            },
+            {
+                "Sid": "VisualEditor1",
+                "Effect": "Allow",
+                "Action": "s3:ListAllMyBuckets",
+                "Resource": "*"
+            }
+        ]
+    }
+
+It's unfortunate that the unrestricted `s3:ListAllMyBuckets` permission has
+to be granted, but in my testing, duplicity would error out without it. No
+other permissions were needed.
+
+The next step was to create a new `DuplicityBackupHosts` IAM **group** to which
+I attached the `DuplicityBackup` policy.
+
+Finally, I created a new `machinename` IAM **user**:
+
+- Access: **programmatic only**
+- Group: `DuplicityBackupHosts`
+- Tags: `duplicity=1`
+
+and wrote down the *access key* and the *access key secret*.
+
+# Duplicity settings
+
+Once that's all set, I was able to use duplicity using the following
+options:
+
+- `--s3-use-new-style`: apparently required on non-US regions
+- `--s3-use-ia`: recommended pricing structure for backups
+- `--s3-use-multiprocessing`: speeds up uploading of backup chunks
+
+and used the following remote URL:
+
+    s3://s3.ca-central-1.amazonaws.com/backup-foobar/machinename
+
+which hardcodes the region in order to [work-around the lack of explicit
+region support in
+duplicity](https://bugs.launchpad.net/duplicity/+bug/1003159/comments/7).
+
+I ended up with the following command:
+
+    http_proxy= AWS_ACCESS_KEY_ID=<access_key> AWS_SECRET_ACCESS_KEY=<access_key_secret> PASSPHRASE=<password> duplicity --s3-use-new-style --s3-use-ia --s3-use-multiprocessing --no-print-statistics --verbosity 1 --exclude-device-files --exclude-filelist <exclude_file> --include-filelist <include_file> --exclude '**' / <remote_url>
+
+where `<exclude_file>` is a file which contains the list of paths to keep
+out of my backup:
+
+    /etc/.git
+    /home/francois/.cache
+
+`<include_file>` is a file which contains the list of paths to include
+in the backup:
+
+    /etc
+    /home/francois
+    /usr/local/bin
+    /usr/local/sbin
+    /var/log/apache2
+    /var/www
+
+and `<password>` is a long random string (`pwgen -s 64`) used to encrypt the backups.
+
+# Backup script
+
+Here are two other things I included in my backup script prior to the actual
+backup line listed in the previous section.
+
+The first one deletes files related to failed backups:
+
+    http_proxy= AWS_ACCESS_KEY_ID=<access_key> AWS_SECRET_ACCESS_KEY=<access_key_secret> PASSPHRASE=<password> duplicity cleanup --verbosity 1 --force <remote_url>
+
+and the second deletes old backups (older than 12 days in this example):
+
+    http_proxy= AWS_ACCESS_KEY_ID=<access_key> AWS_SECRET_ACCESS_KEY=<access_key_secret> PASSPHRASE=<password> duplicity remove-older-than 12D --verbosity 1 --force <remote_url>
+
+Feel free to leave a comment if I forgot anything that might be useful!
+
+[[!tag duplicity]] [[!tag sysadmin]] [[!tag backup]] [[!tag aws]] [[!tag s3]]
