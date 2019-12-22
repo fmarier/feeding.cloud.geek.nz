@@ -1,0 +1,4 @@
+[[!meta title="pages tagged s3"]]
+
+[[!inline pages="tagged(s3)" actions="no" archive="yes"
+feedshow=10]]
