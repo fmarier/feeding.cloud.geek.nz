@@ -22,7 +22,7 @@ On another machine, do the following:
 Then plug a network cable between your laptop and the **black network port**
 and plug the USB stick into the GnuBee before rebooting the GnuBee via ssh:
 
-    ssh 192.68.10.0
+    ssh 192.68.10.1
     reboot
 
 If you have a [USB serial
@@ -43,7 +43,7 @@ Now enable SSH access via the built-in [LibreCMC](https://librecmc.org)
 firmware:
 
 1. Plug a network cable between your laptop and the **black network port**.
-2. Open web-based admin panel at <http://192.168.10.0>.
+2. Open web-based admin panel at <http://192.168.10.1>.
 3. Go to *System | Administration*.
 4. Set a root password.
 5. Disable ssh password auth and root password logins.
