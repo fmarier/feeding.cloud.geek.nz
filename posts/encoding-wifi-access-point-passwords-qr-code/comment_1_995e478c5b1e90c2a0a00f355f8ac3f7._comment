@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="98.210.73.233"
+ subject="Script it"
+ date="2019-12-29T09:18:22Z"
+ content="""
+SSID=SSID_GOES_HERE
+pwgen -s 63 > 00wifi.txt
+qrencode -o 00wifi.png \"WIFI:T:WPA;S:${SSID};P:$(cat 00wifi.txt);;\"
+
+"""]]
