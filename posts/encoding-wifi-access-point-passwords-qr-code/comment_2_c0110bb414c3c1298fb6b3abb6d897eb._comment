@@ -1,8 +1,0 @@
-[[!comment format=mdwn
- ip="2001:44b8:3191:3b00:7dba:a0e1:1b6a:313e"
- claimedauthor="Jeremy"
- subject="Semicolon in SSID or password"
- date="2019-12-30T02:33:57Z"
- content="""
-How does this handle semicolons in the SSID or password?
-"""]]
