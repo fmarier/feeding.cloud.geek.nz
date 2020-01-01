@@ -1,0 +1,80 @@
+[[!meta title="Receiving slow-scan television images from the International Space Station"]]
+[[!meta date="2020-01-01T16:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Thanks to a fellow [VECTOR](https://vectorradio.ca) volunteer [Nick
+Doyle](https://www.qrz.com/db/VE7NCD), I found out that the [International
+Space Station](https://en.wikipedia.org/wiki/International_Space_Station)
+would be broadcasting [slow-scan
+television](https://en.wikipedia.org/wiki/Slow-scan_television) images at
+the end of the year. I decided to try and pick those up with my handheld
+radio.
+
+# Planning
+
+From the [official announcement](https://ariss.pzk.org.pl/sstv/), I got the
+frequency (145.800 MHz) and the broadcast times.
+
+Next I had to figure out when the ISS would be passing over my location.
+Most of the ISS tracking websites and applications are aimed at people
+wanting to _see_ the reflection of the sun on the station and so they only
+list the passes during nighttime before the earth casts a shadow that would
+prevent any visual contacts.
+
+Thankfully, Nick found a site which has a option to show all of the passes,
+visible or not and so I was able to get a [list of upcoming passes over
+Vancouver](https://heavens-above.com/PassSummary.aspx?satid=25544&lat=49.2827&lng=-123.1207&loc=Vancouver&alt=0&tz=PST).
+
+# Hardware
+
+From a hardware point-of-view, I didn't have to get any special equipment. I
+used my [Kenwood D72](https://www.kenwood.com/usa/com/amateur/th-d72a/) and
+an external Comet SBB5 mobile antenna.
+
+The only other pieces of equipment I used was a 2.5mm mono adapter which I
+used to connect a 3.5mm male-male audio cable in the speaker port of the
+radio and the microphone input of my computer.
+
+# Software
+
+The software I used for the recording was
+[Audacity](https://www.audacityteam.org/) set to a **sampling rate of 48
+kHz**.
+
+Then I installed
+[qsstv](http://users.telenet.be/on4qz/qsstv/manual/index.html) and
+configured it to [read input from a file instead of the sound
+card](http://users.telenet.be/on4qz/qsstv/faq.html#Audiofile).
+
+# Results
+
+Here is the [audio I
+recorded](/posts/receiving-sstv-images-from-iss/iss_sstv1.wav) from the
+first pass (65 degrees at the highest point) as well as the rendered image:
+
+![](/posts/receiving-sstv-images-from-iss/iss_sstv1.png)
+
+The second pass (60 degrees) was not as successful since I didn't hold the
+squelch open and you can tell from the [audio
+recording](/posts/receiving-sstv-images-from-iss/iss_sstv2.wav) that the
+signal got drowned in noise a couple of times. This is the rendering of that
+second pass:
+
+![](/posts/receiving-sstv-images-from-iss/iss_sstv2.png)
+
+# Tips
+
+The signal came through the squelch for only about a minute at the highest
+point, so I found it best to open the squelch fully (`F`+`Moni`) as soon as
+the bird is visible.
+
+Another thing I did on a third pass (16 degrees at the highest point -- not
+particularly visible) was to plug the speaker out of my radio into a Y
+splitter so that I could connect it to my computer and an external speaker I
+could take outside with me. Since I was able to listen to the audio, I held
+the antenna and tried to **point it** at the [satellite's general
+direction](https://heavens-above.com/orbit.aspx?satid=25544&lat=49.2827&lng=-123.1207&loc=Vancouver&alt=0&tz=PST)
+as well as **varying the orientation** of the antenna to increase the signal
+strength.
+
+[[!tag kenwood]] [[!tag ham]]
