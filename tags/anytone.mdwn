@@ -1,0 +1,4 @@
+[[!meta title="pages tagged anytone"]]
+
+[[!inline pages="tagged(anytone)" actions="no" archive="yes"
+feedshow=10]]
