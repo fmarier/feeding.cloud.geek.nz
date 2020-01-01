@@ -98,4 +98,4 @@ If you can't connect to `VA7EOC-10` on UHF, you could also try the VHF BCFM
 repeater on Mt Seymour, [VE7LAN](http://www.bcfmca.bc.ca/lanvhf.php) (VECTOR
 channel 65).
 
-[[!tag ham]]
+[[!tag ham]] [[!tag kenwood]]

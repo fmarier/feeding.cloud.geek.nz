@@ -75,4 +75,4 @@ since it's much better than the official manual.
 You should be able to use the "Write to radio" menu option without any
 problems once you're done creating your codeplug.
 
-[[!tag ham]]
+[[!tag ham]] [[!tag anytone]]
