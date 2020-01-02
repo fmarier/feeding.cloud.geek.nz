@@ -10,4 +10,4 @@ In most cases, getting involved in an existing project is quite easy. Most proje
 
 Of course, if you can't find a project that solves your own particular problem, you may also want to [start a new one](http://feeding.cloud.geek.nz/2008/09/starting-free-software-project.html). You may be surprised at how many people will find your pet project useful and see a [community grow](http://feeding.cloud.geek.nz/2008/09/growing-community-around-your-new-free.html) around it.
   
-I gave [a presentation](http://summerofcode.blip.tv/file/1760791/) on this topic for the [New Zealand Summer of Code](http://www.summerofcode.co.nz).
+I gave [a presentation](https://archive.org/details/contributing-to-foss_soc) on this topic for the [New Zealand Summer of Code](https://summeroftech.co.nz/).
