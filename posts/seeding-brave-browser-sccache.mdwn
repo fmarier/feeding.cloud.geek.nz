@@ -52,7 +52,7 @@ and here are the contents of that script:
     echo $(date)
     echo "=> Debug build"
     killall sccache || true
-    ionice nice timeout 4h npm run build || ionice nice timeout 4h npm run build
+    ionice nice timeout --foreground 4h npm run build || ionice nice timeout 4h npm run build
     ionice nice ninja -C src/out/Component brave_unit_tests
     ionice nice ninja -C src/out/Component brave_browser_tests
     echo
@@ -60,7 +60,7 @@ and here are the contents of that script:
     echo $(date)
     echo "=> Release build"
     killall sccache || true
-    ionice nice timeout 5h npm run build Release || ionice nice timeout 5h npm run build Release
+    ionice nice timeout --foreground 5h npm run build Release || ionice nice timeout 5h npm run build Release
     ionice nice ninja -C src/out/Release brave_unit_tests
     ionice nice ninja -C src/out/Release brave_browser_tests
     echo
