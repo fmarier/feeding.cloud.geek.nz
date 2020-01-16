@@ -1,0 +1,96 @@
+[[!meta title="Sharing your WiFi connection with a NetworkManager hotspot"]]
+[[!meta date="2020-01-15T18:15:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In-flight and hotel WiFi can be quite expensive and often insist on charging
+users extra to connect multiple devices. In order to avoid that, it's
+possible to easily create a WiFi hotspot using
+[NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) and a
+[external USB WiFi
+adapter](https://www.thinkpenguin.com/gnu-linux/penguin-wireless-n-usb-adapter-gnu-linux-tpe-n150usb).
+
+# Creating the hotspot
+
+The main trick is to right-click on the NetworkManager icon in the status
+bar and select "Edit Connections..." (**not** "Create New WiFi Network..."
+despite the promising name).
+
+From there click the "+" button in the lower right then "WiFi" as the
+Connection Type. I like to use the computer name as the "Connection name".
+
+In the *WiFi* tab, set the following:
+
+- SSID: machinename_nomap
+- Mode: hotspot
+- Device: (the device name of the USB WiFi adapter)
+
+The `_nomap` suffix is there to opt out of the
+[Google](https://support.google.com/maps/answer/1725632?hl=en) and
+[Mozilla](https://location.services.mozilla.com/optout) location services
+which could allow anybody to lookup sightings of your device around the
+World.
+
+In the *WiFi Security* tab:
+
+- Security: WPA & WPA2 Personal
+- Password: (a 63-character random password generated using `pwgen -s 63`)
+
+While you may think that such a long password is inconvenient, it's now
+possible to add the network automatically by simply [scanning a QR
+code](https://feeding.cloud.geek.nz/posts/encoding-wifi-access-point-passwords-qr-code/)
+on your phone.
+
+In the *IPv4 Settings* tab:
+
+- Method: Shared to other computers
+
+Finally, in the *IPv6 Settings* tab:
+
+- Method: Ignore
+
+I ended up with the following config in
+`/etc/NetworkManager/system-connections/machinename`:
+
+    [connection]
+    id=machinename
+    uuid=<long UUID string>
+    type=wifi
+    interface-name=wl...
+    permissions=
+    timestamp=1578533792
+    
+    [wifi]
+    mac-address=<MAC>
+    mac-address-blacklist=
+    mode=ap
+    seen-bssids=<BSSID>
+    ssid=machinename_nomap
+    
+    [wifi-security]
+    key-mgmt=wpa-psk
+    psk=<63-character password>
+    
+    [ipv4]
+    dns-search=
+    method=shared
+    
+    [ipv6]
+    addr-gen-mode=stable-privacy
+    dns-search=
+    ip6-privacy=0
+    method=ignore
+
+# Firewall rules
+
+In order for the packets to flow correctly, I opened up the following ports
+on my machine's local firewall:
+
+    -A INPUT -s 10.42.0.0/24 -j ACCEPT
+    -A FORWARD -d 10.42.0.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -s 10.42.0.0/24 -j ACCEPT
+    -A INPUT -d 224.0.0.251 -s 10.42.0.1 -j ACCEPT
+    -A INPUT -d 239.255.255.250 -s 10.42.0.1 -j ACCEPT
+    -A INPUT -d 10.42.0.255 -s 10.42.0.1 -j ACCEPT
+    -A INPUT -d 10.42.0.1 -s 10.42.0.0/24 -j ACCEPT
+
+[[!tag nzoss]] [[!tag gnome]] [[!tag debian]]
