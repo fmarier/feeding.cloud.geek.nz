@@ -207,12 +207,7 @@ and these to `/etc/rkhunter.conf.local`:
 
     apt install apparmor apparmor-profiles apparmor-profiles-extra libpam-tmpdir
 
-While the harden packages are configuration-free, AppArmor must be [manually enabled](https://wiki.debian.org/AppArmor/HowToUse#Enable_AppArmor):
-
-    perl -pi -e 's,GRUB_CMDLINE_LINUX="(.*)"$,GRUB_CMDLINE_LINUX="$1 apparmor=1 security=apparmor",' /etc/default/grub
-    update-grub
-
-In addition, certain kernel security features can be enabled by putting the
+Certain kernel security features can be enabled by putting the
 following in `/etc/sysctl.d/local.conf` to
 [hide kernel pointers and messages](https://www.kernel.org/doc/Documentation/sysctl/kernel.txt)
 from unprivileged processes:
@@ -238,9 +233,9 @@ and the following to harden the TCP stack:
 
 before reloading these settings using `sysctl -p`.
 
-Sandboxing in apt can be enabled by putting the following in `/etc/apt/apt.conf.d/30-seccomp`:
+[Sandboxing in apt](https://www.debian.org/releases/buster/amd64/release-notes/ch-whats-new.en.html#apt-sandboxing) can be enabled by putting the following in `/etc/apt/apt.conf.d/30-seccomp`:
 
-    APT::Sandbox::Seccomp "true";
+    APT::Sandbox::Seccomp "1";
 
 I also restrict the use of cron to the `root` user by putting the following in `/etc/cron.allow`:
 
