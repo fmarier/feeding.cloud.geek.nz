@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="198.52.147.213"
+ claimedauthor="Dennis Chang"
+ subject="Ubuntu 18.04.3 LTS update"
+ date="2020-01-19T17:27:30Z"
+ content="""
+Hi,
+
+Thanks for the article! I followed it and it was my primary reference. However, I did encounter two issues while following it that I thought I should leave with you here. I'm using Ubuntu 18.04.3 and fdisk does not have 'fd' to convert a Linux partition to a Linux RAID partition. It is now '29' for a Linux RAID partition. Also, after adding the original disk to the RAID array and rebooting I found myself in grub rescue mode. After researching more I discovered that I was required to install a module 'mdraid1x' in order for grub to be able to read the RAID array and find the kernel in order to boot. Therefore, I had to boot a Live USB Ubuntu system to access the RAID array before chroot and grub-install --modules='mdraid1x' /dev/sda (to both drives). And finally, when I test each drive separately to see if it will boot (it does).
+
+Anyway, thanks for the article.
+"""]]
