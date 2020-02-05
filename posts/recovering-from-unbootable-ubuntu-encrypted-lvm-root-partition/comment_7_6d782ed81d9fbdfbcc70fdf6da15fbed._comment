@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="70.125.19.73"
+ claimedauthor="Gus"
+ subject="Boot to earlier kernel worked better"
+ date="2020-02-05T02:19:59Z"
+ content="""
+As William (William — 13:54, 06 May 2018) did, I booted to the preceding kernel version, and as I logged in, I saw LivePatch flash by saying it had just updated something. I used apt to update everything and restarted, my machine is now runnign like a Swiss watch!
+"""]]
