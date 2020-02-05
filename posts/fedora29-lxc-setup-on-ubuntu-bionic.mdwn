@@ -76,6 +76,12 @@ and then create an unprivileged user with sudo access:
     adduser francois -G wheel
     passwd francois
 
+I set this in `/etc/ssh/sshd_config`:
+
+    GSSAPIAuthentication no
+
+to prevent [slow ssh logins](https://serverfault.com/questions/815538/long-delay-when-logging-in-with-centos7).
+
 Now login as that user from the console and add an ssh public key:
 
     mkdir .ssh
