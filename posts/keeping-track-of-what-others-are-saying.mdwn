@@ -6,20 +6,6 @@ There are a few ways to easily keep track of what others are saying about your F
 Here are a few ways to find out what people are saying online about your project.  
   
 
-## RSS Feeds
-
-First of all, here are the RSS feeds I subscribe to for one of my projects ([safe-rm](https://launchpad.net/safe-rm)):
-
-  * [Technorati](http://feeds.technorati.com/search/safe-rm.org.nz) (blog posts)
-  * [Twitter tweets](http://search.twitter.com/search.atom?q=safe-rm.org.nz) (tweets)
-  * [Identica](http://identi.ca/search/notice/rss?q=safe-rm.org.nz) (notices)
-  * [TweetMeme](http://rss.tweetmeme.com/domain/?host=http://safe-rm.org.nz) (tweets)
-  * [BackTweets](http://backtweets.com/search.rss?q=safe-rm.org.nz) (tweets)
-  * [Freshmeat](http://freshmeat.net/projects/safe-rm/comments.atom) (comments)
-  * [Ohloh](http://www.ohloh.net/p/safe-rm/messages.rss) (journal entries)
-
-  
-
 ## Google Alerts
 
 I have also signed up for the following [Google Alert](http://www.google.com/alerts):
@@ -37,15 +23,7 @@ I have also signed up for the following [Google Alert](http://www.google.com/ale
 which emails me anytime someone links to my project's homepage in one of the resources indexed by Google.  
   
 
-## Backtype Alerts
 
-Finally, these [Backtype Alerts](http://www.backtype.com/alerts) notify me anytime safe-rm features in a blog comment:
-
-  * `safe-rm`
-  * `safe-rm.org.nz`
-
-  
-  
 Anything else I should subscribe to or follow?
 
 
