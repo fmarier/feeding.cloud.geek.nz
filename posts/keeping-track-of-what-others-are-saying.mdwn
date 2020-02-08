@@ -17,7 +17,16 @@ I have also signed up for the following [Google Alert](http://www.google.com/ale
 
 which emails me anytime someone links to my project's homepage in one of the resources indexed by Google.  
   
+## Talkwalker
 
+In addition to Google Alerts, I also subscribe to the [Talkwalker Alerts](https://www.talkwalker.com/alerts)
+service with the following alert:
+
+- Search query: `safe-rm`
+- Result type: (leave blank for *Everything*)
+- Language: `All languages`
+- How often: `As it happens`
+- How many: `All results`
 
 Anything else I should subscribe to or follow?
 
