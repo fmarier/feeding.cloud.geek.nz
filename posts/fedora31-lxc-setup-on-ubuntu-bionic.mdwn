@@ -1,0 +1,123 @@
+[[!meta title="Fedora 31 LXC setup on Ubuntu Bionic 18.04"]]
+[[!meta date="2020-02-09T21:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Similarly to what I wrote for [Fedora 29](https://feeding.cloud.geek.nz/posts/fedora29-lxc-setup-on-ubuntu-bionic/),
+here is how I was able to create a [Fedora](https://getfedora.org/) 31 LXC
+container on an Ubuntu 18.04 (bionic) laptop.
+
+# Setting up LXC on Ubuntu
+
+First of all, install lxc:
+
+    apt install lxc
+    echo "veth" >> /etc/modules
+    modprobe veth
+
+turn on bridged networking by putting the following in
+`/etc/sysctl.d/local.conf`:
+
+    net.ipv4.ip_forward=1
+
+and applying it using:
+
+    sysctl -p /etc/sysctl.d/local.conf
+
+Then allow the right traffic in your firewall
+(`/etc/network/iptables.up.rules` in my case):
+
+    # LXC containers
+    -A FORWARD -d 10.0.3.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -s 10.0.3.0/24 -j ACCEPT
+    -A INPUT -d 224.0.0.251 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 239.255.255.250 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 10.0.3.255 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 10.0.3.1 -s 10.0.3.0/24 -j ACCEPT
+
+and apply these changes:
+
+    iptables-apply
+
+before restarting the lxc networking:
+
+    systemctl restart lxc-net.service
+
+# Create the container
+
+Once that's in place, you can finally create the Fedora 29 container:
+
+    lxc-create -n fedora31 -t download -- -d fedora -r 31 -a amd64
+
+To see a list of all distros available with the `download` template:
+
+    lxc-create -n foo --template=download -- --list
+
+Once the container has been created, disable AppArmor for it:
+
+    lxc.apparmor.profile = unconfined
+
+since the AppArmor profile [isn't working at the moment](https://github.com/lxc/lxc/issues/2778).
+
+# Logging in as root
+
+Starting the container in one window:
+
+    lxc-start -n fedora31 -F
+
+and attaching to a console:
+
+    lxc-attach -n fedora31
+
+to set a root password:
+
+    passwd
+
+# Logging in as an unprivileged user via ssh
+
+While logged into the console, I tried to install ssh:
+
+    $ dnf install openssh-server
+    Cannot create temporary file - mkstemp: No such file or directory
+
+but it failed because `TMPDIR` is set to a non-existent directory:
+
+    $ echo $TMPDIR
+    /tmp/user/0
+
+I found [a fix](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=728500)
+and ran the following:
+
+    TMPDIR=/tmp dnf install openssh-server
+
+then started the ssh service:
+
+  systemctl start sshd.service
+
+Then I installed a few other packages as root:
+
+    dnf install vim sudo man
+
+and created an unprivileged user with sudo access:
+
+    adduser francois -G wheel
+    passwd francois
+
+I set this in `/etc/ssh/sshd_config`:
+
+    GSSAPIAuthentication no
+
+to prevent [slow ssh logins](https://serverfault.com/questions/815538/long-delay-when-logging-in-with-centos7).
+
+Now login as that user from the console and add an ssh public key:
+
+    mkdir .ssh
+    chmod 700 .ssh
+    echo "<your public key>" > .ssh/authorized_keys
+    chmod 644 .ssh/authorized_keys
+
+You can now login via ssh. The IP address to use can be seen in the output
+of:
+
+    lxc-ls --fancy
+
+[[!tag debian]] [[!tag lxc]] [[!tag nzoss]] [[!tag ubuntu]]
