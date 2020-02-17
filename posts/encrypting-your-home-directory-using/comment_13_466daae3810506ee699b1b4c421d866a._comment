@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="98.169.32.134"
+ claimedauthor="jamesob"
+ url="jameso.be"
+ subject="Unmounting /home"
+ date="2020-02-17T19:58:45Z"
+ content="""
+If you get errors during `umount /home`, you may need to end your graphical shell and login as root before mounting /home. On Debian, e.g., you can do this by pressing CTRL+ALT+F{1,2,3,4} at a graphical login prompt before logging in as a regular user, and then logging in as `root` from there. This way, `lsof /home` should return nothing and you should be able to unmount /home without error.
+"""]]
