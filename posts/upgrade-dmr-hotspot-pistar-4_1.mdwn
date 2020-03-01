@@ -1,0 +1,99 @@
+[[!meta title="Upgrading a DMR hotspot to Pi-Star 4.1 RC-7"]]
+[[!meta date="2020-03-01T10:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+While the [Pi-Star](http://www.pistar.uk/) DMR gateway has automatic
+updates, the latest release (3.4.17) is still based on an old version of
+Debian ([Debian 8 jessie](https://www.debian.org/releases/jessie/)) which is
+no longer supported. It is however relatively easy to update to the latest
+release candidate of Pi-Star 4.1 (based on [Debian 10
+buster](https://www.debian.org/releases/buster/)), as long as you have a
+spare SD card (4 GB minimum).
+
+# Download the required files and copy to an SD card
+
+First of all, download the [latest RC image](https://www.pistar.uk/beta/)
+and your [local configuration](http://pi-star.local/admin/configure.php)
+(remember the default account name is `pi-star`). I like to also print a
+copy of that settings page since it's much easier to refer to if things go
+wrong.
+
+Then unzip the image and ["burn"
+it](https://askubuntu.com/questions/179437/how-can-i-burn-a-raspberry-pi-image-to-sd-card-from-ubuntu)
+to a new SD card (no need to format it ahead of time):
+
+    sudo dd if=Pi-Star_RPi_V4.1.0-RC7_20-Dec-2019.img of=/dev/sdX status=progress bs=4M
+    sync
+
+where `/dev/sdX` is the device name for the SD card, which you can find in
+the `dmesg` output. **Don't skip the `sync` command** or you may eject the
+card before your computer is done writing to it.
+
+Then unmount the SD card and unplug it from your computer. Plug it back in.
+You should see two drives mounted automatically on your desktop:
+
+- `pistar`
+- `boot`
+
+Copy the configuration zip file you downloaded earlier onto the root of the
+`boot` drive and then eject the drive.
+
+Run `sync` again before actually unplugging the card.
+
+# Boot into the new version
+
+In order to boot into the new version, start by turning off the Pi. Then
+remove the old SD card and insert the new one that you just prepared. That
+new card will become the new OS drive.
+
+Boot the Pi and ideally connect a monitor to the HDMI port so that you can 
+see it boot up and reboot twice before dropping you to a login prompt.
+
+Login using the default credentials:
+
+- Username: `pi-star`
+- Password: `raspberry`
+
+Once logged in use `top` to see if the pi is busy doing anything. Mine was
+in the process of upgrading Debian packages via `unattended-upgrades` which
+made everything (including the web UI) very slow.
+
+You should now be able to access the [web UI](http://pi-star.local/) using
+the above credentials.
+
+# Update to the latest version
+
+From the command line, you can ensure that you are running the latest
+version of Pi-Star by running the following command:
+
+    sudo pistar-upgrade
+
+This updated from `4.1.0-RC7` to `4.1.0-RC8` on my device.
+
+You can also run the following:
+
+    sudo pistar-update
+
+to update the underlying Raspbian OS.
+
+# Check and restore your settings
+
+Once things have settled down, double-check the
+[settings](http://pi-star.local/admin/configure.php) and restore your admin
+password since that was not part of the configuration backup you made earlier.
+
+I had to restore the following settings since they got lost in the process:
+
+- `Auto AP`: `Off`
+- `uPNP`: `Off`
+
+# Roll back to the previous version
+
+If you run into problems, the best option is to roll back to the previous
+version and then try again.
+
+As long as you didn't reuse the original SD card for this upgrade, rolling
+back to version 3.4.17 simply involves shutting down the pi and then
+swapping the new SD card for the old one and then starting it up again.
+
+[[!tag dmr]] [[!tag ham]] [[!tag pistar]]
