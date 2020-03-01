@@ -1,0 +1,4 @@
+[[!meta title="pages tagged pistar"]]
+
+[[!inline pages="tagged(pistar)" actions="no" archive="yes"
+feedshow=10]]
