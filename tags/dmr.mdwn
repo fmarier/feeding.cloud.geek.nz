@@ -1,0 +1,4 @@
+[[!meta title="pages tagged dmr"]]
+
+[[!inline pages="tagged(dmr)" actions="no" archive="yes"
+feedshow=10]]
