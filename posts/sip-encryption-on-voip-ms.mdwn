@@ -70,4 +70,4 @@ Since my Asterisk server is only acting as a TLS *client*, and not a TLS
 it looks pretty easy to [use a Let's Encrypt cert with
 Asterisk](https://community.asterisk.org/t/has-anyone-used-letsencrypt-to-setup-ssl-for-asterisk/67145/6).
 
-[[!tag debian]] [[!tag asterisk]] [[!tag nzoss]] [[!tag letsencrypt]]
+[[!tag debian]] [[!tag asterisk]] [[!tag nzoss]] [[!tag letsencrypt]] [[!tag voipms]]

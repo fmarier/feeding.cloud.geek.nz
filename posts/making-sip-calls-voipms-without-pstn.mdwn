@@ -1,0 +1,16 @@
+[[!meta title="Making SIP calls to VoIP.ms subscribers without using the PSTN"]]
+[[!meta date="2020-03-05T19:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If you want to reach a [VoIP.ms](https://voip.ms/) subscriber from
+[Asterisk](https://www.asterisk.org/) without using the
+[PSTN](https://en.wikipedia.org/wiki/Public_switched_telephone_network),
+there is a way to do so via [SIP
+URIs](https://wiki.voip.ms/article/SIP_URI).
+
+Here's what I added to my `/etc/asterisk/extensions.conf`:
+
+    exten => 1234,1,Set(CALLERID(all)=Francois Marier <5555551234>)
+    exten => 1234,n,Dial(SIP/sip.voip.ms/5555556789)
+
+[[!tag asterisk]] [[!tag voipms]]
