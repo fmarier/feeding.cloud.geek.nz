@@ -1,0 +1,135 @@
+[[!meta title="Fixing MariaDB InnoDB errors after upgrading to MythTV 30"]]
+[[!meta date="2020-03-07T10:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After upgrading to [MythTV
+30](https://www.mythtv.org/wiki/Release_Notes_-_30) and MariaDB 10.3.18 on
+[Debian buster](https://www.debian.org/releases/buster/), I noticed the
+following errors in my logs:
+
+    Jan 14 02:00:05 hostname mysqld[846]: 2020-01-14  2:00:05 62 [Warning] InnoDB: Cannot add field `rating` in table `mythconverg`.`internetcontentarticles` because after adding it, the row size is 8617 which is greater than maximum allowed size (8126) for a record on index leaf page.
+    Jan 14 02:00:05 hostname mysqld[846]: 2020-01-14  2:00:05 62 [Warning] InnoDB: Cannot add field `playcommand` in table `mythconverg`.`videometadata` because after adding it, the row size is 8243 which is greater than maximum allowed size (8126) for a record on index leaf page.
+
+The root cause is that the database is using an [InnoDB row
+format](https://mariadb.com/kb/en/troubleshooting-row-size-too-large-errors-with-innodb/)
+that cannot handle the new table sizes.
+
+To fix it, I put the following in `alter_tables.sql`:
+
+    ALTER TABLE archiveitems ROW_FORMAT=DYNAMIC;
+    ALTER TABLE bdbookmark ROW_FORMAT=DYNAMIC;
+    ALTER TABLE callsignnetworkmap ROW_FORMAT=DYNAMIC;
+    ALTER TABLE capturecard ROW_FORMAT=DYNAMIC;
+    ALTER TABLE cardinput ROW_FORMAT=DYNAMIC;
+    ALTER TABLE channel ROW_FORMAT=DYNAMIC;
+    ALTER TABLE channelgroup ROW_FORMAT=DYNAMIC;
+    ALTER TABLE channelgroupnames ROW_FORMAT=DYNAMIC;
+    ALTER TABLE channelscan ROW_FORMAT=DYNAMIC;
+    ALTER TABLE channelscan_channel ROW_FORMAT=DYNAMIC;
+    ALTER TABLE channelscan_dtv_multiplex ROW_FORMAT=DYNAMIC;
+    ALTER TABLE codecparams ROW_FORMAT=DYNAMIC;
+    ALTER TABLE credits ROW_FORMAT=DYNAMIC;
+    ALTER TABLE customexample ROW_FORMAT=DYNAMIC;
+    ALTER TABLE diseqc_config ROW_FORMAT=DYNAMIC;
+    ALTER TABLE diseqc_tree ROW_FORMAT=DYNAMIC;
+    ALTER TABLE displayprofilegroups ROW_FORMAT=DYNAMIC;
+    ALTER TABLE displayprofiles ROW_FORMAT=DYNAMIC;
+    ALTER TABLE dtv_multiplex ROW_FORMAT=DYNAMIC;
+    ALTER TABLE dtv_privatetypes ROW_FORMAT=DYNAMIC;
+    ALTER TABLE dvdbookmark ROW_FORMAT=DYNAMIC;
+    ALTER TABLE dvdinput ROW_FORMAT=DYNAMIC;
+    ALTER TABLE dvdtranscode ROW_FORMAT=DYNAMIC;
+    ALTER TABLE eit_cache ROW_FORMAT=DYNAMIC;
+    ALTER TABLE filemarkup ROW_FORMAT=DYNAMIC;
+    ALTER TABLE gallery_directories ROW_FORMAT=DYNAMIC;
+    ALTER TABLE gallery_files ROW_FORMAT=DYNAMIC;
+    ALTER TABLE gallerymetadata ROW_FORMAT=DYNAMIC;
+    ALTER TABLE housekeeping ROW_FORMAT=DYNAMIC;
+    ALTER TABLE inputgroup ROW_FORMAT=DYNAMIC;
+    ALTER TABLE internetcontent ROW_FORMAT=DYNAMIC;
+    ALTER TABLE internetcontentarticles ROW_FORMAT=DYNAMIC;
+    ALTER TABLE inuseprograms ROW_FORMAT=DYNAMIC;
+    ALTER TABLE iptv_channel ROW_FORMAT=DYNAMIC;
+    ALTER TABLE jobqueue ROW_FORMAT=DYNAMIC;
+    ALTER TABLE jumppoints ROW_FORMAT=DYNAMIC;
+    ALTER TABLE keybindings ROW_FORMAT=DYNAMIC;
+    ALTER TABLE keyword ROW_FORMAT=DYNAMIC;
+    ALTER TABLE livestream ROW_FORMAT=DYNAMIC;
+    ALTER TABLE logging ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_albumart ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_albums ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_artists ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_directories ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_genres ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_playlists ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_radios ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_smartplaylist_categories ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_smartplaylist_items ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_smartplaylists ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_songs ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_stats ROW_FORMAT=DYNAMIC;
+    ALTER TABLE music_streams ROW_FORMAT=DYNAMIC;
+    ALTER TABLE mythlog ROW_FORMAT=DYNAMIC;
+    ALTER TABLE mythweb_sessions ROW_FORMAT=DYNAMIC;
+    ALTER TABLE networkiconmap ROW_FORMAT=DYNAMIC;
+    ALTER TABLE oldfind ROW_FORMAT=DYNAMIC;
+    ALTER TABLE oldprogram ROW_FORMAT=DYNAMIC;
+    ALTER TABLE oldrecorded ROW_FORMAT=DYNAMIC;
+    ALTER TABLE people ROW_FORMAT=DYNAMIC;
+    ALTER TABLE phonecallhistory ROW_FORMAT=DYNAMIC;
+    ALTER TABLE phonedirectory ROW_FORMAT=DYNAMIC;
+    ALTER TABLE pidcache ROW_FORMAT=DYNAMIC;
+    ALTER TABLE playgroup ROW_FORMAT=DYNAMIC;
+    ALTER TABLE powerpriority ROW_FORMAT=DYNAMIC;
+    ALTER TABLE profilegroups ROW_FORMAT=DYNAMIC;
+    ALTER TABLE program ROW_FORMAT=DYNAMIC;
+    ALTER TABLE programgenres ROW_FORMAT=DYNAMIC;
+    ALTER TABLE programrating ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recgrouppassword ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recgroups ROW_FORMAT=DYNAMIC;
+    ALTER TABLE record ROW_FORMAT=DYNAMIC;
+    ALTER TABLE record_tmp ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recorded ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordedartwork ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordedcredits ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordedfile ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordedmarkup ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordedprogram ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordedrating ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordedseek ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordfilter ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordingprofiles ROW_FORMAT=DYNAMIC;
+    ALTER TABLE recordmatch ROW_FORMAT=DYNAMIC;
+    ALTER TABLE scannerfile ROW_FORMAT=DYNAMIC;
+    ALTER TABLE scannerpath ROW_FORMAT=DYNAMIC;
+    ALTER TABLE schemalock ROW_FORMAT=DYNAMIC;
+    ALTER TABLE settings ROW_FORMAT=DYNAMIC;
+    ALTER TABLE storagegroup ROW_FORMAT=DYNAMIC;
+    ALTER TABLE tvchain ROW_FORMAT=DYNAMIC;
+    ALTER TABLE tvosdmenu ROW_FORMAT=DYNAMIC;
+    ALTER TABLE upnpmedia ROW_FORMAT=DYNAMIC;
+    ALTER TABLE user_permissions ROW_FORMAT=DYNAMIC;
+    ALTER TABLE user_sessions ROW_FORMAT=DYNAMIC;
+    ALTER TABLE users ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videocast ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videocategory ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videocollection ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videocountry ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videogenre ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videometadata ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videometadatacast ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videometadatacountry ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videometadatagenre ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videopart ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videopathinfo ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videosource ROW_FORMAT=DYNAMIC;
+    ALTER TABLE videotypes ROW_FORMAT=DYNAMIC;
+    ALTER TABLE weatherdatalayout ROW_FORMAT=DYNAMIC;
+    ALTER TABLE weatherscreens ROW_FORMAT=DYNAMIC;
+    ALTER TABLE weathersourcesettings ROW_FORMAT=DYNAMIC;
+
+and then ran it like this:
+
+    mysql -umythtv -pPassword1 mythconverg < alter_tables.sql
+
+[[!tag mythtv]] [[!tag debian]]
