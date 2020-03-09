@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ ip="84.250.233.2"
+ claimedauthor="Marko Mäkelä"
+ url="https://mariadb.com"
+ subject="Some history of the InnoDB ROW_FORMAT"
+ date="2020-03-09T07:49:59Z"
+ content="""
+I implemented the `ROW_FORMAT=DYNAMIC` back in 2004 or 2005 in the InnoDB Plugin for MySQL 5.1, which was available separately from the built-in InnoDB. Later, it became the InnoDB in MySQL 5.5.
+
+The only difference between `ROW_FORMAT=DYNAMIC` and the previous default `ROW_FORMAT=COMPACT` (which I introduced in MySQL 5.0.3) is the storage of long string columns (such as `VARCHAR`, `BLOB`, or `TEXT`). Originally, Heikki Tuuri decided to always store the 768 first bytes of each column inline in the page, so that it would be easier to implement column prefix indexes in secondary indexes. Unsurprisingly, users started to complain, because the unnecessary inline storage would happen unconditionally, whether or not the column is indexed.
+
+For `ROW_FORMAT=DYNAMIC`, I improved InnoDB in such a way that there is no need to store a local prefix. Instead, column prefixes will be stored in undo log records if needed. (An attempt to update many prefix-indexed columns in one statement may fail if the undo log record would not fit in one page.)
+
+In MySQL 5.5, the maximum column prefix index length was increased from 767 (the 768th byte was always 'wasted') to 3072 bytes.
+
+Due to someone's strange idea regarding compatibility, one had to override two configuration parameters to enable the sane behaviour. Originally, the idea was that one could try out the InnoDB Plugin in MySQL 5.1 and be able to return to the built-in InnoDB. I finally changed the parameters `innodb_file_format`, `innodb_large_prefix` to have sane defaults in MySQL 5.7 and removed them in MySQL 8.0. Likewise, In MySQL 5.7 introduced the parameter `innodb_default_row_format=dynamic`, so that it is not necessary to specify a `ROW_FORMAT` when creating tables.
+
+These settings are also present in MariaDB Server starting with version 10.2, which is the first major version released after I joined the company.
+"""]]
