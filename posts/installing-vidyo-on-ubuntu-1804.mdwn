@@ -57,4 +57,4 @@ version:
 Finally, launch `VidyoDesktop` and go into the settings to check "Always use
 VidyoProxy".
 
-[[!tag mozilla]] [[!tag vidyo]]
+[[!tag mozilla]] [[!tag vidyo]] [[!tag videoconf]]
