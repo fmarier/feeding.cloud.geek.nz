@@ -1,0 +1,176 @@
+[[!meta title="How to get a direct WebRTC connections between two computers"]]
+[[!meta date="2020-03-28T16:55:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[WebRTC](https://webrtc.org/) is a standard real-time communication protocol
+built directly into modern web browsers. It enables the creation of video
+conferencing services which do not require participants to download
+additional software. Many services make use of it and it almost always works
+out of the box.
+
+The reason it just works is that it uses a protocol called
+[ICE](https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment)
+to establish a connection regardless of the network environment. What that
+means however is that in some cases, your video/audio connection will need
+to be relayed (using end-to-end encryption) to the other person via
+third-party
+[TURN](https://en.wikipedia.org/wiki/Traversal_Using_Relays_around_NAT)
+server. In addition to adding extra network latency to your call that relay
+server might overloaded at some point and drop or delay packets coming
+through.
+
+Here's how to tell whether or not your WebRTC calls are being relayed, and
+how to ensure you get a direct connection to the other host.
+
+# Testing basic WebRTC functionality
+
+Before you place a real call, I suggest using the official [test
+page](https://test.webrtc.org/) which will test your camera, microphone and
+network connectivity.
+
+Note that this test page makes use of a Google TURN server which is locked
+to particular HTTP referrers and so you'll need to disable privacy features
+that might interfere with this:
+
+- [Brave](https://brave.com/clo187): Disable Shields entirely for that page
+  (Simple view) or *allow all cookies* for that page (Advanced view).
+
+![](/posts/how-to-get-direct-webrtc-connections-between-computers/brave-shields-cookies.png)
+
+- Firefox: Ensure that `http.network.referer.spoofSource` is set to `false`
+  in `about:config`, which it is by default.
+
+- [uMatrix](https://github.com/gorhill/uMatrix): The "Spoof `Referer`
+  header" option needs to be turned off for that site.
+
+![](/posts/how-to-get-direct-webrtc-connections-between-computers/umatrix-settings.png)
+
+# Checking the type of peer connection you have
+
+Once you know that WebRTC is working in your browser, it's time to establish
+a connection and look at the network configuration that the two peers agreed
+on.
+
+My favorite service at the moment is [Whereby](https://whereby.com)
+(formerly *Appear.in*), so I'm going to use that to connect from two
+different computers:
+
+- `canada` is a laptop behind a regular home router without any port
+  forwarding.
+- `siberia` is a desktop computer in a remote location that is also behind a
+  home router, but in this case its internal IP address (`192.168.1.2`) is
+  set as the [DMZ
+  host](https://en.wikipedia.org/wiki/DMZ_%28computing%29#DMZ_host).
+
+## Chromium
+
+For all Chromium-based browsers, such as Brave, Chrome, Edge, Opera and
+Vivaldi, the debugging page you'll need to open is called
+`chrome://webrtc-internals`.
+
+Look for `RTCIceCandidatePair` lines and expand them one at a time until you
+find the one which says:
+
+- `state: succeeded` (or `state: in-progress`)
+- `nominated: true`
+- `writable: true`
+
+![](/posts/how-to-get-direct-webrtc-connections-between-computers/chromium-webrtc-internals-candidatepair.png)
+
+Then from the name of that pair (`N6cxxnrr_OEpeash` in the above example)
+find the two matching `RTCIceCandidate` lines (one `local-candidate` and one
+`remote-candidate`) and expand them.
+
+![](/posts/how-to-get-direct-webrtc-connections-between-computers/chromium-webrtc-internals-candidates.png)
+
+In the case of a **direct connection**, I saw the following on the
+`remote-candidate`:
+
+- `ip` shows the external IP address of `siberia`
+- `port` shows a random number between 1024 and 65535
+- `candidateType: srflx`
+
+and the following on `local-candidate`:
+
+- `ip` shows the external IP address of `canada`
+- `port` shows a random number between 1024 and 65535
+- `candidateType: prflx`
+
+These [candidate
+types](https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/type)
+indicate that a [STUN](https://en.wikipedia.org/wiki/STUN) server was used
+to determine the public-facing IP address and port for each computer, but
+the actual connection between the peers is direct.
+
+On the other hand, for a **relayed/proxied connection**, I saw the following
+on the `remote-candidate` side:
+
+- `ip` shows an IP address belonging to the TURN server
+- `candidateType: relay`
+
+and the same information as before on the `local-candidate`.
+
+## Firefox
+
+If you are using Firefox, the debugging page you want to look at is
+`about:webrtc`.
+
+Expand the top entry under "Session Statistics" and look for the line
+(should be the first one) which says the following in green:
+
+- `ICE State: succeeded`
+- `Nominated: true`
+- `Selected: true`
+
+then look in the "Local Candidate" and "Remote Candidate" sections to find
+the [candidate
+type](https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/type)
+in brackets.
+
+![](/posts/how-to-get-direct-webrtc-connections-between-computers/firefox-about-webrtc.png)
+
+# Firewall ports to open to avoid using a relay
+
+In order to get a direct connection to the other WebRTC peer, **one** of the
+two computers (in my case, `siberia`) needs to **open all inbound UDP
+ports** since there doesn't appear to be a way to restrict Chromium or
+Firefox to a smaller port range for incoming WebRTC connections.
+
+This isn't great and so I decided to tighten that up in two ways by:
+
+- restricting incoming UDP traffic to the IP range of `siberia`'s ISP, and
+- explicitly denying incoming to the UDP ports I know are open on `siberia`.
+
+To get the IP range, start with the external IP address of the machine (I'll
+use the IP address of my blog in this example: `66.228.46.55`) and pass it
+to the `whois` command:
+
+    $ whois 66.228.46.55 | grep CIDR
+    CIDR:           66.228.32.0/19
+
+To get the list of open UDP ports on `siberia`, I `ssh`ed into it and ran
+nmap:
+
+    $ sudo nmap -sU localhost
+    
+    Starting Nmap 7.60 ( https://nmap.org ) at 2020-03-28 15:55 PDT
+    Nmap scan report for localhost (127.0.0.1)
+    Host is up (0.000015s latency).
+    Not shown: 994 closed ports
+    PORT      STATE         SERVICE
+    631/udp   open|filtered ipp
+    5060/udp  open|filtered sip
+    5353/udp  open          zeroconf
+    
+    Nmap done: 1 IP address (1 host up) scanned in 190.25 seconds
+
+I ended up with the following in my `/etc/network/iptables.up.rules` (ports
+below 1024 are denied by the default rule and don't need to be included
+here):
+
+    # Deny all known-open high UDP ports before enabling WebRTC for canada
+    -A INPUT -p udp --dport 5060 -j DROP
+    -A INPUT -p udp --dport 5353 -j DROP
+    -A INPUT -s 66.228.32.0/19 -p udp --dport 1024:65535 -j ACCEPT
+
+[[!tag brave]] [[!tag firefox]] [[!tag webrtc]] [[!tag mozilla]] [[!tag debian]] [[!tag videoconf]]
