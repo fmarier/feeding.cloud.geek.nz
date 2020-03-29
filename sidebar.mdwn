@@ -24,5 +24,3 @@
 
 [[Tags]]:
 [[!pagestats pages="./tags/* and !tags/debian and !tags/catalyst and !tags/mozilla and !tags/ubuntu and !tags/nzoss and !tags/sysadmin and !tags/mahara" among="./posts/*"]]
-
-<script src="https://ad.aloodo.com/ad.js" async></script>

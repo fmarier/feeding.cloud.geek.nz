@@ -225,17 +225,6 @@ body {
     background-color: transparent;
 }
 
-/* ALOODO
-     - stops it from putting extra empty space at bottom of page
-*/
-iframe[src='//ad.aloodo.com/track/'] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-}
-
-
 /* ADAPT TO MOBILE */
 
 @media all and (max-width: 79em) {
