@@ -1,4 +1,4 @@
 [[!meta title="pages tagged mozilla"]]
 
 [[!inline pages="tagged(mozilla)" actions="no" archive="yes"
-feedshow=9 feedpages=created_after(posts/letting-someone-ssh-into-your-laptop-using-pagekite)]]
+feedshow=9 feedpages=created_after(posts/restricting-third-party-iframes-sandbox-referrer-feature-policy)]]
