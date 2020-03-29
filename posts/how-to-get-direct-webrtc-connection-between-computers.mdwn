@@ -35,7 +35,7 @@ that might interfere with this:
 - [Brave](https://brave.com/clo187): Disable Shields entirely for that page
   (Simple view) or *allow all cookies* for that page (Advanced view).
 
-![](/posts/how-to-get-direct-webrtc-connections-between-computers/brave-shields-cookies.png)
+![](/posts/how-to-get-direct-webrtc-connection-between-computers/brave-shields-cookies.png)
 
 - Firefox: Ensure that `http.network.referer.spoofSource` is set to `false`
   in `about:config`, which it is by default.
@@ -43,7 +43,7 @@ that might interfere with this:
 - [uMatrix](https://github.com/gorhill/uMatrix): The "Spoof `Referer`
   header" option needs to be turned off for that site.
 
-![](/posts/how-to-get-direct-webrtc-connections-between-computers/umatrix-settings.png)
+![](/posts/how-to-get-direct-webrtc-connection-between-computers/umatrix-settings.png)
 
 # Checking the type of peer connection you have
 
@@ -75,13 +75,13 @@ find the one which says:
 - `nominated: true`
 - `writable: true`
 
-![](/posts/how-to-get-direct-webrtc-connections-between-computers/chromium-webrtc-internals-candidatepair.png)
+![](/posts/how-to-get-direct-webrtc-connection-between-computers/chromium-webrtc-internals-candidatepair.png)
 
 Then from the name of that pair (`N6cxxnrr_OEpeash` in the above example)
 find the two matching `RTCIceCandidate` lines (one `local-candidate` and one
 `remote-candidate`) and expand them.
 
-![](/posts/how-to-get-direct-webrtc-connections-between-computers/chromium-webrtc-internals-candidates.png)
+![](/posts/how-to-get-direct-webrtc-connection-between-computers/chromium-webrtc-internals-candidates.png)
 
 In the case of a **direct connection**, I saw the following on the
 `remote-candidate`:
@@ -127,7 +127,7 @@ the [candidate
 type](https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/type)
 in brackets.
 
-![](/posts/how-to-get-direct-webrtc-connections-between-computers/firefox-about-webrtc.png)
+![](/posts/how-to-get-direct-webrtc-connection-between-computers/firefox-about-webrtc.png)
 
 # Firewall ports to open to avoid using a relay
 
