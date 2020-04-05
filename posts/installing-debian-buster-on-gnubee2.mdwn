@@ -108,7 +108,7 @@ and reboot:
 
     reboot
 
-# Restore ssh access in Debian jessie
+## Restore ssh access in Debian jessie
 
 Once the GnuBee has finished booting, login using the [serial console](https://github.com/gnubee-git/GnuBee_Docs/blob/master/USB_to_UART/README.md):
 
@@ -171,8 +171,6 @@ and upgrade the packages:
     apt autoremove
     reboot
 
-## Next steps
-
 At this point, my GnuBee is running the latest version of Debian stable,
 however there are two remaining issues to fix:
 
@@ -180,13 +178,53 @@ however there are two remaining issues to fix:
    work](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=932089) and I am
    forced to access the GnuBee via the serial interface.
 
-2. The firmware is running an outdated version of the Linux kernel though
-   this is [being worked
-   on](https://groups.google.com/d/topic/gnubee/YVM08lfWUUc/discussion) by
-   community members.
+2. The firmware is running an outdated version of the Linux kernel.
 
-I hope to resolve these issues soon, and will update this blog post once I
-do, but you are more than welcome to leave a comment if you know of a
-solution I may have overlooked.
+Both of these issues can be resolved by upgrading the firmware to a recent
+version of Linux.
 
-[[!tag debian]] [[!tag gnubee]] [[!tag nzoss]]
+## Upgrading the firmware
+
+In order to move to the firmware that [Neil Brown has been working on for a
+while](https://groups.google.com/d/topic/gnubee/YVM08lfWUUc/discussion), I
+prepared a USB stick:
+
+    $ sudo fdisk -l /dev/sdc
+    Disk /dev/sdc: 3.77 GiB, 4027580416 bytes, 7866368 sectors
+    Disk model: USB Disk
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes
+    Disklabel type: dos
+    Disk identifier: 0x6cb65e6c
+    
+    Device     Boot Start     End Sectors  Size Id Type
+    /dev/sdc1        2048 7866367 7864320  3.8G  c W95 FAT32 (LBA)
+    
+    $ sudo mkfs.vfat /dev/sdc1
+
+using a `dos` partition table and a `W95 FAT32 (LBA)` partition.
+
+Then I grabbed the latest `gnubee-*-gbpc2.bin` file from
+<https://neil.brown.name/gnubee/> and copied it onto the USB stick with the
+appropriate name:
+
+    cp gnubee-5.4.14-gbpc2.bin /media/usbdisk/GNUBEE.BIN
+
+I plugged the stick into the GnuBee and rebooted it to upgrade the firmware,
+watching the process using the serial console.
+
+Once booted, I had to delete `/etc/udev/rules.d/70-persistent-net.rules` in
+order to fix a long timeout while bringing up the network interfaces during
+boot.
+
+If you want to see the boot messages to ensure there are no errors, run
+`journalctl -b`.
+
+Finally, I cleaned up a deprecated and no-longer-needed package:
+
+    apt purge ntpdate
+
+and removed its invocation from `/etc/rc.local`.
+
+[[!tag debian]] [[!tag gnubee]]
