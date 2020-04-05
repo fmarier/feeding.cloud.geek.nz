@@ -1,9 +1,0 @@
-[[!comment format=mdwn
- ip="165.225.114.98"
- claimedauthor="Antoine"
- subject="Same issue with SSH"
- date="2019-09-09T08:49:57Z"
- content="""
-Hi, 
-Just stumbled onto this post. I have the same issue with SSH, on a GnuBee PC1. I believe openssh is running (according to OpenMediaVault GUI), but it rejects all connections attempts. Please keep updating this post if you find a solution.
-"""]]
