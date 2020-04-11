@@ -1,0 +1,43 @@
+[[!meta title="Using Gogo WiFi on Linux"]]
+[[!meta date="2020-04-11T16:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[Gogo](https://www.gogoair.com/for-passengers/), the WiFi provider for
+[airlines like Air Canada](https://www.gogoair.com/participating-airlines/),
+is not available to Linux users even though it advertises ["access using any
+Wi-Fi enabled laptop, tablet or
+smartphone"](https://www.gogoair.com/ac-bbyf/one-way-pass/detail/). It is
+however possible to work-around this restriction by faking your browser
+[user agent](https://en.wikipedia.org/wiki/User_agent).
+
+I tried the [User-Agent Switcher for
+Chrome](https://chrome.google.com/webstore/detail/user-agent-switcher-for-c/djflhoibgkdhkhhcedjiklpkjnoahfmg)
+extension on Chrome and [Brave](https://brave.com/clo187) but it didn't work
+for some reason.
+
+What did work was using Firefox and adding the following prefs in
+`about:config` to spoof its user agent to Chrome for Windows:
+
+    general.useragent.override=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36
+    general.useragent.updates.enabled=false
+    privacy.resistFingerprinting=false
+
+The last two prefs are necessary in order for the hidden
+`general.useragent.override` pref to [not be
+ignored](https://searchfox.org/mozilla-central/rev/8ed108064bf1c83e508208e069a90cffb4045977/dom/base/Navigator.cpp#1892-1904).
+
+# Opt out of mandatory arbitration
+
+As an aside, the Gogo [terms of
+service](https://content.gogoair.com/terms/aca/?lang=en_US) automatically
+enroll you into [mandatory
+arbitration](https://www.hotcoffeethemovie.com/default.asp?pg=mandatory_arbitration)
+unless you opt out by sending an email to
+[customercare@gogoair.com](mailto:customercare@gogoair.com) within 30 days
+of using their service.
+
+You may want to create an email template for this so that you can fire off a
+quick email to them as soon as you connect. I will probably write a script
+for it next time I use this service.
+
+[[!tag debian]] [[!tag firefox]]
