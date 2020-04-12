@@ -225,6 +225,6 @@ Finally, I cleaned up a deprecated and no-longer-needed package:
 
     apt purge ntpdate
 
-and removed its invocation from `/etc/rc.local`.
+and removed its invocation from `/etc/rc.local` and `/etc/cron.d/ntp`.
 
 [[!tag debian]] [[!tag gnubee]]
