@@ -341,7 +341,7 @@ Set the following aliases in `/etc/aliases`:
 
 - set `francois` as the destination of `root` emails
 - set an external email address for `francois`
-- set `root` as the destination for `www-data` emails
+- set `root` as the destination for `mon` and `www-data` emails
 
 before running `newaliases` to update the aliases database.
 
