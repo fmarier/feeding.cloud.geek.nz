@@ -350,7 +350,10 @@ Create a new cronjob (`/etc/cron.hourly/checkmail`):
     #!/bin/sh
     ls /var/mail
 
-to ensure that email doesn't accumulate unmonitored on this box.
+to ensure that email doesn't accumulate unmonitored on this box. Don't
+forget to make the script executable:
+
+    chmod +x /etc/cron.hourly/checkmail
 
 Finally, set reverse DNS for the server's IPv4 and IPv6 addresses and then
 test the whole setup using `mail root`. You should also use
@@ -361,7 +364,7 @@ To monitor that mail never stops flowing, add this machine to a free
 [healthchecks.io](https://healthchecks.io) account and create a
 `/etc/cron.d/healthchecks-io` cronjob:
 
-    0 1 * * * root echo "ping" | mail xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@hchk.io
+    0 1 * * * root echo "ping" | mail xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@hc-ping.com
 
 # Monitoring
 
