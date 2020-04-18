@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="185.242.5.35"
+ claimedauthor="seth black wider"
+ subject="two flavors"
+ date="2020-04-18T01:35:51Z"
+ content="""
+there are two flavors of sip uri there.
+
+[DID]@sip.voip.ms
+[subaccount]@[POP].voip.ms
+
+and they are not interchangeable.
+"""]]
