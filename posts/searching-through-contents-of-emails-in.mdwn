@@ -40,4 +40,4 @@ If you use GPG, you should also add this to your `~/.muttrc` to make sure that m
     bind pager s decrypt-save
 
 
-[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 
+[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] [[!tag email]]

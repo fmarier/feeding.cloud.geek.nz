@@ -44,4 +44,4 @@ Finally, I've got this convenient shortcut which allows me to switch to my inbox
 Next up: [[indexing your emails using mairix|posts/searching-through-contents-of-emails-in/]].
 
 
-[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 
+[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] [[!tag email]]

@@ -35,4 +35,4 @@ This is done using [procmail](http://www.procmail.org/) with the following bit i
     * ^X-Spam-Status: Yes
     /home/francois/mail/spam
 
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] 
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag email]] [[!tag gmail]]

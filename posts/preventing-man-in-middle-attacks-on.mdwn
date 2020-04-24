@@ -60,4 +60,4 @@ smtp_tls_fingerprint_cert_match =
    <i>12:34:AB:CD:56:78:EF:90:12:AB:CD:34:56:EF:78:90:AB:CD:12:34:AB:DD:44:66:DA:77:CF:DB:E4:A7:02:E1</i>
 </pre>
 
-[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag fetchmail]] [[!tag postfix]]
+[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag fetchmail]] [[!tag postfix]] [[!tag email]] [[!tag gmail]]

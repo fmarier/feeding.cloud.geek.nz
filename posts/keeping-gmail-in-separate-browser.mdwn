@@ -48,4 +48,4 @@ Then log into GMail and tick the "Trust this computer" checkbox at the 2-factor 
 With these settings, your browsing history will be cleared and you will be logged out of GMail every time you close your browser but will still be able to skip the 2-factor step on that device.
 
 
-[[!tag firefox]] [[!tag debian]] [[!tag ubuntu]] [[!tag privacy]] [[!tag nzoss]] [[!tag mozilla]] 
+[[!tag firefox]] [[!tag debian]] [[!tag ubuntu]] [[!tag privacy]] [[!tag nzoss]] [[!tag mozilla]] [[!tag gmail]]

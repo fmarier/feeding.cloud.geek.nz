@@ -34,4 +34,4 @@ and then view the mailbox like this:
 
     mutt -f /var/mail/root
 
-[[!tag debian]] [[!tag nzoss]] [[!tag postfix]]
+[[!tag debian]] [[!tag nzoss]] [[!tag postfix]] [[!tag email]]
