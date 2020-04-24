@@ -1,0 +1,33 @@
+[[!meta title="Disabling mail sending from your domain"]]
+[[!meta date="2020-04-23T22:10:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I noticed that I was receiving some bounced email notifications from a
+domain I own (`cloud.geek.nz`) to host my blog. These notifications were all
+for spam messages spoofing the `From` address since I do not use that domain
+for email.
+
+I decided to try setting a strict [DMARC
+policy](https://dmarcly.com/blog/how-to-implement-dmarc-dkim-spf-to-stop-email-spoofing-phishing-the-definitive-guide)
+to see if DMARC-using mail servers (e.g. GMail) would then drop these
+spoofed emails without notifying me about it.
+
+I started by setting this initial DMARC policy in DNS in order to monitor the change:
+
+    @ TXT v=spf1 -all
+    _dmarc TXT v=DMARC1; p=none; ruf=mailto:dmarc@fmarier.org; sp=none; aspf=s; fo=0:1:d:s;
+
+Then I waited three weeks without receiving anything before updating the
+relevant DNS records to this final DMARC policy:
+
+    @ TXT v=spf1 -all
+    _dmarc TXT v=DMARC1; p=reject; sp=reject; aspf=s;
+
+This policy states that nobody is allowed to send emails for this domain and
+that any incoming email claiming to be from this domain should be silently
+rejected.
+
+I haven't noticed any bounce notifications for messages spoofing this domain
+in a while, so maybe it's working?
+
+[[!tag sysadmin]] [[!tag debian]] [[!tag dns]] [[!tag email]]
