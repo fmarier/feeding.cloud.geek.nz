@@ -88,4 +88,33 @@ before restarting the pagekite daemon using:
 
     systemctl restart pagekite
 
-[[!tag mozilla]] [[!tag debian]] [[!tag sysadmin]] [[!tag ssh]] [[!tag nzoss]] [[!tag pagekite]]
+# Using mosh and pagekite
+
+[Mosh](https://mosh.org/) is a nice way to interface with ssh over
+high-latency netowrks. However, it's not possible to tunnel mosh directly
+through pagekited since [pagekite only supports
+TCP](https://groups.google.com/d/topic/pagekite-discuss/YUfhVfWyYsU/discussion).
+
+I ended up with a hybrid setup where I don't have to expose the ssh service
+to the local network (and therefore remember to disable it when I'm done)
+but I do have to open a UDP port on my firewall for mosh.
+
+First, I assigned a stable IP to my laptop on my router, based on its MAC
+address. I also had to disable [MAC address spoofing in Network Manager](https://blogs.gnome.org/thaller/2016/08/26/mac-address-spoofing-in-networkmanager-1-4-0/) (setting it to permanent).
+
+This is what my `/etc/NetworkManager/system-connections/Ethernet automatique` config looks like:
+
+    [ethernet]
+    cloned-mac-address=preserve
+    
+    [ipv4]
+    method=auto
+    
+    [ipv6]
+    addr-gen-mode=stable-privacy
+    ip6-privacy=2
+    method=auto
+
+Then I forwarded port 9000 (UDP) traffic to the static IP address above.
+
+[[!tag mozilla]] [[!tag debian]] [[!tag sysadmin]] [[!tag ssh]] [[!tag pagekite]]
