@@ -230,4 +230,21 @@ Finally, I cleaned up a deprecated and no-longer-needed package:
 
 and removed its invocation from `/etc/rc.local` and `/etc/cron.d/ntp`.
 
+## Fixing the serial console
+
+The serial console, [automatically started by
+systemd](https://github.com/systemd/systemd/issues/15611), seems to get
+corrupted every now and then. If you see garbled output (i.e. binary
+characters instead of text), then you are running into this problem.
+
+The fix, [suggested by Jernej
+Jakob](https://groups.google.com/d/msg/gnubee/N4fxGgwOyiQ/pntsYccgBAAJ), is
+to override the default systemd unit file by creating a
+`/etc/systemd/system/serial-getty@ttyS0.service.d/override.conf` with the
+following contents:
+
+    [Service]
+    ExecStart=
+    ExecStart=-/sbin/agetty -o '-p -- \\u' 57600 %I $TERM
+
 [[!tag debian]] [[!tag gnubee]]
