@@ -33,6 +33,9 @@ you can use it to monitor the flashing process:
 
 otherwise keep an eye on the [LEDs and wait until they are fully done
 flashing](https://github.com/gnubee-git/GnuBee_Docs/wiki/Install-firmware#via-usb-stick).
+When you want to [exit
+screen](https://stackoverflow.com/questions/4847691/how-do-i-get-out-of-a-screen-without-typing-exit#),
+use `Ctrl-a` then `k`.
 
 ## Getting ssh access to LibreCMC
 
