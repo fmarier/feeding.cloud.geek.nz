@@ -48,6 +48,11 @@ and this in `/etc/.git/config`:
     [commit]
         gpgsign = false
 
+Note that in order to fully turn off auto-commits, it's also necessary
+to run the following:
+
+    systemctl disable etckeeper.timer
+
 To get more control over the various packages I install, I change the
 default debconf level to medium:
 
