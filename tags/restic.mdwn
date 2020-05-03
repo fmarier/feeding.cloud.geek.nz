@@ -1,0 +1,4 @@
+[[!meta title="pages tagged restic"]]
+
+[[!inline pages="tagged(restic)" actions="no" archive="yes"
+feedshow=10]]
