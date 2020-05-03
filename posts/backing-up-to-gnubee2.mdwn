@@ -1,0 +1,200 @@
+[[!meta title="Backing up to a GnuBee PC 2"]]
+[[!meta date="2020-05-02T18:05:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After [installing Debian buster on my
+GnuBee](https://feeding.cloud.geek.nz/posts/installing-debian-buster-on-gnubee2/), 
+I set it up for receiving backups from my other computers.
+
+## Software setup
+
+I started by configuring it [like a typical
+server](https://feeding.cloud.geek.nz/posts/usual-server-setup/) but without
+a few packages that either take a lot of memory or CPU:
+
+- [fail2ban](https://packages.debian.org/buster/fail2ban)
+- [rkhunter](https://packages.debian.org/buster/rkhunter)
+- [sysstat](https://packages.debian.org/buster/sysstat)
+
+I changed the default hostname:
+
+- `/etc/hostname`: `foobar`
+- `/etc/mailname`: `foobar.example.com`
+- `/etc/hosts`: `127.0.0.1  foobar.example.com vogar localhost`
+
+and then installed the `avahi-daemon` package to be able to reach this box
+using `foobar.local`.
+
+I noticed the presence of a [world-writable
+directory](https://github.com/neilbrown/gnubee-tools/issues/23) and so I
+tightened the security of some of the default mount points by putting the following
+in `/etc/rc.local`:
+
+    mount -o remount,nodev,nosuid /etc/network
+    mount -o remount,nodev,nosuid /lib/modules
+    chmod 755 /etc/network
+    exit 0
+
+## Hardware setup
+
+My OS drive (`/dev/sda`) is a small SSD so that the GnuBee can run silently when the
+spinning disks aren't needed. To hold the backup data on the other hand, I
+got three 4-TB drives drives which I setup in a
+[RAID-5](https://en.wikipedia.org/wiki/Standard_RAID_levels#RAID_5) array.
+If the data were valuable, I'd use
+[RAID-6](https://en.wikipedia.org/wiki/Standard_RAID_levels#RAID_6) instead
+since it can survive two drives failing at the same time, but in this case
+since it's only holding backups, I'd have to lose the original machine at
+the same time as two of the 3 drives, a very unlikely scenario.
+
+I created new gpt partition tables on `/dev/sdb`, `/dev/sdbc`, `/dev/sdd`
+and used `fdisk` to create a single partition of `type 29` (Linux RAID) on
+each of them.
+
+Then I created the RAID array:
+
+    mdadm /dev/md127 --create -n 3 --level=raid5 -a /dev/sdb1 /dev/sdc1 /dev/sdd1
+
+and waited more than 24 hours for that operation to finish. Next, I
+formatted the array:
+
+    mkfs.ext4 -m 0 /dev/md127
+
+and added the following to `/etc/fstab`:
+
+    /dev/md127 /mnt/data/ ext4 noatime,nodiratime 0 2
+
+Finally I setup [smartmontools](https://www.smartmontools.org/) by putting
+the following in `/etc/smartd.conf`:
+
+    /dev/sda -a -o on -S on -s (S/../.././02|L/../../6/03)
+    /dev/sdb -a -o on -S on -s (S/../.././02|L/../../6/03)
+    /dev/sdc -a -o on -S on -s (S/../.././02|L/../../6/03)
+    /dev/sdd -a -o on -S on -s (S/../.././02|L/../../6/03)
+
+and restarting the daemon:
+
+    systemctl restart smartd.service
+
+## Backup setup
+
+I started by using [duplicity](http://duplicity.nongnu.org/) since I have
+been using that tool for many years, but a 190GB backup took around 15 hours
+on the GnuBee with gigabit ethernet.
+
+After a [friend](https://stumbles.id.au/) suggested it, I took a look at
+[restic](https://restic.net) and I have to say that I am impressed. The
+same backup finished in about half the time.
+
+### User and ssh setup
+
+I created a user account for each machine needing to backup onto the GnuBee:
+
+    adduser machine1
+    adduser machine1 sshuser
+
+and then a matching directory under `/mnt/data/`:
+
+    mkdir /mnt/data/machine1
+    chown machine1:machine1 /mnt/data/machine1    
+
+Then I created a custom ssh key for each machine:
+
+    ssh-keygen -f /root/.ssh/foobar_backups -t ed25519
+
+and placed it in `/home/machine1/.ssh/authorized_keys` on the GnuBee.
+
+On each machine, I added the following to `/root/.ssh/config`:
+
+    Host foobar.local
+        User machine1
+        Compression no
+        Ciphers aes128-ctr
+        IdentityFile /root/backup/foobar_backups
+        IdentitiesOnly yes
+        ServerAliveInterval 60
+        ServerAliveCountMax 240
+
+The reason for setting the ssh cipher and disabling compression is to [speed
+up the ssh connection](https://gist.github.com/KartikTalwar/4393116) as much
+as possible given that the [GnuBee has avery small RAM
+bandwidth](https://groups.google.com/d/msg/gnubee/5_nKjgmKSoY/a0ER5fEcBAAJ).
+
+### Restic script
+
+After reading through the excellent [restic
+documentation](https://restic.readthedocs.io/en/stable/), I wrote the
+following backup script, based on my [old duplicity
+script](https://sources.debian.org/src/duplicity/0.8.11.1612-1/debian/examples/system-backup/),
+to reuse on all of my computers:
+
+    # Configure for each host
+    PASSWORD="XXXX"  # use `pwgen -s 64` to generate a good random password
+    BACKUP_HOME="/root/backup"
+    REMOTE_URL="sftp:foobar.local:/mnt/data/machine1"
+    RETENTION_POLICY="--keep-daily 7 --keep-weekly 4 --keep-monthly 12 --keep-yearly 2"
+    
+    # Internal variables
+    SSH_IDENTITY="IdentityFile=$BACKUP_HOME/foobar_backups"
+    EXCLUDE_FILE="$BACKUP_HOME/exclude"
+    PKG_FILE="$BACKUP_HOME/dpkg-selections"
+    PARTITION_FILE="$BACKUP_HOME/partitions"
+    
+    # If the list of files has been requested, only do that
+    if [ "$1" = "--list-current-files" ]; then
+    	RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL ls latest
+    	exit 0
+    
+    # Restore the given file
+    elif [ "$1" = "--file-to-restore" ]; then
+    	if [ "$2" = "" ]; then
+    		echo "You must specify a file to restore"
+    		exit 2
+    	fi
+    	RESTORE_DIR="$(mktemp -d ./restored_XXXXXXXX)"
+    	RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL restore latest --target "$RESTORE_DIR" --include "$2" || exit 1
+    	echo "$2 was restored to $RESTORE_DIR"
+    	exit 0
+    
+    # Delete old backups
+    elif [ "$1" = "--prune" ]; then
+        # Expire old backups
+        RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL forget $RETENTION_POLICY
+    
+        # Delete files which are no longer necessary (slow)
+        RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL prune
+        exit 0
+    
+    # Catch invalid arguments
+    elif [ "$1" != "" ]; then
+    	echo "Invalid argument: $1"
+    	exit 1
+    fi
+    
+    # Check the integrity of existing backups
+    RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL check || exit 1
+    
+    # Dump list of Debian packages
+    dpkg --get-selections > $PKG_FILE
+    
+    # Dump partition tables from harddrives
+    /sbin/fdisk -l /dev/sda > $PARTITION_FILE
+    /sbin/fdisk -l /dev/sdb > $PARTITION_FILE
+    
+    # Do the actual backup using Duplicity
+    RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL backup / --exclude-file $EXCLUDE_FILE
+
+I run it with the following cronjob in `/etc/cron.d/backups`:
+
+    30 8 * * *    root  ionice nice nocache /root/backup/backup-machine1-to-foobar
+    30 2 * * Sun  root  ionice nice nocache /root/backup/backup-machine1-to-foobar --prune
+
+Finally, I printed a copy of each of my backup script, using
+[enscript](https://www.gnu.org/software/enscript/), to stash in a safe place:
+
+    enscript --highlight=bash --style=emacs --output=- backup-machine1-to-foobar | ps2pdf - > foobar.pdf
+
+This is actually a pretty important step since **without the password, you
+won't be able to decrypt and restore what's on the GnuBee**.
+
+[[!tag duplicity]] [[!tag gnubee]] [[!tag restic]] [[!tag backup]] [[!tag debian]]
