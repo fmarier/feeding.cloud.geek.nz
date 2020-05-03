@@ -189,6 +189,8 @@ I run it with the following cronjob in `/etc/cron.d/backups`:
     30 8 * * *    root  ionice nice nocache /root/backup/backup-machine1-to-foobar
     30 2 * * Sun  root  ionice nice nocache /root/backup/backup-machine1-to-foobar --prune
 
+in a way that [doesn't impact the rest of the system too much](https://feeding.cloud.geek.nz/posts/three-wrappers-to-run-commands-without-impacting-the-rest-of-the-system/).
+
 Finally, I printed a copy of each of my backup script, using
 [enscript](https://www.gnu.org/software/enscript/), to stash in a safe place:
 
