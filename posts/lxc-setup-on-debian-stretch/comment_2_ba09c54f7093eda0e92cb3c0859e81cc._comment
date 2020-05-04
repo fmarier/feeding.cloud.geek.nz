@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="167.62.217.58"
+ claimedauthor="Sergio_L"
+ subject="How about bridging"
+ date="2020-04-24T19:09:30Z"
+ content="""
+Thank you very much for the article, following it was the first time I got my containers to have internet access, I was trying to expose them to my DHCP before with no success (using debian stretch) so If you feel like adding that option to your article I'll be very grateful! 
+"""]]
