@@ -47,6 +47,12 @@ which can be done by commenting out this line:
 
     #Subsystem     sftp    /usr/lib/openssh/sftp-server
 
+On the other hand, if you do need it, it's generally better to replace it
+with the [internal sftp
+server](https://serverfault.com/questions/660160/openssh-difference-between-internal-sftp-and-sftp-server#660325):
+
+    Subsystem     sftp    internal-sftp
+
 # Whitelist approach to giving users ssh access
 
 To ensure that only a few users have ssh access to the server and that newly

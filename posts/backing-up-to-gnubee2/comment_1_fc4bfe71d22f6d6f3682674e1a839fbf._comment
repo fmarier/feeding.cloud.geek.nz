@@ -1,7 +1,0 @@
-[[!comment format=mdwn
- ip="72.239.48.49"
- subject="further hardening"
- date="2020-05-05T11:25:39Z"
- content="""
-consider using/mentioning the sshd internal-sftp option for further security from backup accounts
-"""]]

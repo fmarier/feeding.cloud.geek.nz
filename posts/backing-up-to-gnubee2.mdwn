@@ -120,6 +120,14 @@ up the ssh connection](https://gist.github.com/KartikTalwar/4393116) as much
 as possible given that the [GnuBee has avery small RAM
 bandwidth](https://groups.google.com/d/msg/gnubee/5_nKjgmKSoY/a0ER5fEcBAAJ).
 
+On the GnuBee, I switched to the [internal sftp
+server](https://serverfault.com/questions/660160/openssh-difference-between-internal-sftp-and-sftp-server#660325)
+by putting the following in `/etc/ssh/sshd_config`:
+
+    Subsystem      sftp    internal-sftp
+
+to hopefully improve the performance.
+
 ### Restic script
 
 After reading through the excellent [restic
