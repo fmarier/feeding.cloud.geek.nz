@@ -89,22 +89,57 @@ servers and use small
 [scripts](https://github.com/fmarier/user-scripts/blob/master/spascp)
 to connect to them.
 
-# Using restricted shells
+# Restricting shell access
 
 For those users who only need an ssh account on the server in order to
-transfer files (using `scp` or `rsync`), it's a good idea to set their shell
-(via [chsh](http://linux.die.net/man/1/chsh)) to a restricted one like
-[rssh](http://www.pizzashack.org/rssh/).
+transfer files (using `scp` or `rsync`), it's a good idea to restrict their
+access further. I used to switch these users' shell (via [chsh](http://linux.die.net/man/1/chsh)) to a restricted one like
+[rssh](http://www.pizzashack.org/rssh/), but that project has been
+[abandoned](https://tracker.debian.org/news/1033905/removed-234-12-from-unstable/).
 
-Should they attempt to log into the server, these users will be greeted with
-the following error message:
+I now use a [different
+approach](https://www.allthingsdigital.nl/2013/05/12/setting-up-an-sftp-only-account-with-openssh/)
+which consists of using an essentially empty chroot for these users and
+limiting them to `internal-sftp` by putting the following in
+`/etc/ssh/sshd_config`:
 
-    This account is restricted by rssh.
-    Allowed commands: rsync 
-    
-    If you believe this is in error, please contact your system administrator.
-    
-    Connection to server.example.com closed.
+    Match Group sftponly
+      ForceCommand internal-sftp
+      ChrootDirectory /mnt/data
+
+creating a group:
+
+    adduser sftponly
+
+and a base chroot directory:
+
+    mkdir -p /mnt/data/home
+
+Note that the base directory, and each parent directory all the way to the
+root directory, must be owned by `root:root` (user **and** group) otherwise
+you'll see an unhelpful error message like this when you try to connect via
+sftp:
+
+    $ sftp user1@server.example
+    client_loop: send disconnect: Broken pipe
+
+Then for each user, we need to do the following:
+
+    adduser user1 sftp-only
+    mkdir -p /mnt/data/home/user1
+    chown user1:user1 /mnt/data/home/user1
+    chmod 700 /mnt/data/home/user1
+
+before restarting the ssh daemon:
+
+    systemctl restart sshd.service
+
+Should one of these users attempt to connect via ssh instead of stp, they
+will see the following:
+
+    $ ssh user1@server.example
+    This service allows sftp connections only.
+    Connection to server.example closed.
 
 # Restricting authorized keys to certain IP addresses
 

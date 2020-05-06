@@ -88,15 +88,20 @@ same backup finished in about half the time.
 
 ### User and ssh setup
 
-I created a user account for each machine needing to backup onto the GnuBee:
+After [hardening the ssh
+setup](https://feeding.cloud.geek.nz/posts/hardening-ssh-servers/) as I
+usually do, I created a user account for each machine needing to backup onto
+the GnuBee:
 
     adduser machine1
     adduser machine1 sshuser
+    adduser machine1 sftponly
 
-and then a matching directory under `/mnt/data/`:
+and then matching directories under `/mnt/data/home/`:
 
-    mkdir /mnt/data/machine1
-    chown machine1:machine1 /mnt/data/machine1    
+    mkdir /mnt/data/home/machine1
+    chown machine1:machine1 /mnt/data/home/machine1
+    chmod 700 /mnt/data/home/machine1
 
 Then I created a custom ssh key for each machine:
 
@@ -120,13 +125,11 @@ up the ssh connection](https://gist.github.com/KartikTalwar/4393116) as much
 as possible given that the [GnuBee has avery small RAM
 bandwidth](https://groups.google.com/d/msg/gnubee/5_nKjgmKSoY/a0ER5fEcBAAJ).
 
-On the GnuBee, I switched to the [internal sftp
+Another performance-related change I made on the GnuBee was switching to the [internal sftp
 server](https://serverfault.com/questions/660160/openssh-difference-between-internal-sftp-and-sftp-server#660325)
 by putting the following in `/etc/ssh/sshd_config`:
 
     Subsystem      sftp    internal-sftp
-
-to hopefully improve the performance.
 
 ### Restic script
 
@@ -139,7 +142,7 @@ to reuse on all of my computers:
     # Configure for each host
     PASSWORD="XXXX"  # use `pwgen -s 64` to generate a good random password
     BACKUP_HOME="/root/backup"
-    REMOTE_URL="sftp:foobar.local:/mnt/data/machine1"
+    REMOTE_URL="sftp:foobar.local:"
     RETENTION_POLICY="--keep-daily 7 --keep-weekly 4 --keep-monthly 12 --keep-yearly 2"
     
     # Internal variables
