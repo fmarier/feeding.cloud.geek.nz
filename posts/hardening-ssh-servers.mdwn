@@ -126,6 +126,7 @@ sftp:
 Then for each user, we need to do the following:
 
     adduser user1 sftp-only
+    chsh user1 -s /bin/false
     mkdir -p /mnt/data/home/user1
     chown user1:user1 /mnt/data/home/user1
     chmod 700 /mnt/data/home/user1

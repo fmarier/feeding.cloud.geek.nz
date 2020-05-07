@@ -96,6 +96,7 @@ the GnuBee:
     adduser machine1
     adduser machine1 sshuser
     adduser machine1 sftponly
+    chsh machine1 -s /bin/false
 
 and then matching directories under `/mnt/data/home/`:
 
