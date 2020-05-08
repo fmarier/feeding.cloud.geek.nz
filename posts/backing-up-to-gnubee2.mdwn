@@ -64,6 +64,30 @@ and added the following to `/etc/fstab`:
 
     /dev/md127 /mnt/data/ ext4 noatime,nodiratime 0 2
 
+To reduce unnecessary noise and reduce power consumption, I also installed
+[hdparm](https://sourceforge.net/projects/hdparm/):
+
+    apt install hdparm
+
+and configured all spinning drives to spin down after being idle for 10
+minutes by putting the following in `/etc/hdparm.conf`:
+
+    /dev/sdb {
+           spindown_time = 120
+    }
+    
+    /dev/sdc {
+           spindown_time = 120
+    }
+    
+    /dev/sdd {
+           spindown_time = 120
+    }
+
+and then reloaded the configuration:
+
+     /usr/lib/pm-utils/power.d/95hdparm-apm resume
+
 Finally I setup [smartmontools](https://www.smartmontools.org/) by putting
 the following in `/etc/smartd.conf`:
 
