@@ -181,6 +181,11 @@ to reuse on all of my computers:
     	RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL ls latest
     	exit 0
     
+    # Show list of available snapshots
+    elif [ "$1" = "--list-snapshots" ]; then
+	    RESTIC_PASSWORD=$GPG_PASSWORD restic --quiet -r $REMOTE_URL snapshots
+	    exit 0
+    
     # Restore the given file
     elif [ "$1" = "--file-to-restore" ]; then
     	if [ "$2" = "" ]; then
@@ -217,8 +222,8 @@ to reuse on all of my computers:
     /sbin/fdisk -l /dev/sda > $PARTITION_FILE
     /sbin/fdisk -l /dev/sdb > $PARTITION_FILE
     
-    # Do the actual backup using Duplicity
-    RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL backup / --exclude-file $EXCLUDE_FILE
+    # Do the actual backup
+    RESTIC_PASSWORD=$PASSWORD restic --quiet --cleanup-cache -r $REMOTE_URL backup / --exclude-file $EXCLUDE_FILE
 
 I run it with the following cronjob in `/etc/cron.d/backups`:
 
