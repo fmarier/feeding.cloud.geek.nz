@@ -2,7 +2,7 @@
 [[!meta date="2019-07-06T16:00:00.000-07:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-My [VoIP provider](https://voip.ms) recently added [support for
+My [VoIP provider](https://voip.ms/en/invite/MjE0NTI2) recently added [support for
 TLS/SRTP-based call
 encryption](https://wiki.voip.ms/article/Call_Encryption_-_TLS/SRTP). Here's
 what I did to enable this feature on my
