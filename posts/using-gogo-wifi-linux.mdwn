@@ -12,7 +12,7 @@ however possible to work-around this restriction by faking your browser
 
 I tried the [User-Agent Switcher for
 Chrome](https://chrome.google.com/webstore/detail/user-agent-switcher-for-c/djflhoibgkdhkhhcedjiklpkjnoahfmg)
-extension on Chrome and [Brave](https://brave.com/clo187) but it didn't work
+extension on Chrome and [Brave](https://brave.com/) but it didn't work
 for some reason.
 
 What did work was using Firefox and adding the following prefs in

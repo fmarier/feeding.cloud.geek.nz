@@ -2,7 +2,7 @@
 [[!meta date="2020-03-05T19:00:00.000-08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-If you want to reach a [VoIP.ms](https://voip.ms/en/invite/MjE0NTI2) subscriber from
+If you want to reach a [VoIP.ms](https://voip.ms/) subscriber from
 [Asterisk](https://www.asterisk.org/) without using the
 [PSTN](https://en.wikipedia.org/wiki/Public_switched_telephone_network),
 there is a way to do so via [SIP

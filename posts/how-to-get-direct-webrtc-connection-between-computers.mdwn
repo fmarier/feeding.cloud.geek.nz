@@ -32,7 +32,7 @@ Note that this test page makes use of a Google TURN server which is locked
 to particular HTTP referrers and so you'll need to disable privacy features
 that might interfere with this:
 
-- [Brave](https://brave.com/clo187): Disable Shields entirely for that page
+- [Brave](https://brave.com/): Disable Shields entirely for that page
   (Simple view) or *allow all cookies* for that page (Advanced view).
 
 ![](/posts/how-to-get-direct-webrtc-connection-between-computers/brave-shields-cookies.png)
