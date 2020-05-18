@@ -1,0 +1,97 @@
+[[!meta title="Displaying client IP address using Apache Server-Side Includes"]]
+[[!meta date="2020-05-18T14:50:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If you use a [Dynamic DNS
+setup](https://feeding.cloud.geek.nz/posts/dynamic-dns-on-own-domain/) to
+reach machines which are not behind a stable IP address, you will likely
+have a need to probe these machines' public IP addresses. One option is to
+use an insecure service like Oracle's <http://checkip.dyndns.com/> which
+echoes back your client IP, but you can also do this on your own server if
+you have one.
+
+There are multiple options to do this, like writing a CGI or PHP script, but
+those are fairly heavyweight if that's all you need [mod_cgi](https://httpd.apache.org/docs/current/mod/mod_cgi.html) or
+[PHP](https://cwiki.apache.org/confluence/display/HTTPD/PHP) for. Instead, I
+decided to use Apache's built-in [Server-Side
+Includes](https://httpd.apache.org/docs/current/howto/ssi.html).
+
+## Apache configuration
+
+Start by turning on the [include
+filter](https://httpd.apache.org/docs/current/mod/mod_include.html) by
+adding the following in `/etc/apache2/conf-available/ssi.conf`:
+
+    AddType text/html .shtml
+    AddOutputFilter INCLUDES .shtml
+
+and making that configuration file active:
+
+    a2enconf ssi
+
+Then, find the vhost file where you want to enable SSI and add the following
+options to a `Location` or `Directory` section:
+
+    <Location /ssi_files>
+        Options +IncludesNOEXEC
+        SSLRequireSSL
+        Header set Content-Security-Policy: "default-src 'none'"
+        Header set X-Content-Type-Options: "nosniff"
+    </Location>
+
+before adding the necessary modules:
+
+    a2enmod headers
+    a2enmod include
+
+and restarting Apache:
+
+    apache2ctl configtest && systemctl restart apache2.service
+
+## Create an `shtml` page
+
+With the web server ready to process SSI instructions, the following HTML
+blurb can be used to display the client IP address:
+
+    <!--#echo var="REMOTE_ADDR" -->
+
+or any other [built-in
+variable](https://httpd.apache.org/docs/current/expr.html#vars).
+
+Note that you don't need to write a valid HTML for the variable to be
+substituted and so the above one-liner is all I use on my server.
+
+## Security concerns
+
+The first thing to note is that the configuration section uses the
+`IncludesNOEXEC` option in order to disable [arbitrary command
+execution](https://httpd.apache.org/docs/current/howto/ssi.html#exec) via
+SSI. In addition, you can also make sure that the `cgi` module is disabled
+since that's a dependency of the more dangerous side of SSI:
+
+    a2dismod cgi
+
+Of course, if you rely on this IP address to be accurate, for example
+because you'll be putting it in your DNS, then you should make sure that you
+**only serve this page over HTTPS**, which can be enforced via the
+[`SSLRequireSSL`
+directive](https://httpd.apache.org/docs/current/mod/mod_ssl.html#sslrequiressl).
+
+I included two other headers in the above vhost config
+([`Content-Security-Policy`](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
+and
+[`X-Content-Type-Options`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options))
+in order to limit the damage that could be done in case a malicious file was
+accidentally dropped in that directory.
+
+Finally, I suggest making sure that **only the `root` user has writable
+access to the directory** which has server-side includes enabled:
+
+    $ ls -la /var/www/ssi_includes/
+    total 12
+    drwxr-xr-x  2 root     root     4096 May 18 15:58 .
+    drwxr-xr-x 16 root     root     4096 May 18 15:40 ..
+    -rw-r--r--  1 root     root        0 May 18 15:46 index.html
+    -rw-r--r--  1 root     root       32 May 18 15:58 whatsmyip.shtml
+
+[[!tag apache]] [[!tag dns]] [[!tag debian]]
