@@ -1,0 +1,58 @@
+[[!meta title="Printing hard-to-print PDFs on Linux"]]
+[[!meta date="2020-05-23T20:05:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently found a few PDFs which I was unable to print due to
+those files causing [insufficient printer memory
+errors](https://support.hp.com/us-en/product/model/9365402/document/c05049204):
+
+![](/posts/printing-hard-to-print-pdfs-on-linux/insufficient-printer-memory.png)
+
+I found a [detailed
+explanation](https://tex.stackexchange.com/questions/71001/why-do-some-vector-graphics-included-into-a-document-force-rasterization-of-the#71050)
+of what might be causing this which pointed the finger at transparent
+images, a PDF 1.4 feature which apparently requires a more recent version of
+[PostScript](https://en.wikipedia.org/wiki/PostScript) than what my printer
+supports.
+
+Using [Okular](https://okular.kde.org/)'s *Force rasterization* option
+(accessible via the print dialog) does work by essentially rendering
+everything ahead of time and outputing a big image to be sent to the
+printer. The quality is not very good however.
+
+# Converting a PDF to DjVu
+
+The [best solution I found](https://superuser.com/a/1489923) makes use of a
+different file format: [.djvu](https://en.wikipedia.org/wiki/DjVu)
+
+Such files are not PDFs, but can still be opened in [Evince](https://wiki.gnome.org/Apps/Evince) and
+[Okular](https://okular.kde.org/), as well as in the dedicated
+[DjVuLibre](http://djvu.sourceforge.net/) application.
+
+As an example, I was unable to print page 11 of [this
+paper](https://arxiv.org/pdf/2002.04049.pdf). Using `pdfinfo`, I found that
+it is in PDF 1.5 format and so the transparency effects could be the cause
+of the out-of-memory printer error.
+
+Here's how I converted it to a high-quality DjVu file I could print without
+problems using Evince:
+
+    pdf2djvu -d 1200 2002.04049.pdf > 2002.04049-1200dpi.djvu
+
+# Converting a PDF to PDF 1.3
+
+I also tried the DjVu trick on a [different unprintable
+PDF](https://www.boardgamegeek.com/filepage/113639/dead-winter-official-faq-v11),
+but it failed to print, even after lowering the resolution to 600dpi:
+
+    pdf2djvu -d 600 dow-faq_v1.1.pdf > dow-faq_v1.1-600dpi.djvu
+
+In this case, I used a different technique and simply converted the PDF to
+version 1.3 (from version 1.6 according to `pdfinfo`):
+
+    ps2pdf13 -r1200x1200 dow-faq_v1.1.pdf dow-faq_v1.1-1200dpi.pdf
+
+This eliminates the problematic transparency and rasterizes the elements
+that version 1.3 doesn't support.
+
+[[!tag debian]] [[!tag printing]]
