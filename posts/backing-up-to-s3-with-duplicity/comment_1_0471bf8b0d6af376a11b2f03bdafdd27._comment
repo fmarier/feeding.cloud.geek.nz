@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="2403:5800:3100:142::2494"
+ claimedauthor="Hamish"
+ subject="ListAllMyBuckets"
+ date="2020-05-28T03:37:17Z"
+ content="""
+What error do you get if you don't grant ListAllMyBuckets?
+
+I've been running duplicity to S3 without that permission for years and never encountered an issue. Though I see lots of other web sites saying the same thing. I'm actually using the duply frontend to duplicity but I think it's unlikely that makes a difference.
+"""]]
