@@ -1,0 +1,65 @@
+[[!meta title="Fixing locale problem in MythTV 30"]]
+[[!meta date="2020-05-28T15:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After upgrading to MythTV 30, I noticed that the interface of mythfrontend
+switched from the French language to English, despite having the following
+in my `~/.xsession` for the `mythtv` user:
+
+    export LANG=fr_CA.UTF-8
+    exec ~/bin/start_mythtv
+
+I noticed a few related error messages in `/var/log/syslog`:
+
+    mythbackend[6606]: I CoreContext mythcorecontext.cpp:272 (Init) Assumed character encoding: fr_CA.UTF-8
+    mythbackend[6606]: N CoreContext mythcorecontext.cpp:1780 (InitLocale) Setting QT default locale to FR_US
+    mythbackend[6606]: I CoreContext mythcorecontext.cpp:1813 (SaveLocaleDefaults) Current locale FR_US
+    mythbackend[6606]: E CoreContext mythlocale.cpp:110 (LoadDefaultsFromXML) No locale defaults file for FR_US, skipping
+    mythpreviewgen[9371]: N CoreContext mythcorecontext.cpp:1780 (InitLocale) Setting QT default locale to FR_US
+    mythpreviewgen[9371]: I CoreContext mythcorecontext.cpp:1813 (SaveLocaleDefaults) Current locale FR_US
+    mythpreviewgen[9371]: E CoreContext mythlocale.cpp:110 (LoadDefaultsFromXML) No locale defaults file for FR_US, skipping
+
+Searching for that non-existent `fr_US` locale, I found that [others have
+this in their logs](https://mythtv-fr.org/forums/viewtopic.php?id=2202) 
+and that it's [apparently set by
+QT](https://bugreports.qt.io/browse/QTBUG-8452?focusedCommentId=149446&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel)
+as a combination of the language and country codes.
+
+I therefore looked in the database and found the following:
+
+    MariaDB [mythconverg]> SELECT value, data FROM settings WHERE value = 'Language';
+    +----------+------+
+    | value    | data |
+    +----------+------+
+    | Language | FR   |
+    +----------+------+
+    1 row in set (0.000 sec)
+
+    MariaDB [mythconverg]> SELECT value, data FROM settings WHERE value = 'Country';
+    +---------+------+
+    | value   | data |
+    +---------+------+
+    | Country | US   |
+    +---------+------+
+    1 row in set (0.000 sec)
+
+which explains the non-sensical `FR-US` locale.
+
+I fixed the country setting like this
+
+    MariaDB [mythconverg]> UPDATE settings SET data = 'CA' WHERE value = 'Country';
+    Query OK, 1 row affected (0.093 sec)
+    Rows matched: 1  Changed: 1  Warnings: 0
+
+After logging out and logging back in, the user interface of the frontend is now
+using the `fr_CA` locale again and the database setting looks good:
+
+    MariaDB [mythconverg]> SELECT value, data FROM settings WHERE value = 'Country';
+    +---------+------+
+    | value   | data |
+    +---------+------+
+    | Country | CA   |
+    +---------+------+
+    1 row in set (0.000 sec)
+
+[[!tag mythtv]]
