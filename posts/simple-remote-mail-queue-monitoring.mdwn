@@ -38,6 +38,14 @@ and then authorized my new ssh key (see next section):
     mkdir ~/.ssh/
     cat - > ~/.ssh/authorized_keys
 
+If your server also allows users to login using [GDM](https://wiki.gnome.org/Projects/GDM),
+then you'll probably want to hide that user from the list of available
+users by putting the following in `/var/lib/AccountsService/users/mailq-check`:
+
+    [User]
+    XSession=
+    SystemAccount=true
+
 # Laptop setup
 
 On my laptop, the machine from where I monitor the server's mail queue, I
