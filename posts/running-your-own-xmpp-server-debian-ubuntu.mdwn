@@ -55,13 +55,12 @@ to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
 
       apt install ejabberd
 
-2. Set the following in `/etc/ejabberd/ejabberd.yml` (don't forget the
-trailing dots!):
+2. Set the following in `/etc/ejabberd/ejabberd.yml`:
 
       acl:
         admin:
            user:
-               - "admin": "fmarier.org"
+               - "admin@fmarier.org"
       hosts:
         - "fmarier.org"
       auth_password_format: scram
@@ -73,41 +72,27 @@ permissions correctly:
       chown root:ejabberd /etc/ejabberd/ejabberd.pem
       chmod 640 /etc/ejabberd/ejabberd.pem
 
-4. [Improve](https://bettercrypto.org/) the client-to-server TLS configuration
-by adding `starttls_required` to this block:
+4. Improve the client-to-server and server-to-server TLS configuration:
 
+      define_macro:
+        # ...
+        'DH_FILE': "/etc/ejabberd/dhparams.pem"
+      
+      c2s_dhfile: 'DH_FILE'
+      s2s_dhfile: 'DH_FILE'
+      
       listen:
         -
           port: 5222
           ip: "::"
           module: ejabberd_c2s
-          certfile: "/etc/ejabberd/ejabberd.pem"
-          starttls: true
           starttls_required: true
-          protocol_options:
-            - "no_sslv3"
-            - "no_tlsv1"
-            - "no_tlsv1_1"
-            - "cipher_server_preference"
-          ciphers: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256"
-          tls_compression: false
-          dhfile: "/etc/ejabberd/dh2048.pem"
-          max_stanza_size: 65536
-          shaper: c2s_shaper
-          access: c2s
       
-      s2s_use_starttls: required_trusted
-      s2s_protocol_options:
-        - "no_sslv3"
-        - "no_tlsv1"
-        - "no_tlsv1_1"
-        - "cipher_server_preference"
-      s2s_dhfile: "/etc/ejabberd/dh2048.pem"
-      s2s_ciphers: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256"
+      s2s_use_starttls: required
 
-5. Create the required dh2048.pem file:
+5. Create the required `dhparams.pem` file:
 
-       openssl dhparam -out /etc/ssl/ejabberd/dh2048.pem 2048
+       openssl dhparam -out /etc/ejabberd/dhparams.pem 2048
 
 6. Restart the ejabberd daemon:
 
@@ -178,8 +163,9 @@ federate with yours by putting the following in
 
     access:
       s2s:
-        trusted_servers: allow
-        all: deny
+        - allow: trusted_servers
+        - deny
+    
     s2s_access: s2s
 
 The above was all I needed in order to be able to use the
