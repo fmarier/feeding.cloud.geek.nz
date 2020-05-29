@@ -180,12 +180,15 @@ federate with yours by putting the following in
         server:
           - "cheogram.com"
           - "conference.soprani.ca"
-          - "conversations.im"
+          - "jmp.chat"
 
     access:
       s2s:
         trusted_servers: allow
         all: deny
     s2s_access: s2s
+
+The above was all I needed in order to be able to use the
+[JMP](https://jmp.chat/) SMS-to-XMPP service.
 
 [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag xmpp]] [[!tag letsencrypt]] [[!tag ejabberd]]
