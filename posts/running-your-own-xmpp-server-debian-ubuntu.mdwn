@@ -4,7 +4,7 @@
 
 In order to get closer to my goal of reducing my dependence on centralized
 services, I decided to setup my own XMPP / Jabber server on a server
-running [Debian wheezy](http://www.debian.org/releases/wheezy/). I chose
+running [Debian buster](http://www.debian.org/releases/buster/). I chose
 [ejabberd](http://www.ejabberd.im/) since it was recommended by the
 [RTC Quick Start](http://www.rtcquickstart.org/) website and here's how I
 put everything together.
@@ -22,15 +22,9 @@ Then I went to get a free TLS certificate for `jabber-gw.fmarier.org` and `fmari
 
 ## Let's Encrypt
 
-The easiest way to get a certificate is to install [certbot](https://certbot.eff.org/) from
-[debian-backports](https://backports.debian.org/) by adding the following to
-your `/etc/apt/sources.list`:
+The easiest way to get a certificate is to install [certbot](https://certbot.eff.org/):
 
-    deb http://httpredir.debian.org/debian jessie-backports main contrib non-free
-
-and then installing the package:
-
-    apt update && apt install certbot
+    apt install certbot
 
 Then, shutdown your existing webserver if you have one running and request
 a cert like this:
@@ -56,10 +50,10 @@ with an
 [additional customization](http://www.die-welt.net/2013/05/wheezy-ejabberd-pidgin-and-srv-records/)
 to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
 
-1. Install the [package](http://packages.debian.org/wheezy/ejabberd), using
+1. Install the [package](http://packages.debian.org/stable/ejabberd), using
 "admin" as the username for the administrative user:
 
-      apt-get install ejabberd
+      apt install ejabberd
 
 2. Set the following in `/etc/ejabberd/ejabberd.yml` (don't forget the
 trailing dots!):
@@ -117,7 +111,7 @@ by adding `starttls_required` to this block:
 
 6. Restart the ejabberd daemon:
 
-       /etc/init.d/ejabberd restart
+       systemctl restart ejabberd.service
 
 7. Create a new user account for yourself:
 
@@ -134,7 +128,7 @@ to requests after running for a while:
 
       0 4 * * *      root    /bin/systemctl restart ejabberd.service
 
-Note that if you'd like to be able to talk to contact via the GMail XMPP
+Note that if you'd like to be able to talk to contacts via the GMail XMPP
 server, you will unfortunately need to change the `s2s_use_starttls`
 setting in step 3 to the following:
 
