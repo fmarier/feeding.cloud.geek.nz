@@ -48,20 +48,6 @@ and then restart the service:
 
 I wrote a [cronjob to renew this certificate automatically using certbot](https://feeding.cloud.geek.nz/posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/).
 
-## StartSSL
-
-I have also used [StartSSL](https://startssl.com) successfully. This is how I generated the CSR
-(Certificate Signing Request) on a high-entropy machine:
-
-    openssl req -new -newkey rsa:2048 -sha256 -nodes -out ssl.csr -keyout ssl.key -subj "/C=NZ/CN=jabber-gw.fmarier.org"
-
-I downloaded the signed certificate as well as the
-[StartSSL intermediate certificate](https://startssl.com/certs/) and
-[combined them](http://hyperstruct.net/2007/06/20/installing-the-startcom-ssl-certificate-in-ejabberd/)
-this way:
-
-    cat ssl.crt ssl.key sub.class1.server.ca.pem > ejabberd.pem
-
 # ejabberd installation
 
 Installing ejabberd on Debian is pretty simple and I mostly followed the
