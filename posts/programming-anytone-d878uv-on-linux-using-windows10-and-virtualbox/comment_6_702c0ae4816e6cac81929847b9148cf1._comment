@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ ip="77.98.107.200"
+ claimedauthor="Eric W"
+ subject="Using Linux"
+ date="2020-06-10T14:54:39Z"
+ content="""
+Well, the good news is that the CPS for the 868, 878 & 578 will run under Wine. There are a couple of caveats in as much as version of Wine should be the latest version as this now auto-creates virtual com ports up to com 33. Plugging in the programming lead will automatically create an extra com port - in my case com34, but check your own settings.
+
+All functions are available, including firmware updates etc.
+
+** NOTE FOR 878 ONLY: Although the CPS works well enough in itself, it will NOT read the com port, so you can't read/write to the radio. I've attempted to find ways around this problem, but I'm not a coder and as yet not found a resolution.
+
+Overall it works well in Wine, though you do need to be careful when editing any files you export from the radio. Apparently Linux uses a different 'end of line' format that isn't compatible with Windows and can result in file import errors. Once edited, I suggest re-importing your edited CSV into a text editor such as Xed, which has the facility to save files with a Linux or Windows line ending - choose Windows version and all is well
+
+It really is a pity that the 878 wont find the working com port, otherwise I would 100% recommend using Linux/Wine for these radios.
+
+Eric - G6FGY (UK)
+"""]]
