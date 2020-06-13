@@ -4,7 +4,7 @@ img {
     height: auto;
 }
 
-.blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions {
+.blogform, .trail, .inlinefooter .pagelicense, .inlinefooter .tags, .inlinefooter .actions, .comments .comment .actions {
     display: none;
 }
 
