@@ -147,7 +147,7 @@ On each machine, I added the following to `/root/.ssh/config`:
 
 The reason for setting the ssh cipher and disabling compression is to [speed
 up the ssh connection](https://gist.github.com/KartikTalwar/4393116) as much
-as possible given that the [GnuBee has avery small RAM
+as possible given that the [GnuBee has a very small RAM
 bandwidth](https://groups.google.com/d/msg/gnubee/5_nKjgmKSoY/a0ER5fEcBAAJ).
 
 Another performance-related change I made on the GnuBee was switching to the [internal sftp
