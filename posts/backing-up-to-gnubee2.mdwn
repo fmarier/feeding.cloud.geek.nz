@@ -20,7 +20,7 @@ I changed the default hostname:
 
 - `/etc/hostname`: `foobar`
 - `/etc/mailname`: `foobar.example.com`
-- `/etc/hosts`: `127.0.0.1  foobar.example.com vogar localhost`
+- `/etc/hosts`: `127.0.0.1  foobar.example.com foobar localhost`
 
 and then installed the `avahi-daemon` package to be able to reach this box
 using `foobar.local`.
