@@ -30,8 +30,6 @@ directory](https://github.com/neilbrown/gnubee-tools/issues/23) and so I
 tightened the security of some of the default mount points by putting the following
 in `/etc/rc.local`:
 
-    mount -o remount,nodev,nosuid /etc/network
-    mount -o remount,nodev,nosuid /lib/modules
     chmod 755 /etc/network
     exit 0
 
