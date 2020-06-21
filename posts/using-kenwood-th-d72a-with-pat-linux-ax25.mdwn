@@ -44,7 +44,7 @@ correctly:
 
 5. Set `HBAUD` to **`1200`** in `/etc/default/ax25`.
 6. Download and compile the [`tmd710_tncsetup`
-   script](http://www.trinityos.com/HAM/CentosDigitalModes/usr/src/misc/D710/tmd710_tncsetup.c)
+   script](https://github.com/fmarier/tmd710_tncsetup/blob/master/tmd710_tncsetup.c)
    mentioned in a comment in `/etc/default/ax25`:
 
         gcc -o tmd710_tncsetup tmd710_tncsetup.c
