@@ -31,6 +31,7 @@ along with the systemd script that comes with Pat:
 Once the packages are installed, it's time to configure everything
 correctly:
 
+0. Plug the radio onto the computer using a mini-USB cable.
 1. Power cycle the radio.
 2. Enable TNC in `packet12` mode (**band A***).
 3. Tune band A to [VECTOR
@@ -42,7 +43,9 @@ correctly:
 
         wl2k    CALLSIGN    9600    128    4    Winlink
 
-5. Set `HBAUD` to **`1200`** in `/etc/default/ax25`.
+5. Set `HBAUD` to **`1200`** in `/etc/default/ax25` and make sure that the
+   `DEV` variable is set to the correct `/dev/TTYUSBx` device (check the
+   output of `dmesg` after turning on the radio).
 6. Download and compile the [`tmd710_tncsetup`
    script](https://github.com/fmarier/tmd710_tncsetup/blob/master/tmd710_tncsetup.c)
    mentioned in a comment in `/etc/default/ax25`:
@@ -73,7 +76,12 @@ Then create aliases like these in `~/.wl2k/config.json`:
       },
     }
 
-and use them to connect to your preferred Winlink gateways.
+and use them to connect to your preferred Winlink gateways by starting pat
+using the following:
+
+    pat http
+
+and then opening the interface in a webbrowser: <http://localhost:8080/>
 
 # Troubleshooting
 
