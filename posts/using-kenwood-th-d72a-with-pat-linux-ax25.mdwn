@@ -61,6 +61,10 @@ correctly:
 
         systemctl start ax25.service
 
+As the AX25 unit starts up and initializes the TNC using `tmd710_tncsetup`,
+you should see `STA` and `CON` indicators flash briefly in the top-right
+corner of the screen.
+
 # Connecting to a winlink gateway
 
 To monitor what is being received and transmitted:
