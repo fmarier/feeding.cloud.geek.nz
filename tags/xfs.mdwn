@@ -1,0 +1,4 @@
+[[!meta title="pages tagged xfs"]]
+
+[[!inline pages="tagged(xfs)" actions="no" archive="yes"
+feedshow=10]]
