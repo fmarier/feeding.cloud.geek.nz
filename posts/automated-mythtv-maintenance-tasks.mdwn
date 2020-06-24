@@ -1,0 +1,56 @@
+[[!meta title="Automated MythTV-related maintenance tasks"]]
+[[!meta date="2020-06-24T09:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here is the daily/weekly cronjob I put together over the years to perform
+[MythTV](https://www.mythtv.org)-related maintenance tasks on my backend
+server.
+
+The first part runs a contrib script to [optimize the database
+tables](https://www.mythtv.org/wiki/User_Manual:Periodic_Maintenance#Optimize_the_Database):
+
+    10 1 * * *  mythtv  /usr/bin/chronic /usr/share/doc/mythtv-backend/contrib/maintenance/optimize_mythdb.pl
+
+once a day. It requires the `libmythtv-perl` and `libxml-simple-perl` packages
+to be installed on Debian-based systems.
+
+It is quickly followed by a check of the recordings and [automatic repair of
+the seektable](https://www.mythtv.org/wiki/Repairing_the_Seektable) (when possible):
+
+    20 1 * * *  mythtv  /usr/bin/chronic /usr/bin/mythutil --checkrecordings --fixseektable
+
+Next, I force a scan of the music and video databases to pick up anything new
+that may have been added externally via
+[NFS](https://en.wikipedia.org/wiki/Network_File_System) mounts:
+
+    30 1 * * *  mythtv  /usr/bin/mythutil --quiet --scanvideos
+    31 1 * * *  mythtv  /usr/bin/mythutil --quiet --scanmusic
+
+Finally, I [defragment the XFS
+partition](https://www.mythtv.org/wiki/Optimizing_Performance#XFS-Specific_Tips)
+for two hours every day except Friday:
+
+    45 1 * * 1-4,6-7  root  /usr/sbin/xfs_fsr
+
+and resync the
+[RAID-1](https://en.wikipedia.org/wiki/Standard_RAID_levels#RAID_1) arrays
+once a week to ensure that they stay consistent and error-free:
+
+    15 3 * * 2  root  /usr/local/sbin/raid_parity_check md0
+    15 3 * * 4  root  /usr/local/sbin/raid_parity_check md2
+
+using a [trivial
+script](https://github.com/fmarier/root-scripts/blob/master/raid_parity_check).
+
+In addition to that cronjob, I also have
+[smartmontools](https://packages.debian.org/stable/smartmontools) run daily
+short and weekly long [SMART](https://en.wikipedia.org/wiki/S.M.A.R.T.)
+tests via this blurb in `/etc/smartd.conf`:
+
+    /dev/sda -a -d ata -o on -S on -s (S/../.././04|L/../../6/05)
+    /dev/sdb -a -d ata -o on -S on -s (S/../.././04|L/../../6/05)
+
+If there are any other automated maintenance tasks you do on your MythTV
+server, please leave a comment!
+
+[[!tag debian]] [[!tag mythtv]] [[!tag raid]] [[!tag xfs]] [[!tag smart]]
