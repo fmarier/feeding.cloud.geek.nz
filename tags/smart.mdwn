@@ -1,0 +1,4 @@
+[[!meta title="pages tagged smart"]]
+
+[[!inline pages="tagged(smart)" actions="no" archive="yes"
+feedshow=10]]
