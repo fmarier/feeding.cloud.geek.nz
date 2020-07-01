@@ -6,7 +6,20 @@ Here is the daily/weekly cronjob I put together over the years to perform
 [MythTV](https://www.mythtv.org)-related maintenance tasks on my backend
 server.
 
-The first part runs a contrib script to [optimize the database
+The first part performs a [database backup](https://www.mythtv.org/wiki/User_Manual:Periodic_Maintenance#The_database):
+
+    5 1 * * *  mythtv  /usr/share/mythtv/mythconverg_backup.pl
+
+which I previously configured by putting the following in `/home/mythtv/.mythtv/backuprc`:
+
+    DBBackupDirectory=/var/backups/mythtv
+
+and creating a new directory for it:
+
+    mkdir /var/backups/mythtv
+    chown mythtv:mythtv /var/backups/mythtv
+
+The second part of `/etc/cron.d/mythtv-maintenance` runs a contrib script to [optimize the database
 tables](https://www.mythtv.org/wiki/User_Manual:Periodic_Maintenance#Optimize_the_Database):
 
     10 1 * * *  mythtv  /usr/bin/chronic /usr/share/doc/mythtv-backend/contrib/maintenance/optimize_mythdb.pl
