@@ -62,18 +62,9 @@ monitor my domains once a day:
 
     ssl-cert-check -s fmarier.org -p 443 -q -a -e francois@fmarier.org
 
-I also signed up with [Cert Spotter](https://sslmate.com/certspotter/) which
-watches the
-[Certificate Transparency](https://www.certificate-transparency.org/) log
-and notifies me of any newly-issued certificates for my domains.
-
-In other words, I get notified:
-
-- if my cronjob fails and a cert is about to expire, or
-- as soon as a new cert is issued.
-
 The whole thing seems to work well, but if there's anything I could be doing
 better, feel free to leave a comment!
 
 [[!tag nzoss]] [[!tag sysadmin]] [[!tag debian]] [[!tag mozilla]]
 [[!tag ubuntu]] [[!tag ssl]] [[!tag apache]] [[!tag letsencrypt]]
+[[!tag ejabberd]]
