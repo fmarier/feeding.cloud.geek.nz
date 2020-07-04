@@ -118,7 +118,7 @@ to requests after running for a while:
 
 Note that if you'd like to be able to talk to contacts via the GMail XMPP
 server, you will unfortunately need to change the `s2s_use_starttls`
-setting in step 3 to the following:
+setting in step 4 to the following:
 
       s2s_use_starttls: optional
 
