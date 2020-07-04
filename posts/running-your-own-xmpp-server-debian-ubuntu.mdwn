@@ -58,14 +58,16 @@ to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
 
 2. Set the following in `/etc/ejabberd/ejabberd.yml`:
 
-      acl:
-        admin:
-           user:
-               - "admin@fmarier.org"
-      hosts:
-        - "fmarier.org"
-      auth_password_format: scram
-      fqdn: "jabber-gw.fmarier.org"
+       acl:
+         admin:
+            user:
+                - "admin@fmarier.org"
+       
+       hosts:
+         - "fmarier.org"
+       
+       auth_password_format: scram
+       fqdn: "jabber-gw.fmarier.org"
 
 3. Copy the SSL certificate into the `/etc/ejabberd/` directory and set the
 permissions correctly:
@@ -75,21 +77,21 @@ permissions correctly:
 
 4. Improve the client-to-server and server-to-server TLS configuration:
 
-      define_macro:
-        # ...
-        'DH_FILE': "/etc/ejabberd/dhparams.pem"
+       define_macro:
+         # ...
+         'DH_FILE': "/etc/ejabberd/dhparams.pem"
+       
+       c2s_dhfile: 'DH_FILE'
+       s2s_dhfile: 'DH_FILE'
+       
+       listen:
+         -
+           port: 5222
+           ip: "::"
+           module: ejabberd_c2s
+           starttls_required: true
       
-      c2s_dhfile: 'DH_FILE'
-      s2s_dhfile: 'DH_FILE'
-      
-      listen:
-        -
-          port: 5222
-          ip: "::"
-          module: ejabberd_c2s
-          starttls_required: true
-      
-      s2s_use_starttls: required
+       s2s_use_starttls: required
 
 5. Create the required `dhparams.pem` file:
 
