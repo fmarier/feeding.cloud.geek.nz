@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="81.164.136.123"
+ claimedauthor="Koen"
+ subject="comment 9"
+ date="2020-07-14T16:13:52Z"
+ content="""
+Had a very similar issue after an update of Ubuntu 20.04 on a Dell XPS13 (2020).
+Searched for hours, the solution was actually super easy.
+
+reboot and go to BIOS using \"fn and F2\"  
+BIOS > System Configuration > Sata Operation > switch to \"AHCI\" from \"RAID On\"
+
+For some reason, this BIOS setting was switched.
+"""]]
