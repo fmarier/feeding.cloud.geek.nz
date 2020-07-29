@@ -81,8 +81,7 @@ Then "enter" the root partition using:
 
     chroot /mnt
 
-and make sure that the [lvm2](https://launchpad.net/ubuntu/+source/lvm2)
-package is installed:
+and make sure that you have the necessary packages installed:
 
     apt install lvm2 cryptsetup-initramfs
 
