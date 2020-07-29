@@ -84,7 +84,7 @@ Then "enter" the root partition using:
 and make sure that the [lvm2](https://launchpad.net/ubuntu/+source/lvm2)
 package is installed:
 
-    apt install lvm2
+    apt install lvm2 cryptsetup-initramfs
 
 before regenerating the initramfs for all of the installed kernels:
 
