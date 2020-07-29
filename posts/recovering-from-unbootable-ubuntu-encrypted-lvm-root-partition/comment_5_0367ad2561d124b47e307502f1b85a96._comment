@@ -4,16 +4,15 @@
  subject="This really woks with minor change"
  date="2019-11-22T08:09:19Z"
  content="""
-First I recovered the /etc/fstab and /etc/crypttab from the backup with backup-tool because I had tried something and messed up these files.
+First I recovered the `/etc/fstab` and `/etc/crypttab` from the backup with backup-tool because I had tried something and messed up these files.
 
-Then I followed these instructions but I left the command 'vgchange -ay' out. Reason for that was because after that I couldn't mount my partitions to anything. Without it mounting was done nicely and the rest of the steps could be done.
+Then I followed these instructions but I left the command `vgchange -ay` out. Reason for that was because after that I couldn't mount my partitions to anything. Without it mounting was done nicely and the rest of the steps could be done.
 
 It had the consequence that in the end I couldn't unmount and close the partition but that wasn't in this instruction and so I paid no attention to that.
 
-I encountered the problem when updating the initramfs (I was missing some firmware library and it gave some warnings). Solution to that was found here: https://askubuntu.com/questions/832524/possible-missing-frmware-lib-firmware-i915/832528 and the updating of initramfs were done without warnings.
+I encountered the problem when updating the initramfs (I was missing some firmware library and it gave some warnings). Solution to that was [found here](https://askubuntu.com/questions/832524/possible-missing-frmware-lib-firmware-i915/832528) and the updating of initramfs were done without warnings.
 
 In the end I prayed a little and rebooted and everything was fine after these changes and now I can log in to my ubuntu again. 
-
 
 Thanks for clear instructions!
 """]]

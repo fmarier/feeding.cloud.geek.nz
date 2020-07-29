@@ -6,7 +6,7 @@
  content="""
 I wanted to make sure the next time it happens I could recover quickly with just the LiveCD available.
 
-I wrote it to detect the correct name from the /mnt/etc/crypttab to ensure the `update-initramfs` command can properly update. 
+I wrote it to detect the correct name from the `/mnt/etc/crypttab` to ensure the `update-initramfs` command can properly update. 
 
-https://gist.github.com/dragon788/e777ba64d373210e4f6306ad40ee0e80
+<https://gist.github.com/dragon788/e777ba64d373210e4f6306ad40ee0e80>
 """]]

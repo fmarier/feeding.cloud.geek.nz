@@ -7,8 +7,8 @@
 Had a very similar issue after an update of Ubuntu 20.04 on a Dell XPS13 (2020).
 Searched for hours, the solution was actually super easy.
 
-reboot and go to BIOS using \"fn and F2\"  
-BIOS > System Configuration > Sata Operation > switch to \"AHCI\" from \"RAID On\"
+1. reboot and go to BIOS using \"fn and F2\"  
+2. BIOS > System Configuration > Sata Operation > switch to \"AHCI\" from \"RAID On\"
 
 For some reason, this BIOS setting was switched.
 """]]

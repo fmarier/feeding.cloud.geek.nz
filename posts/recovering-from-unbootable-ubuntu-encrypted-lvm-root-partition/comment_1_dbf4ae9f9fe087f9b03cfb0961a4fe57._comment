@@ -5,7 +5,7 @@
  subject="Without using a live instance"
  date="2018-05-06T20:54:15Z"
  content="""
-I successfully used your recommended approach without booting via USB. This can be accomplished by selecting to boot into a previous kernel via the Grub boot menu during startup, and then (without the need to mount local partitions) simply ensure the latest version of lvm2 is installed and regenerating the initramfs for all of the installed kernels (as recommended). I also have a fully encrypted drive configuration and found no issues when performing these steps. 
+I successfully used your recommended approach without booting via USB. This can be accomplished by selecting to boot into a previous kernel via the Grub boot menu during startup, and then (without the need to mount local partitions) simply ensure the latest version of `lvm2` is installed and regenerating the initramfs for all of the installed kernels (as recommended). I also have a fully encrypted drive configuration and found no issues when performing these steps. 
 
 Thank you for putting this article together. While I normally find the forums to be of great assistance, this issue was not one that is easy to find real working solutions for. Keep up the great work.
 """]]

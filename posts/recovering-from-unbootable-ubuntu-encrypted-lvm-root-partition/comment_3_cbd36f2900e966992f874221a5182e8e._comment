@@ -6,7 +6,7 @@
  content="""
 I got the same problem after upgrading to 18.04, I don't use LVM but Btrfs, all I had to change was
 
-```apt install btrfs-progs```
+    apt install btrfs-progs
 
 Everything else was exactly the same.
 
