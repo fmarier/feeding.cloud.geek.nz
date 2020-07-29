@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="62.63.132.50"
+ claimedauthor="Vitaalz"
+ subject="comment 10"
+ date="2020-07-29T14:32:15Z"
+ content="""
+On Debian-based systems before running `update-initramfs` command make sure that `cryptsetup-initramfs` package is installed. If not, install it first:
+
+`apt-get install -y cryptsetup-initramfs`
+"""]]
