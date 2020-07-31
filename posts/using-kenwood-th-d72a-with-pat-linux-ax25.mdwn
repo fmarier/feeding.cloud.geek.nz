@@ -51,11 +51,18 @@ correctly:
    mentioned in a comment in `/etc/default/ax25`:
 
         gcc -o tmd710_tncsetup tmd710_tncsetup.c
+        sudo cp tmd710_tncsetup /usr/local/bin
+
+   Note: on a [Debian bullseye](https://www.debian.org/releases/bullseye/) or later system, all you need to do is install the [`tmd710-tncsetup` package](https://packages.debian.org/bullseye/tmd710-tncsetup):
+
+        apt install tmd710-tncsetup
 
 7. Add the `tmd710_tncsetup` script in `/etc/default/ax25` and use these command
    line parameters (`-B 0` specifies band A, use `-B 1` for band B):
 
-        tmd710_tncsetup -B 0 -S $DEV -b $HBAUD -s
+        /usr/local/bin/tmd710_tncsetup -B 0 -S $DEV -b $HBAUD -s
+
+   Note: the path is `/usr/bin/tmd710_tncsetup` if using the official Debian package.
 
 8. Start ax25 driver:
 
