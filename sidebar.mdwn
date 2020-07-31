@@ -13,7 +13,7 @@
 <br><a href="mailto:francois@fmarier.org">francois@fmarier.org</a>
 <br>Free and Open Source software developer
 <br>
-<br>[Twitter](https://twitter.com/fmarier) / [Identica](https://identi.ca/fmarier)
+<br>[Twitter](https://twitter.com/fmarier)
 <br>[Linked In](https://linkedin.com/in/fmarier)
 
 # More from this blog
