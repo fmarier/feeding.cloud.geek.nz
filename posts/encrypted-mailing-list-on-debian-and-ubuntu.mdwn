@@ -107,4 +107,4 @@ it should be signed by the list admin.
 
 After that, anybody requesting the list key will get your signature as well.
 
-[[!tag debian]] [[!tag security]] [[!tag nzoss]]
+[[!tag debian]] [[!tag security]] [[!tag gpg]]

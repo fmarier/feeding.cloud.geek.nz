@@ -32,4 +32,4 @@ However, this didn't actually work with FireGPG and the way that it puts encrypt
 
 
 
-[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag email]]
+[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag email]] [[!tag gpg]]
