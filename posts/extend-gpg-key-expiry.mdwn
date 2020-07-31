@@ -13,8 +13,9 @@ Update the expiry on the main key and the subkey:
     > expire
     > save
 
-Upload the updated key to the keyserver:
+Upload the updated key to the keyservers:
 
     gpg --export KEYID | curl -T - https://keys.openpgp.org
+    gpg --keyserver keyring.debian.org --send-keys KEYID
 
 [[!tag debian]] [[!tag gpg]]
