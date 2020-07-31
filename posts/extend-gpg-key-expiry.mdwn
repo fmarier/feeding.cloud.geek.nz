@@ -1,0 +1,20 @@
+[[!meta title="Extending GPG key expiry"]]
+[[!meta date="2020-07-30T20:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Extending the expiry on a GPG key is not very hard, but it's easy to forget
+a step. Here's how I did my last expiry bump.
+
+Update the expiry on the main key and the subkey:
+
+    gpg --edit-key KEYID
+    > expire
+    > key 1
+    > expire
+    > save
+
+Upload the updated key to the keyserver:
+
+    gpg --export KEYID | curl -T - https://keys.openpgp.org
+
+[[!tag debian]] [[!tag gpg]]
