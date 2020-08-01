@@ -46,7 +46,10 @@ and here are the contents of that script:
     git pull
     npm install
     rm -rf src/brave/*
+    git -C src/third_party/devtools-frontend/src/ reset --hard
     gclient sync -D
+    git -C src/brave pull
+    git -C src/brave reset --hard
     npm run init
     
     echo $(date)
