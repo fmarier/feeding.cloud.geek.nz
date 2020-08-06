@@ -37,6 +37,7 @@ options to a `Location` or `Directory` section:
         SSLRequireSSL
         Header set Content-Security-Policy: "default-src 'none'"
         Header set X-Content-Type-Options: "nosniff"
+        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
     </Location>
 
 before adding the necessary modules:
