@@ -1,4 +1,4 @@
-[[!meta title="Extending GPG key expiry"]]
+[[!meta title="Setting the default web browser on Debian and Ubuntu"]]
 [[!meta date="2020-08-07T21:10:00.000-07:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
