@@ -1,0 +1,84 @@
+[[!meta title="Extending GPG key expiry"]]
+[[!meta date="2020-08-07T21:10:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If you are wondering what your default web browser is set to on a
+Debian-based system, there are several things to look at:
+
+    $ xdg-settings get default-web-browser
+    brave-browser.desktop
+    
+    $ xdg-mime query default x-scheme-handler/http
+    brave-browser.desktop
+    
+    $ xdg-mime query default x-scheme-handler/https
+    brave-browser.desktop
+    
+    $ ls -l /etc/alternatives/x-www-browser
+    lrwxrwxrwx 1 root root 29 Jul  5  2019 /etc/alternatives/x-www-browser -> /usr/bin/brave-browser-stable*
+    
+    $ ls -l /etc/alternatives/gnome-www-browser
+    lrwxrwxrwx 1 root root 29 Jul  5  2019 /etc/alternatives/gnome-www-browser -> /usr/bin/brave-browser-stable*
+
+## Debian-specific tools
+
+The contents of `/etc/alternatives/` is system-wide defaults and must
+therefore be set as `root`:
+
+    sudo update-alternatives --config x-www-browser
+    sudo update-alternatives --config gnome-www-browser
+
+The `sensible-browser` tool (from the [`sensible-utils`
+package](https://packages.debian.org/stable/sensible-utils)) will use these
+to automatically launch the most appropriate web browser depending on the
+desktop environment.
+
+## Standard MIME tools
+
+The others can be changed as a normal user. Using `xdg-settings`:
+
+    xdg-settings set default-web-browser brave-browser-beta.desktop
+
+will also change what the two `xdg-mime` commands return:
+
+    $ xdg-mime query default x-scheme-handler/http
+    brave-browser-beta.desktop
+    
+    $ xdg-mime query default x-scheme-handler/https
+    brave-browser-beta.desktop
+
+since it puts the following in `~/.config/mimeapps.list`:
+
+    [Default Applications]
+    text/html=brave-browser-beta.desktop
+    x-scheme-handler/http=brave-browser-beta.desktop
+    x-scheme-handler/https=brave-browser-beta.desktop
+    x-scheme-handler/about=brave-browser-beta.desktop
+    x-scheme-handler/unknown=brave-browser-beta.desktop
+
+Note that if you delete these entries, then the system-wide defaults,
+defined in `/etc/mailcap`, will be used, as provided by the
+[`mime-support` package](https://packages.debian.org/stable/mime-support).
+
+Changing the `x-scheme-handler/http` (or `x-scheme-handler/https`)
+association directly using:
+
+    xdg-mime default brave-browser-nightly.desktop x-scheme-handler/http
+
+will only change that particular one. I suppose this means you could have
+one browser for [insecure HTTP
+sites](https://blog.mozilla.org/security/2015/04/30/deprecating-non-secure-http/)
+(hopefully with [HTTPS Everywhere
+installed](https://www.eff.org/https-everywhere)) and one for HTTPS sites though
+I'm not sure why anybody would want that.
+
+## Summary
+
+In short, if you want to set your default browser everywhere (using
+[Brave](https://brave.com) in this example), do the following:
+
+    sudo update-alternatives --config x-www-browser
+    sudo update-alternatives --config gnome-www-browser
+    xdg-settings set default-web-browser brave-browser.desktop
+
+[[!tag debian]] [[!tag brave]]
