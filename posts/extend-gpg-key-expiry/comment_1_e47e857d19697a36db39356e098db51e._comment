@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ ip="2001:16b8:205e:cc00:f080:3d2a:c76a:4b0a"
+ subject="Quicker method"
+ date="2020-07-31T09:27:53Z"
+ content="""
+There's a quicker method if you just want to extend the expiration date:
+
+    gpg --quick-set-expire KEYID PERIOD
+
+…and for the subkeys:
+
+    gpg --quick-set-expire KEYID PERIOD '*'
+
+
+PS: Did you know you could lint your PGP keys? The [hopenpgp-tools](https://salsa.debian.org/clint/hopenpgp-tools) include `hokey lint`.
+"""]]
