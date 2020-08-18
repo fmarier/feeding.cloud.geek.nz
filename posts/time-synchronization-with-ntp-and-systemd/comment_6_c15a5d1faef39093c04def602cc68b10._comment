@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="71.10.210.18"
+ claimedauthor="Jeff"
+ subject="systemD time synchronization has a long way to go"
+ date="2020-08-17T14:01:45Z"
+ content="""
+Since systemd only does basic time synchronization, I think it's really, *really* misleading to say, \"there is no need to run the full-fledged ntpd daemon anymore.\"  I can think of several uses for time-slewing, and persistent time carry over between boots is necessary.
+"""]]
