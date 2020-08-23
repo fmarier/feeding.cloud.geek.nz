@@ -247,4 +247,43 @@ following contents:
     ExecStart=
     ExecStart=-/sbin/agetty -o '-p -- \\u' 57600 %I $TERM
 
+## Fixing the hardware clock between restarts
+
+When the GnuBee boots, you may have noticed that the clock is wrong until
+`systemd-timesyncd` updates the time using
+[NTP](https://en.wikipedia.org/wiki/Network_Time_Protocol). This leads to
+messages like these:
+
+    Aug 23 02:46:15 hostname systemd-fsck[839]: GNUBEE-ROOT: Superblock last mount time is in the future.
+    Aug 23 02:46:15 hostname systemd-fsck[839]: #011(by less than a day, probably due to the hardware clock being incorrectly set)
+    ...
+    Aug 23 02:46:41 hostname systemd[1]: systemd-fsckd.service: Succeeded.
+    Aug 23 13:04:30 hostname systemd-timesyncd[1309]: Synchronized to time server for the first time 162.159.200.1:123 (time.cloudflare.com).
+
+and unnecessary executions of `fsck`.
+
+Often these hardware issues are due to a lack of a battery to keep the clock
+alive while the unit is powered down. In order to work around this, I
+installed the [`fake-hwclock`
+package](https://packages.debian.org/buster/fake-hwclock) and then edited
+the `/lib/systemd/system/fake-hwclock.service` file to change the following
+line from:
+
+    Before=sysinit.target
+
+to:
+
+    Before=sysinit.target systemd-fsck-root.service
+
+so that the clock is [restored before the filesystem
+check](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=908504).
+
+I also added the following to `/etc/.gitignore` to make
+[`etckeeper`](https://packages.debian.org/buster/etckeeper) happy:
+
+    /fake-hwclock.data
+
+since `fake-hwclock` unfortunately [keeps its data file in
+`/etc/`](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=782314).
+
 [[!tag debian]] [[!tag gnubee]]
