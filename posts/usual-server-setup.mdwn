@@ -296,6 +296,7 @@ Also, [`command-not-found` won't work until you update the apt cache](https://bu
 
     apt install apache2
     a2enmod mpm_event
+    a2dismod status
 
 While configuring apache is often specific to each server and the services
 that will be running on it, there are a few common changes I make.
