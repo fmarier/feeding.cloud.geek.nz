@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="167.123.240.150"
+ claimedauthor="Thrawn"
+ subject="How to minimise Squid overhead?"
+ date="2020-08-27T23:28:48Z"
+ content="""
+This type of filtering could be very useful for one of our applications, but there are concerns about the overhead of running an extra process on our servers, and I notice that Squid's FAQ says it uses memory fairly aggressively to improve caching. How would we configure it to discard all of the caching (and associated memory usage) and just do IP filtering?
+"""]]
