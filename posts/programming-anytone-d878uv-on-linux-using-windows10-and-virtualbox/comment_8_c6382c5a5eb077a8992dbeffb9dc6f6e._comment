@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: Wine for Anytone 878"
+ date="2020-09-01T16:15:33Z"
+ content="""
+> If I understand you correctly, Wine does not let CPS read or write to the Anytone 878.
+
+I have not tried Wine so I can't comment on this.
+
+> Does that mean we need to purchase a Windows 10 license and run it from VirtualBox?
+
+You could probably use one of the [Windows 10 IE / Legacy Edge testing VMs](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/) that Microsoft offers for free for 90 days.
+"""]]
