@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="134.223.230.152"
+ claimedauthor="Glen Flint"
+ url="GlenFlint@aol.com"
+ subject="Wine for Anytone 878"
+ date="2020-09-01T14:53:09Z"
+ content="""
+If I understand you correctly, Wine does not let CPS read or write to the Anytone 878.  Does that mean we need to purchase a Windows 10 license and run it from VirtualBox?  There is a different version of CPS for Windows 7.  Does that work better with Wine?
+"""]]
