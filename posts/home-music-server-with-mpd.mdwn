@@ -72,22 +72,21 @@ from a local web server I have installed
 
     apt install apache2
 
-and configured it to serve the covers by putting the following in
-`/etc/apache2/conf-available/mpd.conf`:
-
-    <Directory /path/to/music>
-        AllowOverride None
-        Require all granted
-    </Directory>
-
-and then the following line in the default vhost section of
-`/etc/apache2/sites-available/000-default.conf`:
+and configured it to serve the covers by putting the following in the
+default vhost section of `/etc/apache2/sites-available/000-default.conf`:
 
     Alias /music /path/to/music
+    
+    <Directory /path/to/music>
+        Options -MultiViews -Indexes
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
 
-Finally, I enabled the new configuration and restarted Apache:
+Finally, I enabled the new vhost and restarted Apache:
 
-    a2enconf mpd.conf
+    a2ensite 000-default
     systemctl restart apache2.service
 
 # Clients
