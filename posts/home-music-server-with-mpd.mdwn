@@ -29,8 +29,7 @@ then open `/etc/mpd.conf` and set these:
 
 Note that you can find the right sound device on your machine using the `aplay -L` command.
 
-Since this is a headless system setup, it may be necessary to disable the
-user service:
+Since this is a headless system setup, it may be necessary to [disable the user service](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=959693):
 
     rm /etc/xdg/autostart/mpd.desktop
     systemctl --global disable mpd.service
