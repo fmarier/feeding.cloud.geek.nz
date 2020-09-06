@@ -16,47 +16,21 @@ Start by installing the server and the client package:
 then open `/etc/mpd.conf` and set these:
 
     music_directory    "/path/to/music/"
-    bind_to_address    "192.168.1.2"
+    bind_to_address    "0.0.0.0"
     bind_to_address    "/run/mpd/socket"
     zeroconf_enabled   "yes"
     password           "Password1"
-
-before replacing the alsa output:
-
+    
     audio_output {
-       type    "alsa"
-       name    "My ALSA Device"
+       type       "alsa"
+       name       "My ALSA Device"
+       device     "hw:0,0"
+       mixer_type "software"
     }
 
-with a pulseaudio one:
+Once all of that is in place, restart the mpd daemon:
 
-    audio_output {
-       type    "pulse"
-       name    "Pulseaudio Output"
-       server  "127.0.0.1"
-    }
-
-and exposing pulseaudio to localhost via `/etc/pulse/default.pa`:
-
-    ### Network access (may be configured with paprefs, so leave this commented
-    ### here if you plan to use paprefs)
-    load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
-
-In order for the automatic detection (zeroconf) of your music server
-to work, you need to [prevent systemd from creating the network
-socket](https://www.mail-archive.com/mpd-devel@musicpd.org/msg00239.html):
-
-    systemctl stop mpd.service
-    systemctl stop mpd.socket
-    systemctl disable mpd.socket
-
-otherwise you'll see this in `/var/log/mpd/mpd.log`:
-
-    zeroconf: No global port, disabling zeroconf
-
-Once all of that is in place, start the mpd daemon:
-
-    systemctl start mpd.service
+    systemctl restart mpd.service
 
 and create an index of your music files:
 
