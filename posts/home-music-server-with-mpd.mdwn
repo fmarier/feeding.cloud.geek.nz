@@ -28,6 +28,24 @@ then open `/etc/mpd.conf` and set these:
        mixer_type "software"
     }
 
+Since this is a headless system setup, it may be necessary to disable the
+user service:
+
+    rm /etc/xdg/autostart/mpd.desktop
+    systemctl --global disable mpd.service
+
+in order to prevent systemd from launching the mpd service whenever a user
+logs in, leading to error messages like:
+
+    systemd[324808]: mpd.socket: Failed to create listening socket ([::]:6600): Address already in use
+    systemd[324808]: mpd.socket: Failed to listen on sockets: Address already in use
+    systemd[324808]: mpd.socket: Failed with result 'resources'.
+    systemd[324808]: Failed to listen on mpd.socket.
+    mpd[324823]: exception: failed to open log file "/var/log/mpd/mpd.log" (config line 39): Permission denied
+    systemd[324808]: mpd.service: Main process exited, code=exited, status=1/FAILURE
+    systemd[324808]: mpd.service: Failed with result 'exit-code'.
+    systemd[324808]: Failed to start Music Player Daemon.
+
 Once all of that is in place, restart the mpd daemon:
 
     systemctl restart mpd.service
