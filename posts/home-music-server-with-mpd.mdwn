@@ -18,7 +18,6 @@ then open `/etc/mpd.conf` and set these:
     music_directory    "/path/to/music/"
     bind_to_address    "0.0.0.0"
     bind_to_address    "/run/mpd/socket"
-    zeroconf_enabled   "yes"
     password           "Password1"
     
     audio_output {
