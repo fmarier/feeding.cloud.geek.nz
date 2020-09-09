@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="80.123.19.32"
+ claimedauthor="FlascheLeer"
+ subject="comment 10"
+ date="2020-09-08T09:48:42Z"
+ content="""
+This helped a lot. Thanks!
+For a younger Ubuntu (20.04), I also had to mount /sys:
+
+    mount --rbind /sys /mnt/sys/
+
+I didn't try the mount -o bind method with sys.
+"""]]
