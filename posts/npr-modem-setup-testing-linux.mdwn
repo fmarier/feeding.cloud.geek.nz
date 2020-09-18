@@ -1,9 +1,9 @@
-[[!meta title="Setting and testing an NPR modem on Linux"]]
-[[!meta date="2020-09-17T23:20:00.000-07:00"]]
+[[!meta title="Setting up and testing an NPR modem on Linux"]]
+[[!meta date="2020-09-17T23:35:00.000-07:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-After acquiring a [New Packet Radio
-modem](https://hackaday.io/project/164092-npr-new-packet-radio) on behalf of
+After acquiring a pair of [New Packet Radio
+modems](https://hackaday.io/project/164092-npr-new-packet-radio) on behalf of
 [VECTOR](https://vectorradio.ca), I set it up on my Linux machine and ran
 some basic tests to check whether it could achieve the advertised 500 kbps
 transfer rates, which are much higher than
