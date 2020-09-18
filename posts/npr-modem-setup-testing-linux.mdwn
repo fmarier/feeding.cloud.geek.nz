@@ -1,0 +1,245 @@
+[[!meta title="Setting and testing an NPR modem on Linux"]]
+[[!meta date="2020-09-17T23:20:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After acquiring a [New Packet Radio
+modem](https://hackaday.io/project/164092-npr-new-packet-radio) on behalf of
+[VECTOR](https://vectorradio.ca), I set it up on my Linux machine and ran
+some basic tests to check whether it could achieve the advertised 500 kbps
+transfer rates, which are much higher than
+[AX25](https://en.wikipedia.org/wiki/AX.25)) packet radio.
+
+The exact equipment I used was:
+
+- [NPR-70 v05 modems](https://elekitsorparts.com/product/npr-70-modem-by-f4hdk-new-packet-radio-over-70cm-band-amateur-radio-packet-radio)
+- [Bingfu Dual Band antennas](https://www.amazon.ca/gp/product/B07WPWK5JK/)
+- [Alinco DM-330MV power supply](https://www.radioworld.ca/ali-dm330mvt)
+
+![](/posts/npr-modem-setup-testing-linux/physical_setup.jpg)
+
+# Radio setup
+
+After connecting the modems to the power supply and their respective
+antennas, I connected both modems to my laptop via micro-USB cables and used
+[minicom](https://salsa.debian.org/minicom-team/minicom) to connect to their
+console on `/dev/ttyACM[01]`:
+
+    minicom -8 -b 921600 -D /dev/ttyACM0
+    minicom -8 -b 921600 -D /dev/ttyACM1
+
+To confirm that the firmware was the latest one, I used the following command:
+
+    ready> version
+    firmware: 2020_02_23
+    freq band: 70cm
+
+then I immediately turned off the radio:
+
+    radio off
+
+which can be verified with:
+
+    status
+
+Following the [British Columbia 70 cm band
+plan](http://bcarcc.org/440planA.pdf), I picked the following frequency,
+modulation (bandwidth of 360 kHz), and power (0.05 W):
+
+    set frequency 433.500
+    set modulation 22
+    set RF_power 7
+
+and then did the rest of the configuration for the master:
+
+    set callsign VA7GPL_0
+    set is_master yes
+    set DHCP_active no
+    set telnet_active no
+
+and the client:
+
+    set callsign VA7GPL_1
+    set is_master no
+    set DHCP_active yes
+    set telnet_active no
+
+and that was enough to get the two modems to talk to one another.
+
+On both of them, I ran the following:
+
+    save
+    reboot
+
+and confirmed that they were able to successfully connect to each other:
+
+    who
+
+# Monitoring RF
+
+To monitor what is happening on the air and check and quickly determine
+whether or not the modems are chatting, you can use a [software-defined
+radio](https://www.nooelec.com/store/sdr/sdr-receivers/nesdr/nesdr-mini.html)
+along with [gqrx](https://gqrx.dk/) with the following settings:
+
+    frequency: 433.500 MHz
+    filter width: user (80k)
+    filter shape: normal
+    mode: Raw I/Q
+
+I found it quite helpful to keep this running the whole time I was working
+with these modems. The background "keep alive" sounds are quite distinct
+from the heavy traffic sounds.
+
+# IP setup
+
+The radio bits out of the way, I turned to the networking configuration.
+
+On the master, I set the following so that I could connect the master to my
+home network (`192.168.1.0/24`) without conflicts: 
+
+    set def_route_active yes
+    set DNS_active no
+    set modem_IP 192.168.1.254
+    set IP_begin 192.168.1.225
+    set master_IP_size 29
+    set netmask 255.255.255.0
+
+(My router's DHCP server is configured to allocate dynamic IP addresses from
+`192.168.1.100` to `192.168.1.224`.)
+
+At this point, I connected my laptop to the client using a
+[CAT-5](https://en.wikipedia.org/wiki/Category_5_cable) network cable and
+the master to the ethernet switch, essentially following *Annex 5* of the
+[Advanced User
+Guide](https://cdn.hackaday.io/files/1640927020512128/NPR_advanced_guide_v2.14.pdf).
+
+My laptop got assigned IP address `192.168.1.225` and so I used another
+computer on the same network to ping my laptop via the NPR modems:
+
+    ping 192.168.1.225
+
+This gave me a round-trip time of around 150-250 ms.
+
+# Performance test
+
+Having successfully established an
+[IP](https://en.wikipedia.org/wiki/Internet_Protocol) connection between the
+two machines, I decided to run a quick test to measure the available
+bandwidth in an ideal setting (i.e. the two antennas very close to each
+other).
+
+On both computers, I installed [iperf](https://iperf.fr/):
+
+    apt install iperf
+
+and then setup the iperf server on my desktop computer:
+
+    sudo iptables -A INPUT -s 192.168.1.0/24 -p TCP --dport 5001 -j ACCEPT
+    sudo iptables -A INPUT -s 192.168.1.0/24 -u UDP --dport 5001 -j ACCEPT
+    iperf --server
+
+On the laptop, I set the MTU to `750` in NetworkManager:
+
+![](/posts/npr-modem-setup-testing-linux/mtu-750-networkmanager.png)
+
+and restarted the network.
+
+Then I created a new user account (`npr` with a uid of `1001`):
+
+    sudo adduser npr
+
+and made sure that only that account could access the network by running the
+following as `root`:
+
+    # Flush all chains.
+    iptables -F
+    
+    # Set defaults policies.
+    iptables -P INPUT DROP
+    iptables -P OUTPUT DROP
+    iptables -P FORWARD DROP
+    
+    # Don't block localhost and ICMP traffic.
+    iptables -A INPUT -i lo -j ACCEPT
+    iptables -A INPUT -p icmp -j ACCEPT
+    iptables -A OUTPUT -o lo -j ACCEPT
+    
+    # Don't re-evaluate already accepted connections.
+    iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    
+    # Allow connections to/from the test user.
+    iptables -A OUTPUT -m owner --uid-owner 1001 -m conntrack --ctstate NEW -j ACCEPT
+    
+    # Log anything that gets blocked.
+    iptables -A INPUT -j LOG
+    iptables -A OUTPUT -j LOG
+    iptables -A FORWARD -j LOG
+
+then I started the test as the `npr` user:
+
+    sudo -i -u npr
+    iperf --client 192.168.1.8
+
+# Results
+
+The results were as good as advertised both with modulation 22 (360 kHz
+bandwidth):
+
+    $ iperf --client 192.168.1.8 --time 30
+    ------------------------------------------------------------
+    Client connecting to 192.168.1.8, TCP port 5001
+    TCP window size: 85.0 KByte (default)
+    ------------------------------------------------------------
+    [  3] local 192.168.1.225 port 58462 connected with 192.168.1.8 port 5001
+    [ ID] Interval       Transfer     Bandwidth
+    [  3]  0.0-34.5 sec  1.12 MBytes   274 Kbits/sec
+    
+    ------------------------------------------------------------
+    Client connecting to 192.168.1.8, TCP port 5001
+    TCP window size: 85.0 KByte (default)
+    ------------------------------------------------------------
+    [  3] local 192.168.1.225 port 58468 connected with 192.168.1.8 port 5001
+    [ ID] Interval       Transfer     Bandwidth
+    [  3]  0.0-42.5 sec  1.12 MBytes   222 Kbits/sec
+    
+    ------------------------------------------------------------
+    Client connecting to 192.168.1.8, TCP port 5001
+    TCP window size: 85.0 KByte (default)
+    ------------------------------------------------------------
+    [  3] local 192.168.1.225 port 58484 connected with 192.168.1.8 port 5001
+    [ ID] Interval       Transfer     Bandwidth
+    [  3]  0.0-38.5 sec  1.12 MBytes   245 Kbits/sec
+
+![](/posts/npr-modem-setup-testing-linux/npr-modulation22-gqrx.png)
+
+and modulation 24 (1 MHz bandwitdh):
+
+    $ iperf --client 192.168.1.8 --time 30
+    ------------------------------------------------------------
+    Client connecting to 192.168.1.8, TCP port 5001
+    TCP window size: 85.0 KByte (default)
+    ------------------------------------------------------------
+    [  3] local 192.168.1.225 port 58148 connected with 192.168.1.8 port 5001
+    [ ID] Interval       Transfer     Bandwidth
+    [  3]  0.0-31.1 sec  1.88 MBytes   506 Kbits/sec
+    
+    ------------------------------------------------------------
+    Client connecting to 192.168.1.8, TCP port 5001
+    TCP window size: 85.0 KByte (default)
+    ------------------------------------------------------------
+    [  3] local 192.168.1.225 port 58246 connected with 192.168.1.8 port 5001
+    [ ID] Interval       Transfer     Bandwidth
+    [  3]  0.0-30.5 sec  2.00 MBytes   550 Kbits/sec
+    
+    ------------------------------------------------------------
+    Client connecting to 192.168.1.8, TCP port 5001
+    TCP window size: 85.0 KByte (default)
+    ------------------------------------------------------------
+    [  3] local 192.168.1.225 port 58292 connected with 192.168.1.8 port 5001
+    [ ID] Interval       Transfer     Bandwidth
+    [  3]  0.0-30.0 sec  2.00 MBytes   559 Kbits/sec
+
+![](/posts/npr-modem-setup-testing-linux/npr-modulation24-gqrx.png)
+
+[[!tag ham]] [[!tag npr]] [[!tag iperf]]
