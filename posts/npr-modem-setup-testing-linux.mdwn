@@ -76,7 +76,7 @@ and confirmed that they were able to successfully connect to each other:
 
 # Monitoring RF
 
-To monitor what is happening on the air and check and quickly determine
+To monitor what is happening on the air and quickly determine
 whether or not the modems are chatting, you can use a [software-defined
 radio](https://www.nooelec.com/store/sdr/sdr-receivers/nesdr/nesdr-mini.html)
 along with [gqrx](https://gqrx.dk/) with the following settings:
