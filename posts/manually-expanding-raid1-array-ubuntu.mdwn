@@ -148,4 +148,4 @@ The last step was to regenerate the initramfs:
 before rebooting into something that looks exactly like the original RAID1
 array but with twice the size.
 
-[[!tag nzoss]] [[!tag sysadmin]] [[!tag debian]] [[!tag raid]] [[!tag ubuntu]] [[!tag luks]]
+[[!tag ext4]] [[!tag sysadmin]] [[!tag debian]] [[!tag raid]] [[!tag ubuntu]] [[!tag luks]]
