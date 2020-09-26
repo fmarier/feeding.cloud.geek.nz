@@ -1,0 +1,112 @@
+[[!meta title="Repairing a corrupt ext4 root partition"]]
+[[!meta date="2020-09-26T12:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I ran into filesystem corruption
+([ext4](https://en.wikipedia.org/wiki/Ext4)) on the root partition of my
+[backup server](https://feeding.cloud.geek.nz/posts/backing-up-to-gnubee2/)
+which caused it to go into read-only mode. Since it's the root partition,
+it's not possible to unmount it and repair it while it's running. Normally I
+would boot from an [Ubuntu live CD / USB
+stick](https://ubuntu.com/download/alternative-downloads), but in this case
+the machine is using the
+[`mipsel`](https://en.wikipedia.org/wiki/MIPS_architecture) architecture and
+so that's not an option.
+
+# Repair using a USB enclosure
+
+I had to pull the shutdown the server and then pull the SSD drive out. I
+then moved it to an external USB enclosure and connected it to my laptop.
+
+I started with an automatic filesystem repair:
+
+    fsck.ext4 -pf /dev/sde2
+
+which failed for some reason and so I moved to an interactive repair:
+
+    fsck.ext4 -f /dev/sde2
+
+Once all of the errors were fixed, I ran a full surface scan to update the
+list of bad blocks:
+
+    fsck.ext4 -c /dev/sde2
+
+Finally, I forced another check to make sure that everything was fixed at
+the filesystem level:
+
+    fsck.ext4 -f /dev/sde2
+
+# Fix invalid alternate GPT
+
+The other thing I noticed is this messge in my `dmesg` log:
+
+    scsi 8:0:0:0: Direct-Access     KINGSTON  SA400S37120     SBFK PQ: 0 ANSI: 6
+    sd 8:0:0:0: Attached scsi generic sg4 type 0
+    sd 8:0:0:0: [sde] 234441644 512-byte logical blocks: (120 GB/112 GiB)
+    sd 8:0:0:0: [sde] Write Protect is off
+    sd 8:0:0:0: [sde] Mode Sense: 31 00 00 00
+    sd 8:0:0:0: [sde] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+    sd 8:0:0:0: [sde] Optimal transfer size 33553920 bytes
+    Alternate GPT is invalid, using primary GPT.
+     sde: sde1 sde2
+
+I therefore checked to see if the partition table looked fine and got the
+following:
+
+    $ fdisk -l /dev/sde
+    GPT PMBR size mismatch (234441643 != 234441647) will be corrected by write.
+    The backup GPT table is not on the end of the device. This problem will be corrected by write.
+    Disk /dev/sde: 111.8 GiB, 120034123776 bytes, 234441648 sectors
+    Disk model: KINGSTON SA400S3
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes
+    Disklabel type: gpt
+    Disk identifier: 799CD830-526B-42CE-8EE7-8C94EF098D46
+    
+    Device       Start       End   Sectors   Size Type
+    /dev/sde1     2048   8390655   8388608     4G Linux swap
+    /dev/sde2  8390656 234441614 226050959 107.8G Linux filesystem
+
+It turns out that all I had to do, since only the backup / alternate GPT
+partition table was corrupt and the primary one was fine, was to re-write
+the partition table:
+
+    $ fdisk /dev/sde
+    
+    Welcome to fdisk (util-linux 2.33.1).
+    Changes will remain in memory only, until you decide to write them.
+    Be careful before using the write command.
+    
+    GPT PMBR size mismatch (234441643 != 234441647) will be corrected by write.
+    The backup GPT table is not on the end of the device. This problem will be corrected by write.
+    
+    Command (m for help): w
+    
+    The partition table has been altered.
+    Syncing disks.
+
+# Run SMART checks
+
+Since I still didn't know what caused the filesystem corruption in the first
+place, I decided to do one last check:
+[SMART](https://en.wikipedia.org/wiki/S.M.A.R.T.) errors.
+
+I couldn't do this via the USB enclosure since the SMART commands aren't
+forwarded to the drive and so I popped the drive back into the backup
+server and booted it up.
+
+First, I checked whether any SMART errors had been reported using
+[smartmontools](https://www.smartmontools.org/):
+
+    smartctl -a /dev/sda
+
+That didn't show any errors and so I kicked off an extended test:
+
+    smartctl -t long /dev/sda
+
+which ran for 30 minutes and then passed without any errors.
+
+The mystery remains unsolved.
+
+[[!tag gnubee]] [[!tag smart]] [[!tag ext4]] [[!tag debian]]
