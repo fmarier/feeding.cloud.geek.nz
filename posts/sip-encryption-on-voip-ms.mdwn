@@ -70,4 +70,22 @@ Since my Asterisk server is only acting as a TLS *client*, and not a TLS
 it looks pretty easy to [use a Let's Encrypt cert with
 Asterisk](https://community.asterisk.org/t/has-anyone-used-letsencrypt-to-setup-ssl-for-asterisk/67145/6).
 
-[[!tag debian]] [[!tag asterisk]] [[!tag nzoss]] [[!tag letsencrypt]] [[!tag voipms]]
+## Firewall
+
+This originally appeared not to be necessary, but I found that I ran into a
+number of intermittent connection errors such as:
+
+    asterisk[1280841]: ERROR[1537920]: tcptls.c:553 in ast_tcptls_client_start: Unable to connect SIP socket to w.x.y.z:5061: Connection reset by peer
+
+and so I put the [official firewall
+recommendations](https://wiki.voip.ms/article/Firewall) in
+`/etc/network/iptables.up.rules`:
+
+    # SIP and RTP on TCP/UDP (servername.voip.ms)
+    -A INPUT -s w.x.y.z/32 -p tcp --dport 5061 -j ACCEPT
+    -A INPUT -s w.x.y.z/32 -p udp --sport 5004:5005 --dport 10001:20000 -j ACCEPT
+
+where `w.x.y.z` is the IP address of `servername.voip.ms` as returned by
+`dig +short servername.voip.ms`.
+
+[[!tag debian]] [[!tag asterisk]] [[!tag letsencrypt]] [[!tag voipms]]
