@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="2a01:261:355:1d00:6ef0:49ff:fe08:ef01"
+ claimedauthor="Tomaž"
+ url="https://www.tablix.org/~avian/blog/"
+ subject="Suggestions about filesystem corruption"
+ date="2020-09-27T11:19:20Z"
+ content="""
+Hi. Two things you might want to check, if you haven't already.
+
+See if the \"UDMA_CRC_Error_Count\" or \"CRC_Error_Count\" attribute (199) reported by your smartctl is >0 and slowly increasing over time. It's not marked as an error by smartctl and it's easy to miss. It's an indication of a flaky SATA bus connection and I've seen this cause filesystem corruption (I'm guessing because every once in a while CRC will randomly end up OK for a corrupted command).
+
+The other thing is to check if you're running \"fstrim\". Some SSDs are known to have bugs with that and you might be running a kernel that doesn't yet have a workaround or blacklist for your particular model or SSD firmware version. See [[https://github.com/torvalds/linux/blob/master/drivers/ata/libata-core.c#L3774]].
+"""]]
