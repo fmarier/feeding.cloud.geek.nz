@@ -128,7 +128,7 @@ two machines, I decided to run a quick test to measure the available
 bandwidth in an ideal setting (i.e. the two antennas very close to each
 other).
 
-On both computers, I installed [iperf](https://iperf.fr/):
+On both computers, I installed [iperf](https://iperf2.sourceforge.io/):
 
     apt install iperf
 
