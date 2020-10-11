@@ -1,0 +1,76 @@
+[[!meta title="Upgrading from Ubuntu 18.04 bionic to 20.04 focal"]]
+[[!meta date="2020-10-11T12:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently upgraded from Ubuntu 18.04.5 (bionic) to 20.04.1 (focal) and it
+was one of the roughest Ubuntu upgrades I've gone through in a while. Here
+are the notes I took on avoiding or fixing the problems I ran into.
+
+## Preparation
+
+Before going through the upgrade, I disabled the configurations which I know
+interfere with the process:
+
+- Enable [etckeeper](https://launchpad.net/ubuntu/+source/etckeeper) *auto-commits before install* by putting the
+  following in `/etc/etckeeper/etckeeper.conf`:
+
+        AVOID_COMMIT_BEFORE_INSTALL=0
+
+- Remount `/tmp` as exectuable:
+
+        mount -o remount,exec /tmp
+
+Another step I should have taken but didn't, was to temporarily remove [safe-rm](https://launchpad.net/ubuntu/+source/safe-rm)
+since it [caused some problems](https://bugs.launchpad.net/ubuntu/+source/ubuntu-release-upgrader/+bug/1893724) related to a Perl upgrade happening at the
+same time:
+
+    apt remove safe-rm
+
+## Network problems
+
+After the upgrade, my network settings weren't really working properly and
+so I started by switching from
+[ifupdown](https://launchpad.net/ubuntu/+source/ifupdown) to
+[netplan.io](https://launchpad.net/ubuntu/+source/netplan.io) which seems to
+be the preferred way of configuring the network on Ubuntu now.
+
+Then I found out that netplan.io is
+[incompatible](https://bugs.launchpad.net/netplan/+bug/1830507) with
+[systemd-resolved's handling of `.local`
+hostnames](https://unix.stackexchange.com/questions/459991/how-to-configure-systemd-resolved-for-mdns-multicast-dns-on-local-network/574006#574006).
+I would be able to resolve a hostname using
+[avahi](https://launchpad.net/ubuntu/+source/avahi):
+
+    $ avahi-resolve --name machine.local
+    machine.local	192.168.1.5
+
+but not with systemd:
+
+    $ systemd-resolve machine.local
+    machine.local: resolve call failed: 'machine.local' not found
+
+The best work-around I found was to [disable systemd-resolved](https://askubuntu.com/questions/907246/how-to-disable-systemd-resolved-in-ubuntu/907249#907249):
+
+    systemctl stop systemd-resolved.service
+    systemctl disable systemd-resolved.service
+    rm /etc/resolv.conf
+
+## Boot problems
+
+For some reason I was able to boot with the kernel I got as part of the
+focal update, but a later kernel update rendered my machine unbootable.
+
+Adding some missing [RAID](https://en.wikipedia.org/wiki/RAID)-related modules to
+`/etc/initramfs-tools/modules`:
+
+    raid1
+    dmraid
+    md-raid1
+
+and then re-creating all initramfs:
+
+    update-initramfs -u -k all
+
+seemed to do the trick.
+
+[[!tag ubuntu]] [[!tag systemd]] [[!tag raid]]
