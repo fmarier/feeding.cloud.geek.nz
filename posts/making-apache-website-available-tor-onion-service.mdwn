@@ -1,0 +1,148 @@
+[[!meta title="Making an Apache website available as a Tor Onion Service"]]
+[[!meta date="2020-10-13T20:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+As part of the [#MoreOnionsPorFavor
+campaign](https://blog.torproject.org/more-onions-porfavor), I decided to
+follow [`brave.com`'s lead](https://brave.com/new-onion-service/) and make
+my [homepage](https://fmarier.org) available as a [Tor onion
+service](https://2019.www.torproject.org/docs/tor-onion-service.html.en).
+
+## Tor daemon setup
+
+I started by installing the Tor daemon locally:
+
+    apt install tor
+
+and then setting the following in `/etc/tor/torrc`:
+
+    SocksPort 0
+    SocksPolicy reject *
+    HiddenServiceDir /var/lib/tor/hidden_service/
+    HiddenServicePort 80 [2600:3c04::f03c:91ff:fe8c:61ac]:80
+    HiddenServicePort 443 [2600:3c04::f03c:91ff:fe8c:61ac]:443
+    HiddenServiceVersion 3
+    HiddenServiceNonAnonymousMode 1
+    HiddenServiceSingleHopMode 1
+
+in order to create a [version 3 onion
+service](https://blog.torproject.org/v2-deprecation-timeline) without
+actually running a [Tor relay](https://community.torproject.org/relay/).
+
+Note that since I am making a public website available over Tor, I do not
+need the location of the website to be hidden and so I used the same
+settings as
+[Cloudflare](https://blog.cloudflare.com/cloudflare-onion-service/) in their
+public Tor proxy.
+
+Also, I explicitly used the **external IPv6 address** of my server in the
+configuration in order to prevent [localhost
+bypasses](https://riseup.net/en/security/network-security/tor/onionservices-best-practices#be-careful-of-localhost-bypasses).
+
+After restarting the Tor daemon to reload the configuration file:
+
+    systemctl restart tor.service
+
+I looked for the address of my onion service:
+
+    $ cat /var/lib/tor/hidden_service/hostname 
+    ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion
+
+## Apache configuration
+
+Next, I enabled a few required Apache modules:
+
+    a2enmod mpm_event
+    a2enmod http2
+    a2enmod headers
+
+and configured my Apache vhosts in `/etc/apache2/sites-enabled/www.conf`:
+
+    <VirtualHost *:443>
+        ServerName fmarier.org
+        ServerAlias ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion
+    
+        Protocols h2, http/1.1
+        Header set Onion-Location "http://ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion%{REQUEST_URI}s"
+        Header set alt-svc 'h2="ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion:443"; ma=315360000; persist=1'
+        Header add Strict-Transport-Security: "max-age=63072000"
+    
+        Include /etc/fmarier-org/www-common.include
+    
+        SSLEngine On
+        SSLCertificateFile /etc/letsencrypt/live/fmarier.org/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/fmarier.org/privkey.pem
+    </VirtualHost>
+    
+    <VirtualHost *:80>
+        ServerName fmarier.org
+        Redirect permanent / https://fmarier.org/
+    </VirtualHost>
+         
+    <VirtualHost *:80>
+        ServerName ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion
+        Include /etc/fmarier-org/www-common.include
+    </VirtualHost>
+
+Note that `/etc/fmarier-org/www-common.include` contains all of the
+configuration options that are common to both the HTTP and the HTTPS sites
+(e.g. document root, caching headers, aliases, etc.).
+
+Finally, I restarted Apache:
+
+    apache2ctl configtest
+    systemctl restart apache2.service
+
+## Testing
+
+In order to test that my website is correctly available at its `.onion`
+address, I opened the following URLs in a [Brave Tor
+window](https://support.brave.com/hc/en-us/articles/360018121491-What-is-a-Private-Window-with-Tor-):
+
+- <http://ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion/>
+- <https://ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion/> (a TLS certificate error is expected)
+
+I also checked using the [Tor Browser](https://www.torproject.org/download/)
+that the [`Onion-Location`
+header](https://community.torproject.org/onion-services/advanced/onion-location/)
+is correctly recognized and triggers the display of a button in the URL bar:
+
+![](/posts/making-apache-website-available-tor-onion-service/onion-location.png)
+
+Testing that the `Alt-Svc` is working also required using the Tor Browser
+since that's [not yet supported in
+Brave](https://github.com/brave/brave-browser/issues/1121):
+
+1. Open <https://fmarier.org>.
+2. Wait 30 seconds.
+3. Reload the page.
+
+On the server side, I saw the following:
+
+    2a0b:f4c2:2::1 - - [14/Oct/2020:02:42:20 +0000] "GET / HTTP/2.0" 200 2696 "-" "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0"
+    2600:3c04::f03c:91ff:fe8c:61ac - - [14/Oct/2020:02:42:53 +0000] "GET / HTTP/2.0" 200 2696 "-" "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0"
+
+That first IP address is from a Tor exit node:
+
+    $ whois 2a0b:f4c2:2::1
+    ...
+    inet6num:       2a0b:f4c2::/40
+    netname:        MK-TOR-EXIT
+    remarks:        -----------------------------------
+    remarks:        This network is used for Tor Exits.
+    remarks:        We do not have any logs at all.
+    remarks:        For more information please visit:
+    remarks:        https://www.torproject.org
+
+which indicates that the first request was **not using** the `.onion`
+address.
+
+The second IP address is the one for my server:
+
+    $ dig +short -x 2600:3c04::f03c:91ff:fe8c:61ac
+    hafnarfjordur.fmarier.org.
+
+which indicates that the second request to Apache came from the Tor relay
+running on my server, hence **using** the `.onion` address.
+
+[[!tag debian]] [[!tag tor]] [[!tag apache]] [[!tag brave]]
