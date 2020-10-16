@@ -102,14 +102,14 @@ window](https://support.brave.com/hc/en-us/articles/360018121491-What-is-a-Priva
 - <http://ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion/>
 - <https://ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion/> (a TLS certificate error is expected)
 
-I also checked using the [Tor Browser](https://www.torproject.org/download/)
-that the [`Onion-Location`
-header](https://community.torproject.org/onion-services/advanced/onion-location/)
-is correctly recognized and triggers the display of a button in the URL bar:
+I also checked that the main URL (<https://fmarier.org/>) exposes a working
+[`Onion-Location` header](https://community.torproject.org/onion-services/advanced/onion-location/)
+which triggers the display of a button in the URL bar (recently [merged](https://github.com/brave/brave-core/pull/6762)
+and available in [Brave Nightly](https://brave.com/download-nightly/)):
 
 ![](/posts/making-apache-website-available-tor-onion-service/onion-location.png)
 
-Testing that the `Alt-Svc` is working also required using the Tor Browser
+Testing that the `Alt-Svc` is working also required using the [Tor Browser](https://www.torproject.org/download/)
 since that's [not yet supported in
 Brave](https://github.com/brave/brave-browser/issues/1121):
 
