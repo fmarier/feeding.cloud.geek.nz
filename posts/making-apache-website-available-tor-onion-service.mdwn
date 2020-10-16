@@ -109,7 +109,7 @@ and available in [Brave Nightly](https://brave.com/download-nightly/)):
 
 ![](/posts/making-apache-website-available-tor-onion-service/onion-location.png)
 
-Testing that the `Alt-Svc` is working also required using the [Tor Browser](https://www.torproject.org/download/)
+Testing that the `Alt-Svc` is working required using the [Tor Browser](https://www.torproject.org/download/)
 since that's [not yet supported in
 Brave](https://github.com/brave/brave-browser/issues/1121):
 
