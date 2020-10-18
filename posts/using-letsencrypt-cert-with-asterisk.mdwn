@@ -1,0 +1,86 @@
+[[!meta title="Using a Let's Encrypt TLS certificate with Asterisk 16.2"]]
+[[!meta date="2020-10-17T17:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to fix the following error after setting up [SIP
+TLS](https://feeding.cloud.geek.nz/posts/sip-encryption-on-voip-ms/) in
+[Asterisk](https://www.asterisk.org/) 16.2:
+
+    asterisk[8691]: ERROR[8691]: tcptls.c:966 in __ssl_setup: TLS/SSL error loading cert file. <asterisk.pem>
+
+I created a [Let's Encrypt](https://letsencrypt.org/) certificate using
+[certbot](https://certbot.eff.org/):
+
+    apt install certbot
+    certbot certonly --standalone -d hostname.example.com
+
+To enable the `asterisk` user to load the certificate successfuly (it
+doesn't permission to access to the certificates under `/etc/letsencrypt/`),
+I copied it to the right directory:
+
+    cp /etc/letsencrypt/live/hostname.example.com/privkey.pem /etc/asterisk/asterisk.key
+    cp /etc/letsencrypt/live/hostname.example.com/fullchain.pem /etc/asterisk/asterisk.cert
+    chown asterisk:asterisk /etc/asterisk/asterisk.cert /etc/asterisk/asterisk.key
+    chmod go-rwx /etc/asterisk/asterisk.cert /etc/asterisk/asterisk.key
+
+Then I set the following variables in `/etc/asterisk/sip.conf`:
+
+    tlscertfile=/etc/asterisk/asterisk.cert
+    tlsprivatekey=/etc/asterisk/asterisk.key
+
+## Automatic renewal
+
+The machine on which I run asterisk has a tricky Apache setup:
+
+- a webserver is running on port 80
+- port 80 is restricted to the local network
+
+This meant that the certbot domain ownership checks would get blocked by the
+firewall, and I couldn't open that port without exposing the private
+webserver to the Internet.
+
+So I ended up disabling the built-in certbot renewal mechanism:
+
+    systemctl disable certbot.timer certbot.service
+    systemctl stop certbot.timer certbot.service
+
+and then writing my own script in `/etc/cron.daily/certbot-francois`:
+
+    #!/bin/bash
+    TEMPFILE=`mktemp`
+    
+    # Stop Apache and backup firewall.
+    /bin/systemctl stop apache2.service
+    /usr/sbin/iptables-save > $TEMPFILE
+    
+    # Open up port 80 to the whole world.
+    /usr/sbin/iptables -D INPUT -j LOGDROP
+    /usr/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+    /usr/sbin/iptables -A INPUT -j LOGDROP
+    
+    # Renew all certs.
+    /usr/bin/certbot renew --quiet
+    
+    # Restore firewall and restart Apache.
+    /usr/sbin/iptables -D INPUT -p tcp --dport 80 -j ACCEPT
+    /usr/sbin/iptables-restore < $TEMPFILE
+    /bin/systemctl start apache2.service
+    
+    # Copy certificate into asterisk.
+    cp /etc/letsencrypt/live/hostname.example.com/privkey.pem /etc/asterisk/asterisk.key
+    cp /etc/letsencrypt/live/hostname.example.com/fullchain.pem /etc/asterisk/asterisk.cert
+    chown asterisk:asterisk /etc/asterisk/asterisk.cert /etc/asterisk/asterisk.key
+    chmod go-rwx /etc/asterisk/asterisk.cert /etc/asterisk/asterisk.key
+    /bin/systemctl restart asterisk.service
+    
+    # Commit changes to etckeeper.
+    pushd /etc/ > /dev/null
+    /usr/bin/git add letsencrypt asterisk
+    DIFFSTAT="$(/usr/bin/git diff --cached --stat)"
+    if [ -n "$DIFFSTAT" ] ; then
+        /usr/bin/git commit --quiet -m "Renewed letsencrypt certs."
+        echo "$DIFFSTAT"
+    fi
+    popd > /dev/null
+
+[[!tag letsencrypt]] [[!tag asterisk]] [[!tag debian]] [[!tag ssl]]

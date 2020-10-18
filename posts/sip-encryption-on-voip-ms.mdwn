@@ -56,19 +56,26 @@ The dialplan didn't change and so I still have the following in
 
 ## Server certificate
 
-The only thing I still need to fix is to make this error message go away in
-my logs:
+After setting everything up, I saw the following error in my logs:
 
     asterisk[8691]: ERROR[8691]: tcptls.c:966 in __ssl_setup: TLS/SSL error loading cert file. <asterisk.pem>
 
-It appears to be related to the fact that I didn't set `tlscertfile` in
+due to the fact that I didn't set `tlscertfile` in
 `/etc/asterisk/sip.conf` and that it's using its default value of
 `asterisk.pem`, a non-existent file.
 
-Since my Asterisk server is only acting as a TLS *client*, and not a TLS
-*server*, there's probably no harm in not having a certificate. That said,
-it looks pretty easy to [use a Let's Encrypt cert with
-Asterisk](https://community.asterisk.org/t/has-anyone-used-letsencrypt-to-setup-ssl-for-asterisk/67145/6).
+I initially thought that since my Asterisk server is only acting as a TLS
+*client*, and not a TLS *server*, there's probably no harm in not having a
+certificate. In practice however, my TLS connection was a little unreliable
+and it would regularly fail with the following TLS errors:
+
+    asterisk[534775]: ERROR[534879]: iostream.c:538 in ast_iostream_close: SSL_shutdown() failed: error:00000005:lib(0):func(0):DH lib, Underlying BIO error: Broken pipe
+    asterisk[534775]: ERROR[610289]: tcptls.c:553 in ast_tcptls_client_start: Unable to connect SIP socket to w.x.y.z:5061: Connection refused
+    asterisk[534775]: ERROR[610289]: tcptls.c:553 in ast_tcptls_client_start: Unable to connect SIP socket to w.x.y.z:5061: Connection reset by peer
+
+I therefore decided to [setup a Let's Encrypt certificate in
+Asterisk](https://feeding.cloud.geek.nz/posts/using-letsencrypt-cert-with-asterisk/)
+to eliminate the original error.
 
 ## Firewall
 
@@ -88,4 +95,4 @@ recommendations](https://wiki.voip.ms/article/Firewall) in
 where `w.x.y.z` is the IP address of `servername.voip.ms` as returned by
 `dig +short servername.voip.ms`.
 
-[[!tag debian]] [[!tag asterisk]] [[!tag letsencrypt]] [[!tag voipms]]
+[[!tag debian]] [[!tag asterisk]] [[!tag ssl]] [[!tag voipms]]
