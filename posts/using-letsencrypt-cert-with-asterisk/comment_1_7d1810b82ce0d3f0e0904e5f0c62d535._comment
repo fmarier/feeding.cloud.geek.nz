@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="2001:2003:f04b:7800:fd0f:a515:b7e0:67e5"
+ claimedauthor="Steve Kemp"
+ url="https://steve.kemp.fi/"
+ subject="Alternative .."
+ date="2020-10-18T14:26:50Z"
+ content="""
+That's not a bad solution, but it might be simpler to use a client which handles a DNS-challenge.
+
+With DNS-challenges you don't have to worry about webservers, or internal/external firewalling.
+"""]]
