@@ -162,4 +162,14 @@ If you find your systray on the wrong display after plugging an external monitor
 
 and then restarting i3.
 
+# Mouse cursor
+
+On [Pop!\_OS](https://pop.system76.com/) 20.04, I ran into a problem where only the mouse was using the
+default Xorg cursor instead of a styled and scalable one.
+
+This was fixed using [this work-around](https://www.reddit.com/r/i3wm/comments/edz4a5/mouse_cursor_size/):
+
+    mkdir -p ~/.icons/default
+    cp -r /usr/share/icons/Pop/* ~/.icons/default/
+
 [[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]] [[!tag systemd]]
