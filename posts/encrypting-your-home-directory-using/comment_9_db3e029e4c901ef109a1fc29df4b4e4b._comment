@@ -1,9 +1,0 @@
-[[!comment format=mdwn
- claimedauthor="Anonymous"
- subject=""
- date="2008-05-25T02:46:00.000+12:00"
- content="""
-The first step could be simpler: 'cp -a /home /homebackup'. Also, in response to the post that you should use 'cp -a /homebackup/{.*,*} /home' to get back dotfiles -- not only is this usually unnecessary, since dotfiles are usually in /home/USERNAME/, not directly in /home/, but because cp -a is recursive, '/homebackup/.*' includes '/homebackup/..'. Don't do it; it will copy the entire contents of your filesystem into '/home'.
-
-
-"""]]
