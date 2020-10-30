@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: comment 14"
+ date="2020-10-30T21:58:19Z"
+ content="""
+> Thanks for the info, but where do you enter the password when using this method?
+
+As long as your home directory is mounted automatically via `/etc/fstab`, you should be prompted for the password at boot time.
+"""]]
