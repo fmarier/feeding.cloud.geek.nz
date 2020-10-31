@@ -54,7 +54,8 @@ but not with systemd:
     Global: no
     Link 2 (enp4s0): no
 
-The [best solution I found](https://askubuntu.com/questions/1279792/local-hostname-resolution-is-slow-on-20-04) didn't involve disabling systemd-resolved.
+The [best solution I found](https://askubuntu.com/questions/1279792/local-hostname-resolution-is-slow-on-20-04) involves keeping
+systemd-resolved and its `/etc/resolv.conf` symlink to `/run/systemd/resolve/stub-resolv.conf`.
 
 I added the following in a new `/etc/NetworkManager/conf.d/mdns.conf` file:
 
