@@ -60,10 +60,10 @@ systemd-resolved and its `/etc/resolv.conf` symlink to `/run/systemd/resolve/stu
 I added the following in a new `/etc/NetworkManager/conf.d/mdns.conf` file:
 
     [connection]
-    connection.mdns=2
+    connection.mdns=1
 
-which instructs NetworkManager to [register the hostname and resolve mDNS](https://developer.gnome.org/NetworkManager/stable/settings-connection.html)
-on all network interfaces it manages.
+which instructs NetworkManager to [resolve mDNS](https://developer.gnome.org/NetworkManager/stable/settings-connection.html)
+on all network interfaces it manages but not register a hostname since that's done by [avahi-daemon](https://launchpad.net/ubuntu/+source/avahi).
 
 Then I enabled mDNS globally in systemd-resolved by setting the following
 in `/etc/systemd/resolved.conf`:
