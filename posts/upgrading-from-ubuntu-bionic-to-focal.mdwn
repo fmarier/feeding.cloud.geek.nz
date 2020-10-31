@@ -26,7 +26,7 @@ same time:
 
     apt remove safe-rm
 
-## Network problems
+## Network problems (netplan.io)
 
 After the upgrade, my network settings weren't really working properly and
 so I started by switching from
@@ -54,6 +54,41 @@ The best work-around I found was to [disable systemd-resolved](https://askubuntu
     systemctl stop systemd-resolved.service
     systemctl disable systemd-resolved.service
     rm /etc/resolv.conf
+
+## Network problems (NetworkManager)
+
+On a different machine, running NetworkManager instead of netplan.io,
+I used a [different solution](https://askubuntu.com/questions/1279792/local-hostname-resolution-is-slow-on-20-04) which didn't involve disabling systemd-resolved.
+
+Before making these changes, I could see that mdns was disabled in systemd-resolved:
+
+    $ resolvectl mdns
+    Global: no
+    Link 2 (enp4s0): no
+
+To fix it, I added the following in a new `/etc/NetworkManager/conf.d/mdns.conf` file:
+
+    [connection]
+    connection.mdns=2
+
+which instructs NetworkManager to [register the hostname and resolve mDNS](https://developer.gnome.org/NetworkManager/stable/settings-connection.html)
+on all network interfaces it manages.
+
+Then I enabled mDNS globally in systemd-resolved by setting the following
+in `/etc/systemd/resolved.conf`:
+
+    MulticastDNS=yes
+
+before restarting both services:
+
+    systemctl restart NetworkManager.service systemd-resolved.service
+
+With that in place, `.local` hostnames are resolved properly and I can
+see that mDNS is fully enabled:
+
+    $ resolvectl mdns
+    Global: yes
+    Link 2 (enp4s0): yes
 
 ## Boot problems
 
