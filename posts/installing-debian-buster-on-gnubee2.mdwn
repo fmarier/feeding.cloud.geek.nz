@@ -286,4 +286,16 @@ I also added the following to `/etc/.gitignore` to make
 since `fake-hwclock` unfortunately [keeps its data file in
 `/etc/`](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=782314).
 
+## Fixing network drops
+
+I regularly see the GnuBee drop its network connections and nothing short of
+a reboot will fix it in my experience. Not sure whether that's a
+driver/kernel problem, but I decided to try to prevent it by scheduling
+a daily reboot in `/etc/cron.d/reboot-daily`:
+
+    30 18 * * *	root	/bin/grep --quiet finish= /proc/mdstat || /bin/systemctl reboot
+
+The extra check is there to ensure that the machine doesn't reboot if it's
+busy re-synchronizing the RAID array.
+
 [[!tag debian]] [[!tag gnubee]]
