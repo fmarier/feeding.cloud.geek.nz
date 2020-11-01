@@ -1,0 +1,113 @@
+[[!meta title="Recovering from a corrupt MariaDB index page"]]
+[[!meta date="2020-11-01T15:10:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I ran into a corrupt [MariaDB](https://mariadb.org/) index page the other day and had to
+restore my [MythTV database](https://www.mythtv.org/wiki/Database) from the
+automatic backups I make as part of my [regular maintainance tasks](https://feeding.cloud.geek.nz/posts/automated-mythtv-maintenance-tasks/).
+
+## Signs of trouble
+
+My troubles started when my daily backup failed on this line:
+
+    mysqldump --opt mythconverg -umythtv -pPASSWORD > mythconverg-200200923T1117.sql
+
+with this error message:
+
+    mysqldump: Error 1034: Index for table 'recordedseek' is corrupt; try to repair it when dumping table `recordedseek` at row: 4059895
+
+Comparing the dump that was just created to the database dumps in
+`/var/backups/mythtv/`, it was clear that it was incomplete since it was
+about 100 MB smaller.
+
+I first tried a gentle `OPTIMIZE TABLE recordedseek` as suggested in [this
+StackExchange
+answer](https://dba.stackexchange.com/questions/31701/finding-and-fixing-innodb-index-corruption/35190#35190)
+but that caused the database to segfault:
+
+    mysqld[9141]: 2020-09-23 15:02:46 0 [ERROR] InnoDB: Database page corruption on disk or a failed file read of tablespace mythconverg/recordedseek page [page id: space=115871, page number=11373]. You may have to recover from a backup.
+    mysqld[9141]: 2020-09-23 15:02:46 0 [Note] InnoDB: Page dump in ascii and hex (16384 bytes):
+    mysqld[9141]:  len 16384; hex 06177fa70000...
+    mysqld[9141]:  C     K     c      {\;
+    mysqld[9141]: InnoDB: End of page dump
+    mysqld[9141]: 2020-09-23 15:02:46 0 [Note] InnoDB: Uncompressed page, stored checksum in field1 102203303, calculated checksums for field1: crc32 806650270, innodb 1139779342,  page type 17855 == INDEX.none 3735928559, stored checksum in field2 102203303, calculated checksums for field2: crc32 806650270, innodb 3322209073, none 3735928559,  page LSN 148 2450029404, low 4 bytes of LSN at page end 2450029404, page number (if stored to page already) 11373, space id (if created with >= MySQL-4.1.1 and stored already) 115871
+    mysqld[9141]: 2020-09-23 15:02:46 0 [Note] InnoDB: Page may be an index page where index id is 697207
+    mysqld[9141]: 2020-09-23 15:02:46 0 [Note] InnoDB: Index 697207 is `PRIMARY` in table `mythconverg`.`recordedseek`
+    mysqld[9141]: 2020-09-23 15:02:46 0 [Note] InnoDB: It is also possible that your operating system has corrupted its own file cache and rebooting your computer removes the error. If the corrupt page is an index page. You can also try to fix the corruption by dumping, dropping, and reimporting the corrupt table. You can use CHECK TABLE to scan your table for corruption. Please refer to https://mariadb.com/kb/en/library/innodb-recovery-modes/ for information about forcing recovery.
+    mysqld[9141]: 200923 15:02:46 2020-09-23 15:02:46 0 [ERROR] InnoDB: Failed to read file './mythconverg/recordedseek.ibd' at offset 11373: Page read from tablespace is corrupted.
+    mysqld[9141]: [ERROR] mysqld got signal 11 ;
+    mysqld[9141]: Core pattern: |/lib/systemd/systemd-coredump %P %u %g %s %t 9223372036854775808 %h ...
+    kernel: [820233.893658] mysqld[9186]: segfault at 90 ip 0000557a229f6d90 sp 00007f69e82e2dc0 error 4 in mysqld[557a224ef000+803000]
+    kernel: [820233.893665] Code: c4 20 83 bd e4 eb ff ff 44 48 89 ...
+    systemd[1]: mariadb.service: Main process exited, code=killed, status=11/SEGV
+    systemd[1]: mariadb.service: Failed with result 'signal'.
+    systemd-coredump[9240]: Process 9141 (mysqld) of user 107 dumped core.#012#012Stack trace of thread 9186: ...
+    systemd[1]: mariadb.service: Service RestartSec=5s expired, scheduling restart.
+    systemd[1]: mariadb.service: Scheduled restart job, restart counter is at 1.
+    mysqld[9260]: 2020-09-23 15:02:52 0 [Warning] Could not increase number of max_open_files to more than 16364 (request: 32186)
+    mysqld[9260]: 2020-09-23 15:02:53 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=638234502026
+    ...
+    mysqld[9260]: 2020-09-23 15:02:53 0 [Note] InnoDB: Recovered page [page id: space=115875, page number=5363] from the doublewrite buffer.
+    mysqld[9260]: 2020-09-23 15:02:53 0 [Note] InnoDB: Starting final batch to recover 2 pages from redo log.
+    mysqld[9260]: 2020-09-23 15:02:53 0 [Note] InnoDB: Waiting for purge to start
+    mysqld[9260]: 2020-09-23 15:02:53 0 [Note] Recovering after a crash using tc.log
+    mysqld[9260]: 2020-09-23 15:02:53 0 [Note] Starting crash recovery...
+    mysqld[9260]: 2020-09-23 15:02:53 0 [Note] Crash recovery finished.
+
+and so I went with the nuclear option of dropping the MythTV database and
+restoring from backup.
+
+## Dropping the corrupt database
+
+First of all, I shut down MythTV as `root`:
+
+    kilall mythfrontend
+    systemctl stop mythtv-status.service
+    systemctl stop mythtv-backend.service
+
+and took a full copy of my MariaDB databases just in case:
+
+    systemctl stop mariadb.service
+    cd /var/lib
+    apack /root/var-lib-mysql-20200923T1215.tgz mysql/
+    systemctl start mariadb.service
+
+before dropping the MythTV databse (`mythconverg`):
+
+    $ mysql -pPASSWORD
+    
+    MariaDB [(none)]> show databases;
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | information_schema |
+    | mysql              |
+    | mythconverg        |
+    | performance_schema |
+    +--------------------+
+    4 rows in set (0.000 sec)
+    
+    MariaDB [(none)]> drop database mythconverg;
+    Query OK, 114 rows affected (25.564 sec)
+    
+    MariaDB [(none)]> quit
+    Bye
+
+## Restoring from backup
+
+Then I [re-created an empty database](https://www.mythtv.org/wiki/Database_Setup#Debian.2FUbuntu.2FMint):
+
+    mysql -pPASSWORD < /usr/share/mythtv/sql/mc.sql
+
+and [restored the last DB
+dump](https://www.mythtv.org/wiki/Database_Backup_and_Restore#Database_Restore)
+prior to the detection of the corruption:
+
+    sudo -i -u mythtv
+    /usr/share/mythtv/mythconverg_restore.pl --directory /var/backups/mythtv --filename mythconverg-1350-20200923010502.sql.gz
+
+In order to restart everything properly, I simply rebooted the machine:
+
+    systemctl reboot
+
+[[!tag mythtv]] [[!tag mysql]]

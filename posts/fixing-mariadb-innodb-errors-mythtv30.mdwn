@@ -132,4 +132,4 @@ and then ran it like this:
 
     mysql -umythtv -pPassword1 mythconverg < alter_tables.sql
 
-[[!tag mythtv]] [[!tag debian]]
+[[!tag mythtv]] [[!tag debian]] [[!tag mysql]]
