@@ -1,0 +1,89 @@
+[[!meta title="Removing a corrupted data pack in a Restic backup"]]
+[[!meta date="2020-11-22T11:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently ran into a corrupted data pack in a [Restic](https://restic.net/)
+backup on my
+[GnuBee](https://feeding.cloud.geek.nz/posts/backing-up-to-gnubee2/). It led
+to consistent failures during the `prune` operation:
+
+    incomplete pack file (will be removed): b45afb51749c0778de6a54942d62d361acf87b513c02c27fd2d32b730e174f2e
+    incomplete pack file (will be removed): c71452fa91413b49ea67e228c1afdc8d9343164d3c989ab48f3dd868641db113
+    incomplete pack file (will be removed): 10bf128be565a5dc4a46fc2fc5c18b12ed2e77899e7043b28ce6604e575d1463
+    incomplete pack file (will be removed): df282c9e64b225c2664dc6d89d1859af94f35936e87e5941cee99b8fbefd7620
+    incomplete pack file (will be removed): 1de20e74aac7ac239489e6767ec29822ffe52e1f2d7f61c3ec86e64e31984919
+    hash does not match id: want 8fac6efe99f2a103b0c9c57293a245f25aeac4146d0e07c2ab540d91f23d3bb5, got 2818331716e8a5dd64a610d1a4f85c970fd8ae92f891d64625beaaa6072e1b84
+    github.com/restic/restic/internal/repository.Repack
+            github.com/restic/restic/internal/repository/repack.go:37
+    main.pruneRepository
+            github.com/restic/restic/cmd/restic/cmd_prune.go:242
+    main.runPrune
+            github.com/restic/restic/cmd/restic/cmd_prune.go:62
+    main.glob..func19
+            github.com/restic/restic/cmd/restic/cmd_prune.go:27
+    github.com/spf13/cobra.(*Command).execute
+            github.com/spf13/cobra/command.go:838
+    github.com/spf13/cobra.(*Command).ExecuteC
+            github.com/spf13/cobra/command.go:943
+    github.com/spf13/cobra.(*Command).Execute
+            github.com/spf13/cobra/command.go:883
+    main.main
+            github.com/restic/restic/cmd/restic/main.go:86
+    runtime.main
+            runtime/proc.go:204
+    runtime.goexit
+            runtime/asm_amd64.s:1374
+
+Thanks to the [excellent support
+forum](https://forum.restic.net/t/restic-prune-issue/3098/2), I was able to
+resolve this issue by dropping a single snapshot.
+
+First, I identified the snapshot which contained the offending pack:
+
+    $ restic -r sftp:hostname.local: find --pack 8fac6efe99f2a103b0c9c57293a245f25aeac4146d0e07c2ab540d91f23d3bb5
+    repository b0b0516c opened successfully, password is correct
+    Found blob 2beffa460d4e8ca4ee6bf56df279d1a858824f5cf6edc41a394499510aa5af9e
+     ... in file /home/francois/.local/share/akregator/Archive/http___udd.debian.org_dmd_feed_
+         (tree 602b373abedca01f0b007fea17aa5ad2c8f4d11f1786dd06574068bf41e32020)
+     ... in snapshot 5535dc9d (2020-06-30 08:34:41)
+
+Then, I could simply drop that snapshot:
+
+    $ restic -r sftp:hostname.local: forget 5535dc9d
+    repository b0b0516c opened successfully, password is correct
+    [0:00] 100.00%  1 / 1 files deleted
+
+and run the `prune` command to remove the snapshot, as well as the incomplete
+packs that were also mentioned in the above output but could never be
+removed due to the other error:
+
+    $ restic -r sftp:hostname.local: prune
+    repository b0b0516c opened successfully, password is correct
+    counting files in repo
+    building new index for repo
+    [20:11] 100.00%  77439 / 77439 packs
+    incomplete pack file (will be removed): b45afb51749c0778de6a54942d62d361acf87b513c02c27fd2d32b730e174f2e
+    incomplete pack file (will be removed): c71452fa91413b49ea67e228c1afdc8d9343164d3c989ab48f3dd868641db113
+    incomplete pack file (will be removed): 10bf128be565a5dc4a46fc2fc5c18b12ed2e77899e7043b28ce6604e575d1463
+    incomplete pack file (will be removed): df282c9e64b225c2664dc6d89d1859af94f35936e87e5941cee99b8fbefd7620
+    incomplete pack file (will be removed): 1de20e74aac7ac239489e6767ec29822ffe52e1f2d7f61c3ec86e64e31984919
+    repository contains 77434 packs (2384522 blobs) with 367.648 GiB
+    processed 2384522 blobs: 1165510 duplicate blobs, 47.331 GiB duplicate
+    load all snapshots
+    find data that is still in use for 15 snapshots
+    [1:11] 100.00%  15 / 15 snapshots
+    found 1006062 of 2384522 data blobs still in use, removing 1378460 blobs
+    will remove 5 invalid files
+    will delete 13728 packs and rewrite 15140 packs, this frees 142.285 GiB
+    [4:58:20] 100.00%  15140 / 15140 packs rewritten
+    counting files in repo
+    [18:58] 100.00%  50164 / 50164 packs
+    finding old index files
+    saved new indexes as [340cb68f 91ff77ef ee21a086 3e5fa853 084b5d4b 3b8d5b7a d5c385b4 5eff0be3 2cebb212 5e0d9244 29a36849 8251dcee 85db6fa2 29ed23f6 fb306aba 6ee289eb 0a74829d]
+    remove 190 old index files
+    [0:00] 100.00%  190 / 190 files deleted
+    remove 28868 old packs
+    [1:23] 100.00%  28868 / 28868 files deleted
+    done
+
+[[!tag restic]] [[!tag debian]]
