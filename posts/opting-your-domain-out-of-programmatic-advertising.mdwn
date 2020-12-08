@@ -1,0 +1,64 @@
+[[!meta title="Opting your domain out of programmatic advertising"]]
+[[!meta date="2020-12-08T00:10:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+A few years ago, the advertising industry introduced the [`ads.txt`
+project](https://iabtechlab.com/ads-txt-about) in order to defend against
+widespread *domain spoofing* vulnerabilities in [programmatic
+advertising](https://en.wikipedia.org/wiki/Programmatic_advertising).
+
+I decided to use this technology to opt out of having ads sold for my
+domains, at least through ad exchanges which perform this check, by hosting
+a text file containing this:
+
+    contact=ads@fmarier.org
+
+at the following locations:
+
+- <https://feeding.cloud.geek.nz/ads.txt>
+- <https://fmarier.org/ads.txt>
+
+(In order to get this to work on my blog, running
+[Ikiwiki](https://ikiwiki.info/) on
+[Branchable](https://www.branchable.com/), I had to disable the [txt
+plugin](https://ikiwiki.info/plugins/txt/) in order to get `ads.txt` to be
+served as a plain text file instead of being automatically rendered as
+HTML.)
+
+## Specification
+
+The key parts of the [specification](https://iabtechlab.com/ads-txt/) for our purposes are:
+
+> [3.1] If the server response indicates the resource does not exist (HTTP
+Status Code 404), the advertising system can assume no declarations exist
+and that no advertising system is unauthorized to buy and sell ads on the
+website.
+
+> [3.2.1] Some publishers may choose to not authorize any advertising system
+by publishing an empty ads.txt file, indicating that no advertising system
+is authorized to buy and sell ads on the website. So that consuming systems
+properly read and interpret the empty file (differentiating between web
+servers returning error pages for the /ads.txt URL), at least one properly
+formatted line must be included which adheres to the format specification
+described above.
+
+As you can see, the specification sadly ignores
+[RFC8615](https://tools.ietf.org/html/rfc8615) and requires that the
+`ads.txt` file be present directly in the root of your web server, like the
+venerable [`robots.txt`](http://www.robotstxt.org/) file, but unlike the
+newer [`security.txt`](https://securitytxt.org/) standard.
+
+If you don't want to provide an email address in your `ads.txt` file, the
+specification recommends using the following line verbatim:
+
+    placeholder.example.com, placeholder, DIRECT, placeholder
+
+## Validation
+
+A number of online validators exist, but I used the following to
+double-check my setup:
+
+- <https://adstxt.guru/validator/url/?url=https%3A%2F%2Ffeeding.cloud.geek.nz%2Fads.txt>
+- <https://www.adstxtgenerator.com/validator/results/?site=feeding.cloud.geek.nz>
+
+[[!tag web]] [[!tag debian]]
