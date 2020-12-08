@@ -73,7 +73,6 @@ add_plugins:
 - anonok
 - google
 - autoindex
-- txt
 - date
 - prettydate
 - recentchanges
@@ -81,6 +80,7 @@ add_plugins:
 disable_plugins:
 - fortune
 - relativedate
+- txt
 # additional directory to search for template files
 templatedir: /usr/share/ikiwiki/templates
 # base wiki source location
