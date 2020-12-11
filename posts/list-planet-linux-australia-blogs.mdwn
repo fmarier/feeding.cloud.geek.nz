@@ -1,0 +1,81 @@
+[[!meta title="List of Planet Linux Australia blogs"]]
+[[!meta date="2020-12-10T23:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I've been following [Planet Linux Australia](https://planet.linux.org.au/)
+for many years and discovered many interesting FOSS blogs through it. I was
+sad to see that it got [shut down a few weeks
+ago](https://linux.org.au/saying-farewell-to-planet-linux-australia/) and so
+I decided to manually add all of the feeds to my RSS reader to avoid missing
+posts from people I have been indirectly following for years.
+
+Since all feeds have been removed from the site, I recovered the list of
+blogs available from an [old copy of the
+site](https://web.archive.org/web/20200228054023/https://planet.linux.org.au/)
+preserved by the [Internet Archive](https://archive.org).
+
+Here is the [resulting `.opml`
+file](/posts/list-planet-linux-australia-blogs/linuxaustralia.opml) if you'd
+like to subscribe.
+
+## Changes
+
+Once I had the full list, I removed all blogs that are gone, empty or broken
+(e.g. domain not resolving, returning a 404, various database or server
+errors).
+
+I updated the URLs of a few blogs which had moved but hadn't updated their
+feeds on the planet. I also updated the name of a blogger who was still
+listed under a previous last name.
+
+Finally, I removed LA-specific tags from feeds since these are unlikely to
+be used again.
+
+## Work-arounds
+
+The following LiveJournal feeds didn't work in my RSS reader but opened fine
+in a browser:
+
+- <https://ninjafoo.livejournal.com/data/rss>
+- <https://certifiedwaif.livejournal.com/data/rss>
+- <https://tau-iota-mu-c.livejournal.com/data/rss>
+- <https://lathiat.livejournal.com/data/rss>
+
+However since none of them have them updated in the last 7 years, I just
+left them out.
+
+A couple appear to be impossible to [fetch over
+Tor](https://feeding.cloud.geek.nz/posts/things-that-work-well-with-tor/),
+presumably due to a [Cloudflare
+setting](https://community.cloudflare.com/t/block-tor-and-vpns-from-accessing-my-website/134730/2):
+
+- <https://www.jamver.id.au/cgi-bin/blosxom.cgi/index.rss>
+- <https://www.rwhitby.net/feed>
+- <https://blog.khax.net/feed/>
+- <https://dalts.com/index.xml>
+- <https://pento.net/feed/>
+
+Since only the last two have been updated in the last 9 years, I added these
+to Feedburner and added the following "proxied" URLs to my reader:
+
+- <https://feeds.feedburner.com/SteveDaltonLA>
+- <https://feeds.feedburner.com/GaryPendergastLA>
+
+Similarly, I couldn't fetch the following over Tor for some other reasons:
+
+- <http://algorithm.com.au/blog/files/rss.xml>
+- <http://soundadvice.id.au/blog/index.atom>
+- <http://www.bytebot.net/blog/archives/category/databases/feed>
+- <http://levlafayette.com/blog/feed>
+- <http://www.rowetel.com/?feed=rss2>
+- <https://hamishtaylor.com.au/photekgraddft-hamish-taylors-blog?format=rss>
+
+I excluded the first two which haven't been updated in 6 years and proxied
+the other ones:
+
+- <https://feeds.feedburner.com/ColinCharlesLA>
+- <https://feeds.feedburner.com/LevLafayetteLA>
+- <https://feeds.feedburner.com/DavidRoweLA>
+- <https://feeds.feedburner.com/HamishTaylorLA>
+
+[[!tag tor]]
