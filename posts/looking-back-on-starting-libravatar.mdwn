@@ -161,7 +161,7 @@ project over the years:
 - The Wellington Perl Mongers for their invaluable feedback on an early prototype.
 - The `#equifoss` group for their ongoing suppport and numerous ideas.
 - Nigel Babu and Melissa Draper for producing the first (and only) project
-  stikers, as well as Chris Cormack for spreading so effectively.
+  stickers, as well as Chris Cormack for spreading them so effectively.
 - Adolfo Jayme, Alfredo Hernández, Anthony Harrington, Asier Iturralde
   Sarasola, Besnik, Beto1917, Daniel Neis, Eduardo Battaglia, Fernando P
   Silveira, Gabriele Castagneti, Heimen Stoffels, Iñaki Arenaza, Jakob
