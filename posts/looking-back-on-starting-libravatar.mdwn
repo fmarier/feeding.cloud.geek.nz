@@ -110,7 +110,7 @@ When I started the project in 2011, I had a few goals:
   [DebConf](http://penta.debconf.org/dc10_schedule///////events/682.en.html)
   [twice](https://summit.debconf.org/debconf14/meeting/16/outsourcing-your-webapp-maintenance-to-debian/),
   [linux.conf.au](https://www.youtube.com/watch?v=ufkYjt9HV64) and
-  [OSCON](https://conferences.oreilly.com/oscon/oscon2011/public/schedule/detail/18773).
+  [OSCON](https://web.archive.org/web/20161005202936/http://conferences.oreilly.com/oscon/oscon2011/public/schedule/detail/18773).
 
 - Career-wise, I wanted to move beyond PHP development, which I successfully
   achieved by working for a [new client](https://logger.paua.org.nz/) while
