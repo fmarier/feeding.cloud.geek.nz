@@ -1,0 +1,184 @@
+[[!meta title="Programming a DMR radio with its CPS"]]
+[[!meta date="2021-01-04T23:40:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here are some notes I took around programming my [AnyTone AT-D878UV
+radio](https://www.bridgecomsystems.com/collections/amateur-handheld-radios/products/anytone-at-d878uv-dual-band-dmr-handheld-radio-w-gps-programming-cable)
+to operate on [DMR](https://en.wikipedia.org/wiki/Digital_mobile_radio)
+using the [CPS
+software](https://feeding.cloud.geek.nz/posts/programming-anytone-d878uv-on-linux-using-windows10-and-virtualbox/)
+that comes with it.
+
+Note that you can always [tune in to a VFO channel by
+hand](https://www.youtube.com/watch?v=VHapE2wqSMI) if you haven't had time
+to add it to your codeplug yet.
+
+# DMR terminology
+
+First of all, the [terminology of
+DMR](https://www.jeffreykopcak.com/2017/05/10/dmr-in-amateur-radio-terminology/)
+is quite different from that of the regular analog FM world.
+
+Here are the basic terms:
+
+- **Frequency**: *same meaning as in the analog world*
+- **Repeater**: *same meaning as in the analog world*
+- **Timeslot**: Each frequency is split into two timeslots (1 and 2) and what
+  that means that there can be two simultaneous transmissions on each frequency.
+- **Color code**: This is the digital equivalent of a CTCSS tone (sometimes
+  called privacy tone) in that using the incorrect code means that you will
+  tie up one of the timeslots on the frequency, but nobody else will hear
+  you. These are [not actually named after
+  colors](https://amateurradionotes.com/dmr.htm#colorcodes), but are instead
+  just numerical IDs from 0 to 15.
+
+There are two different identification mechanisms (both are required):
+
+- **Callsign**: This is the same identifier issued to you by your country's
+  amateur radio authority. Mine is [VA7GPL](https://www.qrz.com/lookup?tquery=VA7GPL&mode=callsign).
+- **Radio ID**: This is a unique numerical ID tied to your callsign which
+  you must [register for](https://radioid.net/register) ahead of time and
+  program into your radio. Mine is
+  [3027260](https://database.radioid.net/database/view?id=3027260#!).
+
+The following is where this digital mode becomes most interesting:
+
+- **Talkgroup**: a "chat room" where everything you say will be heard by
+  anybody listening to that talkgroup
+- **Network**: a group of repeaters connected together over the Internet
+  (typically) and sharing a common list of talkgroups
+- **Hotspot**: a personal simplex device which allows you to connect to a
+  network with your handheld and access all of the talkgroups available on
+  that network
+
+The most [active](https://app.brandmeisteractivity.live/) network these days
+is [Brandmeister](https://brandmeister.network/), but there are several others.
+
+- **Access**: This can either be *Always on* which means that a talkgroup
+  will be permanently broadcasting on a timeslot and frequency, or *PTT*
+  which means a talkgroup will not be broadcast until it is first "woken up"
+  by pressing the push-to-talk button and then will broadcast for a certain
+  amount of time before going to sleep again.
+- **Channel**: As in the analog world, this is what you select on your radio
+  when you want to talk to a group of people. In the digital world however, it
+  is tied not only to a frequency (and timeslot) and tone (color code), but
+  also to a specific talkgroup.
+
+Ultimately what you want to do when you program your radio is to find the
+talkgroups you are interested in (from the list offered by your local
+repeater) and then assign them to specific channel numbers on your radio.
+More on that later.
+
+# Callsign and Radio IDs
+
+Before we get to talkgroups, let's set your callsign and [Radio
+ID](https://radioid.net/database/search):
+
+![](/posts/programming-dmr-radio-with-cps/radioid.png)
+
+Then you need to download the latest list of Radio IDs so that your radio
+can display people's names and callsigns instead of just their numerical IDs.
+
+One approach is to only [download the list of users who recently
+talked](https://brandmeister.network/?page=contactsexport) on talkgroups you
+are interested in. For example, I used to download the contacts for the
+following talkgroups:
+```
+91,93,95,913,937,3026,3027,302,30271,30272,530,5301,5302,5303,5304,3100,3153,31330
+```
+but these days, what I normally do is to just download the [entire worldwide
+database](https://www.radioid.net/database/dumps) (`user.csv`) since my
+radio still has enough storage (200k entries) for it.
+
+In order for the `user.csv` file to work with the AnyTone CPS, it needs to
+have particular columns and use the DOS end-of-line characters (`apt install
+dos2unix` if you want to do it manually). I wrote a
+[script](https://github.com/fmarier/user-scripts/blob/master/dmr-users) to
+do all of the work for me.
+
+If you use [dmrconfig](https://github.com/sergev/dmrconfig) to program this
+radio instead, then the conversion is unnecessary. The `user.csv` file can
+be used directly, however it will be truncated due to an [incorrect limit
+hard-coded in the software](https://github.com/sergev/dmrconfig/issues/50).
+
+# Talkgroups
+
+Next, you need to pick the talkgroups you would like to allocate to specific
+channels on your radio.
+
+Start by looking at the documentation for your local repeaters (e.g.
+[VE7RAG](http://www.bcfmca.bc.ca/dmr.php) and
+[VE7NWR](http://www.nwarc.org/cms/?q=node/330) in the Vancouver area).
+
+In addition to telling you the listen and transmit *frequencies* of the
+repeater (again, this works the same way as with analog FM), these will tell
+you which *talkgroups* are available and what *timeslots* and *color codes*
+they have been set to. It will also tell you the type of *access* for each
+of these talkgroups.
+
+This is how I programmed a channel:
+
+![](/posts/programming-dmr-radio-with-cps/ve7rag-bc2.png)
+
+and a talkgroup on the VE7RAG repeater in my radio:
+
+![](/posts/programming-dmr-radio-with-cps/tg-bc2.png)
+
+If you don't have a local repeater with DMR capability, or if you want to
+access talkgroups available on a different network, then you will need to
+get a DMR hotspot such as one that's compatible with the
+[Pi-Star](https://www.pistar.uk/) software.
+
+This is an excerpt from the programming I created for the talkgroups
+I made available through my hotspot:
+
+![](/posts/programming-dmr-radio-with-cps/brandmeister-nz-national.png)
+![](/posts/programming-dmr-radio-with-cps/tg-zl-national.png)
+
+One of the unfortunate limitations of the CPS software for the AnyTone 878
+is that talkgroup numbers are globally unique identifiers. This means that
+if TG1234 (hypothetical example) is *Ragchew 3000* on DMR-MARC but
+*Iceland-wide chat* on Brandmeister, then you can't have two copies of it
+with different names. The solution I found for this was to give that
+talkgroup the name "TG1234" instead of "Ragchew3k" or "Iceland". I use a
+more memorable name for non-conflicting talkgroups, but for the problematic
+ones, I simply repeat the talkgroup number.
+
+# Simplex
+
+Talkgroups are not required to operate on DMR. Just like analog FM, you can
+talk to another person point-to-point using a simplex channel.
+
+The convention for all simplex channels is the following:
+
+- Talkgroup: `99`
+- Color code: `1`
+- Timeslot: `1`
+- Admit criteria: `Always`
+- In Call Criteria: `TX` or `Always`
+
+![](/posts/programming-dmr-radio-with-cps/tg-simplex.png)
+
+After talking to the [British Columbia Amateur Radio Coordination
+Council](https://bcarcc.org/), I found that the following frequency ranges are
+most suitable for DMR simplex:
+
+- 145.710-145.790 MHz (simplex digital transmissions)
+- 446.000-446.975 MHz (all simplex modes)
+
+The [VECTOR
+list](https://docs.google.com/spreadsheets/d/1XNRLnQWY1AJiQQy1umiEBTf4oBMyhrjOc0CIhlLm4pI/edit#gid=0)
+identifies two frequencies in particular:
+
+- 446.075 MHz
+- 446.500 MHz
+
+![](/posts/programming-dmr-radio-with-cps/vector-dmr-simplex2.png)
+
+# Learn more
+
+If you'd like to learn more about DMR, I would suggest you start with [this
+excellent guide](http://www.k4usd.org/guide.pdf) (also [mirrored
+here](https://www.raqi.ca/~ve2rae/dmr/Amateur_Radio_Guide_to_DMR.pdf)).
+
+[[!tag ham]] [[!tag anytone]]
