@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="67.61.210.79"
+ claimedauthor="Ben"
+ subject="USB/Com Port"
+ date="2021-01-25T03:36:43Z"
+ content="""
+Did you do anything to configure the USB or COM port? I've tried both but couldn't read from the device. 
+"""]]
