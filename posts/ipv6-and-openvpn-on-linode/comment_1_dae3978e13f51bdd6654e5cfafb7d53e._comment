@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ ip="2406:1e00:b910:7704::1006"
+ subject="Multiple Prefixes"
+ date="2021-02-01T00:48:09Z"
+ content="""
+This works well, and clients will be assigned an address in the prefix.
+
+However, some applications want clients to talk to each other through the tunnel.
+
+For IPv4, they could just use each other's 10.8.0.x addresses, but with this configuration, the prefix is not a private value and therefore subject to (unlikely but possible) change.
+
+A solution is to use IPv6 ULAs, but then clients can't reach the IPv6 internet without prefix translation. In reality, we want to be able to give each client an IPv4 10.8.0.x address, an IPv6 GUA, and an IPv6 ULA. 
+
+How do we extend this configuration to achieve that? 
+"""]]
