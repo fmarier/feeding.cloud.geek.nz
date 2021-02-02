@@ -61,7 +61,7 @@ restoring from backup.
 
 First of all, I shut down MythTV as `root`:
 
-    kilall mythfrontend
+    killall mythfrontend
     systemctl stop mythtv-status.service
     systemctl stop mythtv-backend.service
 
