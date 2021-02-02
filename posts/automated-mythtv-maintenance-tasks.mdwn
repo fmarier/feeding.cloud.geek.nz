@@ -8,11 +8,12 @@ server.
 
 The first part performs a [database backup](https://www.mythtv.org/wiki/User_Manual:Periodic_Maintenance#The_database):
 
-    5 1 * * *  mythtv  /usr/share/mythtv/mythconverg_backup.pl
+    5 1,13 * * *  mythtv  /usr/share/mythtv/mythconverg_backup.pl
 
 which I previously configured by putting the following in `/home/mythtv/.mythtv/backuprc`:
 
     DBBackupDirectory=/var/backups/mythtv
+    rotate=15
 
 and creating a new directory for it:
 
