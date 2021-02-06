@@ -59,4 +59,4 @@ if you have the hardware, otherwise
 [WiFi Analyzer](https://f-droid.org/repository/browse/?fdid=com.vrem.wifianalyzer)
 is a good choice on Android.
 
-[[!tag debian]] [[!tag openwrt]] [[!tag gargoyle]]
+[[!tag debian]] [[!tag openwrt]] [[!tag gargoyle]] [[!tag wifi]]

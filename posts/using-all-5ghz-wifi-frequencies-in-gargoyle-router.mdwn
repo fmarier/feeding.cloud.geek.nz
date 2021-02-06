@@ -67,4 +67,4 @@ If you are interested, there is a lot more information about how all of this
 works in the
 [kernel documentation for the wireless stack](https://wireless.wiki.kernel.org/en/developers/regulatory/processing_rules#country_definition).
 
-[[!tag debian]] [[!tag nzoss]] [[!tag openwrt]] [[!tag gargoyle]]
+[[!tag debian]] [[!tag nzoss]] [[!tag openwrt]] [[!tag gargoyle]] [[!tag wifi]]

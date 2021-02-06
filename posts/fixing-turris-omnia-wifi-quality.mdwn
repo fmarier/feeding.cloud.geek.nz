@@ -74,4 +74,4 @@ as I passed my advanced [amateur radio license
 exam](https://launchpad.net/canadian-ham-exam). I guess that was a good way
 to put the course material into practice!
 
-[[!tag nzoss]] [[!tag turris]]
+[[!tag nzoss]] [[!tag turris]] [[!tag wifi]]
