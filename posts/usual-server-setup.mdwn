@@ -291,6 +291,7 @@ Also, [`command-not-found` won't work until you update the apt cache](https://bu
 
     apt update
     update-command-not-found
+    apt-file update
 
 # Apache configuration
 
