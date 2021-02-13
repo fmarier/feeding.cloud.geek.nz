@@ -322,7 +322,7 @@ and then run:
 # Mail
 
     apt install postfix libsasl2-modules
-    apt purge exim4-base exim4-daemon-light exim4-config
+    apt purge exim4-base exim4-daemon-light exim4-config sendmail sendmail-bin sendmail-base sendmail-cf
 
 Configuring mail properly is tricky but the following has worked for me.
 
