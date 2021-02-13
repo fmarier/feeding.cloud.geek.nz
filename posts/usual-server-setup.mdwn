@@ -26,6 +26,19 @@ Then I check the hard drives using:
 
     apt install etckeeper git sudo vim
 
+Since I use vim for all of my configuration file editing, I make it the
+default editor:
+
+    update-alternatives --config editor
+
+and I turn on syntax highlighting and visual beeping globally by adding the
+following to `/etc/vim/vimrc.local`:
+
+    syntax on
+    set background=dark
+    set visualbell
+    set nomodeline
+
 To keep track of the configuration changes I make in `/etc/`, I use etckeeper
 to keep that directory in a git repository and make the following changes to
 the default `/etc/etckeeper/etckeeper.conf`:
@@ -58,19 +71,6 @@ To get more control over the various packages I install, I change the
 default debconf level to medium:
 
     dpkg-reconfigure debconf
-
-Since I use vim for all of my configuration file editing, I make it the
-default editor:
-
-    update-alternatives --config editor
-
-and I turn on syntax highlighting and visual beeping globally by adding the
-following to `/etc/vim/vimrc.local`:
-
-    syntax on
-    set background=dark
-    set visualbell
-    set nomodeline
 
 # ssh
 
