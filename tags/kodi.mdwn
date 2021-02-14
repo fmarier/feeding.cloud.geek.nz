@@ -1,0 +1,4 @@
+[[!meta title="pages tagged kodi"]]
+
+[[!inline pages="tagged(kodi)" actions="no" archive="yes"
+feedshow=10]]
