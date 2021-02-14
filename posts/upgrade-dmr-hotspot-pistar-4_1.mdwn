@@ -96,4 +96,4 @@ As long as you didn't reuse the original SD card for this upgrade, rolling
 back to version 3.4.17 simply involves shutting down the pi and then
 swapping the new SD card for the old one and then starting it up again.
 
-[[!tag dmr]] [[!tag ham]] [[!tag pistar]]
+[[!tag dmr]] [[!tag ham]] [[!tag pistar]] [[!tag raspberrypi]]

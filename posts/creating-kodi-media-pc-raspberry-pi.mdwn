@@ -1,0 +1,180 @@
+[[!meta title="Creating a Kodia media PC using a Raspberry Pi 4"]]
+[[!meta date="2021-02-13T19:25:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Here's how I set up a media PC using [Kodi](https://kodi.tv/) (formerly XMBC) and a
+[Raspberry Pi 4](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/).
+
+## Hardware
+
+The hardware is fairly straightforward, but here's what I ended up getting:
+
+- [Raspberry Pi 4 board](https://www.amazon.ca/gp/product/B089GNJNDS): I
+  went for the maximum amount of RAM (8 GB).
+- [SD-card](https://www.amazon.ca/gp/product/B07DKGP6RB): Since I'm not
+  going to store any media on here, 32 GB is plenty.
+- [HDMI to **micro**-HDMI cable](https://www.amazon.ca/gp/product/B00Z07JYLE)
+- [Case and power supply](https://www.amazon.ca/gp/product/B08CRDKX6T)
+
+You'll probably want to add a [remote
+control](https://kodi.wiki/view/Remote_controls) to that setup. I used an
+old [Streamzap](http://www.streamzap.com/consumer/pc_remote/index.php) I had
+lying around.
+
+## Installing the OS on the SD-card
+
+Plug the SD card into a computer using a USB adapter.
+
+Download the [imager](https://www.raspberrypi.org/software/) and use it to
+install **Raspbian** on the SDcard.
+
+Then you can simply plug the SD card into the Pi and boot.
+
+## System configuration
+
+Using `sudo raspi-config`, I changed the following:
+
+- Set hostname (*System Options*)
+- Wait for network at boot (*System Options*): [needed for NFS](https://raspberrypi.stackexchange.com/a/53147)
+- Disable screen blanking (*Display Options*)
+- Enable ssh (*Interface Options*)
+- Configure locale, timezone and keyboard (*Localisation Options*)
+- Set WiFi country (*Localisation Options*)
+
+Then I [enabled automatic updates](https://raspberrypi.stackexchange.com/a/102350):
+
+    apt install unattended-upgrades anacron
+
+    echo 'Unattended-Upgrade::Origins-Pattern {
+            "origin=Debian,codename=${distro_codename},label=Debian";
+            "origin=Debian,codename=${distro_codename},label=Debian-Security";
+            "origin=Raspbian,codename=${distro_codename},label=Raspbian";
+            "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
+    };' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-raspbian
+
+
+### Headless setup
+
+Should you need to do the setup without a monitor, you can enable ssh by
+inserting the SD card into a computer and then creating an empty file called
+`ssh` in the boot partition.
+
+Plug it into your router and boot it up. Check the IP that it received by
+looking at the active DHCP leases in your router's admin panel.
+
+Then login:
+
+    ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no pi@192.168.1.xxx
+
+using the default password of `raspberry`.
+
+## Hardening
+
+In order to secure the Pi, I followed most of the [steps I usually take when
+setting up a new Linux
+server](https://feeding.cloud.geek.nz/posts/usual-server-setup/).
+
+I created a new user account for admin and ssh access:
+
+    adduser francois
+    addgroup sshuser
+    adduser francois sshuser
+    adduser francois sudo
+
+and changed the `pi` user password to a random one:
+
+    pwgen -sy 32
+    sudo passwd pi
+
+before removing its admin permissions:
+
+    deluser pi adm
+    deluser pi sudo
+    deluser pi dialout
+    deluser pi cdrom
+    deluser pi lpadmin
+
+Finally, I enabled the [Uncomplicated Firewall](https://launchpad.net/ufw)
+by installing its package:
+
+    apt install ufw
+
+and only allowing ssh connections.
+
+After starting ufw using `systemctl start ufw.service`, you can check that
+it's configured as expected using `ufw status`. It should display the
+following:
+
+    Status: active
+    
+    To                         Action      From
+    --                         ------      ----
+    22/tcp                     ALLOW       Anywhere
+    22/tcp (v6)                ALLOW       Anywhere (v6)
+
+## Installing Kodi
+
+Kodi is very straightforward to install since it's now part of the Raspbian repositories:
+
+    apt install kodi
+
+To make it start at boot/login, while still being able to exit and use other
+apps if needed:
+
+    cp /etc/xdg/lxsession/LXDE-pi/autostart ~/.config/lxsession/LXDE-pi/
+    echo "@kodi" >> ~/.config/lxsession/LXDE-pi/autostart
+
+## Network File System
+
+In order to avoid having to have all media storage connected directly to the
+Pi via USB, I setup an
+[NFS](https://en.wikipedia.org/wiki/Network_File_System) share over my local
+network.
+
+First, give static IP allocations to the server and the Pi in your DHCP
+server, then add it to the `/etc/hosts` file on your NFS server:
+
+    192.168.1.3    pi
+
+Install the NFS server package:
+
+    apt instal nfs-kernel-server
+
+Setup the directories to share in `/etc/exports`:
+
+    /pub/movies    pi(ro,insecure,all_squash,subtree_check)
+    /pub/tv_shows  pi(ro,insecure,all_squash,subtree_check)
+
+Open the right ports on your firewall by putting this in `/etc/network/iptables.up.rules`:
+
+    -A INPUT -s 192.168.1.3 -p udp -j ACCEPT
+    -A INPUT -s 192.168.1.0/24 -p tcp --dport 111 -j ACCEPT
+    -A INPUT -s 192.168.1.0/24 -p udp --dport 111 -j ACCEPT
+    -A INPUT -s 192.168.1.0/24 -p udp --dport 123 -j ACCEPT
+    -A INPUT -s 192.168.1.0/24 -p tcp --dport 600:1124 -j ACCEPT
+    -A INPUT -s 192.168.1.0/24 -p udp --dport 600:1124 -j ACCEPT
+    -A INPUT -s 192.168.1.0/24 -p tcp --dport 2049 -j ACCEPT
+    -A INPUT -s 192.168.1.0/24 -p udp --dport 2049 -j ACCEPT
+
+Finally, apply all of these changes:
+
+    iptables-apply
+    systemctl restart nfs-kernel-server.service
+
+On the Pi, put the server's static IP in `/etc/hosts`:
+
+    192.168.1.2    fileserver
+
+and this in `/etc/fstab`:
+
+    fileserver:/data/movies  /kodi/movies  nfs  ro,bg,hard,noatime,async,nolock  0  0
+    fileserver:/data/tv      /kodi/tv      nfs  ro,bg,hard,noatime,async,nolock  0  0
+
+Then create the mount points and mount everything:
+
+    mkdir -p /kodi/movies
+    mkdir /kodi/tv
+    mount /kodi/movies
+    mount /kodi/tv
+
+[[!tag raspberrypi]] [[!tag kodi]] [[!tag debian]] [[!tag nfs]]
