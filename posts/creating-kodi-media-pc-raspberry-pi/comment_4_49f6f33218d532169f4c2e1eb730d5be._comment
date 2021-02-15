@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: Debian for RaspberryPi"
+ date="2021-02-15T19:28:34Z"
+ content="""
+> Why did you install Raspbian, and not the pure Debian build for arm64? https://raspi.debian.net/
+
+Interesting. I was not aware there were images for stock Debian.
+"""]]
