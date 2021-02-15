@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="96.23.12.217"
+ claimedauthor="mgregoire"
+ subject="Debian for RaspberryPi"
+ date="2021-02-15T18:42:31Z"
+ content="""
+Why did you install Raspbian, and not the pure Debian build for arm64?  [[https://raspi.debian.net/]]
+"""]]
