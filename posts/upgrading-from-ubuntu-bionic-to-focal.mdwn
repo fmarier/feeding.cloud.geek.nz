@@ -99,4 +99,4 @@ and then re-creating all initramfs:
 
 seemed to do the trick.
 
-[[!tag ubuntu]] [[!tag systemd]] [[!tag raid]]
+[[!tag ubuntu]] [[!tag systemd]] [[!tag raid]] [[!tag networkmanager]]

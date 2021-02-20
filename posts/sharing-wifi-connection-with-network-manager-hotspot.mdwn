@@ -93,4 +93,4 @@ on my machine's local firewall:
     -A INPUT -d 10.42.0.255 -s 10.42.0.1 -j ACCEPT
     -A INPUT -d 10.42.0.1 -s 10.42.0.0/24 -j ACCEPT
 
-[[!tag nzoss]] [[!tag gnome]] [[!tag debian]] [[!tag wifi]]
+[[!tag gnome]] [[!tag debian]] [[!tag wifi]] [[!tag networkmanager]]
