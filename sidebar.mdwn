@@ -23,4 +23,4 @@
 [[Recent Comments|comments]]
 
 [[Tags]]:
-[[!pagestats pages="tags/* and !tags/debian and !tags/catalyst and !tags/mozilla and !tags/nzoss and !tags/sysadmin and !tags/mahara" among="posts/*"]]
+[[!pagestats pages="tags/* and !tags/debian and !tags/catalyst and !tags/mozilla and !tags/ubuntu and !tags/nzoss and !tags/sysadmin and !tags/mahara" among="posts/*"]]
