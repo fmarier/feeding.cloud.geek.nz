@@ -63,4 +63,4 @@ Looking at `/var/log/iptables.log`, you'll be able to confirm that
 it is being called correctly for each network interface as they
 are started.
 
-[[!tag nzoss]] [[!tag debian]] [[!tag iptables]]
+[[!tag debian]] [[!tag iptables]] [[!tag networkmanager]]
