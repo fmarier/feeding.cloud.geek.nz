@@ -1,0 +1,139 @@
+[[!meta title="Using a Streamzap remote control with Kodi"]]
+[[!meta date="2021-03-02T21:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After [installing Kodi on a Raspberry Pi 4](https://feeding.cloud.geek.nz/posts/creating-kodi-media-pc-raspberry-pi/), I found that my
+[Streamzap remote control](http://www.streamzap.com/consumer/pc_remote/index.php) worked for everything except the *Ok* and
+*Exit* buttons (which are supposed to get mapped to *Enter* and *Back*
+respectively).
+
+A very old set of instructions for this is [archived on the Kodi
+wiki](https://kodi.wiki/view/Archive:Set_up_Streamzap_PC_Remote_for_Linux)
+but here's a more modern version of it.
+
+## Root cause
+
+I finally tracked down the problem by enabling [debug
+logging](https://kodi.wiki/view/Log_file) in Kodi settings. I saw the
+following in `~/.kodi/temp/kodi.log` when presing the OK button:
+
+    DEBUG: Keyboard: scancode: 0x00, sym: 0x0000, unicode: 0x0000, modifier: 0x0
+    DEBUG: GetActionCode: Trying Hardy keycode for 0xf200
+    DEBUG: Previous line repeats 3 times.
+    DEBUG: HandleKey: long-0 (0x100f200, obc-16838913) pressed, action is
+    DEBUG: Keyboard: scancode: 0x00, sym: 0x0000, unicode: 0x0000, modifier: 0x0
+
+and this when pressing the Down button:
+
+    DEBUG: CLibInputKeyboard::ProcessKey - using delay: 500ms repeat: 125ms
+    DEBUG: Thread Timer start, auto delete: false
+    DEBUG: Keyboard: scancode: 0x6c, sym: 0x0112, unicode: 0x0000, modifier: 0x0
+    DEBUG: HandleKey: down (0xf081) pressed, action is Down
+    DEBUG: Thread Timer 2502349008 terminating
+    DEBUG: Keyboard: scancode: 0x6c, sym: 0x0112, unicode: 0x0000, modifier: 0x0
+
+This suggests that my Streamzap remote is recognized as a keyboard, which I
+can confirm using:
+
+    $ cat /proc/bus/input/devices 
+    I: Bus=0003 Vendor=0e9c Product=0000 Version=0100
+    N: Name="Streamzap PC Remote Infrared Receiver (0e9c:0000)"
+    P: Phys=usb-0000:01:00.0-1.2/input0
+    S: Sysfs=/devices/platform/scb/fd500000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/usb1/1-1/1-1.2/1-1.2:1.0/rc/rc0/input4
+    U: Uniq=
+    H: Handlers=kbd event0 
+    B: PROP=20
+    B: EV=100017
+    B: KEY=3ff 0 0 0 fc000 1 0 0 0 0 18000 4180 c0000801 9e1680 0 0 0
+    B: REL=3
+    B: MSC=10
+
+## Installing LIRC
+
+The [fix I found](https://github.com/graysky2/streamzap) is to
+put the following in `/etc/X11/xorg.conf.d/90-streamzap-disable.conf`:
+
+    Section "InputClass"
+    	Identifier "Ignore Streamzap IR"
+    	MatchProduct "Streamzap"
+    	MatchIsKeyboard "true"
+    	Option "Ignore" "true"
+    EndSection
+
+to prevent the remote from being used as a keyboard and to instead use it
+via [LIRC](https://lirc.org/), which can be installed like this:
+
+    apt install lirc lirc-compat-modules
+
+Put the following in `/etc/lirc/lirc_options`:
+
+    driver=default
+    device=/dev/lirc0
+
+and add the remote config for the Streamzap:
+
+    cd /etc/lirc/lircd.conf.d/
+    ln -s /usr/share/lirc/remotes/streamzap/lircd.conf.streamzap streamzap.conf
+
+### Testing
+
+Now you should be able to test the remote using:
+
+    mode2
+
+to see the undecoded infra-red signal, and:
+
+    irw
+
+to display the decoded key presses.
+
+## Kodi configuration
+
+Finally, as the `pi` user, put the [following config](https://raw.githubusercontent.com/graysky2/streamzap/master/kodi/Lircmap.xml) in `~/.kodi/userdata/Lircmap.xml`:
+
+    <lircmap>
+      <remote device="Streamzap_PC_Remote">
+        <power>KEY_POWER</power>
+        <play>KEY_PLAY</play>
+        <pause>KEY_PAUSE</pause>
+        <stop>KEY_STOP</stop>
+        <forward>KEY_FORWARD</forward>
+        <reverse>KEY_REWIND</reverse>
+        <left>KEY_LEFT</left>
+        <right>KEY_RIGHT</right>
+        <up>KEY_UP</up>
+        <down>KEY_DOWN</down>
+        <pageplus>KEY_CHANNELUP</pageplus>
+        <pageminus>KEY_CHANNELDOWN</pageminus>
+        <select>KEY_OK</select>
+        <back>KEY_EXIT</back>
+        <menu>KEY_MENU</menu>
+        <red>KEY_RED</red>
+        <green>KEY_GREEN</green>
+        <yellow>KEY_YELLOW</yellow>
+        <blue>KEY_BLUE</blue>
+        <skipplus>KEY_NEXT</skipplus>
+        <skipminus>KEY_PREVIOUS</skipminus>
+        <record>KEY_RECORD</record>
+        <volumeplus>KEY_VOLUMEUP</volumeplus>
+        <volumeminus>KEY_VOLUMEDOWN</volumeminus>
+        <mute>KEY_MUTE</mute>
+        <record>KEY_RECORD</record>
+        <one>KEY_1</one>
+        <two>KEY_2</two>
+        <three>KEY_3</three>
+        <four>KEY_4</four>
+        <five>KEY_5</five>
+        <six>KEY_6</six>
+        <seven>KEY_7</seven>
+        <eight>KEY_8</eight>
+        <nine>KEY_9</nine>
+        <zero>KEY_0</zero>
+      </remote>
+    </lircmap>
+
+In order for all of this to take effect, I simply rebooted the Pi:
+
+    sudo systemctl reboot
+
+[[!tag kodi]] [[!tag streamzap]] [[!tag lirc]]
