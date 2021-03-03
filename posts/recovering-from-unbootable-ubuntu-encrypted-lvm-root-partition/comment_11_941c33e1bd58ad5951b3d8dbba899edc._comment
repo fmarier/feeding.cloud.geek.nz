@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="85.167.103.197"
+ claimedauthor="Morgan"
+ url="morgansimonsen.com"
+ subject="LVM missing"
+ date="2021-03-03T21:47:24Z"
+ content="""
+My case was similar, but I had an additional issue. On my Ubuntu machine /usr/share/initramfs-tools/hooks/lvm2 was not set as executable. This caused it to be skipped when initramfs was built, leaving me with an initramfs without LVM. After making the file executable (chmod +x) and rebuilding initramfs, the system was bootable again.
+"""]]
