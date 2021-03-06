@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ ip="2001:7d0:8406:9e80:5810:b092:b8d9:11f9"
+ claimedauthor="Rene"
+ subject="Solution for: &quot;cryptsetup: ERROR: Couldn't find sysfs directory for 253:2&quot;"
+ date="2021-03-06T00:30:19Z"
+ content="""
+This is a superb guide, thanks!
+
+I had an additional problem and while running \"update-initramfs -c -k all\" I got the following error:
+
+    cryptsetup: ERROR: Couldn't find sysfs directory for 253:2
+
+
+Google couldn't answer anything about this error, but I finally figured it out - you just need to mount the sysfs (just like you mounted /proc and /dev). So just run this command:
+
+    mount -t sysfs sysfs /sys
+
+Now when you run update-initramfs again the error should be gone and you can boot to your Linux again!
+"""]]
