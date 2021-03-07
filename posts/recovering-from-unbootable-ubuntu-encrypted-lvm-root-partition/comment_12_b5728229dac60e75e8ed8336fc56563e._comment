@@ -13,7 +13,7 @@ I had an additional problem and while running \"update-initramfs -c -k all\" I g
 
 Google couldn't answer anything about this error, but I finally figured it out - you just need to mount the sysfs (just like you mounted /proc and /dev). So just run this command:
 
-    mount -t sysfs sysfs /sys
+    mount -t sysfs sysfs /mnt/sys
 
 Now when you run update-initramfs again the error should be gone and you can boot to your Linux again!
 """]]
