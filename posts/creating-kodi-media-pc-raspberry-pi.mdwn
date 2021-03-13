@@ -124,6 +124,16 @@ apps if needed:
     cp /etc/xdg/lxsession/LXDE-pi/autostart ~/.config/lxsession/LXDE-pi/
     echo "@kodi" >> ~/.config/lxsession/LXDE-pi/autostart
 
+In order to improve privacy while fetching metadata, I also installed Tor:
+
+    apt install tor
+
+and then set a proxy in the Kodi [*System | Internet access* settings](https://kodi.wiki/view/Settings/System/Internet_access#Proxy_type):
+
+- Proxy type: `SOCKS5 with remote DNS resolving`
+- Server: `localhost`
+- Port: `9050`
+
 ## Network File System
 
 In order to avoid having to have all media storage connected directly to the
@@ -177,4 +187,4 @@ Then create the mount points and mount everything:
     mount /kodi/movies
     mount /kodi/tv
 
-[[!tag raspberrypi]] [[!tag kodi]] [[!tag debian]] [[!tag nfs]]
+[[!tag raspberrypi]] [[!tag kodi]] [[!tag debian]] [[!tag nfs]] [[!tag tor]]
