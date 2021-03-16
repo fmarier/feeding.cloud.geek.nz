@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="2a02:587:4537:ee25:7868:c47:46a0:12cd"
+ claimedauthor="George Kapoulas"
+ subject="USB  port   in virtual box running windows 7 &  anytone878 cps"
+ date="2021-03-16T09:16:45Z"
+ content="""
+Sometimes I have to  manually select the port, but first I hve to istruct the virual machine to use the  port, then set the port  from the cps. Works fine  in  running  MS win 7   in virtula box  in LInux mint 20, enjoy
+"""]]
