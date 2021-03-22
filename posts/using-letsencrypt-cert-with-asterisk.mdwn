@@ -15,7 +15,7 @@ I created a [Let's Encrypt](https://letsencrypt.org/) certificate using
     certbot certonly --standalone -d hostname.example.com
 
 To enable the `asterisk` user to load the certificate successfuly (it
-doesn't permission to access to the certificates under `/etc/letsencrypt/`),
+doesn't have permission to access the certificates under `/etc/letsencrypt/`),
 I copied it to the right directory:
 
     cp /etc/letsencrypt/live/hostname.example.com/privkey.pem /etc/asterisk/asterisk.key

@@ -49,9 +49,9 @@ and that its USB ID shows up in the SANE backend it needs:
 
 To do a test scan, simply run:
 
-    scanimage > test.ppm
+    scanimage > test.pnm
 
-and then take a look at the (greyscale) image it produced (`test.ppm`).
+and then take a look at the (greyscale) image it produced (`test.pnm`).
 
 # Letting normal users access the scanner
 
@@ -76,7 +76,7 @@ also see it in the output of `sane-find-scanner`.
 
 Finally, test the scanner as your normal user:
 
-    scanimage > test.ppm
+    scanimage > test.pnm
 
 to confirm that everything is working.
 
@@ -138,7 +138,7 @@ client computer:
 
 and successfully perform a test scan using this command:
 
-    scanimage > test.ppm
+    scanimage > test.pnm
 
 # Troubleshooting connection problems
 
