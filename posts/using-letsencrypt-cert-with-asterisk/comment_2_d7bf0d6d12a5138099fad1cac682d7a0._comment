@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="81.82.205.71"
+ claimedauthor="Vincent"
+ subject="use the deploy renewal hook for certbot"
+ date="2021-03-22T15:20:55Z"
+ content="""
+I agree with Steve Kemp's comment, and additionally you can use the 'deploy' renewal hook to copy the newly generated files to the asterisk location. That renewal hook is only executed if certbot has succesfully renewed the certificate.
+"""]]
