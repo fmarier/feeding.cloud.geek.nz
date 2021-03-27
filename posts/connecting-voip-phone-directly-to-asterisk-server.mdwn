@@ -75,4 +75,24 @@ via ssh:
     Host asterisk
         LocalForward 8081 192.168.2.3:80
 
+# Allowing calls between local SIP devices
+
+Because this local device is not connected to the local network
+(`192.168.1.0/24`), it's unable to negotiate a direct media connection to
+any other local (i.e. one connected to the same Asterisk server) SIP device.
+What this means is that while calls might get connected successfully, by
+default, there will not be any audio in a call.
+
+In order for the two local SIP devices to be able to hear one another, we
+must enforce that all media be routed via Asterisk instead of going directly
+from one device to the other. This can be done using the `directmedia`
+directive (formerly
+[`canreinvite`](https://www.voip-info.org/asterisk-sip-canreinvite/)) in
+`sip.conf`:
+
+    [1234]
+    directmedia=no
+
+where `1234` is the extension of the phone.
+
 [[!tag debian]] [[!tag asterisk]] [[!tag ubuntu]] [[!tag ntp]]
