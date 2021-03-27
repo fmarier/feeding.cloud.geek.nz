@@ -44,6 +44,7 @@ Finally, I opened the right ports on the server's firewall in
 `/etc/network/iptables.up.rules`:
 
     -A INPUT -s 192.168.2.3/32 -p udp --dport 5060 -j ACCEPT
+    -A INPUT -s 192.168.2.3/32 -p tcp --dport 5060 -j ACCEPT
     -A INPUT -s 192.168.2.3/32 -p udp --dport 10000:20000 -j ACCEPT
 
 # Network time synchronization
@@ -59,7 +60,7 @@ then I configured it to listen on the private network interface and allow access
 
 Finally, I opened the right firewall port by adding a new rule to `/etc/network/iptables.up.rules`:
 
-    -A INPUT -p udp -s 192.168.2.3 --dport 123 -j ACCEPT
+    -A INPUT -s 192.168.2.3 -p udp --dport 123 -j ACCEPT
 
 # Accessing the admin page
 
