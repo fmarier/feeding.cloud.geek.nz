@@ -1,0 +1,4 @@
+[[!meta title="pages tagged efi"]]
+
+[[!inline pages="tagged(efi)" actions="no" archive="yes"
+feedshow=10]]
