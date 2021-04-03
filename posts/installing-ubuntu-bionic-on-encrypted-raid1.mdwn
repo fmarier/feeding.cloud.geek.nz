@@ -183,4 +183,38 @@ setup:
 At this point, you have a working setup that will gracefully degrade to a
 one-drive RAID array should one of your drives fail.
 
-[[!tag debian]] [[!tag nzoss]] [[!tag ubuntu]] [[!tag raid]]
+## Keep the EFI partitions in sync
+
+Since the EFI partition is not RAIDed, I decided to setup a cron job to
+keep it in sync on the two drives.
+
+First of all, I made sure that both partitions were mounted by explicitly
+using their `PARTUUID` (use `blkid /dev/sda1` to look it up) in `/etc/fstab`:
+
+    PARTUUID=9a923b8a-6d41-473d-b4f3-b7488eedeace  /boot/efi  vfat  umask=0077,rw,x-gvfs-hide      0       1
+    PARTUUID=ef386bc2-e184-4397-86b4-88ecd4469a9b  /mnt/efi   vfat  umask=0077,rw,x-gvfs-hide      0       0
+
+and then creating the `/mnt/efi` directory and mounting everything:
+
+    mkdir -p /mnt/efi
+    mount -a
+
+Then put the following script in `cron.daily/efi-sync`:
+
+    #!/bin/sh
+    if [ ! -e /mnt/efi/backup.mnt ] ; then
+        echo "The backup drive is not mounted in /mnt/efi."
+        exit 1
+    fi
+    if [ ! -e /boot/efi/orig.mnt ] ; then
+        echo "The original drive is not the EFI partition"
+        exit 1
+    fi
+    rsync -aHx --delete --exclude=/efi/orig.mnt --exclude=/efi/backup.mnt /boot/efi /mnt/
+
+and adding the guard files:
+
+    touch /mnt/efi/backup.mnt
+    touch /boot/efi/orig.mnt
+
+[[!tag debian]] [[!tag ubuntu]] [[!tag raid]] [[!tag efi]]
