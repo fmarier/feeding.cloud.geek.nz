@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="216.239.89.105"
+ claimedauthor="Francois Diebolt"
+ subject="network.http.referer.XOriginPolicy settings"
+ date="2021-04-04T16:44:35Z"
+ content="""
+I set both network.http.referer.XOriginPolicy and network.http.referer.XOriginTrimmingPolicy to 2, I'm not sure it's the combination you recommend. I encounter only one break with the login of bmo.com online banking.
+"""]]
