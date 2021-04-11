@@ -228,6 +228,11 @@ to reuse on all of my computers:
         RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL prune
         exit 0
     
+    # Unlock the repository
+    elif [ "$1" = "--unlock" ]; then
+        RESTIC_PASSWORD=$PASSWORD restic -r $REMOTE_URL unlock
+        exit 0
+
     # Catch invalid arguments
     elif [ "$1" != "" ]; then
     	echo "Invalid argument: $1"
