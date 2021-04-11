@@ -240,7 +240,9 @@ to reuse on all of my computers:
     fi
     
     # Check the integrity of existing backups
-    RESTIC_PASSWORD=$PASSWORD restic --quiet -r $REMOTE_URL check || exit 1
+    CHECK_CACHE_DIR="$(mktemp -d /var/tmp/restic-check-XXXXXXXX)"
+    RESTIC_PASSWORD=$PASSWORD restic --quiet --cache-dir=$CHECK_CACHE_DIR -r $REMOTE_URL check || exit 1
+    rmdir "$CHECK_CACHE_DIR"
     
     # Dump list of Debian packages
     dpkg --get-selections > $PKG_FILE
@@ -258,6 +260,11 @@ I run it with the following cronjob in `/etc/cron.d/backups`:
     30 2 * * Sun  root  ionice nice nocache /root/backup/backup-machine1-to-foobar --prune
 
 in a way that [doesn't impact the rest of the system too much](https://feeding.cloud.geek.nz/posts/three-wrappers-to-run-commands-without-impacting-the-rest-of-the-system/).
+
+I also put the following in my `/etc/rc.local` to cleanup any leftover temp
+directories for aborted backups:
+
+    rmdir --ignore-fail-on-non-empty /var/tmp/restic-check-*
 
 Finally, I printed a copy of each of my backup script, using
 [enscript](https://www.gnu.org/software/enscript/), to stash in a safe place:
