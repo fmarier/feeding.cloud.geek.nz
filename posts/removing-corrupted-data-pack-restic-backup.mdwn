@@ -86,4 +86,16 @@ removed due to the other error:
     [1:23] 100.00%  28868 / 28868 files deleted
     done
 
+## Recovering from a corrupt pack
+
+If dropping a single snapshot is not an option (for example, if the corrupt pack is used in
+**every** snapshot!) and you still have the original file, then you can try a
+[different approach](https://github.com/restic/restic/issues/2191#issuecomment-624890063):
+
+    restic rebuild-index
+    restic backup
+
+If you are using an older version of restic which doesn't [automatically heal repos](https://github.com/restic/restic/pull/2827),
+you may need to use the `--force` option to the `backup` command.
+
 [[!tag restic]] [[!tag debian]]
