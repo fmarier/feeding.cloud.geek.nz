@@ -1,0 +1,137 @@
+[[!meta title="Deleting non-decryptable restic snapshots"]]
+[[!meta date="2021-04-12T20:20:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Due to what I suspect is disk corruption error due to a faulty RAM module or
+network interface on my [GnuBee](http://gnubee.org/), my
+[restic](https://restic.net/) backup failed with the following error:
+
+    $ restic check
+    using temporary cache in /var/tmp/restic-tmp/restic-check-cache-854484247
+    repository b0b0516c opened successfully, password is correct
+    created new cache in /var/tmp/restic-tmp/restic-check-cache-854484247
+    create exclusive lock for repository
+    load indexes
+    check all packs
+    check snapshots, trees and blobs
+    error for tree 4645312b:
+      decrypting blob 4645312b443338d57295550f2f4c135c34bda7b17865c4153c9b99d634ae641c failed: ciphertext verification failed
+    error for tree 2c3248ce:
+      decrypting blob 2c3248ce5dc7a4bc77f03f7475936041b6b03e0202439154a249cd28ef4018b6 failed: ciphertext verification failed
+    Fatal: repository contains errors
+
+I started by locating the snapshots which make use of these corrupt trees:
+
+    $ restic find --tree 4645312b
+    repository b0b0516c opened successfully, password is correct
+    Found tree 4645312b443338d57295550f2f4c135c34bda7b17865c4153c9b99d634ae641c
+     ... path /usr/include/boost/spirit/home/support/auxiliary
+     ... in snapshot 41e138c8 (2021-01-31 08:35:16)
+    Found tree 4645312b443338d57295550f2f4c135c34bda7b17865c4153c9b99d634ae641c
+     ... path /usr/include/boost/spirit/home/support/auxiliary
+     ... in snapshot e75876ed (2021-02-28 08:35:29)
+    
+    $ restic find --tree 2c3248ce
+    repository b0b0516c opened successfully, password is correct
+    Found tree 2c3248ce5dc7a4bc77f03f7475936041b6b03e0202439154a249cd28ef4018b6
+     ... path /usr/include/boost/spirit/home/support/char_encoding
+     ... in snapshot 41e138c8 (2021-01-31 08:35:16)
+    Found tree 2c3248ce5dc7a4bc77f03f7475936041b6b03e0202439154a249cd28ef4018b6
+     ... path /usr/include/boost/spirit/home/support/char_encoding
+     ... in snapshot e75876ed (2021-02-28 08:35:29)
+
+and then deleted them:
+
+    $ restic forget 41e138c8 e75876ed
+    repository b0b0516c opened successfully, password is correct
+    [0:00] 100.00%  2 / 2 files deleted
+
+    $ restic prune 
+    repository b0b0516c opened successfully, password is correct
+    counting files in repo
+    building new index for repo
+    [13:23] 100.00%  58964 / 58964 packs
+    repository contains 58964 packs (1417910 blobs) with 278.913 GiB
+    processed 1417910 blobs: 0 duplicate blobs, 0 B duplicate
+    load all snapshots
+    find data that is still in use for 20 snapshots
+    [1:15] 100.00%  20 / 20 snapshots
+    found 1364852 of 1417910 data blobs still in use, removing 53058 blobs
+    will remove 0 invalid files
+    will delete 942 packs and rewrite 1358 packs, this frees 6.741 GiB
+    [10:50] 31.96%  434 / 1358 packs rewritten
+    hash does not match id: want 9ec955794534be06356655cfee6abe73cb181f88bb86b0cd769cf8699f9f9e57, got 95d90aa48ffb18e6d149731a8542acd6eb0e4c26449a4d4c8266009697fd1904
+    github.com/restic/restic/internal/repository.Repack
+    	github.com/restic/restic/internal/repository/repack.go:37
+    main.pruneRepository
+    	github.com/restic/restic/cmd/restic/cmd_prune.go:242
+    main.runPrune
+    	github.com/restic/restic/cmd/restic/cmd_prune.go:62
+    main.glob..func19
+    	github.com/restic/restic/cmd/restic/cmd_prune.go:27
+    github.com/spf13/cobra.(*Command).execute
+    	github.com/spf13/cobra/command.go:852
+    github.com/spf13/cobra.(*Command).ExecuteC
+    	github.com/spf13/cobra/command.go:960
+    github.com/spf13/cobra.(*Command).Execute
+    	github.com/spf13/cobra/command.go:897
+    main.main
+    	github.com/restic/restic/cmd/restic/main.go:98
+    runtime.main
+    	runtime/proc.go:204
+    runtime.goexit
+    	runtime/asm_amd64.s:1374
+
+As you can see above, the `prune` command failed due to a corrupt pack and
+so I followed the [process I previously wrote
+about](https://feeding.cloud.geek.nz/posts/removing-corrupted-data-pack-restic-backup/)
+and identified the affected snapshots using:
+
+    $ restic find --pack 9ec955794534be06356655cfee6abe73cb181f88bb86b0cd769cf8699f9f9e57
+
+before deleting them with:
+
+    $ restic forget 031ab8f1 1672a9e1 1f23fb5b 2c58ea3a 331c7231 5e0e1936 735c6744 94f74bdb b11df023 dfa17ba8 e3f78133 eefbd0b0 fe88aeb5 
+    repository b0b0516c opened successfully, password is correct
+    [0:00] 100.00%  13 / 13 files deleted
+
+    $ restic prune
+    repository b0b0516c opened successfully, password is correct
+    counting files in repo
+    building new index for repo
+    [13:37] 100.00%  60020 / 60020 packs
+    repository contains 60020 packs (1548315 blobs) with 283.466 GiB
+    processed 1548315 blobs: 129812 duplicate blobs, 4.331 GiB duplicate
+    load all snapshots
+    find data that is still in use for 8 snapshots
+    [0:53] 100.00%  8 / 8 snapshots
+    found 1219895 of 1548315 data blobs still in use, removing 328420 blobs
+    will remove 0 invalid files
+    will delete 6232 packs and rewrite 1275 packs, this frees 36.302 GiB
+    [23:37] 100.00%  1275 / 1275 packs rewritten
+    counting files in repo
+    [11:45] 100.00%  52822 / 52822 packs
+    finding old index files
+    saved new indexes as [a31b0fc3 9f5aa9b5 db19be6f 4fd9f1d8 941e710b 528489d9 fb46b04a 6662cd78 4b3f5aad 0f6f3e07 26ae96b2 2de7b89f 78222bea 47e1a063 5abf5c2d d4b1d1c3 f8616415 3b0ebbaa]
+    remove 23 old index files
+    [0:00] 100.00%  23 / 23 files deleted
+    remove 7507 old packs
+    [0:08] 100.00%  7507 / 7507 files deleted
+    done
+
+And with 13 of my 21 snapshots deleted, the checks now pass:
+
+    $ restic check
+    using temporary cache in /var/tmp/restic-tmp/restic-check-cache-407999210
+    repository b0b0516c opened successfully, password is correct
+    created new cache in /var/tmp/restic-tmp/restic-check-cache-407999210
+    create exclusive lock for repository
+    load indexes
+    check all packs
+    check snapshots, trees and blobs
+    no errors were found
+
+This represents a significant amount of lost backup history, but at least
+it's not all of it.
+
+[[!tag gnubee]] [[!tag restic]] [[!tag debian]]
