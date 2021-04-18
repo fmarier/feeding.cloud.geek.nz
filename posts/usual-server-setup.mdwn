@@ -24,7 +24,7 @@ Then I check the hard drives using:
 
 # Configuration
 
-    apt install etckeeper git sudo vim
+    apt install etckeeper git sudo vim dialog
 
 Since I use vim for all of my configuration file editing, I make it the
 default editor:
@@ -282,7 +282,7 @@ you need to restart a daemon using an obsolete library.
 
 # Handy utilities
 
-    apt install renameutils atool iotop sysstat lsof mtr-tiny mc netcat-openbsd command-not-found nocache apt-file
+    apt install renameutils atool iotop sysstat lsof mtr-tiny mc netcat-openbsd command-not-found nocache apt-file man-db
 
 Most of these tools are configuration-free, except for sysstat, which requires
 enabling data collection in `/etc/default/sysstat` to be useful.
