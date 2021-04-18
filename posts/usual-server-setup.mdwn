@@ -235,7 +235,7 @@ and the following to harden the TCP stack:
     net.ipv6.conf.default.accept_redirects = 0
     net.ipv6.conf.default.accept_source_route = 0
 
-before reloading these settings using `sysctl -p`.
+before reloading these settings using `sysctl -p /etc/sysctl.d/local.conf`.
 
 [Sandboxing in apt](https://www.debian.org/releases/buster/amd64/release-notes/ch-whats-new.en.html#apt-sandboxing) can be enabled by putting the following in `/etc/apt/apt.conf.d/30-seccomp`:
 
