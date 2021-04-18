@@ -69,11 +69,11 @@ before restarting the daemon:
 That may not be enough on your machine though. To check whether or not the
 time has been synchronized with NTP servers, run the following:
 
-    $ timedatectl status
+    $ timedatectl
     ...
-     Network time on: yes
-    NTP synchronized: no
-     RTC in local TZ: no
+    System clock synchronized: yes
+                  NTP service: inactive
+              RTC in local TZ: no
 
 If NTP is not enabled, then you can enable it by running this command:
 
@@ -82,10 +82,10 @@ If NTP is not enabled, then you can enable it by running this command:
 Once that's done, everything should be in place and time should be kept
 correctly:
 
-    $ timedatectl status
+    $ timedatectl
     ...
-     Network time on: yes
-    NTP synchronized: yes
-     RTC in local TZ: no
+    System clock synchronized: yes
+                  NTP service: active
+              RTC in local TZ: no
 
-[[!tag debian]] [[!tag nzoss]] [[!tag systemd]] [[!tag ntp]]
+[[!tag debian]] [[!tag systemd]] [[!tag ntp]]
