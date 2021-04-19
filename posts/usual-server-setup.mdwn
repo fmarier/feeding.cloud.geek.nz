@@ -197,6 +197,10 @@ and these to `/etc/rkhunter.conf.local`:
     ALLOWHIDDENFILE=/etc/.etckeeper
     ALLOWHIDDENFILE=/etc/.gitignore
     
+    SCRIPTWHITELIST=/usr/bin/egrep
+    SCRIPTWHITELIST=/usr/bin/fgrep
+    SCRIPTWHITELIST=/usr/bin/which
+    
     ALLOWDEVFILE=/dev/shm/logcheck.*
     ALLOWDEVFILE=/dev/shm/logcheck.*/ignore/*
     ALLOWDEVFILE=/dev/shm/logcheck.*/violations/*
