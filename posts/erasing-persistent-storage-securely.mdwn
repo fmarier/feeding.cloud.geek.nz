@@ -51,4 +51,4 @@ Erase](https://www.mankier.com/1/nvme-format)
 
     nvme format -s1 /dev/nvme0n1
 
-[[!tag debian]] [[!tag nzoss]] [[!tag luks]]
+[[!tag debian]] [[!tag ssd]] [[!tag luks]]
