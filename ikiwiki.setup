@@ -76,11 +76,10 @@ add_plugins:
 - date
 - prettydate
 - recentchanges
-- relativedate
-- sortnaturally
 # plugins to disable
 disable_plugins:
 - fortune
+- relativedate
 - txt
 # additional directory to search for template files
 templatedir: /usr/share/ikiwiki/templates
