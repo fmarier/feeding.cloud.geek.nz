@@ -88,14 +88,248 @@ removed due to the other error:
 
 ## Recovering from a corrupt pack
 
-If dropping a single snapshot is not an option (for example, if the corrupt pack is used in
-**every** snapshot!) and you still have the original file, then you can try a
-[different approach](https://github.com/restic/restic/issues/2191#issuecomment-624890063):
+I ran into this problem a second time:
 
+    hash does not match id: want 4f0d26ae93d48ae9a274b0802c208fa47dcc2f97393378d63c208dd8dbcdf176, got 4f1eeb7ed1423358d4c579e641fe40a6340565c64f2df96ac19d28714a769806
+
+but in that case dropping a single snapshot is not an option because the
+invalid pack is used in **every** snapshot!
+
+Digging more into this problem, I realized I could trigger the error by
+requesting this pack specifically:
+
+    $ restic -r sftp:hostname.local: cat pack 4f0d26ae93d48ae9a274b0802c208fa47dcc2f97393378d63c208dd8dbcdf176 | sha256sum
+    Warning: hash of data does not match ID, want
+      4f0d26ae93d48ae9a274b0802c208fa47dcc2f97393378d63c208dd8dbcdf176
+    got:
+      4f1eeb7ed1423358d4c579e641fe40a6340565c64f2df96ac19d28714a769806
+    4f1eeb7ed1423358d4c579e641fe40a6340565c64f2df96ac19d28714a769806  -
+
+If I ssh into my backup server and look at the pack file directly, I can see
+that the contents of it do not match its name (the name is supposed to be
+the hash of the contents):
+
+    $ sha256sum /mnt/data/home/machine1/data/4f/4f0d26ae93d48ae9a274b0802c208fa47dcc2f97393378d63c208dd8dbcdf176
+    4f1eeb7ed1423358d4c579e641fe40a6340565c64f2df96ac19d28714a769806  /mnt/data/home/machine1/data/4f/4f0d26ae93d48ae9a274b0802c208fa47dcc2f97393378d63c208dd8dbcdf176
+
+After looking at the underlying file that is involved in this data corruption:
+
+    $ restic -r sftp:hostname.local: find --pack 4f0d26ae93d48ae9a274b0802c208fa47dcc2f97393378d63c208dd8dbcdf176
+    Found blob aec3a1b637a09f173652d509c1f39b8248deeba83d6c74ca99749676d7a4fb75
+     ... in file /mnt/pub/video.mkv
+         (tree 7b83ceeb0cadb35a6e1103ebb37152e9b1338469fbc782256b95c0ddb6d4cc4e)
+     ... in snapshot b0c7a69f (2021-04-16 09:41:47)
+
+I decided that I didn't care about potentially losing it and worked around
+the invalid filename by renaming the pack (on the backup server) to its current hash:
+
+    $ cd /mnt/data/home/machine1/data/4f/
+    $ mv 4f0d26ae93d48ae9a274b0802c208fa47dcc2f97393378d63c208dd8dbcdf176 4f1eeb7ed1423358d4c579e641fe40a6340565c64f2df96ac19d28714a769806
+
+That **didn't work** and made `restic prune` fail.
+
+Since I still have the original video file, I figured I could just delete
+the pack and then trigger a new backup to re-upload it:
+
+    $ cd /mnt/data/home/machine1/data/4f/
+    $ rm 4f0d26ae93d48ae9a274b0802c208fa47dcc2f97393378d63c208dd8dbcdf176
+    
+    $ restic -r sftp:hostname.local: backup --force
+    repository 1e424ff8 opened successfully, password is correct
+    
+    Files:       620161 new,     0 changed,     0 unmodified
+    Dirs:            0 new,     0 changed,     0 unmodified
+    Added to the repo: 392.716 MiB
+    
+    processed 620161 files, 1.637 TiB in 2:02:23
+    snapshot 710af622 saved
+
+After doing that, I was able to run `restic prune` successfully and a simple
+`check` passed:
+
+    $ restic -r sftp:hostname.local: check
+    repository 1e424ff8 opened successfully, password is correct
+    created new cache in /var/tmp/restic-check-tmp/restic-check-cache-878723178
+    create exclusive lock for repository
+    load indexes
+    check all packs
+    check snapshots, trees and blobs
+    no errors were found
+
+but a more thorough `check` exposed another corrupt pack:
+
+    $ restic -r sftp:hostname.local: check
+    using temporary cache in /var/tmp/restic-check-tmp/restic-check-cache-878723178
+    repository 1e424ff8 opened successfully, password is correct
+    created new cache in /var/tmp/restic-check-tmp/restic-check-cache-878723178
+    create exclusive lock for repository
+    load indexes
+    check all packs
+    check snapshots, trees and blobs
+    no errors were found
+
+    $ restic -r sftp:hostname.local: check --read-data
+    using temporary cache in /var/tmp/restic-check-tmp/restic-check-cache-502831432
+    repository 1e424ff8 opened successfully, password is correct
+    created new cache in /var/tmp/restic-check-tmp/restic-check-cache-502831432
+    create exclusive lock for repository
+    load indexes
+    check all packs
+    check snapshots, trees and blobs
+    read all data
+    Pack ID does not match, want b6c9bd10, got 89dc2d85
+    [9:30:09] 100.00%  385573 / 385573 items
+    duration: 9:30:09
+    Fatal: repository contains errors
+
+I removed that one too:
+
+    $ cd /mnt/data/home/machine1/data/b6/
+    $ rm b6c9bd10c68347d6bb76328d4bcb4b07c5dbf4f0b9317a4268844ea6c8b0b179
+
+    $ restic -r sftp:hostname.local: backup --force
+    repository 1e424ff8 opened successfully, password is correct
+    
+    Files:       620209 new,     0 changed,     0 unmodified
+    Dirs:            0 new,     0 changed,     0 unmodified
+    Added to the repo: 12.156 GiB
+    
+    processed 620209 files, 1.655 TiB in 2:10:10
+    snapshot b63f6890 saved
+
+but this time pruning didn't work:
+
+    $ restic -r sftp:hostname.local: check --read-data
+    using temporary cache in /var/tmp/restic-check-tmp/restic-check-cache-315342197
+    repository 1e424ff8 opened successfully, password is correct
+    created new cache in /var/tmp/restic-check-tmp/restic-check-cache-315342197
+    create exclusive lock for repository
+    load indexes
+    check all packs
+    pack b6c9bd10: does not exist
+    check snapshots, trees and blobs
+    read all data
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 458.926983ms: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 952.879588ms: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 1.512969815s: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 1.345233563s: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 2.502610537s: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 2.391042907s: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 4.49847416s: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 4.678015434s: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 19.187660462s: file does not exist
+    Load(<data/b6c9bd10c6>, 0, 0) returned error, retrying after 14.884802036s: file does not exist
+    checkPack: Load: file does not exist
+    [9:36:58] 100.00%  388034 / 388034 items
+    duration: 9:36:58
+    Fatal: repository contains errors
+
+    $ restic -r sftp:hostname.local: prune
+    repository 1e424ff8 opened successfully, password is correct
+    counting files in repo
+    building new index for repo
+    [1:42:28] 100.00%  388033 / 388033 packs
+    repository contains 388033 packs (2638525 blobs) with 1.838 TiB
+    processed 2638525 blobs: 0 duplicate blobs, 0 B duplicate
+    load all snapshots
+    find data that is still in use for 23 snapshots
+    [1:38] 100.00%  23 / 23 snapshots
+    Fatal: number of used blobs is larger than number of available blobs!
+    Please report this error (along with the output of the 'prune' run) at
+    https://github.com/restic/restic/issues/new
+
+So, as suggested [on the restic issue
+tracker](https://github.com/restic/restic/issues/3370#issuecomment-826063097),
+I rebuilt the index:
+
+    $ restic -r sftp:hostname.local: rebuid-index
+    repository 1e424ff8 opened successfully, password is correct
+    counting files in repo
+    [44:35] 100.00%  395104 / 395104 packs
+    finding old index files
+    saved new indexes as [9a17c926 933252b2 2ef59ca2 679d4819 2661f12e 771b2013 d532cd44 55b4f8ab 5a3e6b2a 7b75e860 13c15b59 60d3266e 1fbe4dc5 f3b2396a c9debfa0 5ea78678 4e74f3ef bb9e99d9 9e335e0a 700a625d db9177b7 0a80aa31 9cbc436e 33211891 bfa29354 b67bc0f9 dfdda084 bc92aba3 c1dff125 652c4185 8c010d90 5c87bbfc fc4ba6f1 c0a7396e c54917ec 6aa26645 691cf977 f91223d3 cf9ff525 c1441550 ef71cb97 978192b2 40b416e9 31373aae 01bcade9 6f8b98bb 3e15ba5f d62b68c7 c92c5277 4270bae1 96822d59 cd45d864 d7830dad d6eae2a0 68cc1f1c 8501c6b7 fb95ce78 50479d33 e3afbbc9 f83fbfb6 097fd285 4d1ad340 b2a9b7ce 80add534 9cee064d 1cc5bbe3 7d40526b 334aecc9 952f8ed5 89d830b2 89e0c097 f3a3abf6 3c88ac9e c8cae3e5 1dc35cd3 3d70ba93 c59da9ee 2c19a371 5eed964c 1191bfee fa0e0c31 f79af9bb 214916f7 55cd25c4 03c5550f 8c36e374 7b0d2307 5c1c089a d62c5d18 d5c19d53 2e5f8647 27b5e5cf 87e164ff 0c9a7374 b2fa9e91 8781539c 1f130615 92396e28 1b630ee2 ecdb6b3c aae6de03 65fe2b9d 245d0258 6c446e2f 4f53e49e c6dba856 129c066d af0cb9e4 562adf6d eec351a0 6b9d2810 8d2b1aaf 69700877 4adff4e4 3ad2f960 79c8c084 fdccfa7a a0a1ef23 6ec37846 0b4f2199 8c2dc492 c304aeef d2fb56f3 30a0b5dd 20b01d0b c5bd22ad e96e0e72 73d39d25 57329b10 e9cfb1ef 685611e6 ce291336]
+    remove 132 old index files
+
+and performed a forced backup:
+
+    $ restic -r sftp:hostname.local: backup --force
+    repository 1e424ff8 opened successfully, password is correct
+    
+    Files:       620136 new,     0 changed,     0 unmodified
+    Dirs:            0 new,     0 changed,     0 unmodified
+    Added to the repo: 1.034 GiB
+    
+    processed 620136 files, 1.612 TiB in 2:00:40
+    snapshot a15ee906 saved
+
+followed by a `prune`:
+
+    $ restic -r sftp:hostname.local: prune
+    repository 1e424ff8 opened successfully, password is correct
+    counting files in repo
+    building new index for repo
+    [48:19] 100.00%  395322 / 395322 packs
+    repository contains 395322 packs (2664883 blobs) with 1.873 TiB
+    processed 2664883 blobs: 0 duplicate blobs, 0 B duplicate
+    load all snapshots
+    find data that is still in use for 25 snapshots
+    [1:40] 100.00%  25 / 25 snapshots
+    found 2664883 of 2664883 data blobs still in use, removing 0 blobs
+    will remove 0 invalid files
+    will delete 0 packs and rewrite 0 packs, this frees 0 B
+    counting files in repo
+    [10:14] 100.00%  395322 / 395322 packs
+    finding old index files
+    saved new indexes as [3304a0b5 040cac48 c38f9c4d 1619862d 2c314f95 c9a1c845 3f836327 4f2830a5 9e9a9806 3040f9bd 9e1b0589 146f395c 27d91277 08616709 38757c70 15093193 103ba3e1 e6cbe636 55fcbe20 92c12833 8a212821 a278e6eb 467328be 4b29f8c4 934de2a2 12d3f314 01c08b76 7101de54 afc8979b 18395477 48d140ef 48b48906 ee339513 742eea48 0d54eeb5 7dfbad62 54bdd724 33511da3 8b2628fd d566581d 0272fbf6 0510755d 64a39724 d4a51c31 432b0019 45469c45 c28d99fc c2329a41 c4dc9880 d52fdb9e 00b2c975 d791f871 c5e37a0e 1c3f7f40 008dda03 70cce88c e2bdef19 980839da a8388aad 9f2fdfc7 3f81fb07 20ec25f3 f3b0e273 8adfe021 5cb21bf4 f9664745 e81e0dc1 bdf674b3 4b43311f f576ee7b 6ff78a24 050d0d7a 079dda00 5a92ee95 c7a73677 42269868 c54be3e7 96a8339d 4fac763a aa859ad2 0282a555 d8145fdc 7fb9cae8 0b88bb4f 4ba5cdf5 6f4bc3ad 040580df fd5e0594 fe642426 58839033 0044dba1 73369fba d1d574aa 97833dff 469993c4 d6e89ba7 1e7378d3 3c5ce4a8 634c33b3 85db6047 2902f128 5c874b86 fa13fa7a 0e3319d6 7b5e5b57 41f864cf 72646b83 f3e19e87 cb28793a e2d3d8d5 42d7fac3 e5cc116f 5cb8d048 e5b54e10 1d3c59eb a5343bd8 9a11b3d9 5d607d3a c64ae7d5 84043ae5 ab28156d dbc777ba 870a4333 7bd74995 e21d054d 1983d216 c89603bd e767acff 2eb43682 44f44f58 9505e382 bb180450]
+    remove 136 old index files
+    done
+
+That finally resolved the problems:
+
+    $ restic -r sftp:hostname.local: check --read-data
+    using temporary cache in /var/tmp/restic-check-tmp/restic-check-cache-120208924
+    repository 1e424ff8 opened successfully, password is correct
+    created new cache in /var/tmp/restic-check-tmp/restic-check-cache-120208924
+    create exclusive lock for repository
+    load indexes
+    check all packs
+    check snapshots, trees and blobs
+    read all data
+    [10:06:21] 100.00%  395322 / 395322 items
+    duration: 10:06:21
+    no errors were found
+
+    $ restic -r sftp:hostname.local: prune
+    repository 1e424ff8 opened successfully, password is correct
+    counting files in repo
+    building new index for repo
+    [1:46:03] 100.00%  395322 / 395322 packs
+    repository contains 395322 packs (2664883 blobs) with 1.873 TiB
+    processed 2664883 blobs: 0 duplicate blobs, 0 B duplicate
+    load all snapshots
+    find data that is still in use for 25 snapshots
+    [1:40] 100.00%  25 / 25 snapshots
+    found 2664883 of 2664883 data blobs still in use, removing 0 blobs
+    will remove 0 invalid files
+    will delete 0 packs and rewrite 0 packs, this frees 0 B
+    counting files in repo
+    [51:25] 100.00%  395322 / 395322 packs
+    finding old index files
+    saved new indexes as [625949a2 ab90eb8e 14b9628f b167409c f7ec7fcd 6b4c8610 bbe52582 71bfc8a6 3cba9ff0 1c7bde59 a7964e22 06b80d66 14c809a9 7b86e517 d99947de 2210743d 4491e925 bce9c547 b6f6d858 8c5971a1 55e33c29 f7ffa1d4 4cc2840d ce1abd72 b060fa02 d2fd09ff f4a0131b 374a9189 2dccd29a 1945cd5f c7ee7206 3d04a42d f438b047 452db6f1 27c963d7 f58fbd51 96b1f61e a9a0973d ba4d6703 e678c54c 51302c74 afbb4bac 8751b54e 94473541 d9b32531 60df7481 8106fd0c 61253b21 2e875c92 7df95dd3 0adf9c74 88170e77 91792c60 0ea4e491 39b94739 11c1fe4b 43b126ca cc735f84 27b9b442 081e8ab0 48e93444 1b0fa84c ffbfd282 838e6e98 84a12734 c2e4b6cf 6e175d0a 43998700 eb0a3082 05a82e0d 0ebca5a7 8a0007ce 2c726d2f 04b69cc9 f6ba1902 76e56673 9b0deb48 5a847d01 d0aaa74b 20fe5986 5467b907 b6f5bafc 53117b38 ae52eb33 fa327a6e 219a650c 37f52f15 8d15e4d8 b3c30a8c 38b23a1f 1a8c3cc5 2d7f8cb5 d051dae6 40e95005 a37e5883 aa541d2f de31889c 55ce512c 9c754673 aa1e62f6 8c11b17e 98c21930 c4425cef 295f092b daa08873 71c296e4 7ca9c531 43d3ead3 e397f19a 963e4a9e 531fd7c4 e68f7ee8 6e1c2dd8 8ee249fc 02068c0f 8ffe124f 6b2469bd 92aae0d2 464e119f b49edd74 feddbd73 a2bfe6ea cca616ce f30e6c1d 0614837e 120477e1 d39fe0f2 52ed1a31 6343369d 362e7a30 9039009b f6499019]
+    remove 132 old index files
+    done
+
+In other words, if dropping a single snapshot is not an option and you still
+have the original file, then try **deleting the corrupt pack** and then
+running:
+    
     restic rebuild-index
-    restic backup
+    restic backup --force
+    restic prune
 
-If you are using an older version of restic which doesn't [automatically heal repos](https://github.com/restic/restic/pull/2827),
-you may need to use the `--force` option to the `backup` command.
+Note that if you are using newer version of restic which [automatically
+heals repos](https://github.com/restic/restic/pull/2827) (i.e. 0.12.0 or
+later), you may not need to use the `--force` option with the `backup`
+command.
 
 [[!tag restic]] [[!tag debian]]
