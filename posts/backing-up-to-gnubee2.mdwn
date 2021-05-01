@@ -51,7 +51,7 @@ each of them.
 
 Then I created the RAID array:
 
-    mdadm /dev/md127 --create -n 3 --level=raid5 -a /dev/sdb1 /dev/sdc1 /dev/sdd1
+    mdadm /dev/md127 --create -n 3 --level=raid5 /dev/sdb1 /dev/sdc1 /dev/sdd1
 
 and waited more than 24 hours for that operation to finish. Next, I
 formatted the array:
