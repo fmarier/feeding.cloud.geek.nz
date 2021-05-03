@@ -19,7 +19,7 @@ Do the following as the `root` user:
 2. Encrypt your home partition:
 
        umount /home
-       cryptsetup -h sha256 -c aes-xts-plain64 -s 512 luksFormat /dev/sda5
+       cryptsetup -h sha512 -c aes-xts-plain64 -s 512 luksFormat /dev/sda5
        cryptsetup luksOpen /dev/sda5 chome
        mkfs.ext4 -m 0 /dev/mapper/chome
 
