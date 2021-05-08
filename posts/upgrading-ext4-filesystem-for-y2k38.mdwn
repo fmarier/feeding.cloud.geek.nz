@@ -1,0 +1,34 @@
+[[!meta title="Deleting non-decryptable restic snapshots"]]
+[[!meta date="2021-05-08T11:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+If you see a message like this in your logs:
+
+    ext4 filesystem being mounted at /boot supports timestamps until 2038 (0x7fffffff
+
+it's an indication that your filesystem is not [Y2k38](https://en.wikipedia.org/wiki/Year_2038_problem)-safe.
+
+You can also check this manually using:
+
+    $ tune2fs -l /dev/sda1 | grep "Inode size:"
+    Inode size:	          128
+
+where an inode size of `128` is insufficient beyond 2038 and an inode size
+of `256` is what you want.
+
+The safest way to change this is to copy the contents of your partition to another `ext4`
+partition:
+
+    cp -a /boot /mnt/backup/
+
+and then reformat with the correct inode size:
+
+    umount /boot
+    mkfs.ext4 -I 256 /dev/sda1
+
+before copying everything back:
+
+    mount /boot
+    cp -a /mnt/backup/boot/* /boot/
+
+[[!tag debian]] [[!tag ext4]]
