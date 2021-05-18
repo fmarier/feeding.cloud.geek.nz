@@ -4,7 +4,7 @@
 
 If you see a message like this in your logs:
 
-    ext4 filesystem being mounted at /boot supports timestamps until 2038 (0x7fffffff
+    ext4 filesystem being mounted at /boot supports timestamps until 2038 (0x7fffffff)
 
 it's an indication that your filesystem is not [Y2k38](https://en.wikipedia.org/wiki/Year_2038_problem)-safe.
 
