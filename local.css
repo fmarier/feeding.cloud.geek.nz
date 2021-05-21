@@ -64,8 +64,8 @@ body {
         font-weight: bold;
     }
 
-    .pageheader .actions a[href^='/ikiwiki.cgi?do=comment'],
-    .pageheader .actions a[href^='/ikiwiki.cgi?do=edit'],
+    .pageheader .actions a[href^='/blog.cgi?do=comment'],
+    .pageheader .actions a[href^='/blog.cgi?do=edit'],
     .pageheader .actions a[href^='./#comments'] {
         display: none;
     }
