@@ -31,4 +31,6 @@ before copying everything back:
     mount /boot
     cp -a /mnt/backup/boot/* /boot/
 
+TEST
+
 [[!tag debian]] [[!tag ext4]]
