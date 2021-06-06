@@ -1,4 +1,4 @@
 [[!meta title="pages tagged django"]]
 
 [[!inline pages="tagged(django)" actions="no" archive="yes"
-feedshow=10 feedpages=created_after(posts/adding-x-content-security-policy)]]
+feedshow=10 feedpages=created_after(posts/mysterious-400-bad-request-error-django-debug/)]]
