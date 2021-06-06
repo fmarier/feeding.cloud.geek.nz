@@ -1,0 +1,13 @@
+{
+    "name": "Feeding the Cloud",
+    "description": "Blog of François Marier",
+    "repository": {
+        "url": "https://github.com/fmarier/feeding.cloud.geek.nz",
+        "license": "CC-BY-SA-4.0"
+    },
+    "keywords": [
+        "Blog",
+        "Open Source",
+        "Free Software"
+    ]
+}
