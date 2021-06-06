@@ -1,4 +1,4 @@
-<a href="/index.rss"><img src="/feed-icon.png" height="32" width="32" align="left">Subscribe to the feed</a>
+<a href="/index.rss" title="RSS feed"><img src="/feed-icon.png" height="32" width="32" align="left">Subscribe to the feed</a>
 
 # About me
 
