@@ -79,6 +79,10 @@ body {
     font-size: inherit;
 }
 
+input#searchbox {
+    background: url('/wikiicons/search-bg.gif') no-repeat;
+}
+
 .pageheader .actions > ul > li {
         margin: 0;
         padding: 0;
