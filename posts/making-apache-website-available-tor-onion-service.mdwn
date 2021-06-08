@@ -18,7 +18,7 @@ and then setting the following in `/etc/tor/torrc`:
 
     SocksPort 0
     SocksPolicy reject *
-    HiddenServiceDir /var/lib/tor/hidden_service/
+    HiddenServiceDir /var/lib/tor/hidden\_service/
     HiddenServicePort 80 [2600:3c04::f03c:91ff:fe8c:61ac]:80
     HiddenServicePort 443 [2600:3c04::f03c:91ff:fe8c:61ac]:443
     HiddenServiceVersion 3
@@ -45,7 +45,7 @@ After restarting the Tor daemon to reload the configuration file:
 
 I looked for the address of my onion service:
 
-    $ cat /var/lib/tor/hidden_service/hostname 
+    $ cat /var/lib/tor/hidden\_service/hostname
     ixrdj3iwwhkuau5tby5jh3a536a2rdhpbdbu6ldhng43r47kim7a3lid.onion
 
 ## Apache configuration
