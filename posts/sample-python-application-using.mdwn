@@ -109,7 +109,7 @@ print result
 The above source code is released under the following terms:  
 
 > [![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)  
-To the extent possible under law, [Francois Marier](http://feeding.cloud.geek.nz/) has waived all copyright and related or neighboring rights to this sample libgearman Python application. This work is published from: New Zealand.
+To the extent possible under law, [Francois Marier](https://fmarier.org/) has waived all copyright and related or neighboring rights to this sample libgearman Python application. This work is published from: New Zealand.
 
 
 [[!tag gearman]] [[!tag catalyst]] [[!tag debian]] [[!tag python]] [[!tag ubuntu]] [[!tag nzoss]] 
