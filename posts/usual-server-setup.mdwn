@@ -90,7 +90,7 @@ Make sure the default locale is **using the UTF-8** encoding since that will
 ensure that things like Postgres default to the One True Encoding when you
 install/bootstrap them.
 
-Other than that, I [harden the ssh configuration](http://feeding.cloud.geek.nz/posts/hardening-ssh-servers/)
+Other than that, I [harden the ssh configuration](/posts/hardening-ssh-servers/)
 and end up with the following settings in `/etc/ssh/sshd_config` (jessie):
 
     HostKey /etc/ssh/ssh_host_ed25519_key
@@ -264,7 +264,7 @@ I also set the server timezone to **UTC** using `dpkg-reconfigure tzdata`.
     apt install molly-guard safe-rm sl
 
 The above packages are all about catching mistakes (such as
-[accidental deletions](http://feeding.cloud.geek.nz/posts/preventing-accidental-deletion-of/)).
+[accidental deletions](/posts/preventing-accidental-deletion-of/)).
 
 # Package updates
 
@@ -272,11 +272,11 @@ The above packages are all about catching mistakes (such as
 
 These tools help me keep packages up to date and remove unnecessary or
 obsolete packages from servers. On Rackspace servers, a small [configuration
-change](http://feeding.cloud.geek.nz/posts/using-unattended-upgrades-on-rackspace-debian-ubuntu-servers/)
+change](/posts/using-unattended-upgrades-on-rackspace-debian-ubuntu-servers/)
 is needed to automatically update the monitoring tools.
 
 On jessie or later, I install
-[reboot-notifier](http://feeding.cloud.geek.nz/posts/introducing-reboot-notifier/)
+[reboot-notifier](/posts/introducing-reboot-notifier/)
 to send me a notification whenever a kernel update requires a reboot to take
 effect.
 

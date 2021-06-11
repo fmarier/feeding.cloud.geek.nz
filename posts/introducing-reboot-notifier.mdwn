@@ -7,7 +7,7 @@ One of the packages that got
 transition from Debian wheezy to jessie was the
 [update-notifier-common](https://packages.debian.org/wheezy/update-notifier-common)
 package which could be [used to receive notifications when a reboot is
-needed](http://feeding.cloud.geek.nz/posts/usual-server-setup/#Package_updates)
+needed](/posts/usual-server-setup/#Package_updates)
 (for example, after installing a kernel update).
 
 I decided to wrap this piece of functionality along with a [simple cron

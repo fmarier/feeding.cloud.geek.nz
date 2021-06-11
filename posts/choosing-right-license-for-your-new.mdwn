@@ -43,7 +43,7 @@ Here's an sample copyright statement for a piece of software under the latest ve
 
 This helps distributors and contributors by explicitly stating the license version as well as the name and contact details of the copyright holder.  
   
-Next up: some tips and ideas about [what to provide along with your source code](http://feeding.cloud.geek.nz/2008/09/promoting-your-free-software-project.html)
+Next up: some tips and ideas about [what to provide along with your source code](/2008/09/promoting-your-free-software-project.html)
 
 
 [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 

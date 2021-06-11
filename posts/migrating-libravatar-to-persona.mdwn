@@ -28,7 +28,7 @@ One thing to note is that while [`loggedInEmail` is going to be renamed to `logg
 
 ### Simplifying Content Security Policy headers
 
-The [CSP headers](http://feeding.cloud.geek.nz/2011/11/using-browserid-and-content-security.html) that Libravatar used to set on the pages that made use of the Persona Javascript shim now need to be set on every page, which is actually a nice [simplication of our Apache config](https://git.nzoss.org.nz/libravatar/libravatar/commit/ae4c4db7859193eed6c85d820d95a1134599f21c).
+The [CSP headers](/2011/11/using-browserid-and-content-security.html) that Libravatar used to set on the pages that made use of the Persona Javascript shim now need to be set on every page, which is actually a nice [simplication of our Apache config](https://git.nzoss.org.nz/libravatar/libravatar/commit/ae4c4db7859193eed6c85d820d95a1134599f21c).
 
 Note that if your CSP headers still refer to `browserid.org`, you must [change them to `login.persona.org`](https://mail.mozilla.org/pipermail/persona-notices/2012/000001.html).
 

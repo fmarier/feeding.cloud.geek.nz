@@ -58,15 +58,15 @@ to get them added to my blog.
 My rules look like this:
 
     # Tagged feeds
-    Redirect permanent /feeds/posts/default/-/debian http://feeding.cloud.geek.nz/tags/debian/index.rss
-    Redirect permanent /search/label/debian http://feeding.cloud.geek.nz/tags/debian
+    Redirect permanent /feeds/posts/default/-/debian /tags/debian/index.rss
+    Redirect permanent /search/label/debian /tags/debian
     
     # Main feed (needs to come after the tagged feeds)
-    Redirect permanent /feeds/posts/default http://feeding.cloud.geek.nz/index.rss
+    Redirect permanent /feeds/posts/default /index.rss
     
     # Articles
-    Redirect permanent /2012/12/keeping-gmail-in-separate-browser.html http://feeding.cloud.geek.nz/posts/keeping-gmail-in-separate-browser/
-    Redirect permanent /2012/11/prefetching-resources-to-prime-browser.html http://feeding.cloud.geek.nz/posts/prefetching-resources-to-prime-browser/
+    Redirect permanent /2012/12/keeping-gmail-in-separate-browser.html /posts/keeping-gmail-in-separate-browser/
+    Redirect permanent /2012/11/prefetching-resources-to-prime-browser.html /posts/prefetching-resources-to-prime-browser/
 
 # Collecting analytics
 

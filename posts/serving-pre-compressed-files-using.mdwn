@@ -1,7 +1,7 @@
 [[!meta title="Serving pre-compressed files using Apache"]]
 [[!meta date="2011-01-25T17:00:00.007+13:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
-The easiest way to compress the data that is being served to the visitors of your web application is to make use of [mod_deflate](http://httpd.apache.org/docs/2.2/mod/mod_deflate.html). Once you have enabled that module and provided it with a [suitable](http://feeding.cloud.geek.nz/2009/10/reducing-website-bandwidth-usage.html) configuration file, it will compress all releant files on the fly as it is serving them.  
+The easiest way to compress the data that is being served to the visitors of your web application is to make use of [mod_deflate](http://httpd.apache.org/docs/2.2/mod/mod_deflate.html). Once you have enabled that module and provided it with a [suitable](/2009/10/reducing-website-bandwidth-usage.html) configuration file, it will compress all releant files on the fly as it is serving them.  
   
 Given that I was already going to minify my Javascript and CSS files ahead of time (i.e. not using [mod_pagespeed](https://code.google.com/p/modpagespeed/)), I figured that there must be a way for me to serve gzipped files directly.  
   

@@ -11,7 +11,7 @@ The first question that a distribution maintainer will need to answer is this on
   
 There are two ways you can help here:
 
-  * Make your [chosen license](http://feeding.cloud.geek.nz/2008/05/choosing-right-license-for-your-new.html) clearly visible (normally in a file called `COPYING` or `LICENSE`).
+  * Make your [chosen license](/2008/05/choosing-right-license-for-your-new.html) clearly visible (normally in a file called `COPYING` or `LICENSE`).
   
 
   * Include a [clear copyright statement](http://www.fsf.org/licensing/licenses/gpl-howto.html) in your documentation (inside `README` for example).

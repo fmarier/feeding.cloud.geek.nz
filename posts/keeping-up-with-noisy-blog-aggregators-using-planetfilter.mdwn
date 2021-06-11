@@ -79,7 +79,7 @@ titles, it will be discarded from the generated feed.
 ## Tor support
 
 Since blog updates happen asynchronously in the background, they can
-[work very well over Tor](http://feeding.cloud.geek.nz/posts/things-that-work-well-with-tor/).
+[work very well over Tor](/posts/things-that-work-well-with-tor/).
 
 In order to set that up in the Debian version of planetfilter:
 

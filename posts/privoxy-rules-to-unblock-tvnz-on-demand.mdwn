@@ -12,7 +12,7 @@ It was however quite easy to fix:
 
 
   
-TV3 can also be [unblocked](http://feeding.cloud.geek.nz/2008/10/privoxy-rules-to-unblock-tv3-on-demand.html) in a similar way.
+TV3 can also be [unblocked](/2008/10/privoxy-rules-to-unblock-tv3-on-demand.html) in a similar way.
 
 
 [[!tag privoxy]] 

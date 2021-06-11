@@ -1,7 +1,7 @@
 [[!meta title="Keeping a log of branch updates on a git server"]]
 [[!meta date="2011-02-01T08:00:00.001+13:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
-Using a combination of bad luck and some of the more advanced [git](http://git-scm.com/) options, it is possible to mess up a [centralised repository](http://feeding.cloud.geek.nz/2008/12/setting-up-centralied-git-repository.html) by accidentally pushing a branch and overwriting the existing branch pointer (or "head") on the server.  
+Using a combination of bad luck and some of the more advanced [git](http://git-scm.com/) options, it is possible to mess up a [centralised repository](/2008/12/setting-up-centralied-git-repository.html) by accidentally pushing a branch and overwriting the existing branch pointer (or "head") on the server.  
   
 If you know where the head was pointing prior to that push, recovering it is a simple matter of running this on the server:  
 

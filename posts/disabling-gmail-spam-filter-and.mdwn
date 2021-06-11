@@ -1,7 +1,7 @@
 [[!meta title="Disabling the GMail spam filter and handling it yourself using SpamAssassin"]]
 [[!meta date="2008-04-27T12:10:00.001+12:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
-I've been using GMail ever since they decided to allow users to download their mail using [POP](http://en.wikipedia.org/wiki/Post_Office_Protocol). I was happy reading my email as usual in [mutt](http://feeding.cloud.geek.nz/2008/04/handling-multiple-identitiesaccounts-in.html). The only problem was that I had to log onto the website once in a while to clear out my spam folder and fish out the false positives.  
+I've been using GMail ever since they decided to allow users to download their mail using [POP](http://en.wikipedia.org/wiki/Post_Office_Protocol). I was happy reading my email as usual in [mutt](/2008/04/handling-multiple-identitiesaccounts-in.html). The only problem was that I had to log onto the website once in a while to clear out my spam folder and fish out the false positives.  
   
 However, as the amount of spam I receive daily started growing exponentially (in part thanks to my involvement in [Debian](http://www.debian.org/)), I became more and more dissatisfied with this solution. I had to login several times a day just to keep the levels of spam down to a manageable level. I tried [emailing the GMail support team](http://netzreport.googlepages.com/gmail_the_problem_with_spam_mails.html) a few times without success.  
   

@@ -13,13 +13,13 @@ Of course, one of the very first decisions you'll need to make is to name your p
   * is easy to remember and
   * gives an idea of what the project is about.
 
-Another choice you will need to make before your first release is the license. While that topic may not be familiar or interesting to you, I highly recommend that you [carefully consider your options](http://feeding.cloud.geek.nz/2008/05/choosing-right-license-for-your-new.html) since your license choice can influence the type of community that will form around your project.  
+Another choice you will need to make before your first release is the license. While that topic may not be familiar or interesting to you, I highly recommend that you [carefully consider your options](/2008/05/choosing-right-license-for-your-new.html) since your license choice can influence the type of community that will form around your project.  
 
 ## Public Release
 
 Making your project publicly available can be as simple as dropping a [tarball](http://en.wikipedia.org/wiki/Tarball) on a mailing list. However, if you want your project to reach all of the users for which it could be useful, there are a few other things you might want to do.  
   
-One of these things is to provide a digital home for your project. That homepage should provide access to all of the services related to your project. Such services usually include source control, bug tracking, mailing list and file areas. I've got some [ideas about what that homepage should contain](http://feeding.cloud.geek.nz/2008/09/promoting-your-free-software-project.html) later but first things first, let's look at what that tarball should contain.  
+One of these things is to provide a digital home for your project. That homepage should provide access to all of the services related to your project. Such services usually include source control, bug tracking, mailing list and file areas. I've got some [ideas about what that homepage should contain](/2008/09/promoting-your-free-software-project.html) later but first things first, let's look at what that tarball should contain.  
 
 ## Tarball Contents
 
@@ -40,9 +40,9 @@ distribution maintainers. Here's what they will be looking for:
 
   * **Contact information** for help or contributions. Small projects will often share the email address of the main author and a link to the project homepage if available. This is traditionally located in a file called `AUTHORS` or in the `README` directly.
 
-This is pretty much the minimum that you need to provide in order for your code release to be useful to others and to be legally distributed by others. There are a few more things that you should think about if you would like to increase the likelihood that your software [will be included in a Free Software distribution](http://feeding.cloud.geek.nz/2008/09/getting-your-project-included-into-free.html).  
+This is pretty much the minimum that you need to provide in order for your code release to be useful to others and to be legally distributed by others. There are a few more things that you should think about if you would like to increase the likelihood that your software [will be included in a Free Software distribution](/2008/09/getting-your-project-included-into-free.html).  
   
-After putting all of this together, you should be ready for the initial public release of your project and will now be moving to the next phase: [supporting your growing community](http://feeding.cloud.geek.nz/2008/09/growing-community-around-your-new-free.html).
+After putting all of this together, you should be ready for the initial public release of your project and will now be moving to the next phase: [supporting your growing community](/2008/09/growing-community-around-your-new-free.html).
 
 
 [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 

@@ -3,7 +3,7 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Request Tracker](http://bestpractical.com/rt) is a really neat support tool, but one of the common complaints I heard from people using it during a previous project was that it was pretty slow.  
   
-There wasn't much we could do about the (overloaded) server it was running on, but I found that [enabling mod_deflate](http://feeding.cloud.geek.nz/2009/10/reducing-website-bandwidth-usage.html) really [helped](http://identi.ca/notice/5372466).  
+There wasn't much we could do about the (overloaded) server it was running on, but I found that [enabling mod_deflate](/2009/10/reducing-website-bandwidth-usage.html) really [helped](http://identi.ca/notice/5372466).  
   
 After watching this [great video](http://developer.yahoo.net/blog/archives/2010/06/tellis_on_performance.html) though, I was inspired to look into it a bit more, focussing this time on latency.  
   

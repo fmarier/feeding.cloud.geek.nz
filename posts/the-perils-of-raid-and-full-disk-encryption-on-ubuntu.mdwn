@@ -26,9 +26,9 @@ mounted as `/boot`) and an encrypted root partition (`/dev/md1` mounted as
 `/`) on the RAID1 array.
 
 While I had done
-[full disk encryption](http://feeding.cloud.geek.nz/posts/doing_a_fresh_debian_ubuntu_install_without_having_to_reconfigure_everything/)
+[full disk encryption](/posts/doing_a_fresh_debian_ubuntu_install_without_having_to_reconfigure_everything/)
 and
-[mirrored drives](http://feeding.cloud.geek.nz/posts/setting-up-raid-on-existing/)
+[mirrored drives](/posts/setting-up-raid-on-existing/)
 before, I had never done them at the same time on Ubuntu or Debian.
 
 # The problem: cannot boot an encrypted degraded RAID

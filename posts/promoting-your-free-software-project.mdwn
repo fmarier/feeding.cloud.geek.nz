@@ -1,7 +1,7 @@
 [[!meta title="Promoting your Free Software Project"]]
 [[!meta date="2008-09-18T23:46:00.004+12:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
-After spending a considerable amount of time [releasing your Free Software project](http://feeding.cloud.geek.nz/2008/09/starting-free-software-project.html) to the public, you will probably want to make sure that it reaches as many of the people it could be useful to as possible. Here are a few tips to get you started.  
+After spending a considerable amount of time [releasing your Free Software project](/2008/09/starting-free-software-project.html) to the public, you will probably want to make sure that it reaches as many of the people it could be useful to as possible. Here are a few tips to get you started.  
 
 ## Homepage: Is this software for me?
 
@@ -33,7 +33,7 @@ Sites dedicated to Free Software are more likely to bring visitors to your shiny
   
 Other directories that may be of interest include the [Free Software Foundation Directory](http://directory.fsf.org/) and [Ohloh](http://www.ohloh.net/) (especially if you offer a publicly available source code repository).  
   
-Now that the word is getting out, it's time to start thinking about [supporting these new users](http://feeding.cloud.geek.nz/2008/09/growing-community-around-your-new-free.html)!
+Now that the word is getting out, it's time to start thinking about [supporting these new users](/2008/09/growing-community-around-your-new-free.html)!
 
 
 [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 

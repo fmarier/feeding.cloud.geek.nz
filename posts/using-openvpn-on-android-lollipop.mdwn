@@ -11,7 +11,7 @@ and that it works very well.
 ## Install OpenVPN
 
 Once you have [installed and configured OpenVPN on the
-server](http://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/),
+server](/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/),
 you need to install the OpenVPN app for Android (available both on
 [F-Droid](https://f-droid.org/repository/browse/?fdid=de.blinkt.openvpn) and
 [Google

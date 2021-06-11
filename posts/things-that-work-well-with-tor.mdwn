@@ -134,7 +134,7 @@ proxy of `127.0.0.1` on port `9050`.
 # GMail
 
 Finally, I found that since I am
-[running GMail in a separate browser profile](http://feeding.cloud.geek.nz/posts/keeping-gmail-in-separate-browser/),
+[running GMail in a separate browser profile](/posts/keeping-gmail-in-separate-browser/),
 I can take advantage of GMail's excellent caching and preloading and run the
 whole thing over Tor by setting that entire browser profile to run its
 traffic through the Tor SOCKS proxy on port `9050`.

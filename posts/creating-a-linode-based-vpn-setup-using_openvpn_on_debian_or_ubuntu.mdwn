@@ -10,7 +10,7 @@ protect your network traffic when travelling with your laptop and connecting
 to untrusted networks.
 
 While you might want to
-[use Tor](http://feeding.cloud.geek.nz/posts/things-that-work-well-with-tor/)
+[use Tor](/posts/things-that-work-well-with-tor/)
 for the part of your network activity where you prefer to be anonymous, a
 VPN is a faster way to connect to sites that already know you.
 

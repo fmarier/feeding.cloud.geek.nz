@@ -1,7 +1,7 @@
 [[!meta title="Growing the community around your new Free Software Project"]]
 [[!meta date="2008-09-19T19:13:00.003+12:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
-Once your [new Free Software project](http://feeding.cloud.geek.nz/2008/09/starting-free-software-project.html) has had some traction and is gaining users, you will probably want to supplement its [initial homepage](http://feeding.cloud.geek.nz/2008/09/promoting-your-free-software-project.html) with a few extra services. However, the most important aspects of managing a Free Software community have more to do with relating to human beings.  
+Once your [new Free Software project](/2008/09/starting-free-software-project.html) has had some traction and is gaining users, you will probably want to supplement its [initial homepage](/2008/09/promoting-your-free-software-project.html) with a few extra services. However, the most important aspects of managing a Free Software community have more to do with relating to human beings.  
 
 ## Social Interactions in Small Projects
 
