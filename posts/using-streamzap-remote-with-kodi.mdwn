@@ -63,17 +63,19 @@ put the following in `/etc/X11/xorg.conf.d/90-streamzap-disable.conf`:
 to prevent the remote from being used as a keyboard and to instead use it
 via [LIRC](https://lirc.org/), which can be installed like this:
 
-    apt install lirc lirc-compat-modules
+    apt install lirc
 
 Put the following in `/etc/lirc/lirc_options`:
 
     driver=default
     device=/dev/lirc0
 
-and add the remote config for the Streamzap:
+and install [this remote configuration](https://github.com/graysky2/streamzap/blob/master/00-Streamzap_PC_Remote.conf) as `/etc/lirc/lircd.conf.d/streamzap.conf`:
 
     cd /etc/lirc/lircd.conf.d/
-    ln -s /usr/share/lirc/remotes/streamzap/lircd.conf.streamzap streamzap.conf
+    curl https://raw.githubusercontent.com/graysky2/streamzap/master/00-Streamzap_PC_Remote.conf > streamzap.conf
+
+Make sure you don't use the config file that comes with the [`lirc-compat-remotes` package](https://packages.debian.org/stable/lirc-compat-remotes) or you will likely end up with an over-sensitive remote which tends to double key presses (e.g. pressing the down arrow will go down more than once).
 
 ### Testing
 
