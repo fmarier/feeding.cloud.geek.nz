@@ -21,7 +21,7 @@ First of all, depending on the size of your project and its related data, the ho
   
 Free Software hosting sites like [Google Code](http://code.google.com/hosting/), [Source Forge](http://www.sourceforge.net/) and [LaunchPad](http://www.launchpad.net/) also provide different services like **bug trackers** and **source control repositories**.  
   
-Some people prefer a distributed approach to [source control](http://git-scm.com/) and [issue tracking](http://kapiti.geek.nz/software/cil.html) to avoid trusting their master copy of the data to a third party. Setting up a separate code repository on sites like [Github](http://github.com/) or [Gitorious](http://gitorious.org/) is an option to consider.  
+Some people prefer a distributed approach to [source control](http://git-scm.com/) and [issue tracking](http://kapiti.geek.nz/software/cil.html) to avoid trusting their master copy of the data to a third party. Setting up a separate code repository on sites like [Github](https://github.com/) or [Gitorious](http://gitorious.org/) is an option to consider.  
   
 All of these hosting providers promote the software they host to varying degrees. Have a look around before deciding where you should park your project.  
 
