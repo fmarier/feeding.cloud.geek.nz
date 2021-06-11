@@ -1,6 +1,6 @@
 [[!meta title="Manipulating debconf settings on the command line"]]
 [[!meta date="2010-10-19T07:30:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 It's not very easy to find information on how to adjust [debconf](http://kitenet.net/~joey/code/debconf/) settings after a package has been installed and configured. Most of the information out there is for Debian developers wanting to add [support for debconf](http://www.fifi.org/doc/debconf-doc/tutorial.html) in their [maintainer scripts](http://www.debian.org/doc/debian-policy/ch-maintainerscripts.html).  
   
 I ran into the problem of being unable to change a package's configuration options through [dpkg-reconfigure](http://manpages.debian.net/cgi-bin/man.cgi?query=dpkg-reconfigure) and I found the following commands to do it manually:  

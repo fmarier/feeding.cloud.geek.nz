@@ -1,6 +1,6 @@
 [[!meta title="Running mythtv-setup over ssh"]]
 [[!meta date="2018-05-13T13:55:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In order to configure a remote [MythTV](https://www.mythtv.org/) server, I
 had to run `mythtv-setup` remotely over an ssh connection with X forwarding:

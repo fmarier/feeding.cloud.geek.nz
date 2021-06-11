@@ -1,6 +1,6 @@
 [[!meta title="How to get a direct WebRTC connections between two computers"]]
 [[!meta date="2020-03-28T16:55:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 [WebRTC](https://webrtc.org/) is a standard real-time communication protocol
 built directly into modern web browsers. It enables the creation of video

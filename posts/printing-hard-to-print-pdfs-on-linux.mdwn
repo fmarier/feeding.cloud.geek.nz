@@ -1,6 +1,6 @@
 [[!meta title="Printing hard-to-print PDFs on Linux"]]
 [[!meta date="2020-05-23T20:05:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I recently found a few PDFs which I was unable to print due to
 those files causing [insufficient printer memory

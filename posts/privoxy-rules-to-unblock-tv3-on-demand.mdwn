@@ -1,6 +1,6 @@
 [[!meta title="Privoxy rules to unblock TV3 on-demand videos"]]
 [[!meta date="2008-10-16T09:00:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 My default [Privoxy](http://www.privoxy.org/) (a great Privacy-enhancing/ad blocking proxy) setup was blocking the on-demand section of New Zealand's TV3 sites (both [3news.co.nz](http://3news.co.nz/) and [tv3.co.nz](http://www.tv3.co.nz/)).  
   
 Here are the minimum rules that let the [videos](http://www.tv3.co.nz/Aftershock/tabid/771/articleID/59535/cat/522/Default.aspx#video) through:  

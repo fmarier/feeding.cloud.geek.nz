@@ -1,6 +1,6 @@
 [[!meta title="Upgrading from Ubuntu 18.04 bionic to 20.04 focal"]]
 [[!meta date="2020-10-11T12:30:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I recently upgraded from Ubuntu 18.04.5 (bionic) to 20.04.1 (focal) and it
 was one of the roughest Ubuntu upgrades I've gone through in a while. Here

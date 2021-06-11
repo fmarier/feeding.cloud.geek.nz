@@ -1,6 +1,6 @@
 [[!meta title="Using a Kenwood TH-D72A with Pat on Linux and ax25"]]
 [[!meta date="2018-04-19T22:45:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here is how I managed to get my [Kenwood
 TH-D72A](http://www.kenwood.com/usa/com/amateur/th-d72a/) radio working with

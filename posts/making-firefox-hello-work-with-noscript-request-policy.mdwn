@@ -1,6 +1,6 @@
 [[!meta title="Making Firefox Hello work with NoScript and RequestPolicy"]]
 [[!meta date="2014-12-26T17:40:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 [Firefox Hello](http://blog.mozilla.org/futurereleases/2014/10/16/test-the-new-firefox-hello-webrtc-feature-in-firefox-beta/)
 is a new beta feature in [Firefox 34](https://www.mozilla.org/en-US/firefox)

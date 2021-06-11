@@ -1,6 +1,6 @@
 [[!meta title="Keeping GMail in a separate browser profile"]]
 [[!meta date="2012-12-20T19:34:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 I wanted to be able to use the GMail web interface on my work machine, but for [privacy reasons](https://en.wikipedia.org/wiki/Filter_bubble), I prefer not to be logged into my Google Account on my main browser.
 
 Here's how I make use of a [somewhat hidden Firefox feature](https://support.mozilla.org/en-US/kb/profile-manager-create-and-remove-firefox-profiles) to move GMail to a separate browser profile.

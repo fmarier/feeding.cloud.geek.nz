@@ -1,6 +1,6 @@
 [[!meta title="How Tracking Protection works in Firefox"]]
 [[!meta date="2015-11-13T12:40:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 [Firefox 42](https://blog.mozilla.org/blog/2015/11/03/firefox-now-offers-a-more-private-browsing-experience/),
 which was released last week, introduced a new feature in its Private

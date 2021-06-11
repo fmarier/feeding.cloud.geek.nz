@@ -1,6 +1,6 @@
 [[!meta title="Setting the wifi regulatory domain on Linux and OpenWRT"]]
 [[!meta date="2015-08-01T13:20:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 The list of [available wifi channels](https://en.wikipedia.org/wiki/List_of_WLAN_channels)
 is slightly different from country to country. To ensure access to the

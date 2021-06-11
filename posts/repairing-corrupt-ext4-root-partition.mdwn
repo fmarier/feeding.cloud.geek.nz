@@ -1,6 +1,6 @@
 [[!meta title="Repairing a corrupt ext4 root partition"]]
 [[!meta date="2020-09-26T12:45:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I ran into filesystem corruption
 ([ext4](https://en.wikipedia.org/wiki/Ext4)) on the root partition of my

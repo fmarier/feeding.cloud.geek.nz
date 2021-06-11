@@ -1,6 +1,6 @@
 [[!meta title="Browsing privacy and ad blocking on Android"]]
 [[!meta date="2012-06-11T19:15:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 On the desktop, I usually rely on [Privoxy](http://privoxy.org) to strip out ads, tracking resources and other privacy-invading elements. So I was looking for an equivalent solution on Android.
 
 ### Firefox 10

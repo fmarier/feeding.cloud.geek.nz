@@ -1,6 +1,6 @@
 [[!meta title="Programming a DMR radio with its CPS"]]
 [[!meta date="2021-01-04T23:40:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here are some notes I took around programming my [AnyTone AT-D878UV
 radio](https://www.bridgecomsystems.com/collections/amateur-handheld-radios/products/anytone-at-d878uv-dual-band-dmr-handheld-radio-w-gps-programming-cable)

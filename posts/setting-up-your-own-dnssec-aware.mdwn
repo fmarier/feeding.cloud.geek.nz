@@ -1,6 +1,6 @@
 [[!meta title="Setting up your own DNSSEC-aware resolver using Unbound"]]
 [[!meta date="2010-09-12T18:00:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 Now that the root DNS servers are [signed,](http://www.root-dnssec.org/2010/07/16/status-update-2010-07-16/) I thought it was time I started using [DNSSEC](https://secure.wikimedia.org/wikipedia/en/wiki/Dnssec) on my own PC. However, not wanting to wait for my ISP to enable it, I decided to setup a private recursive DNS resolver for myself using [Unbound](http://unbound.net/).  
 
 ## Installing Unbound

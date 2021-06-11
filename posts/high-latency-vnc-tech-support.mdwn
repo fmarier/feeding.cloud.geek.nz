@@ -1,6 +1,6 @@
 [[!meta title="Using vnc to do remote tech support over high-latency networks"]]
 [[!meta date="2014-03-02T13:00:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 If you ever find yourself doing a bit of technical support for relatives
 over the phone, there's nothing like actually seeing what they are doing on

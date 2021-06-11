@@ -1,6 +1,6 @@
 [[!meta title="Blocked (queued) connections, keep-alive and content-length"]]
 [[!meta date="2012-10-18T21:51:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 While trying to add gzip compression to a [custom node.js reverse proxy server](https://github.com/lloyd/awsbox-proxy-server) through connect's [compress](http://www.senchalabs.org/connect/compress.html) middleware, I ran into a really strange problem: my browser would fetch the first 5 resources without problems, then it would stall for 2 minutes before gettting the next 5 resources, stall for another 2 minutes for the next five, and so on.
 
 If I waited long enough, all of the resources would be loaded correctly and the page would look fine.

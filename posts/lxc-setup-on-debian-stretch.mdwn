@@ -1,6 +1,6 @@
 [[!meta title="LXC setup on Debian stretch"]]
 [[!meta date="2018-01-23T21:30:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here's how to setup LXC-based "chroots" on Debian stretch. While I [wrote about this on Debian jessie](/posts/lxc-setup-on-debian-jessie/), I
 had to make some [networking changes for stretch](https://wiki.debian.org/LXC#Networked_quickstart_for_Debian_Stretch_.28testing_as_of_Q3_2016.29)

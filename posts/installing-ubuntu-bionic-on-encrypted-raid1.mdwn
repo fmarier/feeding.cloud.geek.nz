@@ -1,6 +1,6 @@
 [[!meta title="Installing Ubuntu 18.04 using both full-disk encryption and RAID1"]]
 [[!meta date="2019-05-22T21:30:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I recently setup a desktop computer with two SSDs using a software RAID1 and
 full-disk encryption (i.e. [LUKS](https://en.wikipedia.org/wiki/LUKS)).

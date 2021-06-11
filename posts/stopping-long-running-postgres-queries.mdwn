@@ -1,6 +1,6 @@
 [[!meta title="Stopping long-running Postgres queries"]]
 [[!meta date="2009-06-12T07:00:00.001+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 As part of [troubleshooting performance problems](/2009/05/troubleshooting-postgres-performance.html) in PostgreSQL, you may need to terminate a query which is taking a long time to run.  
   
 To do this, find the Postgres process which is currently executing the query:

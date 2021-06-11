@@ -1,6 +1,6 @@
 [[!meta title="Logging kernel messages over the network using netconsole"]]
 [[!meta date="2008-07-20T18:21:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 I recently had to setup netconsole in order to diagnose some [grsecurity](http://www.grsecurity.net/)-related suspend/resume problems. The idea is to have the broken machine send its kernel messages to a remote machine via the network.  
 
 As a prerequisite, the local machine (the one sending the console messages) must have the following kernel options turned on:

@@ -1,6 +1,6 @@
 [[!meta title="Setting up a centralized git repository"]]
 [[!meta date="2008-12-09T19:00:00.002+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 A lot of people want to setup a shared repository to allow a team of developers to publish their code on a server. This centralized approach is the model behind CVS/Subversion-style, but is also one of the many workflows supported by [git](http://git.or.cz/).  
   
 Setting up such a repository in git involves a few simple steps. For simplicity's sake, I will assume that:

@@ -1,6 +1,6 @@
 [[!meta title="Mercurial and Bitbucket workflow for Gecko development"]]
 [[!meta date="2014-12-21T21:30:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 While it sounds like I should really switch to a
 [bookmark-based](http://ahal.ca/blog/2014/new-mercurial-workflow/)

@@ -1,6 +1,6 @@
 [[!meta title="Encrypted mailing list on Debian and Ubuntu"]]
 [[!meta date="2014-09-29T22:30:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Running an encrypted mailing list is surprisingly tricky. One of the first
 challenges is that you need to decide what the threat model is. Are you

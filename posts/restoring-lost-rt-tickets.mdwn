@@ -1,6 +1,6 @@
 [[!meta title="Restoring lost RT tickets"]]
 [[!meta date="2010-01-05T07:30:00.003+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Request Tracker](http://bestpractical.com/rt) (also know as RT), the defacto Open Source ticket tracking software, has a special status value to get rid of spam tickets: _deleted_. It does exactly what it's supposed to do, that is get rid of these tickets quickly.  
   
 Unfortunately, it's very easy to accidentally delete a bunch of non-spam tickets via the bulk update interface. Restoring these deleted tickets is not straightforward.  

@@ -1,6 +1,6 @@
 [[!meta title="Poor man's RAID1 between an SSD and a hard drive"]]
 [[!meta date="2013-03-30T23:20:00.000-04:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 After
 [moving from a hard drive to an SSD](/posts/doing_a_fresh_debian_ubuntu_install_without_having_to_reconfigure_everything/)
 on my work laptop, I decided to keep the hard drive spinning and use it as a

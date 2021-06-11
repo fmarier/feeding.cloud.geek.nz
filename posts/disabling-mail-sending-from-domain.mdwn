@@ -1,6 +1,6 @@
 [[!meta title="Disabling mail sending from your domain"]]
 [[!meta date="2020-04-23T22:10:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I noticed that I was receiving some bounced email notifications from a
 domain I own (`cloud.geek.nz`) to host my blog. These notifications were all

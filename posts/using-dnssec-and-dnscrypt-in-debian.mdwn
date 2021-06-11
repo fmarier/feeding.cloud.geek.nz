@@ -1,6 +1,6 @@
 [[!meta title="Using DNSSEC and DNSCrypt in Debian"]]
 [[!meta date="2016-04-25T20:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 While there is real progress being made towards
 [eliminating insecure HTTP traffic](https://blog.mozilla.org/security/2015/04/30/deprecating-non-secure-http/),

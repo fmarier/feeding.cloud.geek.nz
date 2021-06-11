@@ -1,6 +1,6 @@
 [[!meta title="Doing a fresh Debian/Ubuntu install without having to reconfigure everything"]]
 [[!meta date="2013-02-22T22:30:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Taking advantage of a new hard drive, I decided to reinstall my Ubuntu (Precise 12.04.2) laptop from scratch so that I could easily enable full-disk encryption (a requirement for Mozilla work laptops).
 

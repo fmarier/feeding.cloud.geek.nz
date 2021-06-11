@@ -1,6 +1,6 @@
 [[!meta title="Deleting non-decryptable restic snapshots"]]
 [[!meta date="2021-04-12T20:20:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Due to what I suspect is disk corruption error due to a faulty RAM module or
 network interface on my [GnuBee](http://gnubee.org/), my

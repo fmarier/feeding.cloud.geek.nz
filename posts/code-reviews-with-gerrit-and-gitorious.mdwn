@@ -1,6 +1,6 @@
 [[!meta title="Code reviews with Gerrit and Gitorious"]]
 [[!meta date="2011-04-17T17:00:00.009+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 The [Mahara](http://mahara.org/) [project](https://launchpad.net/mahara) has just moved to mandatory code reviews for every commit that gets applied to core code.  
   
 Here is a description of how [Gerrit Code Review](http://code.google.com/p/gerrit), the peer-review system used by [Android](http://www.android.com), was retrofitted into our existing [git](http://www.git-scm.com/) repository on [Gitorious](http://www.gitorious.org/).  

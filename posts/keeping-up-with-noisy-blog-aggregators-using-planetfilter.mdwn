@@ -1,6 +1,6 @@
 [[!meta title="Keeping up with noisy blog aggregators using PlanetFilter"]]
 [[!meta date="2015-03-25T22:55:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I follow a few blog aggregators (or "planets") and it's always a struggle to
 keep up with the amount of posts that some of these get. The best strategy I

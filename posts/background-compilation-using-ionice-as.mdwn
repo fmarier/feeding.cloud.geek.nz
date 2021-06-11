@@ -1,6 +1,6 @@
 [[!meta title="Background compilation using ionice as a normal user"]]
 [[!meta date="2008-03-23T17:58:00.003+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 Most people know that you can run commands "in the background" on UNIX by prefixing them with "nice":  
 
     nice run_long_script.sh

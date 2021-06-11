@@ -1,6 +1,6 @@
 [[!meta title="Backing up to S3 with Duplicity"]]
 [[!meta date="2019-12-22T12:30:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here is how I setup [duplicity](http://duplicity.nongnu.org/) to use S3 as a
 backend while giving duplicity the minimum set of permissions to my Amazon

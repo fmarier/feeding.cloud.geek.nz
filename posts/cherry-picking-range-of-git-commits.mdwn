@@ -1,6 +1,6 @@
 [[!meta title="Cherry-picking a range of git commits"]]
 [[!meta date="2010-07-20T23:30:00.002+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 The `cherry-pick` command in [git](http://www.git-scm.com/) allows you to copy commits from one branch to another, one commit at a time. In order to copy more than one commit at once, you need a different approach.  
   
 

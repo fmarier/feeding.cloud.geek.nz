@@ -1,6 +1,6 @@
 [[!meta title="Sample Python application using Libgearman"]]
 [[!meta date="2011-01-12T20:20:00.003+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Gearman](http://www.gearman.org/) is a distributed queue with several [language bindings](https://launchpad.net/gearman-interface).  
   
 While Gearman has a nice [Python](http://www.python.org/) implementation ([python-gearman](http://pypi.python.org/pypi/gearman)) of the client and worker, I chose to use the libgearman bindings ([python-libgearman](http://pypi.python.org/pypi/python-libgearman)) directly since they are already packaged for [Debian](http://www.debian.org/) (as [python-gearman.libgearman](http://packages.debian.org/python-gearman.libgearman)).  
@@ -108,7 +108,7 @@ print result
 
 The above source code is released under the following terms:  
 
-> [![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)  
+> [![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](https://creativecommons.org/publicdomain/zero/1.0/)  
 To the extent possible under law, [Francois Marier](https://fmarier.org/) has waived all copyright and related or neighboring rights to this sample libgearman Python application. This work is published from: New Zealand.
 
 

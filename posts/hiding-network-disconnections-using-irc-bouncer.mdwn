@@ -1,6 +1,6 @@
 [[!meta title="Hiding network disconnections using an IRC bouncer"]]
 [[!meta date="2014-11-26T23:30:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 A [bouncer](https://en.wikipedia.org/wiki/IRC_bouncer) can be a useful tool
 if you rely on [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) for

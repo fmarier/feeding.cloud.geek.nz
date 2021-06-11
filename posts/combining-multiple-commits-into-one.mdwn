@@ -1,6 +1,6 @@
 [[!meta title="Combining multiple commits into one using git rebase"]]
 [[!meta date="2010-08-24T19:25:00.009+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 [git rebase](http://www.kernel.org/pub/software/scm/git/docs/git-rebase.html) provides a simple way of combining multiple commits into a single one. However using rebase to squash an entire branch down to a single commit is not completely straightforward.  
   
 

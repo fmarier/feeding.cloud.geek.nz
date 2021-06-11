@@ -1,6 +1,6 @@
 [[!meta title="Extracting Album Covers from the iTunes Store"]]
 [[!meta date="2016-02-28T16:50:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 The iTunes store is a good source of high-quality album cover art. If you
 search for the album on [Google Images](https://images.google.com), then

@@ -1,6 +1,6 @@
 [[!meta title="Safer synergy setup for laptop-desktop keyboard sharing"]]
 [[!meta date="2009-04-01T23:39:00.006+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Synergy](http://synergy2.sourceforge.net/) is a very useful piece of software for anybody wanting to share a mouse and keyboard between two networked computers.  
   
 Here is the setup I use to:

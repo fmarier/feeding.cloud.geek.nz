@@ -1,6 +1,6 @@
 [[!meta title="Mysterious 400 Bad Request in Django debug mode"]]
 [[!meta date="2017-06-10T17:20:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 While upgrading [Libravatar](https://www.libravatar.org) to a more recent
 version of [Django](https://www.djangoproject.com/), I ran into a

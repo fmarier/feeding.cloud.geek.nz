@@ -1,6 +1,6 @@
 [[!meta title="Opting your domain out of programmatic advertising"]]
 [[!meta date="2020-12-08T00:10:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 A few years ago, the advertising industry introduced the [`ads.txt`
 project](https://iabtechlab.com/ads-txt-about) in order to defend against

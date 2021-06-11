@@ -1,6 +1,6 @@
 [[!meta title="Searching through the contents of emails in mutt"]]
 [[!meta date="2008-04-05T23:30:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 Mutt has a built-in feature for search the body of emails in the current mailbox (see `ESC-b`) but it's also possible to make this extremely fast by [plugging-in external tools](http://wiki.mutt.org/?UserStory/SearchingMail). Here's a quick description of my [mairix](http://www.rpcurnow.force9.co.uk/mairix/) setup.  
   
 After installing the package,  

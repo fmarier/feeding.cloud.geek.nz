@@ -1,6 +1,6 @@
 [[!meta title="Converting any video to a podcast"]]
 [[!meta date="2008-11-05T19:00:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 If you don't always have time to sit down in front of your computer to watch long video presentations (lectures, talks, etc.), then you might find this simple script useful. That's what I use to convert any video file to a podcast that I can listen to on the go.  
   
 First, dump the audio using [mplayer](http://www.mplayerhq.hu/) to a file called `audiodump.wav`:

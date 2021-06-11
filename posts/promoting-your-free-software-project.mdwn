@@ -1,6 +1,6 @@
 [[!meta title="Promoting your Free Software Project"]]
 [[!meta date="2008-09-18T23:46:00.004+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 After spending a considerable amount of time [releasing your Free Software project](/2008/09/starting-free-software-project.html) to the public, you will probably want to make sure that it reaches as many of the people it could be useful to as possible. Here are a few tips to get you started.  
 
 ## Homepage: Is this software for me?

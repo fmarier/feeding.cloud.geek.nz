@@ -1,6 +1,6 @@
 [[!meta title="Cleaning up obsolete config files on Debian and Ubuntu"]]
 [[!meta date="2016-06-11T14:40:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 As part of regular operating system hygiene, I run a [cron
 job](https://github.com/fmarier/root-scripts/blob/master/apt-cron) which

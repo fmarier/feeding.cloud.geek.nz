@@ -1,6 +1,6 @@
 [[!meta title="How to get Android OTA updates from Google on a Galaxy Nexus"]]
 [[!meta date="2012-07-15T18:49:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 I got an unlocked GSM [Galaxy Nexus](https://en.wikipedia.org/wiki/Galaxy_Nexus) (GT-I9250) phone from Amazon a few months ago and I've been wondering why it was still sitting on Android 4.0.2 (Icecream Sandwich). Looking at "Settings | About phone | System updates" told me that my "system was currently up to date" despite the fact that most of my friends had been running 4.0.4 for a while on their Galaxy Nexus.
 
 It turns out that a colleague of mine, who managed to buy this phone just before [Apple got it banned in the US](http://www.fosspatents.com/2012/07/galaxy-nexus-ban-remains-in-effect-for.html), found the reason: it was set to get over-the-air (OTA) updates from Samsung, not Google. Samsung has been sitting on this one for a while, which isn't great given the [random crash+reboots](http://android.stackexchange.com/questions/17973/galaxy-nexus-suddenly-restarts) that seem to occur about once a week on 4.0.2 :(

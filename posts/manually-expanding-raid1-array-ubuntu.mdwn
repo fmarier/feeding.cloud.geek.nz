@@ -1,6 +1,6 @@
 [[!meta title="Manually expanding a RAID1 array on Ubuntu"]]
 [[!meta date="2017-03-31T23:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here are the notes I took while manually expanding an non-LVM encrypted
 RAID1 array on an Ubuntu machine.

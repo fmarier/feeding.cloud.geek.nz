@@ -1,6 +1,6 @@
 [[!meta title="Handling email-based events safely"]]
 [[!meta date="2010-06-14T17:20:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 Mahara.org users have recently witnessed the unfortunate effects of a bug in the Mahara event handling: the Mahara cron job got stuck in an email loop and kept on sending the [same forum post](http://mahara.org/interaction/forum/topic.php?id=1882) over and over again.  
   
 Here is what the affected code used to look like (edited for clarity):  

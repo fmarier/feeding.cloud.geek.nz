@@ -1,6 +1,6 @@
 [[!meta title="Getting your project included into Free Software distributions"]]
 [[!meta date="2008-09-20T09:00:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 After releasing a new Free Software project to the world, you may be interested to see it included by the main Linux or Free Software distributions. After all this is the easiest way for end-users to download and install your software.  
   
 Here are a couple of [technical details](http://lwn.net/Articles/277132/) that will increase the chances that your project will be picked up by a distribution.  

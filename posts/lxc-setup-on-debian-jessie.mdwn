@@ -1,6 +1,6 @@
 [[!meta title="LXC setup on Debian jessie"]]
 [[!meta date="2014-10-20T15:00:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here's how to setup LXC-based "chroots" on Debian jessie. While this is
 documented on the [Debian wiki](https://wiki.debian.org/LXC), I had to tweak

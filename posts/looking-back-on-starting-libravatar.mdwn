@@ -1,6 +1,6 @@
 [[!meta title="Looking back on starting Libravatar"]]
 [[!meta date="2018-04-02T18:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 **Update (2018-07-31): [Libravatar is not going away](https://blog.libravatar.org/posts/Libravatar.org_is_not_going_away/)**
 

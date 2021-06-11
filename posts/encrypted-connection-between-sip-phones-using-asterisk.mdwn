@@ -1,6 +1,6 @@
 [[!meta title="Encrypted connection between SIP phones using Asterisk"]]
 [[!meta date="2019-02-05T22:40:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here is the setup I put together to have two SIP phones connect together
 over an encrypted channel. Since the two phones do not support encryption, I

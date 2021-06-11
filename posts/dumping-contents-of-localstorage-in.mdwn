@@ -1,6 +1,6 @@
 [[!meta title="Dumping the contents of localstorage in HTML5 webapps"]]
 [[!meta date="2012-07-03T22:33:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Localstorage](https://developer.mozilla.org/en/DOM/Storage#localStorage) is a particularly useful part of HTML 5 which allows websites to store [small amounts of data](http://dev-test.nemikor.com/web-storage/support-test/) inside a user's browser in a place that is only accessible to that site. In many ways, it's an extension of the idea behind [cookies](https://en.wikipedia.org/wiki/HTTP_cookie).
 
 While debugging a [LIFDed](http://www.open-mike.org/entry/lifding-the-web) web application, I tried to do something that should have been simple: dumping all of the data that a site has in localstorage. Unfortunately it wasn't all that straightforward.

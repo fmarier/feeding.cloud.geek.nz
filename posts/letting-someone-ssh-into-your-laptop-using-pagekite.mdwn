@@ -1,6 +1,6 @@
 [[!meta title="Letting someone ssh into your laptop using Pagekite"]]
 [[!meta date="2015-08-29T14:20:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In order to [investigate a bug I was running into](https://github.com/mozilla/rr/issues/1537), I recently had to give
 [my colleague](http://robert.ocallahan.org/) ssh access to my laptop behind a firewall. The easiest way

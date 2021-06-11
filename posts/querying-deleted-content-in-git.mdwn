@@ -1,6 +1,6 @@
 [[!meta title="Querying deleted content in git"]]
 [[!meta date="2010-07-04T21:02:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 If you have removed a file (or part of a file) from git, it's not immediately obvious how to query its history. Here are two ways to deal with deleted content in git.  
   
 

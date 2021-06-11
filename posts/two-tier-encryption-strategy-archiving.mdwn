@@ -1,6 +1,6 @@
 [[!meta title="Two-tier encryption strategy: Archiving your files inside an encrypted loopback partition"]]
 [[!meta date="2008-04-10T16:53:00.001+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 Even with a fully encrypted system (root and [swap](/2008/03/encrypted-swap-partition-on.html) partitions), your data is still vulnerable while your computer is on. That's why [Bruce Schneier](http://www.schneier.com/blog/) recommends a [two-tier encryption strategy](http://www.wired.com/politics/security/commentary/securitymatters/2007/11/securitymatters_1129).
   
 The idea is that infrequently used files are moved to a separate partition, encrypted with a different key. That way, the bulk of your data files is protected even if your laptop is [hijacked](http://www.schneier.com/blog/archives/2008/02/hotplug_1.html) or if an intruder manages to steal some files while your main partition is decrypted.

@@ -1,6 +1,6 @@
 [[!meta title="Three Firefox extensions to enhance SSL security"]]
 [[!meta date="2011-10-03T21:57:00.007+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 There has been a lot of [talk](http://www.youtube.com/watch?v=Z7Wl2FW2TcA) recently questioning the [trust authorities](https://freedom-to-tinker.com/blog/felten/mozilla-debates-whether-trust-chinese-ca) that underpin the [SSL/TLS](https://secure.wikimedia.org/wikipedia/en/wiki/Transport_Layer_Security) world. After [a few](http://www.theregister.co.uk/2011/06/21/startssl_security_breach/) [high-profile](http://www.f-secure.com/weblog/archives/00002128.html) [incidents](http://blog.gerv.net/2011/09/diginotar-compromise/), it is clear that there is [something wrong with this structure](https://freedom-to-tinker.com/blog/sjs/web-security-trust-models).  
   

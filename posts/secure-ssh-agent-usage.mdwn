@@ -1,6 +1,6 @@
 [[!meta title="Secure ssh-agent usage"]]
 [[!meta date="2019-04-13T06:45:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 `ssh-agent` was in the news recently due to the [matrix.org
 compromise](https://github.com/matrix-org/matrix.org/issues/371). The main

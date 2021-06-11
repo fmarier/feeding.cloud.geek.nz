@@ -1,6 +1,6 @@
 [[!meta title="Setting up a network scanner using SANE"]]
 [[!meta date="2015-09-13T22:40:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Sharing a scanner over the network using [SANE](http://sane-project.org/) is
 fairly straightforward. Here's how I shared a scanner on a server (running

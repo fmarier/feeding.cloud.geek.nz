@@ -1,6 +1,6 @@
 [[!meta title="Recovering from a botched hg histedit on a mercurial bookmark"]]
 [[!meta date="2018-07-26T22:42:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 If you are in the middle of a failed
 [Mercurial](https://www.mercurial-scm.org/) `hg histedit`, you can normally

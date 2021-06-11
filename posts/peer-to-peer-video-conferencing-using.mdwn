@@ -1,6 +1,6 @@
 [[!meta title="Peer-to-peer video-conferencing using free software"]]
 [[!meta date="2010-12-19T19:55:00.008+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 I was looking for a simple [free software](http://www.gnu.org/philosophy/free-sw.html) solution which would allow me to have a video call with someone else (I don't care about sound since I've already got that working through [Asterisk](http://www.asterisk.org/)) and I ended up writing a [Gstreamer](http://www.gstreamer.net/)-based poor man's videoconf solution because I wasn't satisfied with the other options I considered.  
   
 

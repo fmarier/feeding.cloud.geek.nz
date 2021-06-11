@@ -1,6 +1,6 @@
 [[!meta title="Mysterious 'everybody is busy/congested at this time' error in Asterisk"]]
 [[!meta date="2018-06-10T19:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I was trying to figure out why I was getting a BUSY signal from
 [Asterisk](https://www.asterisk.org/) while trying to ring a SIP phone even

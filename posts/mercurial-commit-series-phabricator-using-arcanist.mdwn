@@ -1,6 +1,6 @@
 [[!meta title="Mercurial commit series in Phabricator using Arcanist"]]
 [[!meta date="2018-08-01T09:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 [Phabricator](https://www.phacility.com/phabricator/) supports multi-commit
 patch series, but it's not yet obvious how to do it using Mercurial. So this

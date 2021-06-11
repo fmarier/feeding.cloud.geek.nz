@@ -1,6 +1,6 @@
 [[!meta title="Recovering from a corrupt MariaDB index page"]]
 [[!meta date="2020-11-01T15:10:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I ran into a corrupt [MariaDB](https://mariadb.org/) index page the other day and had to
 restore my [MythTV database](https://www.mythtv.org/wiki/Database) from the

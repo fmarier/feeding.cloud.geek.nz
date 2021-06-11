@@ -1,6 +1,6 @@
 [[!meta title="Hooking into docking and undocking events to run scripts"]]
 [[!meta date="2015-09-19T16:55:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In order to automatically update my monitor setup and activate/deactivate my
 external monitor when plugging my ThinkPad into its dock, I found a way to

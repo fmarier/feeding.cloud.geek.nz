@@ -1,6 +1,6 @@
 [[!meta title="Erasing Persistent Storage Securely on Linux"]]
 [[!meta date="2019-01-08T08:55:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here are some notes on how to securely delete computer data in a way that
 makes it impractical for anybody to recover that data. This is an important

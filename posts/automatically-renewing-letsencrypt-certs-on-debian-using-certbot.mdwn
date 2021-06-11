@@ -1,6 +1,6 @@
 [[!meta title="Automatically renewing Let's Encrypt TLS certificates on Debian using Certbot"]]
 [[!meta date="2017-04-13T08:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I use [Let's Encrypt](https://letsencrypt.org/)
 [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) certificates

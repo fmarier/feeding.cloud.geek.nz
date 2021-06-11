@@ -1,6 +1,6 @@
 [[!meta title="Using a Let's Encrypt TLS certificate with Asterisk 16.2"]]
 [[!meta date="2020-10-17T17:45:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In order to fix the following error after setting up [SIP
 TLS](/posts/sip-encryption-on-voip-ms/) in

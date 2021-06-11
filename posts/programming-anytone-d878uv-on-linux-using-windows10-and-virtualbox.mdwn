@@ -1,6 +1,6 @@
 [[!meta title="Programming an AnyTone AT-D878UV on Linux using Windows 10 and VirtualBox"]]
 [[!meta date="2019-04-16T22:15:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I recently acquired an [AnyTone AT-D878UV DMR
 radio](https://www.bridgecomsystems.com/collections/amateur-handheld-radios/products/anytone-at-d878uv-dual-band-dmr-handheld-radio-w-gps-programming-cable)

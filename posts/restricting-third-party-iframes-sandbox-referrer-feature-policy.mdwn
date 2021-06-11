@@ -1,6 +1,6 @@
 [[!meta title="Restricting third-party iframe widgets using the sandbox attribute, referrer policy and feature policy"]]
 [[!meta date="2019-09-20T20:15:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Adding third-party embedded widgets on a website is a common but potentially
 dangerous practice. Thankfully, the web platform offers a few controls that can help

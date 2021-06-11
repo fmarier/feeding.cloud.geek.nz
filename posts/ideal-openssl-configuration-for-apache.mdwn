@@ -1,6 +1,6 @@
 [[!meta title="Ideal OpenSSL configuration for Apache and nginx"]]
 [[!meta date="2011-11-15T04:00:00.001+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 **The TLS world is moving fast and this post is now out of date! You might want to look at the [SSL configuration recommended by Mozilla](https://wiki.mozilla.org/Security/Server_Side_TLS).**
 

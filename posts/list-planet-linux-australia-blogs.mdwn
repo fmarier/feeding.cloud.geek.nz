@@ -1,6 +1,6 @@
 [[!meta title="List of Planet Linux Australia blogs"]]
 [[!meta date="2020-12-10T23:30:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I've been following [Planet Linux Australia](https://planet.linux.org.au/)
 for many years and discovered many interesting FOSS blogs through it. I was

@@ -1,6 +1,6 @@
 [[!meta title="Persona Guiding Principles"]]
 [[!meta date="2016-11-29T11:42:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Given the
 [impending shutdown of Persona](https://wiki.mozilla.org/Identity/Persona_Shutdown_Guidelines_for_Reliers)

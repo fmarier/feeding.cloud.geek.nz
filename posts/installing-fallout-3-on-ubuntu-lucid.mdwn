@@ -1,6 +1,6 @@
 [[!meta title="Installing Fallout 3 on Ubuntu Lucid"]]
 [[!meta date="2011-03-31T22:00:00.002+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 Here are some notes on what I did to install Fallout 3 (Game of the year edition) on Ubuntu [Lucid](https://launchpad.net/ubuntu/lucid) using [Wine](http://winehq.com/).  
   
 

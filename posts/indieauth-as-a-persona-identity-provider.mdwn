@@ -1,6 +1,6 @@
 [[!meta title="IndieAuth as a Persona Identity Provider"]]
 [[!meta date="2013-06-29T20:30:00.000-04:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 Two weeks ago, I attended [Indie Web Camp](http://indiewebcamp.com) and had lots of interesting
 [Persona](https://login.persona.org) conversations. As part of an
 [Auth Jam session](http://indiewebcamp.com/2013/Auth_Jam_Session), a few of us explored the idea of adding

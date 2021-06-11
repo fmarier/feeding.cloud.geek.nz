@@ -1,6 +1,6 @@
 [[!meta title="IPv6 and OpenVPN on Linode Debian/Ubuntu VPS"]]
 [[!meta date="2017-02-05T21:20:00.000+08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here is how I managed to extend my
 [OpenVPN setup on my Linode VPS](/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)

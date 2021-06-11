@@ -1,6 +1,6 @@
 [[!meta title="Reducing website bandwidth usage"]]
 [[!meta date="2009-10-09T18:30:00.004+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 There are lots of [excellent](https://addons.mozilla.org/en-US/firefox/addon/5369) [tools](http://code.google.com/speed/page-speed/) to help web developers optimise their websites.  
   
 Here are two simple things you have no excuse for overlooking on your next project.  

@@ -1,6 +1,6 @@
 [[!meta title="Troubleshooting Postgres Performance Problems"]]
 [[!meta date="2009-05-30T17:00:00.004+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 There are [great](http://momjian.us/main/writings/pgsql/hw_performance/index.html) [resources](http://www.varlena.com/GeneralBits/Tidbits/perf.html) to help tune [PostgresQL](http://www.postgresql.org/) for performance, but say you've got a Postgres database which suddenly becomes very slow. How can you figure out what's going on?  
 
 ## General system state

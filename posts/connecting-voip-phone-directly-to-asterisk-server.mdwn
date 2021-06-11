@@ -1,6 +1,6 @@
 [[!meta title="Connecting a VoIP phone directly to an Asterisk server"]]
 [[!meta date="2019-02-28T22:25:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 On my [Asterisk](https://www.asterisk.org/) server, I happen to have two
 on-board ethernet boards. Since I only used one of these, I decided to move

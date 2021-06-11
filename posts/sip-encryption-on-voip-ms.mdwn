@@ -1,6 +1,6 @@
 [[!meta title="SIP Encryption on VoIP.ms"]]
 [[!meta date="2019-07-06T16:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 My [VoIP provider](https://voip.ms) recently added [support for
 TLS/SRTP-based call

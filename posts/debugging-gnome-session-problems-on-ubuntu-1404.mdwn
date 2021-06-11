@@ -1,6 +1,6 @@
 [[!meta title="Debugging gnome-session problems on Ubuntu 14.04"]]
 [[!meta date="2016-08-24T22:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 After upgrading an Ubuntu 14.04 ("trusty") machine to the latest 16.04
 [Hardware Enablement](https://wiki.ubuntu.com/Kernel/LTSEnablementStack)

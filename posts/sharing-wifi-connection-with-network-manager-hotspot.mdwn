@@ -1,6 +1,6 @@
 [[!meta title="Sharing your WiFi connection with a NetworkManager hotspot"]]
 [[!meta date="2020-01-15T18:15:00.000-08:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In-flight and hotel WiFi can be quite expensive and often insist on charging
 users extra to connect multiple devices. In order to avoid that, it's

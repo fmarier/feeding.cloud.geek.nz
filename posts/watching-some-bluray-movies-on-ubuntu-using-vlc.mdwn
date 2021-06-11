@@ -1,6 +1,6 @@
 [[!meta title="Watching (some) Bluray movies on Ubuntu 14.04 using VLC"]]
 [[!meta date="2015-08-17T23:45:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 While the Bluray [digital restrictions management](https://defectivebydesign.org/what_is_drm_digital_restrictions_management)
 system is a lot more crippling than [the one](https://en.wikipedia.org/wiki/Content_Scramble_System) preventing users from watching

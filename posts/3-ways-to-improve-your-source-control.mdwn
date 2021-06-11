@@ -1,6 +1,6 @@
 [[!meta title="3 ways to improve your source control history"]]
 [[!meta date="2009-07-29T23:52:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 A few weeks ago, Linus Torvalds wrote a [blog post](http://torvalds-family.blogspot.com/2009/06/happiness-is-warm-scm.html) talking about how happy he was with the way that the last Linux merge window was going. Especially given how flexible distributed source control systems are and how long it takes before developers understand [how to use them properly](http://www.mail-archive.com/dri-devel@lists.sourceforge.net/msg39091.html).  
   
 Most Free Software projects collaborate with external contributors through the use of [patches](/2009/06/writing-perfect-patch.html) and with project members through **shared source control** systems. Keeping a clean source control history in this case can:

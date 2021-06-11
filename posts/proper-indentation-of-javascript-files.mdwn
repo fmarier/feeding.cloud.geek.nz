@@ -1,6 +1,6 @@
 [[!meta title="Proper indentation of Javascript files using js2-mode in emacs"]]
 [[!meta date="2012-05-31T17:30:00.000+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 If you use [emacs](http://www.gnu.org/software/emacs/) for Javascript or [Node.js](http://nodejs.org/) development, you should have a look at [js2-mode](https://github.com/mooz/js2-mode) (`apt-get install js2-mode` in [Debian](http://packages.debian.org/sid/js2-mode) / [Ubuntu](https://launchpad.net/ubuntu/+source/js2-mode)).
 
 In addition to providing syntax highlight, it will parse your Javascript and issue errors and warnings. (It's not as pedantic as [jslint](http://www.jslint.com/) or [jshint](http://www.jshint.com/) so you'll probably want to fix all of them before committing your files.)

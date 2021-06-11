@@ -1,6 +1,6 @@
 [[!meta title="Debugging OpenWRT routers by shipping logs to a remote syslog server"]]
 [[!meta date="2012-01-14T21:45:00.000+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 Trying to debug problems with consumer-grade routers is notoriously difficult due to a lack of decent debugging information. It's quite hard to know what's going on without at least a few good error messages.  
   
 Here is how I made my [OpenWRT](https://openwrt.org/)-based [Gargoyle](http://gargoyle-router.org/) router send its log messages to a network server running [rsyslog](http://rsyslog.com/).  

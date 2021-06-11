@@ -1,6 +1,6 @@
 [[!meta title="Introducing reboot-notifier for jessie and stretch"]]
 [[!meta date="2015-10-16T18:00:00.000-07:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 One of the packages that got
 [lost](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=755443) in the

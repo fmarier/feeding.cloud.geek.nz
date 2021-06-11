@@ -1,6 +1,6 @@
 [[!meta title="Improving the performance of Request Tracker by reducing latency"]]
 [[!meta date="2010-07-09T16:30:00.001+12:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 [Request Tracker](http://bestpractical.com/rt) is a really neat support tool, but one of the common complaints I heard from people using it during a previous project was that it was pretty slow.  
   
 There wasn't much we could do about the (overloaded) server it was running on, but I found that [enabling mod_deflate](/2009/10/reducing-website-bandwidth-usage.html) really [helped](http://identi.ca/notice/5372466).  

@@ -1,6 +1,6 @@
 [[!meta title="Keeping track of what others are saying about your project"]]
 [[!meta date="2009-10-02T18:30:00.002+13:00"]]
-[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 There are a few ways to easily keep track of what others are saying about your Free Software project. In a very popular project, you may already have enough feedback from its busy forum or mailing list, but in new and small projects, you often have to actively seek feedback/comments from end-users.  
   
 Here are a few ways to find out what people are saying online about your project.  
