@@ -12,11 +12,11 @@ Whenever possible, try to avoid:
   1. writing your own license
   2. choosing a license which is [incompatible with the GPL](http://www.dwheeler.com/essays/gpl-compatible.html)
 
-To make sure that your project can be included in a Free Software distribution like [Debian ](http://www.debian.org)and to make your code most useful to other people, it is highly recommended that you choose a standard license. Common ones include the [GPL](http://www.fsf.org/licensing/licenses/gpl.html), [LGPL](http://www.fsf.org/licensing/licenses/lgpl.html), the [Modified BSD license ](http://www.xfree86.org/3.3.6/COPYRIGHT2.html#5)and the [Apache license](http://www.apache.org/licenses/LICENSE-2.0). You can find a more [exhaustive list](http://www.fsf.org/licensing/licenses/) on the Free Software Foundation website.  
+To make sure that your project can be included in a Free Software distribution like [Debian ](http://www.debian.org)and to make your code most useful to other people, it is highly recommended that you choose a standard license. Common ones include the [GPL](https://www.fsf.org/licensing/licenses/gpl.html), [LGPL](https://www.fsf.org/licensing/licenses/lgpl.html), the [Modified BSD license ](http://www.xfree86.org/3.3.6/COPYRIGHT2.html#5)and the [Apache license](http://www.apache.org/licenses/LICENSE-2.0). You can find a more [exhaustive list](https://www.fsf.org/licensing/licenses/) on the Free Software Foundation website.  
   
 Common licenses are well understood by the community and have stood the test of time. Their compatibility with other licenses are also much clearer. This is important if you'd like your code to be reused inside other projects, but also if you want to include code from other sources inside yours.  
   
-The standard licenses are also more likely to make sense in different countries. The latest version of the [GPL](http://www.fsf.org/licensing/licenses/gpl.html), for example, was reviewed by [lawyers from all over the World](http://gplv3.fsf.org/discussion-committees/). Whatever you come up with is unlikely to have this level of scrutiny. If you think that the existing licenses don't fit your needs, please write to [licensing@fsf.org](mailto:licensing@fsf.org) to discuss your specific situation and avoid practical problems.  
+The standard licenses are also more likely to make sense in different countries. The latest version of the [GPL](https://www.fsf.org/licensing/licenses/gpl.html), for example, was reviewed by [lawyers from all over the World](http://gplv3.fsf.org/discussion-committees/). Whatever you come up with is unlikely to have this level of scrutiny. If you think that the existing licenses don't fit your needs, please write to [licensing@fsf.org](mailto:licensing@fsf.org) to discuss your specific situation and avoid practical problems.  
   
 So take the time to familiarize yourself with common licenses and then decide for yourself what protections you want to give to your code. Then, add the following to your tarball before you publish your source code online:  
 
@@ -39,7 +39,7 @@ Here's an sample copyright statement for a piece of software under the latest ve
     GNU General Public License for more details.
     
     You should have received a copy of the GNU General Public License
-    along with this program. If not, see http://www.gnu.org/licenses/.
+    along with this program. If not, see https://www.gnu.org/licenses/.
 
 This helps distributors and contributors by explicitly stating the license version as well as the name and contact details of the copyright holder.  
   

@@ -16,7 +16,7 @@ In the early days of your project, support requests usually only come in through
 
   * Be **calm** when responding to negative feedback. It helps to take a full day to cool off before sending a reply. Thank users for writing to you, but remind them that you are not getting paid to work on this project and that you are doing this for fun in your spare time. Some users seem to forget this.
 
-But of course, remember that [the main job of a developer/maintainer is to make the software better](http://www.gnu.org/prep/maintain/maintain.html#Mail). Keep this in mind when replying to support requests and allocate your (limited) time accordingly.  
+But of course, remember that [the main job of a developer/maintainer is to make the software better](https://www.gnu.org/prep/maintain/maintain.html#Mail). Keep this in mind when replying to support requests and allocate your (limited) time accordingly.  
 
 ## More Tools for Growing Projects
 

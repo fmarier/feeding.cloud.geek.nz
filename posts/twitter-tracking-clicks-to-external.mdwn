@@ -47,11 +47,11 @@ and finally turn this filter on for the affected URLs (`/etc/privoxy/user.action
 
 ## Switch to Identica
 
-If you want to avoid similar privacy problems in the future, you can also switch to an Open platform which respects [your basic freedoms](http://www.gnu.org/philosophy/free-sw.html).  
+If you want to avoid similar privacy problems in the future, you can also switch to an Open platform which respects [your basic freedoms](https://www.gnu.org/philosophy/free-sw.html).  
   
 The main contestant in this space is [Identica](http://www.identi.ca/). It's a great alternative to Twitter and has a lot of interesting features (like groups and [XMPP](http://en.wikipedia.org/wiki/Xmpp) integration) which are not yet available on Twitter.  
   
-The [StatusNet](http://status.net/wiki/) developers have kindly released their source code under the [AGPL](http://www.gnu.org/licenses/agpl.html) and their goal is to build the most open micro-blogging system out there.  
+The [StatusNet](http://status.net/wiki/) developers have kindly released their source code under the [AGPL](https://www.gnu.org/licenses/agpl.html) and their goal is to build the most open micro-blogging system out there.  
   
 So go over there now and [claim your username](https://identi.ca/main/register)!
 
