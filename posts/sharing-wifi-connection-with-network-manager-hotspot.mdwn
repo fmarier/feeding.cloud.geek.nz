@@ -37,7 +37,7 @@ In the *WiFi Security* tab:
 
 While you may think that such a long password is inconvenient, it's now
 possible to add the network automatically by simply [scanning a QR
-code](https://feeding.cloud.geek.nz/posts/encoding-wifi-access-point-passwords-qr-code/)
+code](/posts/encoding-wifi-access-point-passwords-qr-code/)
 on your phone.
 
 In the *IPv4 Settings* tab:

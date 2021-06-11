@@ -2,7 +2,7 @@
 [[!meta date="2019-06-14T20:15:00.000-07:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-Similarly to what I wrote for [Fedora](https://feeding.cloud.geek.nz/posts/fedora29-lxc-setup-on-ubuntu-bionic/),
+Similarly to what I wrote for [Fedora](/posts/fedora29-lxc-setup-on-ubuntu-bionic/),
 here is how I was able to create an [OpenSUSE](https://www.opensuse.org) 15 LXC
 container on an Ubuntu 18.04 (bionic) laptop.
 

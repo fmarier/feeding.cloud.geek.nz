@@ -74,7 +74,7 @@ and it would regularly fail with the following TLS errors:
     asterisk[534775]: ERROR[610289]: tcptls.c:553 in ast_tcptls_client_start: Unable to connect SIP socket to w.x.y.z:5061: Connection reset by peer
 
 I therefore decided to [setup a Let's Encrypt certificate in
-Asterisk](https://feeding.cloud.geek.nz/posts/using-letsencrypt-cert-with-asterisk/)
+Asterisk](/posts/using-letsencrypt-cert-with-asterisk/)
 to eliminate the original error.
 
 ## Firewall

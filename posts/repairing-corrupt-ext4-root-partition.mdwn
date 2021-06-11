@@ -4,7 +4,7 @@
 
 I ran into filesystem corruption
 ([ext4](https://en.wikipedia.org/wiki/Ext4)) on the root partition of my
-[backup server](https://feeding.cloud.geek.nz/posts/backing-up-to-gnubee2/)
+[backup server](/posts/backing-up-to-gnubee2/)
 which caused it to go into read-only mode. Since it's the root partition,
 it's not possible to unmount it and repair it while it's running. Normally I
 would boot from an [Ubuntu live CD / USB

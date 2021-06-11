@@ -45,7 +45,7 @@ However since none of them have them updated in the last 7 years, I just
 left them out.
 
 A couple appear to be impossible to [fetch over
-Tor](https://feeding.cloud.geek.nz/posts/things-that-work-well-with-tor/),
+Tor](/posts/things-that-work-well-with-tor/),
 presumably due to a [Cloudflare
 setting](https://community.cloudflare.com/t/block-tor-and-vpns-from-accessing-my-website/134730/2):
 

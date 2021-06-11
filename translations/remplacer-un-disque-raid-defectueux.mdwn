@@ -2,8 +2,7 @@
 [[!meta date="2016-08-20T15:00:00.000-07:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-Traduction de l'article original anglais à
-<https://feeding.cloud.geek.nz/posts/replacing-a-failed-raid-drive/>.
+Traduction de l'[article original anglais](/posts/replacing-a-failed-raid-drive/).
 
 Voici la procédure que j'ai suivi pour remplacer un disque RAID défectueux
 sur une machine Debian.

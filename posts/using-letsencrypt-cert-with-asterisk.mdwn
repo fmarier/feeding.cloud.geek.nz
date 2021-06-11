@@ -3,7 +3,7 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In order to fix the following error after setting up [SIP
-TLS](https://feeding.cloud.geek.nz/posts/sip-encryption-on-voip-ms/) in
+TLS](/posts/sip-encryption-on-voip-ms/) in
 [Asterisk](https://www.asterisk.org/) 16.2:
 
     asterisk[8691]: ERROR[8691]: tcptls.c:966 in __ssl_setup: TLS/SSL error loading cert file. <asterisk.pem>

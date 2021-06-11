@@ -4,7 +4,7 @@
 
 I recently ran into problems trying to package the
 [latest version](https://launchpad.net/planetfilter/trunk/0.7.4) of my
-[planetfilter](https://feeding.cloud.geek.nz/posts/keeping-up-with-noisy-blog-aggregators-using-planetfilter/)
+[planetfilter](/posts/keeping-up-with-noisy-blog-aggregators-using-planetfilter/)
 tool.
 
 This is how I was able to temporarily work-around bugs in my tools and still

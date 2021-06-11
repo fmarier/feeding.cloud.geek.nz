@@ -3,7 +3,7 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In order to monitor some of the [machines I
-maintain](https://feeding.cloud.geek.nz/posts/usual-server-setup/), I rely
+maintain](/posts/usual-server-setup/), I rely
 on a simple email setup using
 [logcheck](https://packages.debian.org/sid/logcheck). Unfortunately that
 system completely breaks down if mail delivery stops.
@@ -27,7 +27,7 @@ Then I created a new user:
 with a password straight out of `pwgen -s 32`.
 
 I gave [ssh
-permission](https://feeding.cloud.geek.nz/posts/hardening-ssh-servers/) to
+permission](/posts/hardening-ssh-servers/) to
 that user:
 
     adduser mailq-check sshuser

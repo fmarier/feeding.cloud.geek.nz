@@ -4,7 +4,7 @@
 
 I recently ran into a corrupted data pack in a [Restic](https://restic.net/)
 backup on my
-[GnuBee](https://feeding.cloud.geek.nz/posts/backing-up-to-gnubee2/). It led
+[GnuBee](/posts/backing-up-to-gnubee2/). It led
 to consistent failures during the `prune` operation:
 
     incomplete pack file (will be removed): b45afb51749c0778de6a54942d62d361acf87b513c02c27fd2d32b730e174f2e

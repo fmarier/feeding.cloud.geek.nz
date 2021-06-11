@@ -90,7 +90,7 @@ the new drive:
     eatmydata nice ionice -c3 rsync -axHAX --progress /home/* /home2/
 
 making use of
-[wrappers that preserve system reponsiveness](https://feeding.cloud.geek.nz/posts/three-wrappers-to-run-commands-without-impacting-the-rest-of-the-system/)
+[wrappers that preserve system reponsiveness](/posts/three-wrappers-to-run-commands-without-impacting-the-rest-of-the-system/)
 during I/O-intensive operations.
 
 # Switch over to the new drive

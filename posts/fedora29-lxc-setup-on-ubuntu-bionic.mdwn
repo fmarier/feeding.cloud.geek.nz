@@ -2,8 +2,8 @@
 [[!meta date="2019-01-26T08:00:00.000-08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-Similarly to what I wrote for [Debian stretch](https://feeding.cloud.geek.nz/posts/lxc-setup-on-debian-stretch/)
-and [jessie](https://feeding.cloud.geek.nz/posts/lxc-setup-on-debian-jessie/),
+Similarly to what I wrote for [Debian stretch](/posts/lxc-setup-on-debian-stretch/)
+and [jessie](/posts/lxc-setup-on-debian-jessie/),
 here is how I was able to create a [Fedora](https://getfedora.org/) 29 LXC
 container on an Ubuntu 18.04 (bionic) laptop.
 

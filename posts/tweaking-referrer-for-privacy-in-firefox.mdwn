@@ -76,7 +76,7 @@ Policy, Firefox users can also take steps to limit the amount of information
 they send to websites, advertisers and trackers.
 
 In addition to enabling Firefox's built-in
-[tracking protection](https://feeding.cloud.geek.nz/posts/how-tracking-protection-works-in-firefox/)
+[tracking protection](/posts/how-tracking-protection-works-in-firefox/)
 by setting `privacy.trackingprotection.enabled` to `true` in `about:config`,
 which will prevent all network connections to known trackers, users can
 control **when the `Referer` header is sent** by setting
@@ -136,7 +136,7 @@ profile](https://support.mozilla.org/kb/profile-manager-create-and-remove-firefo
 # My Recommended Settings
 
 As with my
-[cookie recommendations](https://feeding.cloud.geek.nz/posts/tweaking-cookies-for-privacy-in-firefox/),
+[cookie recommendations](/posts/tweaking-cookies-for-privacy-in-firefox/),
 I recommend strengthening your referrer settings but not disabling (or
 spoofing) it entirely.
 

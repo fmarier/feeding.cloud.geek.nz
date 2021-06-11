@@ -84,7 +84,7 @@ and then deleted them:
 
 As you can see above, the `prune` command failed due to a corrupt pack and
 so I followed the [process I previously wrote
-about](https://feeding.cloud.geek.nz/posts/removing-corrupted-data-pack-restic-backup/)
+about](/posts/removing-corrupted-data-pack-restic-backup/)
 and identified the affected snapshots using:
 
     $ restic find --pack 9ec955794534be06356655cfee6abe73cb181f88bb86b0cd769cf8699f9f9e57

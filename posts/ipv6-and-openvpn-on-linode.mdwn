@@ -3,7 +3,7 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 Here is how I managed to extend my
-[OpenVPN setup on my Linode VPS](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
+[OpenVPN setup on my Linode VPS](/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
 to include [IPv6](https://community.openvpn.net/openvpn/wiki/IPv6) traffic.
 This ensures that clients can route all of their traffic through the VPN and
 avoid leaking IPv6 traffic, for example. It also enables clients on
@@ -58,7 +58,7 @@ using:
 # OpenVPN configuration
 
 The only thing I had to change in my
-[OpenVPN configuration](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
+[OpenVPN configuration](/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
 (`/etc/openvpn/server.conf`) was to change:
 
     proto udp

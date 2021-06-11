@@ -3,7 +3,7 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 In addition to
-[selecting the right monitor after docking my ThinkPad](https://feeding.cloud.geek.nz/posts/hooking-into-docking-undocking-events-to-run-scripts/),
+[selecting the right monitor after docking my ThinkPad](/posts/hooking-into-docking-undocking-events-to-run-scripts/),
 I wanted to set the correct sound output since I have headphones connected
 to my Ultra Dock. This can be done fairly easily using
 [Pulseaudio](https://www.freedesktop.org/wiki/Software/PulseAudio/).
@@ -55,7 +55,7 @@ to automatically switch to the headphones when I dock my laptop.
 # Finding out whether or not the laptop is docked
 
 While it is possible to
-[hook into the docking and undocking ACPI events and run scripts](https://feeding.cloud.geek.nz/posts/hooking-into-docking-undocking-events-to-run-scripts/),
+[hook into the docking and undocking ACPI events and run scripts](/posts/hooking-into-docking-undocking-events-to-run-scripts/),
 there doesn't seem to be an easy way from a shell script to tell whether or
 not the laptop is docked.
 

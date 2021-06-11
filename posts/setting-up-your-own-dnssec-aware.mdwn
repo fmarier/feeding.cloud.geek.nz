@@ -146,7 +146,7 @@ their [official test page](https://1.1.1.1/help).
 
 ## Integration with OpenVPN
 
-If you are [running your own OpenVPN server](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/),
+If you are [running your own OpenVPN server](/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/),
 you can tell clients to connect to the local unbound DNS client by putting the following in `/etc/unbound/unbound.conf.d/openvpn.conf`:
 
     server:

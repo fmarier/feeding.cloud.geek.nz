@@ -8,6 +8,6 @@ In most cases, getting involved in an existing project is quite easy. Most proje
   * the operating system you use (e.g. [Ubuntu](https://discourse.ubuntu.com/t/contribute/26) or [Debian](https://wiki.debian.org/GetInvolved-Beta))
   * a piece of [Free Software](https://www.fsf.org/about/what-is-free-software) you use every day
 
-Of course, if you can't find a project that solves your own particular problem, you may also want to [start a new one](https://feeding.cloud.geek.nz/posts/getting-involved-in-open-source-project/). You may be surprised at how many people will find your pet project useful and see a [community grow](https://feeding.cloud.geek.nz/posts/growing-community-around-your-new-free/) around it.
+Of course, if you can't find a project that solves your own particular problem, you may also want to [start a new one](/posts/getting-involved-in-open-source-project/). You may be surprised at how many people will find your pet project useful and see a [community grow](/posts/growing-community-around-your-new-free/) around it.
   
 I gave [a presentation](https://archive.org/details/contributing-to-foss_soc) on this topic for the [New Zealand Summer of Code](https://summeroftech.co.nz/).

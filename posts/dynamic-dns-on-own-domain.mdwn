@@ -77,7 +77,7 @@ Note that you do need to change the default update interval or the
 address](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=489997).
 
 Alternatively, just [setup your own lightweight IP address echoing
-service](https://feeding.cloud.geek.nz/posts/displaying-ip-address-apache-server-side-includes/)
+service](/posts/displaying-ip-address-apache-server-side-includes/)
 and avoid the problem entirely.
 
 # Testing

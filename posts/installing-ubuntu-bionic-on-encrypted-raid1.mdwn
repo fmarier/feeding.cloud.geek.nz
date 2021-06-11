@@ -105,7 +105,7 @@ that only come with the default Ubuntu server installation).
 ## Fixing booting with degraded RAID arrays
 
 Since I have run into [RAID startup problems in the
-past](https://feeding.cloud.geek.nz/posts/the-perils-of-raid-and-full-disk-encryption-on-ubuntu/),
+past](/posts/the-perils-of-raid-and-full-disk-encryption-on-ubuntu/),
 I expected having to fix up a few things to make degraded RAID arrays
 boot correctly.
 
@@ -149,7 +149,7 @@ and refreshing the initramfs:
 ## Disable suspend-to-disk
 
 Since I use a [random encryption key for the swap
-partition](https://feeding.cloud.geek.nz/posts/encrypted-swap-partition-on/)
+partition](/posts/encrypted-swap-partition-on/)
 (to avoid having a second password prompt at boot time), it means that
 suspend-to-disk is not going to work and so I disabled it by putting the
 following in `/etc/initramfs-tools/conf.d/resume`:

@@ -41,7 +41,7 @@ and then restart the service:
 
     systemctl restart ejabberd.service
 
-I wrote a [cronjob to renew this certificate automatically using certbot](https://feeding.cloud.geek.nz/posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/).
+I wrote a [cronjob to renew this certificate automatically using certbot](/posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/).
 
 # ejabberd installation
 

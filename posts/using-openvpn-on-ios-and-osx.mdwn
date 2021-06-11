@@ -3,9 +3,9 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 I have written instructions on how to connect to [your own OpenVPN
-server](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
+server](/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/)
 using Network Manager as well as
-[Android](https://feeding.cloud.geek.nz/posts/using-openvpn-on-android-lollipop/).
+[Android](/posts/using-openvpn-on-android-lollipop/).
 
 Here is how to do it on iOS and OSX assuming you have followed my
 instructions for the server setup.

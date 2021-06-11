@@ -44,9 +44,9 @@ servers, my renewal script also commits to the repository if any certs have
 changed.
 
 Finally, since my
-[XMPP server](https://feeding.cloud.geek.nz/posts/running-your-own-xmpp-server-debian-ubuntu/)
+[XMPP server](/posts/running-your-own-xmpp-server-debian-ubuntu/)
 and
-[IRC bouncer](https://feeding.cloud.geek.nz/posts/hiding-network-disconnections-using-irc-bouncer/)
+[IRC bouncer](/posts/hiding-network-disconnections-using-irc-bouncer/)
 need the private key and the full certificate chain to be in the same file,
 so I regenerate these files at the end of the script. In the case of
 ejabberd, I only do so if the certificates have actually changed since

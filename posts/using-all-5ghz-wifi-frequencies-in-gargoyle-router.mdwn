@@ -57,7 +57,7 @@ Because [Gargoyle](https://www.gargoyle-router.com/) is based on
 [wireless configuration options](https://wiki.openwrt.org/doc/uci/wireless)
 available than what's exposed in the Web UI.
 
-In this case, the solution was to explicitly [set my country in the wireless options](https://feeding.cloud.geek.nz/posts/setting-wifi-regulatory-domain-linux-openwrt/) (where `CA` is the
+In this case, the solution was to explicitly [set my country in the wireless options](/posts/setting-wifi-regulatory-domain-linux-openwrt/) (where `CA` is the
 [country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) for Canada, where my
 router is physically located).
 

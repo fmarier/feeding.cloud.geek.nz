@@ -114,7 +114,7 @@ be updated and it keeps doing that until the system is fully up-to-date.
 The only thing missing from this is getting a reminder whenever a package
 update (usually the kernel) **requires a reboot** to take effect. That's
 where the
-[reboot-notifier](https://feeding.cloud.geek.nz/posts/introducing-reboot-notifier/)
+[reboot-notifier](/posts/introducing-reboot-notifier/)
 package comes in.
 
 This assumes that you are already receiving emails sent to the root

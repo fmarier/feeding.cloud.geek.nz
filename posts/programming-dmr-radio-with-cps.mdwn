@@ -6,7 +6,7 @@ Here are some notes I took around programming my [AnyTone AT-D878UV
 radio](https://www.bridgecomsystems.com/collections/amateur-handheld-radios/products/anytone-at-d878uv-dual-band-dmr-handheld-radio-w-gps-programming-cable)
 to operate on [DMR](https://en.wikipedia.org/wiki/Digital_mobile_radio)
 using the [CPS
-software](https://feeding.cloud.geek.nz/posts/programming-anytone-d878uv-on-linux-using-windows10-and-virtualbox/)
+software](/posts/programming-anytone-d878uv-on-linux-using-windows10-and-virtualbox/)
 that comes with it.
 
 Note that you can always [tune in to a VFO channel by

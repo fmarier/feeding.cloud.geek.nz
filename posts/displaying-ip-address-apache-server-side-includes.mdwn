@@ -3,7 +3,7 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 If you use a [Dynamic DNS
-setup](https://feeding.cloud.geek.nz/posts/dynamic-dns-on-own-domain/) to
+setup](/posts/dynamic-dns-on-own-domain/) to
 reach machines which are not behind a stable IP address, you will likely
 have a need to probe these machines' public IP addresses. One option is to
 use an insecure service like Oracle's <http://checkip.dyndns.com/> which

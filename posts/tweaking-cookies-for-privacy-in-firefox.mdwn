@@ -110,7 +110,7 @@ go into `about:config` and set `privacy.trackingprotection.enabled` to
 You could also install the EFF's
 [Privacy Badger](https://www.eff.org/privacybadger) add-on which uses
 heuristics to detect and block trackers, unlike Firefox
-[tracking protection](https://feeding.cloud.geek.nz/posts/how-tracking-protection-works-in-firefox/)
+[tracking protection](/posts/how-tracking-protection-works-in-firefox/)
 which uses a blocklist of known trackers.
 
 # My Recommended Settings

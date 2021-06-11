@@ -3,13 +3,13 @@
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
 After [installing Debian buster on my
-GnuBee](https://feeding.cloud.geek.nz/posts/installing-debian-buster-on-gnubee2/), 
+GnuBee](/posts/installing-debian-buster-on-gnubee2/), 
 I set it up for receiving backups from my other computers.
 
 ## Software setup
 
 I started by configuring it [like a typical
-server](https://feeding.cloud.geek.nz/posts/usual-server-setup/) but without
+server](/posts/usual-server-setup/) but without
 a few packages that either take a lot of memory or CPU:
 
 - [fail2ban](https://packages.debian.org/buster/fail2ban)
@@ -68,7 +68,7 @@ In order to survive a failing SSD drive, I could have bought a second SSD
 and gone for a
 [RAID-1](https://en.wikipedia.org/wiki/Standard_RAID_levels#RAID_1) setup.
 Instead, I went for a cheaper option, a [poor man's
-RAID-1](https://feeding.cloud.geek.nz/posts/poor-mans-raid1-between-ssd-and-hard-drive/),
+RAID-1](/posts/poor-mans-raid1-between-ssd-and-hard-drive/),
 where I will have to reinstall the machine but it will be very quick and I
 won't lose any of my configuration.
 
@@ -135,7 +135,7 @@ same backup finished in about half the time.
 ### User and ssh setup
 
 After [hardening the ssh
-setup](https://feeding.cloud.geek.nz/posts/hardening-ssh-servers/) as I
+setup](/posts/hardening-ssh-servers/) as I
 usually do, I created a user account for each machine needing to backup onto
 the GnuBee:
 
@@ -259,7 +259,7 @@ I run it with the following cronjob in `/etc/cron.d/backups`:
     30 8 * * *    root  ionice nice nocache /root/backup/backup-machine1-to-foobar
     30 2 * * Sun  root  ionice nice nocache /root/backup/backup-machine1-to-foobar --prune
 
-in a way that [doesn't impact the rest of the system too much](https://feeding.cloud.geek.nz/posts/three-wrappers-to-run-commands-without-impacting-the-rest-of-the-system/).
+in a way that [doesn't impact the rest of the system too much](/posts/three-wrappers-to-run-commands-without-impacting-the-rest-of-the-system/).
 
 I also put the following in my `/etc/rc.local` to cleanup any leftover temp
 directories for aborted backups:

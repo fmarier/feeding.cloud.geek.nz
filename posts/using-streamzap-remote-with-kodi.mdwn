@@ -2,7 +2,7 @@
 [[!meta date="2021-03-02T21:00:00.000-08:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-After [installing Kodi on a Raspberry Pi 4](https://feeding.cloud.geek.nz/posts/creating-kodi-media-pc-raspberry-pi/), I found that my
+After [installing Kodi on a Raspberry Pi 4](/posts/creating-kodi-media-pc-raspberry-pi/), I found that my
 [Streamzap remote control](http://www.streamzap.com/consumer/pc_remote/index.php) worked for everything except the *Ok* and
 *Exit* buttons (which are supposed to get mapped to *Enter* and *Back*
 respectively).

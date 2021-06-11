@@ -137,7 +137,7 @@ Ario has a simpler user interface but gmpc has cover art download
 working out of the box, which is why I might stick with it.
 
 In both cases, it is possible to [configure a polipo
-proxy](https://feeding.cloud.geek.nz/posts/things-that-work-well-with-tor/)
+proxy](/posts/things-that-work-well-with-tor/)
 so that any external resources are fetched via
 [Tor](https://www.torproject.org/).
 

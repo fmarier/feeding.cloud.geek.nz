@@ -47,7 +47,7 @@ In order to authenticate results in that way and prevent DNS poisoning, a
 hierarchical cryptographic system was created: DNSSEC.
 
 In order to enable it, I have [setup a local unbound DNSSEC
-resolver](https://feeding.cloud.geek.nz/posts/setting-up-your-own-dnssec-aware/)
+resolver](/posts/setting-up-your-own-dnssec-aware/)
 on my machine and pointed `/etc/resolv.conf` (or
 `/etc/dhcp/dhclient.conf`) to my unbound installation at `127.0.0.1`.
 

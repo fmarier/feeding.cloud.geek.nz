@@ -9,7 +9,7 @@ had to run `mythtv-setup` remotely over an ssh connection with X forwarding:
 
 For most config options, I can either use the configuration menus inside of
 of `mythfrontend` (over a [vnc
-connection](https://feeding.cloud.geek.nz/posts/high-latency-vnc-tech-support/))
+connection](/posts/high-latency-vnc-tech-support/))
 or the *Settings* section of
 [MythWeb](https://www.mythtv.org/detail/mythweb), but some of the backend
 and tuner settings are only available through the main setup program.

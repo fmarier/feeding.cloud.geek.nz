@@ -87,7 +87,7 @@ webroot plugin on the main server:
     certbot certonly --webroot -w /var/www/acme -d seccdn.libravatar.org
 
 The resulting certificate will then be
-[automatically renewed before it expires](https://feeding.cloud.geek.nz/posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/).
+[automatically renewed before it expires](/posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/).
 
 [[!tag debian]] [[!tag nzoss]] [[!tag letsencrypt]] [[!tag sysadmin]]
 [[!tag apache]] [[!tag ssl]]
