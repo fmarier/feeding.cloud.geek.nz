@@ -3,7 +3,6 @@
 # About me
 
 <a href="https://fmarier.org"><img src="/avatar.jpg" width="80" height="80">
-
 **François Marier**</a>
 <br><a href="mailto:francois@fmarier.org">francois@fmarier.org</a>
 <br>Free and Open Source software developer
