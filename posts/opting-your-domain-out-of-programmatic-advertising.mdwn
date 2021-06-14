@@ -61,4 +61,4 @@ double-check my setup:
 - <https://adstxt.guru/validator/url/?url=https%3A%2F%2Ffeeding.cloud.geek.nz%2Fads.txt>
 - <https://www.adstxtgenerator.com/validator/results/?site=feeding.cloud.geek.nz>
 
-[[!tag web]] [[!tag debian]]
+[[!tag web]] [[!tag debian]] [[!tag ikiwiki]]

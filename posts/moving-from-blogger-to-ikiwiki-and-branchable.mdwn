@@ -127,5 +127,4 @@ longer than requested via the record's
 [TTL](http://en.wikipedia.org/wiki/Time_to_live#DNS_records)) continue to
 see the old posts.
 
-[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]]
-
+[[!tag debian]] [[!tag ubuntu]] [[!tag ikiwiki]]
