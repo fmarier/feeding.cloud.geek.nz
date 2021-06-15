@@ -89,10 +89,7 @@ things in it:
     - comments
     - blogspam
     - sidebar
-    - recentchangesdiff
     - attachment
-    - remove
-    - rename
     - favicon
     - format
     - highlight
@@ -106,7 +103,6 @@ things in it:
     - anonok
     - autoindex
     - date
-    - recentchanges
     - relativedate
     - htmlbalance
     - pagestats
@@ -122,6 +118,7 @@ things in it:
     - orphans
     - passwordauth
     - progress
+    - recentchanges
     - repolist
     - toggle
     - txt
