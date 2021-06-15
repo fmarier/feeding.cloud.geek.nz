@@ -5,7 +5,7 @@
 <a href="https://fmarier.org"><img src="/avatar.jpg" width="80" height="80">
 <br>**François Marier**</a>
 <br><a href="mailto:francois@fmarier.org">francois@fmarier.org</a>
-<br>Free and Open Source software developer
+<br>Free and Open Source developer
 <br>
 <br>[Twitter](https://twitter.com/fmarier)
 <br>[LinkedIn](https://linkedin.com/in/fmarier)
