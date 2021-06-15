@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="175.38.129.149"
+ claimedauthor="Paul Wise"
+ url="https://bonedaddy.net/pabs3/"
+ subject="An easier method"
+ date="2021-06-08T07:24:58Z"
+ content="""
+e2fsck -f /dev/sda1
+tune2fs -I 256 /dev/sda1
+"""]]
