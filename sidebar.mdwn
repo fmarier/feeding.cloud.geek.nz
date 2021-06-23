@@ -2,7 +2,7 @@
 
 # About me
 
-<a href="https://fmarier.org"><img src="/avatar.jpg" width="80" height="80">
+<a href="https://fmarier.org/"><img src="/avatar.jpg" width="80" height="80">
 <br>**François Marier**</a>
 <br><a href="mailto:francois@fmarier.org">francois@fmarier.org</a>
 <br>Free and Open Source developer
