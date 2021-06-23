@@ -49,14 +49,14 @@ card](http://users.telenet.be/on4qz/qsstv/faq.html#Audiofile).
 # Results
 
 Here is the [audio I
-recorded](/posts/receiving-sstv-images-from-iss/iss_sstv1.wav) from the
+recorded](/posts/receiving-sstv-images-from-iss/iss_sstv1.ogg) from the
 first pass (65 degrees at the highest point) as well as the rendered image:
 
 ![](/posts/receiving-sstv-images-from-iss/iss_sstv1.png)
 
 The second pass (60 degrees) was not as successful since I didn't hold the
 squelch open and you can tell from the [audio
-recording](/posts/receiving-sstv-images-from-iss/iss_sstv2.wav) that the
+recording](/posts/receiving-sstv-images-from-iss/iss_sstv2.ogg) that the
 signal got drowned in noise a couple of times. This is the rendering of that
 second pass:
 
