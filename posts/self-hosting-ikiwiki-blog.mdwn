@@ -379,8 +379,7 @@ but I'd like to also reject unsigned pushes.
 While my blog now has a CSP policy which doesn't rely on `unsafe-inline` for
 scripts, it does rely on `unsafe-inline` for stylesheets. I tried to remove this
 but the actual calls to allow seemed to be located deep within jQuery and so I gave up.
-[Patches](https://github.com/fmarier/feeding.cloud.geek.nz/pulls) for this
-would be very welcome of course.
+**Update:** now [fixed](/posts/removing-unsafe-inline-from-ikiwiki-style-src-directive/).
 
 Finally, I'd like to figure out a good way to deal with articles which don't
 currently have comments. At the moment, if you try to subscribe to their
