@@ -1,0 +1,80 @@
+[[!meta title="Removing unsafe-inline from Ikiwiki's style-src directive"]]
+[[!meta date="2021-06-26T19:45:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After [moving my Ikiwiki blog to my own server](/posts/self-hosting-ikiwiki-blog/)
+and enabling a basic CSP policy, I decided to see if I could tighten up the
+policy some more and stop relying on `style-src 'unsafe-inline'`.
+
+This does require that OpenID logins be disabled, but as a bonus, it also
+removes the need for jQuery to be present on the server.
+
+## Revised CSP policy
+
+First of all, I visited all of my pages in a Chromium browser and took note
+of the missing hashes listed in the developer tools console (Firefox
+doesn't show the missing hashes):
+
+- `'sha256-4Su6mBWzEIFnH4pAGMOuaeBrstwJN4Z3pq/s1Kn4/KQ='`
+- `'sha256-j0bVhc2Wj58RJgvcJPevapx5zlVLw6ns6eYzK/hcA04='`
+- `'sha256-j6Tt8qv7z2kSc7fUs0YHbrxawwsQcS05fVaX1r2qrbk='`
+- `'sha256-p4cncjf0hAIeTSS5tXecf7qTUanDC27KdlKhT9eOsZU='`
+- `'sha256-Y6v8OCtFfMmI5mbpwqCreLofmGZQfXYK7jJHCoHvn7A='`
+- `'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='`
+
+which took care of all of the inline styles.
+
+Note that I kept `unsafe-inline` in the directive since it will be
+automatically ignored by browsers who understand hashes, but will be honored
+and make the site work on older browsers.
+
+Next I added the new
+[`unsafe-hashes`](https://www.w3.org/TR/CSP3/#unsafe-hashes-usage) source
+expression along with the hash of the CSS fragment (`clear: both`) that is
+present on all pages related to comments in Ikiwiki:
+
+    $ echo -n "clear: both" | openssl dgst -sha256 -binary | openssl base64 -A
+    matwEc6givhWX0+jiSfM1+E5UMk8/UGLdl902bjFBmY=
+
+My final `style-src` directive is therefore the following:
+
+    style-src 'self' 'unsafe-inline' 'unsafe-hashes' 'sha256-4Su6mBWzEIFnH4pAGMOuaeBrstwJN4Z3pq/s1Kn4/KQ=' 'sha256-j0bVhc2Wj58RJgvcJPevapx5zlVLw6ns6eYzK/hcA04=' 'sha256-j6Tt8qv7z2kSc7fUs0YHbrxawwsQcS05fVaX1r2qrbk=' 'sha256-p4cncjf0hAIeTSS5tXecf7qTUanDC27KdlKhT9eOsZU=' 'sha256-Y6v8OCtFfMmI5mbpwqCreLofmGZQfXYK7jJHCoHvn7A=' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-matwEc6givhWX0+jiSfM1+E5UMk8/UGLdl902bjFBmY='
+
+## Browser compatibility
+
+While `unsafe-hashes` is [not yet implemented in
+Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1343950), it happens
+to work just fine [due to a
+bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1683506) (i.e.
+`unsafe-hashes` is always enabled whether or not the policy contains it).
+
+It's possible that my new CSP policy [won't work in
+Safari](https://caniuse.com/?search=unsafe-hashes), but these CSS clears
+don't appear to be needed anyways and so it's just going to mean extra CSP
+reporting noise.
+
+## Removing jQuery
+
+Since jQuery appears to only be used to provide the authentication system
+selector UI, I decided to get rid of it.
+
+I couldn't find a way to get Ikiwiki to stop pulling it in and so I put the
+following hack in my Apache config file:
+
+    # Disable jQuery.
+    Redirect 204 /ikiwiki/jquery.fileupload.js
+    Redirect 204 /ikiwiki/jquery.fileupload-ui.js
+    Redirect 204 /ikiwiki/jquery.iframe-transport.js
+    Redirect 204 /ikiwiki/jquery.min.js
+    Redirect 204 /ikiwiki/jquery.tmpl.min.js
+    Redirect 204 /ikiwiki/jquery-ui.min.css
+    Redirect 204 /ikiwiki/jquery-ui.min.js
+    Redirect 204 /ikiwiki/login-selector/login-selector.js
+
+Replacing the files on disk with an empty reponse seems to work very well
+and removes a whole lot of code that would otherwise be allowed by the
+`script-src` directive of my CSP policy. While there is a slight cosmetic
+change to the login page, I think the reduction in the attack surface is
+well worth it.
+
+[[!tag ikiwiki]] [[!tag debian]] [[!tag apache]]
