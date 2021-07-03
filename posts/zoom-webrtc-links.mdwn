@@ -1,0 +1,30 @@
+[[!meta title="Zoom WebRTC links"]]
+[[!meta date="2021-07-03T12:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Most people connect to Zoom via a [proprietary
+client](https://zoom.us/download) which has been on the receiving end of a
+number of [security and privacy
+issues](https://www.tomsguide.com/news/zoom-security-privacy-woes) over the
+past year, with some experts even describing it as
+[malware](https://www.theguardian.com/technology/2020/apr/02/zoom-technology-security-coronavirus-video-conferencing).
+
+It's not widely known however that Zoom offers a half-decent
+[WebRTC](https://webrtc.org/) client which means cross-platform one-click
+access to a Zoom room or webinar without needing to install any software.
+
+**Given a Zoom link such as
+`https://companyname.zoom.us/j/123456789?pwd=letmein`, you can use
+`https://zoom.us/wc/join/123456789?pwd=letmein` to connect in your browser.**
+
+Notice that the pool of Zoom room IDs is global and you can just drop the
+`companyname` from the URL.
+
+In my experience however, [Jitsi](https://meet.jit.si) has much better
+performance than Zoom's WebRTC client. For instance, I've never been able to
+use Zoom successfully on a [Raspberry Pi
+4](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/) (8GB), but
+Jitsi works quite well. If you have a say in the choice of conference
+platform, go with Jitsi instead.
+
+[[!tag debian]] [[!tag mozilla]] [[!tag videoconf]] [[!tag webrtc]] [[!tag zoom]]
