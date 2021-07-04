@@ -187,6 +187,10 @@ input#searchbox {
     padding: 0.2em 0.2em 0.2em 0;
 }
 
+.comment div[style*=clear] {
+    display: none;
+}
+
 .addcomment {
     margin-top: 2em;
 }
