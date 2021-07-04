@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ ip="64.46.2.29"
+ claimedauthor="Daniel Pocock"
+ subject="Zoom and Raspberry Pi 4"
+ date="2021-07-04T00:29:12Z"
+ content="""
+Notice that Zoom WebRTC is not real WebRTC, they are using data channels
+to integrate with proprietary WebAssembly client code:
+
+<https://bloggeek.me/when-will-zoom-use-webrtc/>
+
+Real WebRTC does not require WebAssembly or data channels.
+
+Firefox only supports WebAssembly on x86 / amd64
+
+That is why it is not working on Pi 4
+
+Same problem on POWER9 and arm64 workstations.
+"""]]
