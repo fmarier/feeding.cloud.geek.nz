@@ -4,5 +4,5 @@
  subject="Zoom redirector extension"
  date="2021-07-04T00:25:56Z"
  content="""
-There is a Chrome/Chromium extension just for this kind of Zoom link rewriting: https://chrome.google.com/webstore/detail/zoom-redirector/fmaeeiocbalinknpdkjjfogehkdcbkcd, or for Firefox: https://addons.mozilla.org/firefox/addon/zoom-redirector/
+There is a Chrome/Chromium extension just for this kind of Zoom link rewriting: <https://chrome.google.com/webstore/detail/zoom-redirector/fmaeeiocbalinknpdkjjfogehkdcbkcd>, or for Firefox: <https://addons.mozilla.org/firefox/addon/zoom-redirector/>
 """]]
