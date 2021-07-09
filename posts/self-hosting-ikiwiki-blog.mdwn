@@ -21,6 +21,10 @@ Then I enabled the CGI module in Apache:
 
     a2enmod cgi
 
+disabled gitweb (which is pulled in by `ikiwiki-hosting-web`):
+
+    a2disconf gitweb
+
 and un-commented the following in `/etc/apache2/mods-available/mime.conf`:
 
     AddHandler cgi-script .cgi
