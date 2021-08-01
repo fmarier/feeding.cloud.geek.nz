@@ -1,0 +1,55 @@
+[[!meta title="Time-stretch in Kodi"]]
+[[!meta date="2021-08-01T11:45:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[VLC](https://www.videolan.org/) has a really neat feature which consists of
+*time-stretching* audio to allow users to speed up or slow video playback
+with the `[` and `]` keys without affecting the pitch of the sound. I
+recently [switched to Kodi](/posts/creating-kodi-media-pc-raspberry-pi/) as
+my video player of choice and I was looking for the equivalent feature.
+
+## Kodi equivalent
+
+To enable this feature in Kodi, you first need to enable *[Sync playback to
+display](https://kodi.wiki/view/Settings/Player/Videos#Sync_playback_to_display)*
+in `Settings | Player | Videos`.
+
+Then map the [`tempoup` and `tempodown`
+commands](https://kodi.wiki/view/List_of_built-in_functions#Player_built-in.27s)
+to the [same keyboard
+shorcuts as VLC](https://forum.kodi.tv/showthread.php?tid=10023&pid=2447300#pid2447300).
+
+In my case however, I wanted to map these functions to buttons on my [Streamzap
+remote](/posts/using-streamzap-remote-with-kodi/)
+and so I put the following in my `~/.kodi/userdata/keymaps/remote.xml`:
+
+      <FullscreenVideo>
+        <remote>
+          <pageminus>PlayerControl(tempodown)</pageminus>
+          <pageplus>PlayerControl(tempoup)</pageplus>
+        </remote>
+      </FullscreenVideo>
+
+which allows me to press the `Ch +` and `Ch -` buttons on the remote to
+adjust the speed while the video is playing (in full-screen mode only, not
+with the menu displayed).
+
+## Examples
+
+Here are three ways I use this functionality:
+
+- I set it to `0.9x` for movies in languages I'm not totally proficient in.
+- I set it to `1.1x` for almost everything since the difference is not
+  especially perceptible, but it still allows me to watch 10% more movies in
+  the same amount of time :)
+- I set it to `1.2x` for [Rick &
+  Morty](https://en.wikipedia.org/wiki/Rick_and_Morty) because it makes
+  [Rick](https://en.wikipedia.org/wiki/Rick_Sanchez) even more hilariously
+  reckless and impatient.
+
+Unfortunately, I haven't found a way to **set the default tempo value**. The
+closest setting I could find is the one which allows you to set the maximum
+tempo value [`maxtempo`](https://kodi.wiki/view/Advancedsettings.xml#video).
+If you know of a way, please leave a comment!
+
+[[!tag kodi]] [[!tag debian]] [[!tag vlc]]
