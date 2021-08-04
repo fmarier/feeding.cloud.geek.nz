@@ -42,7 +42,7 @@ text.
 4. **Extracting comments** and linking them to the right posts.
 
 The
-[Python script](https://github.com/fmarier/blogger2ikiwiki/blob/master/html2text.py)
+[Python script](https://github.com/fmarier/blogger2ikiwiki/blob/master/blogger2ikiwiki.py)
 I wrote to do all of the above will hopefully be a good starting point for
 anybody wanting to migrate to Ikiwiki.
 
