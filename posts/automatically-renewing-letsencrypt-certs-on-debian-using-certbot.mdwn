@@ -24,7 +24,7 @@ Then I put my own renewal script in `/etc/cron.daily/certbot-renew`:
     /usr/bin/git add letsencrypt ejabberd
     DIFFSTAT="$(/usr/bin/git diff --cached --stat)"
     if [ -n "$DIFFSTAT" ] ; then
-        /usr/bin/git commit --quiet -m "Renewed letsencrypt certs" letsencrypt ejabberd
+        /usr/bin/git commit --quiet -m "Renewed letsencrypt certs" letsencrypt ejabberd .etckeeper
         echo "$DIFFSTAT"
     fi
     popd > /dev/null
