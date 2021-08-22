@@ -249,6 +249,8 @@ I also restrict the use of cron to the `root` user by putting the following in `
 
     root
 
+Instead of using the default value for `UMASK`, I explicitly set it to `027` in `/etc/login.defs`. 
+
 # Entropy and timekeeping
 
     apt install rng-tools chrony
