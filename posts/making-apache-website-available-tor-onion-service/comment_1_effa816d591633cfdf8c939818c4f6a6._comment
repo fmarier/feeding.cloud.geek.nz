@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ ip="213.225.37.233"
+ subject="vhosts"
+ date="2021-08-11T22:32:36Z"
+ content="""
+But you cant add 2 .onion domains as vhost can you? i've tried but the second one is ignored. 
+"""]]
