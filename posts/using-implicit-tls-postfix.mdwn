@@ -1,0 +1,29 @@
+[[!meta title="Time-stretch in Kodi"]]
+[[!meta date="2021-09-04T21:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+In order to mitigate the [NO STARTTLS
+vulnerabilities](https://nostarttls.secvuln.info/), I recently switched my
+local SMTP smarthosts from STARTTLS (port 587) to implicit TLS (port 465).
+
+Here are the key configuration parameters for
+[Postfix](http://www.postfix.org/) (i.e. `/etc/postfix/main.cf`):
+
+    relayhost = [smtp.kolabnow.com]:465
+    smtp_tls_wrappermode = yes
+    smtp_tls_security_level = secure
+
+Note that this is for
+[KolabNow](https://kb.kolabnow.com/documentation/generic-imap-client-setup-guide),
+but the same works for GMail and
+[Novus](https://www.novusnow.ca/support/setting-up-email-on-your-windows-computer-using-microsoft-outlook/).
+
+The square brackets around the hostname tell Postfix **not** to look up the MX
+name using DNS and instead to use the SMTP server name as-is.
+
+Setting the [`smtp_tls_security_level`
+parameter](http://www.postfix.org/postconf.5.html#smtp_tls_security_level)
+to [`secure`](http://www.postfix.org/TLS_README.html#client_tls_secure)
+ensures that the server is using a valid TLS certificate.
+
+[[!tag debian]] [[!tag postfix]] [[!tag ssl]]
