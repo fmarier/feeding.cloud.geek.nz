@@ -15,15 +15,22 @@ you forget):
 * disable root logins
 * disable password authentication
 
-This is what `/etc/ssh/sshd_config` should contain:
+This is what my `/etc/ssh/sshd_config.d/mozilla-tls.conf` contains:
 
+    # https://infosec.mozilla.org/guidelines/openssh
     HostKey /etc/ssh/ssh_host_ed25519_key
     HostKey /etc/ssh/ssh_host_rsa_key
     HostKey /etc/ssh/ssh_host_ecdsa_key
+    
+    KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+    Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+    
     AuthenticationMethods publickey
-    PasswordAuthentication no
+    
+    LogLevel VERBOSE
+    
     PermitRootLogin no
-    AuthorizedKeysFile      .ssh/authorized_keys
 
 Once you've done that, make sure you have all of the required host keys by running:
 
@@ -31,16 +38,20 @@ Once you've done that, make sure you have all of the required host keys by runni
 
 as root.
 
-You may also want to ensure you are using [strong ciphers and hash functions](https://wiki.mozilla.org/Security/Guidelines/OpenSSH#OpenSSH_server):
+Note that I periodically check that list of ciphers and hash functions against the [Mozilla recommendations](https://wiki.mozilla.org/Security/Guidelines/OpenSSH#OpenSSH_server).
 
-    KexAlgorithms <insert Mozilla list>
-    Ciphers <insert Mozilla list>
-    MACs <insert Mozilla list>
+I also have the following in my `/etc/ssh/sshd_config.d/local.conf`:
 
-and that you deactivate short Diffie-Hellman moduli:
+    AuthorizedKeysFile	.ssh/authorized_keys
+    AcceptEnv LANG LC_* TZ
+    AllowGroups sshuser
+
+I also used to disable short Diffie-Hellman moduli:
 
     awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.tmp
     mv /etc/ssh/moduli.tmp /etc/ssh/moduli
+
+but that's annoying since it causes merge conflicts on distro upgrades.
 
 Finally, if you don't need `sftp` support, Mozilla recommends disabling it,
 which can be done by commenting out this line:
@@ -160,40 +171,4 @@ You may also want to include the following options to each entry:
 `no-X11-forwarding`, `no-user-rc`, `no-pty`, `no-agent-forwarding` and
 `no-port-forwarding`.
 
-# Increasing the amount of logging
-
-Ff you run [logcheck](https://packages.debian.org/stable/logcheck)
-and would like to whitelist the "Accepted publickey" messages on your
-server, you'll have to start by deleting the first line of
-`/etc/logcheck/ignore.d.server/sshd`. Then you can add an entry for all of
-the usernames, IP addresses and ssh keys that you expect to see.
-
-Finally, it is also possible to
-[log all commands issued by a specific user over ssh](http://beardyjay.co.uk/logging-all-ssh-commands/logging-ssh)
-by enabling the `pam_tty_audit` module in `/etc/pam.d/sshd`:
-
-    session required pam_tty_audit.so enable=francois
-
-However this module is [not included in wheezy](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=699159) and has only recently been [re-added to Debian](http://packages.qa.debian.org/p/pam/news/20131021T001835Z.html).
-
-# Identifying stolen keys
-
-One thing I'd love to have is a way to identify a stolen public key. Given the IP
-restrictions described above, if a public key is stolen and used from a different IP,
-I will see something like this in `/var/log/auth.log`:
-
-    sshd: Connection from 198.51.100.10 port 39492
-    sshd: Authentication tried for francois with correct key but not from a permitted host (host=198.51.100.10, ip=198.51.100.10).
-    sshd: Failed publickey for francois from 198.51.100.10 port 39492 ssh2
-    sshd: Connection closed by 198.51.100.10 [preauth]
-
-So I can get the IP address of the attacker (likely to be a random VPS or a
-Tor exit node), but unfortunately, the key fingerprints don't appear for
-failed connections like they do for successful ones. So I don't know which key
-to revoke.
-
-Is there any way to identify which key was used in a failed login attempt or
-is the solution to only ever have a single public key in each
-`authorized_keys` file and create a separate user account for each user?
-
-[[!tag sysadmin]] [[!tag debian]] [[!tag security]] [[!tag nzoss]] [[!tag ssh]]
+[[!tag sysadmin]] [[!tag debian]] [[!tag security]] [[!tag ssh]]
