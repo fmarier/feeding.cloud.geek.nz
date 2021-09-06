@@ -4,7 +4,7 @@
 
 I ran into a corrupt [MariaDB](https://mariadb.org/) index page the other day and had to
 restore my [MythTV database](https://www.mythtv.org/wiki/Database) from the
-automatic backups I make as part of my [regular maintainance tasks](/posts/automated-mythtv-maintenance-tasks/).
+automatic backups I make as part of my [regular maintenance tasks](/posts/automated-mythtv-maintenance-tasks/).
 
 ## Signs of trouble
 
