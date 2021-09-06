@@ -54,7 +54,7 @@ I also used to disable short Diffie-Hellman moduli:
 but that's annoying since it causes merge conflicts on distro upgrades.
 
 Finally, if you don't need `sftp` support, Mozilla recommends disabling it,
-which can be done by commenting out this line:
+which can be done by commenting out this line in `/etc/ssh/sshd_config`:
 
     #Subsystem     sftp    /usr/lib/openssh/sftp-server
 
