@@ -174,4 +174,4 @@ federate with yours by putting the following in
 The above was all I needed in order to be able to use the
 [JMP](https://jmp.chat/) SMS-to-XMPP service.
 
-[[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag xmpp]] [[!tag letsencrypt]] [[!tag ejabberd]]
+[[!tag debian]] [[!tag ubuntu]] [[!tag jmp]] [[!tag sysadmin]] [[!tag xmpp]] [[!tag letsencrypt]] [[!tag ejabberd]]
