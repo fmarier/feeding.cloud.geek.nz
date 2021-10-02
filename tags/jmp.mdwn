@@ -1,0 +1,4 @@
+[[!meta title="pages tagged jmp"]]
+
+[[!inline pages="tagged(jmp)" actions="no" archive="yes"
+feedshow=10]]
