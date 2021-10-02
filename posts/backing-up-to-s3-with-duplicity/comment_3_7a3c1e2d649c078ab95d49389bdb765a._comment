@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="107.12.3.218"
+ claimedauthor="JCollins"
+ subject="S3 IA has minimum 1 month storage"
+ date="2021-09-23T18:37:39Z"
+ content="""
+--s3-use-ia: Infrequent Acess is half the price of Standard S3 storage, but it has a minimum storage time of one month. So, if one were to do a nightly delta backup and a full backup each week, keeping 2 full backups and deleting older full backups, Standard access would be the same price as IA or cheaper. That is, IA storage is only cheaper for objects stored for longer than half a month.
+"""]]
