@@ -1,0 +1,97 @@
+[[!meta title="Setting up a JMP SIP account on Asterisk"]]
+[[!meta date="2021-10-02T13:10:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+[JMP](https://jmp.chat/) offers VoIP calling via [XMPP](https://en.wikipedia.org/wiki/XMPP), but it's also
+possibly to use the VoIP using [SIP](https://en.wikipedia.org/wiki/Session_Initiation_Protocol).
+
+The underlying VoIP calling functionality in JMP is provided by
+[Bandwidth](https://www.bandwidth.com/), but their [old Asterisk
+instructions](https://web.archive.org/web/20101226183140/http://www.bandwidth.com/wiki/article/Configuring_Asterisk_for_bandwidth.com)
+didn't quite work for me. Here's how I set it up in my [Asterisk](https://www.asterisk.org/) server.
+
+# Get your SIP credentials
+
+After signing up for JMP and setting it up in your favourite XMPP client,
+send the following message to the `cheogram.com` gateway contact:
+
+    reset sip account
+
+In response, you will receive a message containing:
+
+- a numerical username
+- a password (e.g. three lowercase words separated by spaces)
+
+# Add SIP account to your Asterisk config
+
+First of all, I added the following near the top of my
+`/etc/asterisk/sip.conf`:
+
+    [general]
+    register => username:three secret words@jmp.bwapp.bwsip.io
+
+Note that you can have more than one `register` line in your config if you
+use more than one SIP provider, but **you must register with the server
+whether you want to receive incoming calls or not**.
+
+Then I added a new blurb to the bottom of the same file:
+
+    [jmp]
+    type=peer
+    host=jmp.bwapp.bwsip.io
+    secret=three secret words
+    defaultuser=username
+    context=from-jmp
+    disallow=all
+    allow=ulaw
+    allow=g729
+    insecure=port,invite
+    canreinvite=no
+    dtmfmode=rfc2833
+
+I checked that the registration was successful by running `asterisk -r` and
+then typing:
+
+    sip set debug on
+
+before reloading the configuration using:
+
+    reload
+
+# Create Asterisk extensions to send and receive calls
+
+Once I got registration to work, I hooked this up with my other extensions
+so that I could send and receive calls using my JMP number.
+
+In `/etc/asterisk/extensions.conf`, I added the following:
+
+    [from-jmp]
+    include => home
+    exten => s,1,Goto(1000,1)
+
+where `home` is the context which includes my local SIP devices and `1000`
+is the extension I want to ring.
+
+Then I added the following to enable calls to any destination within the
+[North American Numbering Plan](https://en.wikipedia.org/wiki/North_American_Numbering_Plan):
+
+    [pstn-jmp]
+    exten => _1NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <5551231434>)
+    exten => _1NXXNXXXXXX,n,Dial(SIP/jmp/${EXTEN})
+    exten => _1NXXNXXXXXX,n,Hangup()
+    exten => _NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <5551231234>)
+    exten => _NXXNXXXXXX,n,Dial(SIP/jmp/1${EXTEN})
+    exten => _NXXNXXXXXX,n,Hangup()
+
+Here `5551231234` is my JMP phone number, not my bwsip numerical username.
+
+# Firewall
+
+Finally, I opened a few ports in my firewall by putting the following in
+`/etc/network/iptables.up.rules`:
+
+    # SIP and RTP on UDP (jmp.bwapp.bwsip.io)
+    -A INPUT -s 52.0.172.61/32 -p udp --dport 5060 -j ACCEPT
+    -A INPUT -s 52.0.172.61/32 -p udp --sport 5004:5005 --dport 10001:20000 -j ACCEPT
+
+[[!tag jmp]] [[!tag debian]] [[!tag asterisk]]
