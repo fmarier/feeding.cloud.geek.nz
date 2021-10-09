@@ -58,6 +58,7 @@ Authentication/Encryption:
 - TLS Auth File: `ta.key`
 - TLS Direction: `1`
 - Encryption cipher: `AES-256-GCM`
+- Packet authentication: `SHA512`
 
 Advanced:
 

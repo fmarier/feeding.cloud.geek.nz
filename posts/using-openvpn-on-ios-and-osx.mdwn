@@ -59,15 +59,16 @@ Here is the config I successfully used to connect to my server:
     cert iphone.crt
     key iphone.key
     cipher AES-256-GCM
+    auth SHA512
     proto udp
     tls-remote server
     remote-cert-tls server
     ns-cert-type server
     tls-auth ta.key 1
 
-# Using Viscosity on Mac OSX
+# Using Viscosity on macOS
 
-One of the possible OpenVPN clients you can use on OSX is
+One of the possible OpenVPN clients you can use on macOS is
 [Viscosity](https://www.sparklabs.com/viscosity/).
 
 Here are the settings you'll need to change when setting up a new VPN
@@ -91,5 +92,6 @@ connection:
    - add the following extra OpenVPN configuration commands:
 
          cipher AES-256-GCM
+         auth SHA512
 
 [[!tag openvpn]] [[!tag ios]] [[!tag osx]]
