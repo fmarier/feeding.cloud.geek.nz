@@ -14,7 +14,6 @@ put everything together.
 My personal domain is `fmarier.org` and so I created the following DNS
 records:
 
-    echo                 CNAME    fmarier.org.
     jabber-gw            CNAME    fmarier.org.
     _xmpp-client._tcp    SRV      5 0 5222 jabber-gw.fmarier.org.
     _xmpp-server._tcp    SRV 	  5 0 5269 jabber-gw.fmarier.org.
@@ -30,7 +29,7 @@ The easiest way to get a certificate is to install [certbot](https://certbot.eff
 Then, shutdown your existing webserver if you have one running and request
 a cert like this:
 
-    certbot --duplicate certonly --apache -d jabber-gw.fmarier.org -d echo.fmarier.org -d fmarier.org
+    certbot --duplicate certonly --apache -d jabber-gw.fmarier.org -d fmarier.org
 
 Once you have the cert, you can merge the private and public keys
 into the file that ejabberd expects:
@@ -166,8 +165,8 @@ federate with yours by putting the following in
 
     access:
       s2s:
-        - allow: trusted_servers
-        - deny
+        allow: trusted_servers
+        deny: all
     
     s2s_access: s2s
 
