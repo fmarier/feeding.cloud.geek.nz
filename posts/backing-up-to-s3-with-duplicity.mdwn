@@ -91,20 +91,19 @@ and wrote down the *access key* and the *access key secret*.
 
 # Duplicity settings
 
-Once that's all set, I was able to use duplicity using the following
-options:
+I installed duplicity like this:
+
+    apt install duplicity python3-boto3
+
+then used the following options:
 
 - `--s3-use-new-style`: apparently required on non-US regions
 - `--s3-use-ia`: recommended pricing structure for backups
 - `--s3-use-multiprocessing`: speeds up uploading of backup chunks
 
-and used the following remote URL:
+and the following remote URL:
 
-    s3://s3.ca-central-1.amazonaws.com/backup-foobar/machinename
-
-which hardcodes the region in order to [work-around the lack of explicit
-region support in
-duplicity](https://bugs.launchpad.net/duplicity/+bug/1003159/comments/7).
+    boto3+s3://backup-foobar/machinename
 
 I ended up with the following command:
 
