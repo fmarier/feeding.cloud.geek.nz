@@ -419,4 +419,11 @@ and the following to improve congestion control and
     net.ipv4.tcp_congestion_control = bbr
     net.ipv4.tcp_notsent_lowat = 16384
 
-[[!tag sysadmin]] [[!tag debian]] [[!tag nzoss]] [[!tag duplicity]]
+# Fun
+
+Finally, I also like to install these packages which generate fun stats about
+each server:
+
+    apt install installation-birthday uptimed
+
+[[!tag sysadmin]] [[!tag debian]] [[!tag duplicity]]
