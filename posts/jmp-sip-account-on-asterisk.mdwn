@@ -97,4 +97,44 @@ Finally, I opened a few ports in my firewall by putting the following in
     -A INPUT -s 67.231.2.13/32 -p udp --sport 5004:5005 --dport 10001:20000 -j ACCEPT
     -A INPUT -s 216.82.238.135/32 -p udp --sport 5004:5005 --dport 10001:20000 -j ACCEPT
 
+# Outbound calls not working
+
+While the above setup works for me for **inbound calls**, it doesn't currently
+work for **outbound calls**.
+
+The hostname currently resolves to one of two IP addresses:
+
+    $ dig +short jmp.cbcbc7.auth.bandwidth.com
+    67.231.2.13
+    216.82.238.135
+
+If I pin it to the first one by putting the following in my `/etc/hosts` file:
+
+    67.231.2.13 jmp.cbcbc7.auth.bandwidth.com
+
+then I get a `486` error back from the server when I dial `1-555-456-4567`:
+
+    <--- SIP read from UDP:67.231.2.13:5008 --->
+    SIP/2.0 486 Busy Here
+    Via: SIP/2.0/UDP 127.0.0.1:5060;branch=z9hG4bK03210a30
+    From: "Francois Marier" <sip:5551231234@127.0.0.1>
+    To: <sip:15554564567@jmp.cbcbc7.auth.bandwidth.com:5008>
+    Call-ID: 575f21f36f57951638c1a8062f3a5201@127.0.0.1:5060
+    CSeq: 103 INVITE
+    Content-Length: 0
+
+On the other hand, if I pin it to `216.82.238.135`, then I get a `600` error:
+
+    <--- SIP read from UDP:216.82.238.135:5008 --->
+    SIP/2.0 600 Busy Everywhere
+    Via: SIP/2.0/UDP 127.0.0.1:5060;branch=z9hG4bK7b7f7ed9
+    From: "Francois Marier" <sip:5551231234@127.0.0.1>
+    To: <sip:15554564567@jmp.cbcbc7.auth.bandwidth.com:5008>
+    Call-ID: 5bebb8d05902c1732c6b9f4776844c66@127.0.0.1:5060
+    CSeq: 103 INVITE
+    Content-Length: 0
+
+If you have any idea what might be wrong here, or if you got outbound calls to
+work on Bandwidth.com, please leave a comment!
+
 [[!tag jmp]] [[!tag debian]] [[!tag asterisk]]
