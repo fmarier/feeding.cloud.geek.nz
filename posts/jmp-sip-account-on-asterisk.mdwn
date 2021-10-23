@@ -28,7 +28,7 @@ First of all, I added the following near the top of my
 `/etc/asterisk/sip.conf`:
 
     [general]
-    register => username:three secret words@jmp.bwapp.bwsip.io
+    register => username:three secret words@jmp.cbcbc7.auth.bandwidth.com:5008
 
 Note that you can have more than one `register` line in your config if you
 use more than one SIP provider, but **you must register with the server
@@ -38,7 +38,8 @@ Then I added a new blurb to the bottom of the same file:
 
     [jmp]
     type=peer
-    host=jmp.bwapp.bwsip.io
+    host=mp.cbcbc7.auth.bandwidth.com
+    port=5008
     secret=three secret words
     defaultuser=username
     context=from-jmp
@@ -90,8 +91,10 @@ Here `5551231234` is my JMP phone number, not my bwsip numerical username.
 Finally, I opened a few ports in my firewall by putting the following in
 `/etc/network/iptables.up.rules`:
 
-    # SIP and RTP on UDP (jmp.bwapp.bwsip.io)
-    -A INPUT -s 52.0.172.61/32 -p udp --dport 5060 -j ACCEPT
-    -A INPUT -s 52.0.172.61/32 -p udp --sport 5004:5005 --dport 10001:20000 -j ACCEPT
+    # SIP and RTP on UDP (jmp.cbcbc7.auth.bandwidth.com)
+    -A INPUT -s 67.231.2.13/32 -p udp --dport 5008 -j ACCEPT
+    -A INPUT -s 216.82.238.135/32 -p udp --dport 5008 -j ACCEPT
+    -A INPUT -s 67.231.2.13/32 -p udp --sport 5004:5005 --dport 10001:20000 -j ACCEPT
+    -A INPUT -s 216.82.238.135/32 -p udp --sport 5004:5005 --dport 10001:20000 -j ACCEPT
 
 [[!tag jmp]] [[!tag debian]] [[!tag asterisk]]
