@@ -359,6 +359,47 @@ bunch of authentication errors coming from crawlers:
     Disallow: /blog.cgi
     Disallow: /ikiwiki.cgi
 
+## Dealing with spam
+
+In my Ikiwiki setup file, I locked all pages except for comments and then
+made all change moderated:
+
+    emailauth_sender: login@fmarier.org
+    anonok_pagespec: postcomment(*)
+    locked_pages: '* and !postcomment(*)'
+    moderate_pagespec: '*'
+
+However, some bots appear to be trying to login anyways with invalid
+email addresses:
+
+    From: Mail Delivery Subsystem <mailer-daemon@googlemail.com>
+    Subject: Delivery Status Notification (Failure)
+
+    ** Address not found **
+
+    Your message wasn't delivered to rakletbot@secmail.pro because the domain secmail.pro
+    couldn't be found. Check for typos or unnecessary spaces and try again.
+    
+    The response was:
+    
+    DNS Error: 13082484 DNS type 'mx' lookup of secmail.pro responded with code NXDOMAIN
+    Domain name not found: secmail.pro
+
+In order to avoid receiving these bounce emails, I added the following to my `/etc/postfix/main.cf`:
+
+    transport_maps = hash:/etc/postfix/transport
+
+and the following to `/etc/postfix/transport`:
+
+    rakletbot@secmail.pro discard
+
+before running the following:
+
+    postmap /etc/postfix/transport
+    systemctl restart postfix.service
+
+Now emails sent to that abusive email address from Ikiwiki are silently dropped.
+
 ## Future improvements
 
 There are a few things I'd like to improve on my current setup.
