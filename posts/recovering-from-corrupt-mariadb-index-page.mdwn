@@ -106,6 +106,10 @@ prior to the detection of the corruption:
     sudo -i -u mythtv
     /usr/share/mythtv/mythconverg_restore.pl --directory /var/backups/mythtv --filename mythconverg-1350-20200923010502.sql.gz
 
+Now, it's time to check the database to confirm that it restored properly:
+
+    mysqlcheck -p --silent --extended mythconverg
+
 In order to restart everything properly, I simply rebooted the machine:
 
     systemctl reboot
