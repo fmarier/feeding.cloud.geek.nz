@@ -6,7 +6,11 @@ Here is the daily/weekly cronjob I put together over the years to perform
 [MythTV](https://www.mythtv.org)-related maintenance tasks on my backend
 server.
 
-The first part performs a [database backup](https://www.mythtv.org/wiki/User_Manual:Periodic_Maintenance#The_database):
+Before I do anything with the MythTV database, I ensure that it's not corrupted:
+
+    4 1,13 * * *  mythtv  /usr/bin/mysqlcheck -p --silent --extended mythconverg
+
+Then I start the actual maintenance tasks. The first part performs a [database backup](https://www.mythtv.org/wiki/User_Manual:Periodic_Maintenance#The_database):
 
     5 1,13 * * *  mythtv  /usr/share/mythtv/mythconverg_backup.pl
 
