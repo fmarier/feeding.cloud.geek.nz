@@ -114,4 +114,14 @@ In order to restart everything properly, I simply rebooted the machine:
 
     systemctl reboot
 
+## Root cause
+
+After walking through my recovery steps several times on the same computer,
+I finally figured out that the corruption was due to **bad RAM**.
+
+I confirmed this theory by running [memtest86+](https://www.memtest.org/)
+overnight and got the following results:
+
+![](/posts/recovering-from-corrupt-mariadb-index-page/memtest.jpg)
+
 [[!tag mythtv]] [[!tag mysql]]
