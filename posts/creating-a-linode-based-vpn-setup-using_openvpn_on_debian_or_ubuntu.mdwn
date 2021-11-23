@@ -110,7 +110,6 @@ and set the following in `/etc/openvpn/server.conf` (which includes recommendati
     user nobody
     group nogroup
     crl-verify crl.pem
-    opt-verify
 
 (These DNS servers are the ones I found in `/etc/resolv.conf` on my Linode VPS.)
 
