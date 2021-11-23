@@ -98,6 +98,7 @@ Then I took the official configuration template:
 and set the following in `/etc/openvpn/server.conf` (which includes recommendations from [BetterCrypto.org](https://bettercrypto.org/) and [Gert van Dijk](https://blog.g3rt.nl/openvpn-security-tips.html)):
 
     dh dh2048.pem
+    topology subnet
     push "redirect-gateway def1 bypass-dhcp"
     push "dhcp-option DNS 74.207.241.5"
     push "dhcp-option DNS 74.207.242.5"
