@@ -1,0 +1,36 @@
+[[!meta title="Formatting an SD card for a Garmin device on Linux"]]
+[[!meta date="2021-12-04T00:20:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Some Garmin devices may pretend that they can format an SD card into the
+format they expect, but in my experience, you can instead get stuck in a
+loop in their user interface and never get the SD card recognized.
+
+Here's what worked for me:
+
+1. Plug the SD card onto the Linux computer using a USB adapter.
+2. Find out the device name (e.g. `/dev/sdc` on my computer) using `dmesg`.
+3. Start `fdisk /dev/sdc` as root.
+4. Delete any partitions using the `d` command.
+5. Create a new **DOS** partition table using the `o` command.
+6. Create a new **primary** partition using the `n` command and accept all of the defaults.
+7. Set the type of that partition to `W95 FAT32` (`0b`).
+8. Save everything using the `w` command.
+
+Now if I run `fdisk -l /dev/sdc`, I see the following:
+
+    Disk /dev/sdc: 14.84 GiB, 15931539456 bytes, 31116288 sectors
+    Disk model: Mass-Storage    
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes
+    Disklabel type: dos
+    Disk identifier: 0x7f2ef0ad
+    
+    Device     Boot Start      End  Sectors  Size Id Type
+    /dev/sdc1        2048 31116287 31114240 14.8G  b W95 FAT32
+
+and that appears to be recognized directly by my [Garmin DriveSmart
+61](https://www.garmin.com/en-CA/p/551976/pn/010-01679-07/).
+
+[[!tag garmin]]
