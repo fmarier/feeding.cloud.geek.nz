@@ -1,0 +1,4 @@
+[[!meta title="pages tagged garmin"]]
+
+[[!inline pages="tagged(garmin)" actions="no" archive="yes"
+feedshow=10]]
