@@ -89,19 +89,22 @@ To reduce unnecessary noise and reduce power consumption, I also installed
 
     apt install hdparm
 
-and configured all spinning drives to spin down after being idle for 10
-minutes by putting the following in `/etc/hdparm.conf`:
+and configured all spinning drives to spin down after being idle for 2
+minutes and for maximum power saving by putting the following in `/etc/hdparm.conf`:
 
     /dev/sdb {
-           spindown_time = 120
+           apm = 1
+           spindown_time = 24
     }
     
     /dev/sdc {
-           spindown_time = 120
+           apm = 1
+           spindown_time = 24
     }
     
     /dev/sdd {
-           spindown_time = 120
+           apm = 1
+           spindown_time = 24
     }
 
 and then reloaded the configuration:
