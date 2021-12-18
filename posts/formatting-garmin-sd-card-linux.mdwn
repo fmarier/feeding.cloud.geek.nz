@@ -16,6 +16,7 @@ Here's what worked for me:
 6. Create a new **primary** partition using the `n` command and accept all of the defaults.
 7. Set the type of that partition to `W95 FAT32` (`0b`).
 8. Save everything using the `w` command.
+9. Format the newly-created partition with `mkfs.vfat /dev/sdc1`.
 
 Now if I run `fdisk -l /dev/sdc`, I see the following:
 
