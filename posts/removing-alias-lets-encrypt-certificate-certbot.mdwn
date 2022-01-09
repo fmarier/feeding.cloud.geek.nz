@@ -1,0 +1,40 @@
+[[!meta title="Removing an alias/domain from a Let's Encrypt certificate managed by certbot"]]
+[[!meta date="2022-01-08T22:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently got an error during a [certbot](https://certbot.eff.org/) renewal:
+
+    Challenge failed for domain echo.fmarier.org
+    Failed to renew certificate jabber-gw.fmarier.org with error: Some challenges have failed.
+    The following renewals failed:
+      /etc/letsencrypt/live/jabber-gw.fmarier.org/fullchain.pem (failure)
+    1 renew failure(s), 0 parse failure(s)
+
+due to the fact that I had removed the DNS entry for `echo.fmarier.org`.
+
+I tried to find a way to remove that name from the certificate before
+renewing it, but it seems like the only way to do it is to create a new
+certificate without that alternative name.
+
+First, I looked for the domains included in the certificate:
+
+    $ certbot certificates
+    ...
+      Certificate Name: jabber-gw.fmarier.org
+        Serial Number: 31485424904a33fb2ab43ab174b4b146512
+        Key Type: RSA
+        Domains: jabber-gw.fmarier.org echo.fmarier.org fmarier.org
+        Expiry Date: 2022-01-04 05:28:57+00:00 (VALID: 29 days)
+        Certificate Path: /etc/letsencrypt/live/jabber-gw.fmarier.org/fullchain.pem
+        Private Key Path: /etc/letsencrypt/live/jabber-gw.fmarier.org/privkey.pem
+
+Then, deleted the existing certificate:
+
+    $ certbot delete jabber-gw.fmarier.org
+
+and finally created a new certificate with all other names except for the
+obsolete one:
+
+    $ certbot certonly -d jabber-gw.fmarier.org -d fmarier.org --duplicate
+
+[[!tag letsencrypt]] [[!tag ssl]] [[!tag debian]]
