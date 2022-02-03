@@ -18,4 +18,10 @@ Upload the updated key to the keyservers:
     gpg --export KEYID | curl -T - https://keys.openpgp.org
     gpg --keyserver keyring.debian.org --send-keys KEYID
 
+
+and then removing the old one from your [GitHub profile](https://github.com/settings/keys)
+and pasting in the output of:
+
+   gpg --armor --export KEYID | xsel -b
+
 [[!tag debian]] [[!tag gpg]]
