@@ -1,0 +1,80 @@
+[[!meta title="Removing an alias/domain from a Let's Encrypt certificate managed by certbot"]]
+[[!meta date="2022-02-05T20:45:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Ever since upgrading to Ubuntu 20.04 (focal) I started getting the following
+error in emacs when opening Python files (in the built-in `python-mode`):
+
+    Filemode specification error: (wong-type argument stringp nil)
+
+I used `M-x toggle-debug-on-error` in order to see where the error
+originated and saw the following immediately after opening a Python file:
+
+    Debugger entered--Lisp error: (wrong-type-argument stringp nil)
+      string-match("\\(.+\\)@\\(\\(?:gmail\\|googlemail\\)\\.com\\)" nil)
+      (if (string-match "\\(.+\\)@\\(\\(?:gmail\\|googlemail\\)\\.com\\)" user-mail-address) (progn (add-to-list (quote tramp-default-user-alist) (list "\\`gdrive\\'" nil (match-string 1 user-mail-address))) (add-to-list (quote tramp-default-host-alist) (quote ("\\`gdrive\\'" nil (\, (match-string 2 user-mail-address)))))))
+      eval-buffer(#<buffer  *load*> nil "/usr/share/emacs/26.3/lisp/net/tramp-loaddefs.el" nil t)  ; Reading at buffer position 25605
+      load-with-code-conversion("/usr/share/emacs/26.3/lisp/net/tramp-loaddefs.el" "/usr/share/emacs/26.3/lisp/net/tramp-loaddefs.el" nil t)
+      require(tramp-loaddefs)
+      byte-code("\300\301!\210\300\302!\210\300\303!\210\300\304!\210\300\305!\210\300\306!\210\300\307!\210\300\310!\210\300\311!\210\300\312!\210\300\313!\210\300\314!\207" [require auth-source advice cl-lib custom format-spec parse-time password-cache shell timer ucs-normalize trampver tramp-loaddefs] 2)
+      require(tramp-compat)
+      byte-code("\300\301!\210\300\302!\210\303\304\305\306\307\310\307\311\312\313\314\315&\013\210\316\317\320\321\322DD\323\307\304\324\325&\007\210\316\326\320\321\327DD\330\307\304\324\331&\007\210\316\332\320\321\333DD\334\307\304\324\335&\007\210\316\336\320\321\337DD\340\307\304\324\341&\007\210\316\342\320\321\343DD\344\307\304\324\345&\007\210\316\346\320\321\347DD\350\307\304\324\351&\007\210\316\352\320\321\353DD\354\314\355\307\304\324\356&\011\207" [require tramp-compat cl-lib custom-declare-group tramp nil "Edit remote files with a combination of ssh, scp, etc." :group files comm :link (custom-manual "(tramp)Top") :version "22.1" custom-declare-variable tramp-mode funcall function #f(compiled-function () #<bytecode 0x13896d5>) "Whether Tramp is enabled.\nIf it is set to nil, all remote file names are used literally." :type boolean tramp-verbose #f(compiled-function () #<bytecode 0x1204c1d>) "Verbosity level for Tramp messages.\nAny level x includes messages for all levels 1 .. x-1.  The levels are\n\n 0  silent (no tramp messages at all)\n 1  errors\n 2  warnings\n 3  connection to remote hosts (default level)\n 4  activities\n 5  internal\n 6  sent and received strings\n 7  file caching\n 8  connection properties\n 9  test commands\n10  traces (huge)." integer tramp-backup-directory-alist #f(compiled-function () #<bytecode 0x10f7791>) "Alist of filename patterns and backup directory names.\nEach element looks like (REGEXP . DIRECTORY), with the same meaning like\nin `backup-directory-alist'.  If a Tramp file is backed up, and DIRECTORY\nis a local file name, the backup directory is prepended with Tramp file\nname prefix (method, user, host) of file.\n\n(setq tramp-backup-directory-alist backup-directory-alist)\n\ngives the same backup policy for Tramp files on their hosts like the\npolicy for local files." (repeat (cons (regexp :tag "Regexp matching filename") (directory :tag "Backup directory name"))) tramp-auto-save-directory #f(compiled-function () #<bytecode 0x1072e71>) "Put auto-save files in this directory, if set.\nThe idea is to use a local directory so that auto-saving is faster.\nThis setting has precedence over `auto-save-file-name-transforms'." (choice (const :tag "Use default" nil) (directory :tag "Auto save directory name")) tramp-encoding-shell #f(compiled-function () #<bytecode 0x1217129>) "Use this program for encoding and decoding commands on the local host.\nThis shell is used to execute the encoding and decoding command on the\nlocal host, so if you want to use `~' in those commands, you should\nchoose a shell here which groks tilde expansion.  `/bin/sh' normally\ndoes not understand tilde expansion.\n\nFor encoding and decoding, commands like the following are executed:\n\n    /bin/sh -c COMMAND < INPUT > OUTPUT\n\nThis variable can be used to change the \"/bin/sh\" part.  See the\nvariable `tramp-encoding-command-switch' for the \"-c\" part.\n\nIf the shell must be forced to be interactive, see\n`tramp-encoding-command-interactive'.\n\nNote that this variable is not used for remote commands.  There are\nmechanisms in tramp.el which automatically determine the right shell to\nuse for the remote host." (file :must-match t) tramp-encoding-command-switch #f(compiled-function () #<bytecode 0x106de75>) "Use this switch together with `tramp-encoding-shell' for local commands.\nSee the variable `tramp-encoding-shell' for more information." string tramp-encoding-command-interactive #f(compiled-function () #<bytecode 0xeaeafd>) "Use this switch together with `tramp-encoding-shell' for interactive shells.\nSee the variable `tramp-encoding-shell' for more information." "24.1" (choice (const nil) string)] 12)
+      require(tramp)
+      byte-code("\300\301!\210\302\303\304\305\306DD\307\310\301\311\312\313\314&\011\210\302\315\304\305\316DD\317\310\301\313\320&\007\210\302\321\304\305\322DD\323\310\301\313\324&\007\210\302\325\304\305\326DD\327\310\301\311\330\313\331&\011\207" [require tramp custom-declare-variable tramp-inline-compress-start-size funcall function #f(compiled-function () #<bytecode 0x10f4681>) "The minimum size of compressing where inline transfer.\nWhen inline transfer, compress transferred data of file\nwhose size is this value or above (up to `tramp-copy-size-limit').\nIf it is nil, no compression at all will be applied." :group :version "26.3" :type (choice (const nil) integer) tramp-copy-size-limit #f(compiled-function () #<bytecode 0x10f3a81>) "The maximum file size where inline copying is preferred over an out-of-the-band copy.\nIf it is nil, out-of-the-band copy will be used without a check." (choice (const nil) integer) tramp-terminal-type #f(compiled-function () #<bytecode 0x1097881>) "Value of TERM environment variable for logging in to remote host.\nBecause Tramp wants to parse the output of the remote shell, it is easily\nconfused by ANSI color escape sequences and suchlike.  Often, shell init\nfiles conditionalize this setup based on the TERM environment variable." string tramp-histfile-override #f(compiled-function () #<bytecode 0x1020b49>) "When invoking a shell, override the HISTFILE with this value.\nWhen setting to a string, it redirects the shell history to that\nfile.  Be careful when setting to \"/dev/null\"; this might\nresult in undesired results when using \"bash\" as shell.\n\nThe value t unsets any setting of HISTFILE, and sets both\nHISTFILESIZE and HISTSIZE to 0.  If you set this variable to nil,\nhowever, the *override* is disabled, so the history will go to\nthe default storage location, e.g. \"$HOME/.sh_history\"." "25.2" (choice (const :tag "Do not override HISTFILE" nil) (const :tag "Unset HISTFILE" t) (string :tag "Redirect to a file"))] 10)
+      require(tramp-sh)
+      byte-code("\300\301!\210\300\302!\210\300\303!\210\300\304!\210\300\305!\210\306\307\310\"\210\306\311\312\"\210\313\314\315\316!\317B\"\210\313\320\315\321!\317B\"\210\322\323\324\325\326\327\330\331\332\333&\011\210\334\335!\204H\0\336\335\337\"\210\324\207" [require ansi-color cl-lib comint json tramp-sh autoload comint-mode "comint" help-function-arglist "help-fns" add-to-list auto-mode-alist purecopy "\\.py[iw]?\\'" python-mode interpreter-mode-alist "python[0-9.]*" custom-declare-group python nil "Python Language's flying circus support for Emacs." :group languages :version "24.3" :link (emacs-commentary-link "python") fboundp prog-first-column defalias #f(compiled-function () #<bytecode 0x10ffb91>)] 10)
+      python-mode()
+      set-auto-mode-0(python-mode nil)
+      set-auto-mode()
+      normal-mode(t)
+      after-find-file(nil t)
+      find-file-noselect-1(#<buffer generate_licenses.py> "~/devel/brave-browser/src/brave/script/generate_licenses.py" nil nil "~/devel/brave-browser/src/brave/script/generate_licenses.py" (51777401 64769))
+      find-file-noselect("/home/francois/devel/brave-browser/src/brave/script/generate_licenses.py" nil nil)
+      ido-file-internal(raise-frame)
+      #f(compiled-function () (interactive nil) #<bytecode 0xe59051>)()
+      ad-Advice-ido-find-file(#f(compiled-function () (interactive nil) #<bytecode 0xe59051>))
+      apply(ad-Advice-ido-find-file #f(compiled-function () (interactive nil) #<bytecode 0xe59051>) nil)
+      ido-find-file()
+      funcall-interactively(ido-find-file)
+      call-interactively(ido-find-file nil nil)
+      command-execute(ido-find-file)
+
+The error comes from line 581 of `/usr/share/emacs/26.3/lisp/net/tramp-loaddefs.el`:
+
+    (when (string-match "\\(.+\\)@\\(\\(?:gmail\\|googlemail\\)\\.com\\)" user-mail-address) (add-to-list 'tramp-default-user-alist `("\\`gdrive\\'" nil ,(match-string 1 user-mail-address))) (add-to-list 'tramp-default-host-alist '("\\`gdrive\\'" nil (\, (match-string 2 user-mail-address)))))
+
+**Commenting that line makes the problem go away.**
+
+For reference, in emacs 27.1, that blurb looks like this:
+
+    (tramp--with-startup
+     (when
+         (string-match "\\(.+\\)@\\(\\(?:gmail\\|googlemail\\)\\.com\\)" user-mail-address)
+       (add-to-list 'tramp-default-user-alist `("\\`gdrive\\'" nil ,
+                                                (match-string 1 user-mail-address)))
+       (add-to-list 'tramp-default-host-alist '("\\`gdrive\\'" nil (\,
+                                                                    (match-string 2 user-mail-address)
+                                                                    )
+                                                )
+                    )
+       )
+     )
+
+with the only difference being the use of `(tramp--with-startup)`, a
+function which doesn't exist in emacs 26.3 apparently.
+
+Given that the line references `user-mail-address`, I took a look at my
+`~/.emacs` and found the following:
+
+    (custom-set-variables
+     '(user-full-name "Francois Marier")
+     '(user-mail-address (getenv "EMAIL"))
+    )
+
+**Removing the `(user-mail-address)` line also makes the problem go away.**
+
+I ended up usin this latter approach instead in order to avoid modifying
+upstream emacs code. At least until I discover a need for setting my email
+address correctly in emacs.
+
+[[!tag emacs]] [[!tag ubuntu]]
