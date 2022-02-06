@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="2a02:a03f:69ba:dc00:99f7:7d21:3141:ac8"
+ claimedauthor="Jan Cejka"
+ subject="WARNING - older Omnia was shipped with different duplexers"
+ date="2022-01-26T20:29:55Z"
+ content="""
+Thank you for this post. It confirmed me my suspicion and I have found it while making sure how pigtails should be connected. 
+
+I was recently upgrading old Omnia to NAS box. Since then I had issues with 2.4 GHz WiFi. Of course, issue was in switched pigtails on one of the antennas. Layout of WiFi cards in slots was the same as on your photo, however, my Omnia has different duplexers. On your photo, 5GHz is connected to the left port, while mine has 5GHz on the right port. 
+
+If someone finds this page, make sure you check what duplexers you have in your unit and don't blindly trust photo of other unit, as some components may differ.
+
+"""]]
