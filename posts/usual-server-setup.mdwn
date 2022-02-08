@@ -290,6 +290,11 @@ In addition to knowing when you need to reboot your machine, the
 `needrestart` package will let you know (and offer to do it for you) when
 you need to restart a daemon using an obsolete library.
 
+Finally, to check that daemon restarting is taking place, install the
+`checkrestart` tool:
+
+    apt install --no-install-recommends debian-goodies
+
 # Handy utilities
 
     apt install renameutils atool iotop sysstat lsof mtr-tiny mc netcat-openbsd command-not-found nocache apt-file man-db
