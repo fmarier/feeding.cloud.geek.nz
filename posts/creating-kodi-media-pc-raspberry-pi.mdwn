@@ -134,6 +134,12 @@ and then set a proxy in the Kodi [*System | Internet access* settings](https://k
 - Server: `localhost`
 - Port: `9050`
 
+Note that you should set the following in `/etc/tor/torrc`:
+
+    SocksPort localhost:9050
+
+so that the Tor daemon is only available locallyj
+
 ## Network File System
 
 In order to avoid having to have all media storage connected directly to the
