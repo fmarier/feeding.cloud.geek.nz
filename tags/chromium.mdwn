@@ -1,0 +1,4 @@
+[[!meta title="pages tagged chromium"]]
+
+[[!inline pages="tagged(chromium)" actions="no" archive="yes"
+feedshow=10]]
