@@ -1,0 +1,100 @@
+[[!meta title="Ways to refer to locahost in Chromium"]]
+[[!meta date="2022-03-01T18:45:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+The filter rules [preventing websites from portscanning the local
+machine](https://github.com/brave/brave-browser/issues/9860) have recently
+been tightened in Brave. It turns out there are a surprising number of ways
+to refer to the local machine in Chromium.
+
+## `localhost` and friends
+
+`127.0.0.1` is the first address that comes to mind when thinking of the
+local machine. `localhost` is typically aliased to that address (via
+`/etc/hosts`), though that convention is not mandatory. The IPv6 equivalent
+is `[::1]`.
+
+- <http://localhost/>
+- <http://foo.localhost/>
+- <http://127.0.0.1/>
+- <http://0177.0000.0000.0001/> (`127.0.0.1` in octal)
+- <http://0x7F000001/> (`127.0.0.1` in hex)
+- <http://2130706433/> (`127.0.0.1` in decimal)
+- <http://[::ffff:127.0.0.1]/> (IPv4-mapped IPv6 address)
+- <http://[::ffff:7f00:1]/> (alternate of IPv4-mapped IPv6 address)
+- <http://[0000:0000:0000:0000:0000:ffff:7f00:0001]/> (fully-expanded IPv4-mapped IPv6 address)
+- <http://[::1]/>
+- <http://[0000:0000:0000:0000:0000:0000:0000:0001]/> (fully-expanded form of `[::1]`)
+
+## `0.0.0.0`
+
+`0.0.0.0` is not a routable address, but that's what's used to tell a
+service to bind (listen) on all network interfaces. In Chromium, it resolves
+to the local machine, just like `127.0.0.1`. The IPv6 equivalent is `[::]`.
+
+- <http://0.0.0.0/>
+- <http://0000.0000.0000.0000/> (`0.0.0.0` in octal)
+- <http://0x00000000/>(`0.0.0.0` in hex)
+- <http://0/> (`0.0.0.0` in decimal)
+- <http://[::ffff:0.0.0.0]/> (IPv4-mapped IPv6 address)
+- <http://[::ffff:0000:0000]/> (alternate form of IPv4-mapped IPv6 address)
+- <http://[0000:0000:0000:0000:0000:ffff:0000:0000]/> (fully-expanded IPv4-mapped IPv6 address)
+- <http://[::]/>
+- <http://[0000:0000:0000:0000:0000:0000:0000:0000]/> (fully-expanded form of `[::]`)
+
+## DNS-based
+
+Of course, another way to encode these numerical URLs is to create `A` /
+`AAAA` records for them under a domain you control. I've done this under my
+personal domain:
+
+- <http://t127.fmarier.org/> (`127.0.0.1`)
+- <http://t1aaaa.fmarier.org/> (`[::1]`)
+- <http://t0.fmarier.org/> (`0.0.0.0`)
+- <http://t0aaaa.fmarier.org/> (`[::]`)
+- <http://t127aaaam.fmarier.org/> (`[::ffff:7f00:1]`)
+- <http://t0aaaam.fmarier.org/> (`[::ffff:0000:0000]`)
+
+For these to work, you'll need to:
+
+- Make sure you can connect to **IPv6-only hosts**, for example by
+  connecting to an appropriate VPN if needed.
+- Put `nameserver 8.8.8.8` in `/etc/resolv.conf` since you need a DNS server
+  that will not filter these localhost domains. (For example,
+  [Unbound](https://www.nlnetlabs.nl/projects/unbound/about/) will do that
+  if you use `private-address: 127.0.0.0/8` in the `server` config.)
+- Go into `chrome://settings/security` and disable *Always use secure
+  connections* to make sure the OS resolver is used.
+- Turn off the `chrome://flags/#block-insecure-private-network-requests`
+  flag since that security feature
+  ([CORS-RFC1918](https://wicg.github.io/private-network-access/)) is
+  designed to protect against these kinds of requests.
+
+## `127.0.0.0/8` subnet
+
+Technically, the entire `127.0.0.0/8` subnet can used to refer to the local
+machine. However, it's not a reliable way to portscan a machine from a web
+browser because it only catches the services that listen on all interfaces
+(i.e. `0.0.0.0`).
+
+For example, on my machine, if I `nmap 127.0.0.1`, I get:
+
+    PORT     STATE SERVICE   VERSION
+    22/tcp   open  ssh       OpenSSH 8.2p1
+    25/tcp   open  smtp      Postfix smtpd
+
+whereas if I `nmap 127.0.1.25`, I only get:
+
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 8.2p1
+
+That's because I've got the following in `/etc/postfix/main.cf`:
+
+    inet_interfaces = loopback-only
+
+which I assume is explicitly binding `127.0.0.1`.
+
+Nevertheless, it would be good [to get that fixed in
+Brave](https://github.com/brave/brave-browser/issues/20457) too.
+
+[[!tag debian]] [[!tag chromium]] [[!tag brave]] [[!tag dns]]
