@@ -27,7 +27,7 @@ and creating a new directory for it:
 The second part of `/etc/cron.d/mythtv-maintenance` runs a contrib script to [optimize the database
 tables](https://www.mythtv.org/wiki/User_Manual:Periodic_Maintenance#Optimize_the_Database):
 
-    10 1 * * *  mythtv  /usr/bin/chronic /usr/share/doc/mythtv-backend/contrib/maintenance/optimize_mythdb.pl
+    10 1 * * *  mythtv  /usr/bin/chronic /usr/share/doc/mythtv/examples/maintenance/optimize_mythdb.pl
 
 once a day. It requires the `libmythtv-perl` and `libxml-simple-perl` packages
 to be installed on Debian-based systems.
