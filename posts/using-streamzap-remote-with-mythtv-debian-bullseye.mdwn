@@ -1,0 +1,112 @@
+[[!meta title="Using a Streamzap remote control with MythTV on Debian Bullseye"]]
+[[!meta date="2022-03-08T16:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After upgrading my [MythTV](https://www.mythtv.org/) machine to Debian
+[Bullseye](https://www.debian.org/releases/bullseye/) and [MythTV
+31](https://www.mythtv.org/wiki/Release_Notes_-_31), my Streamzap remote
+control stopped working correctly: the up and down buttons were
+working, but the OK button wasn't.
+
+Here's the complete solution that made it work with the built-in kernel
+support (i.e. without [LIRC](https://lirc.org/)).
+
+## Button re-mapping
+
+Since some of the buttons were working, but not others, I figured that the
+buttons were probably not mapped to the right keys.
+
+Inspired by these [old `v4l-utils`-based
+instructions](https://github.com/graysky2/streamzap/tree/old#option-2---basic-operation-of-mplayer-using-only-the-v4l-utils-package),
+I made my own custom keymap by by copying the original keymap:
+
+    cp /lib/udev/rc_keymaps/streamzap.toml /etc/rc_keymaps/
+
+and then modifying it to adapt it to what MythTV needs. This is what I ended
+up with:
+
+    [[protocols]]
+    name = "streamzap"
+    protocol = "rc-5-sz"
+    [protocols.scancodes]
+    0x28c0 = "KEY_0"
+    0x28c1 = "KEY_1"
+    0x28c2 = "KEY_2"
+    0x28c3 = "KEY_3"
+    0x28c4 = "KEY_4"
+    0x28c5 = "KEY_5"
+    0x28c6 = "KEY_6"
+    0x28c7 = "KEY_7"
+    0x28c8 = "KEY_8"
+    0x28c9 = "KEY_9"
+    0x28ca = "KEY_ESC"
+    0x28cb = "KEY_MUTE"
+    0x28cc = "KEY_UP"
+    0x28cd = "KEY_RIGHTBRACE"
+    0x28ce = "KEY_DOWN"
+    0x28cf = "KEY_LEFTBRACE"
+    0x28d0 = "KEY_UP"
+    0x28d1 = "KEY_LEFT"
+    0x28d2 = "KEY_ENTER"
+    0x28d3 = "KEY_RIGHT"
+    0x28d4 = "KEY_DOWN"
+    0x28d5 = "KEY_M"
+    0x28d6 = "KEY_ESC"
+    0x28d7 = "KEY_L"
+    0x28d8 = "KEY_P"
+    0x28d9 = "KEY_ESC"
+    0x28da = "KEY_BACK"
+    0x28db = "KEY_FORWARD"
+    0x28dc = "KEY_R"
+    0x28dd = "KEY_PAGEUP"
+    0x28de = "KEY_PAGEDOWN"
+    0x28e0 = "KEY_D"
+    0x28e1 = "KEY_I"
+    0x28e2 = "KEY_END"
+    0x28e3 = "KEY_A"
+
+Note that the keycodes can be found in the [kernel source
+code](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/input-event-codes.h).
+
+With my own keymap in place at `/etc/rc_keymaps/streamzap.toml`, I changed
+`/etc/rc_maps.cfg` to have the kernel driver automatically use it:
+
+    --- a/rc_maps.cfg
+    +++ b/rc_maps.cfg
+    @@ -126,7 +126,7 @@
+     *      rc-real-audio-220-32-keys real_audio_220_32_keys.toml
+     *      rc-reddo                 reddo.toml
+     *      rc-snapstream-firefly    snapstream_firefly.toml
+    -*      rc-streamzap             streamzap.toml
+    +*      rc-streamzap             /etc/rc_keymaps/streamzap.toml
+     *      rc-su3000                su3000.toml
+     *      rc-tango                 tango.toml
+     *      rc-tanix-tx3mini         tanix_tx3mini.toml
+
+## Button repeat delay
+
+To adjust the delay before button presses are repeated, I followed these
+[old out-of-date
+instructions](https://www.mythtv.org/wiki/User_Manual:IR_control_via_evdev#Modify_key_codes)
+on the MythTV wiki and put the following in
+`/etc/udev/rules.d/streamzap.rules`:
+
+    ACTION=="add", ATTRS{idVendor}=="0e9c", ATTRS{idProduct}=="0000", RUN+="/usr/bin/ir-keytable -s rc0 -D 1000 -P 250"
+
+Note that the `-d` option has been replaced with `-s` in the latest version
+of `ir-keytable`.
+
+To check that the Streamzap is indeed detected as `rc0` on your system, use
+this command:
+
+    $ ir-keytable 
+    Found /sys/class/rc/rc0/ with:
+        Name: Streamzap PC Remote Infrared Receiver (0e9c:0000)
+        Driver: streamzap
+        Default keymap: rc-streamzap
+    ...
+
+Make sure you don't pass the `-c` to `ir-keytable` or else it will clear the
+keymap set via `/etc/rc_maps.cfg`, removing all of the button mappings.
+
+[[!tag mythtv]] [[!tag streamzap]] [[!tag debian]]
