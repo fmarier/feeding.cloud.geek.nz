@@ -98,4 +98,4 @@ The `-D` and `-P` parameters control what happens when a button on the
 remote is held down and the keypress must be repeated. These delays are in
 milliseconds.
 
-[[!tag mythtv]] [[!tag debian]] [[!tag nzoss]] [[!tag lirc]]
+[[!tag mythtv]] [[!tag debian]] [[!tag nzoss]] [[!tag lirc]] [[!tag streamzap]]
