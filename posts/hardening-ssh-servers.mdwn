@@ -2,29 +2,31 @@
 [[!meta date="2014-02-20T23:52:00.000+13:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
 
-These are the settings that I use on my servers. You may want to also review
-the [settings that are used at Mozilla](https://infosec.mozilla.org/guidelines/openssh).
+These are the settings that I use to harden ssh on my servers and clients.
 
-# Basic configuration
+# Basic server configuration
 
 There are a few basic things that most admins will already know (and that
 [tiger](http://savannah.nongnu.org/projects/tiger/) will warn you about if
 you forget):
 
-* only allow [version 2](http://en.wikipedia.org/wiki/Secure_Shell#Version_2.x) of the protocol
 * disable root logins
 * disable password authentication
 
-This is what my `/etc/ssh/sshd_config.d/mozilla-tls.conf` contains:
+If you are using [rkhunter](http://rkhunter.sourceforge.net/), you will need
+to disable the check for root logins since [rkhunter doesn't check
+non-default config files](https://sourceforge.net/p/rkhunter/bugs/151/).
+This is what I put in `/etc/rkhunter.conf.local`:
 
-    # https://infosec.mozilla.org/guidelines/openssh
+    ALLOW_SSH_ROOT_USER=unset
+
+This is what my `/etc/ssh/sshd_config.d/local.conf` contains:
+
     HostKey /etc/ssh/ssh_host_ed25519_key
-    HostKey /etc/ssh/ssh_host_rsa_key
-    HostKey /etc/ssh/ssh_host_ecdsa_key
     
-    KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+    KexAlgorithms curve25519-sha256@libssh.org,curve25519-sha256,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256
     Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com
     
     AuthenticationMethods publickey
     
@@ -32,26 +34,31 @@ This is what my `/etc/ssh/sshd_config.d/mozilla-tls.conf` contains:
     
     PermitRootLogin no
 
+in order to also prevent the use of problematic or weak cryptographic algorithms.
+
 Once you've done that, make sure you have all of the required host keys by running:
 
     ssh-keygen -A
 
 as root.
 
-Note that I periodically check that list of ciphers and hash functions against the [Mozilla recommendations](https://wiki.mozilla.org/Security/Guidelines/OpenSSH#OpenSSH_server).
+The above configuration is based on the [Mozilla
+recommendations](https://infosec.mozilla.org/guidelines/openssh#modern-openssh-67)
+and then tightened up using the
+[`ssh-audit`](https://github.com/jtesta/ssh-audit) package.
 
 I also have the following in my `/etc/ssh/sshd_config.d/local.conf`:
 
     AuthorizedKeysFile	.ssh/authorized_keys
     AcceptEnv LANG LC_* TZ
-    AllowGroups sshuser
 
-I also used to disable short Diffie-Hellman moduli:
+While Mozilla recommends disabling short Diffie-Hellman moduli:
 
     awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.tmp
     mv /etc/ssh/moduli.tmp /etc/ssh/moduli
 
-but that's annoying since it causes merge conflicts on distro upgrades.
+that ends up being very annoying since it causes merge conflicts on distro
+upgrades.
 
 Finally, if you don't need `sftp` support, Mozilla recommends disabling it,
 which can be done by commenting out this line in `/etc/ssh/sshd_config`:
@@ -75,7 +82,7 @@ and then add the relevant users to it:
 
     adduser francois sshuser
 
-Finally, add this to `/etc/ssh/sshd_config`:
+Finally, add this to `/etc/ssh/sshd_config.d/local.conf`:
 
     AllowGroups sshuser
 
