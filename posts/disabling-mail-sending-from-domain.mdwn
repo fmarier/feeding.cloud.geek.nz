@@ -30,4 +30,20 @@ rejected.
 I haven't noticed any bounce notifications for messages spoofing this domain
 in a while, so maybe it's working?
 
+## DKIM
+
+[Cloudflare suggests](https://blog.cloudflare.com/tackling-email-spoofing/)
+also including an invalid
+[DKIM](https://datatracker.ietf.org/doc/html/rfc4871) record:
+
+    *._domainkey TXT v=DKIM1; p=
+
+and referring to it in the DMARC record via `adkim=s`:
+
+    _dmarc TXT v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;
+
+I'm not sure why a mail server would correctly handle DKIM but not SPF
+since the former is more complicated. Maybe this is not really
+necessary and is merely a belt-and-suspender kind of approach.
+
 [[!tag sysadmin]] [[!tag debian]] [[!tag dns]] [[!tag email]]
