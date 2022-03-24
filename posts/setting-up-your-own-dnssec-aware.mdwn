@@ -161,9 +161,8 @@ you can tell clients to connect to the local unbound DNS client by putting the f
         tls-port: 853
 
 and acquiring the necessary [Let's Encrypt](https://letsencrypt.org/) TLS
-certificates using [Certbot](https://certbot.eff.org/).
-
-The [DNS over TLS](https://en.wikipedia.org/wiki/DNS_over_TLS) option is
+certificates using [Certbot](https://certbot.eff.org/). The
+[DNS over TLS](https://en.wikipedia.org/wiki/DNS_over_TLS) option is
 used automatically by certain VPN clients (e.g. Android) who will try to
 upgrade to secure DNS automatically.
 
@@ -172,7 +171,7 @@ Then put the following in `/etc/openvpn/server.conf`:
     push "dhcp-option DNS 10.8.0.1"
     push "register-dns"
 
-and open the following port on your firewall (typically `/etc/network/iptables.up.rules` on Debian):
+and open the following ports on your firewall (typically `/etc/network/iptables.up.rules` on Debian):
 
     -A INPUT -p udp --dport 53 -s 10.8.0.0/24 -d 10.8.0.1 -j ACCEPT
     -A INPUT -p tcp --dport 53 -s 10.8.0.0/24 -d 10.8.0.1 -j ACCEPT
