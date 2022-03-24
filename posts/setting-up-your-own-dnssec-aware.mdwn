@@ -152,21 +152,34 @@ you can tell clients to connect to the local unbound DNS client by putting the f
     server:
         interface: 127.0.0.1
         interface: 10.8.0.1
+        interface: 10.8.0.1@853
         access-control: 127.0.0.1 allow
         access-control: 10.8.0.1/24 allow
+        
+        tls-service-key: /etc/letsencrypt/live/hafnarfjordur.fmarier.org/privkey.pem
+        tls-service-pem: /etc/letsencrypt/live/hafnarfjordur.fmarier.org/fullchain.pem
+        tls-port: 853
 
-the following in `/etc/openvpn/server.conf`:
+and acquiring the necessary [Let's Encrypt](https://letsencrypt.org/) TLS
+certificates using [Certbot](https://certbot.eff.org/).
+
+The [DNS over TLS](https://en.wikipedia.org/wiki/DNS_over_TLS) option is
+used automatically by certain VPN clients (e.g. Android) who will try to
+upgrade to secure DNS automatically.
+
+Then put the following in `/etc/openvpn/server.conf`:
 
     push "dhcp-option DNS 10.8.0.1"
     push "register-dns"
 
-and opening the following port on your firewall (typically `/etc/network/iptables.up.rules` on Debian):
+and open the following port on your firewall (typically `/etc/network/iptables.up.rules` on Debian):
 
-    -A INPUT -p udp --dport 53 -s 10.8.0.0/24 -j ACCEPT
+    -A INPUT -p udp --dport 53 -s 10.8.0.0/24 -d 10.8.0.1 -j ACCEPT
+    -A INPUT -p tcp --dport 53 -s 10.8.0.0/24 -d 10.8.0.1 -j ACCEPT
+    -A INPUT -p tcp --dport 853 -s 10.8.0.0/24 -d 10.8.0.1 -j ACCEPT
 
-Then restart both services and everything should work:
+before restarting both services:
 
-    systemctl restart unbound.service
-    systemctl restart openvpn.service
+    systemctl restart unbound.service openvpn.service
 
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag dns]] [[!tag dnssec]] [[!tag openvpn]]
+[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag dns]] [[!tag dnssec]] [[!tag openvpn]] [[!tag letsencrypt]]
