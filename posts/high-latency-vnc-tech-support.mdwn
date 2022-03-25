@@ -48,7 +48,7 @@ and encryption.
 Here's what the client's `~/.ssh/config` needs for that simple use case:
 
     Host server.example.com:
-      LocalForward 5900 127.0.0.1:5900
+      LocalForward localhost:5900 127.0.0.1:5900
 
 If the remote host (which has an internal IP address of `192.168.1.2` in
 this example) is not connected directly to the outside world and instead
@@ -56,7 +56,7 @@ goes through a gateway, then your `~/.ssh/config` will look like this:
 
     Host gateway.example.com:
       ForwardAgent yes
-      LocalForward 5900 192.168.1.2:5900
+      LocalForward localhost:5900 192.168.1.2:5900
     
     Host server.example.com:
       ProxyJump gateway.example.com

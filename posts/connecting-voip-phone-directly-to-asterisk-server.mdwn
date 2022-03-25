@@ -73,7 +73,7 @@ available on `http://localhost:8081` after I connect to the Asterisk server
 via ssh:
 
     Host asterisk
-        LocalForward 8081 192.168.2.3:80
+        LocalForward localhost:8081 192.168.2.3:80
 
 # Allowing calls between local SIP devices
 
