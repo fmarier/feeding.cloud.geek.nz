@@ -59,7 +59,7 @@ goes through a gateway, then your `~/.ssh/config` will look like this:
       LocalForward 5900 192.168.1.2:5900
     
     Host server.example.com:
-      ProxyCommand ssh -q -a gateway.example.com nc -q0 %h 22
+      ProxyJump gateway.example.com
 
 and the remote host will need to open up a port on its firewall for the
 gateway (internal IP address of `192.168.1.1` here):
