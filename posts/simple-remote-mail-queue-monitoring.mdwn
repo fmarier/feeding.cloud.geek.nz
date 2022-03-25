@@ -58,10 +58,15 @@ which I then installed on the server.
 
 Then I added this cronjob in `/etc/cron.d/egilsstadir-mailq-check`:
 
-    0 2 * * * francois /usr/bin/ssh -i /home/francois/.ssh/egilsstadir-mailq-check mailq-check@egilsstadir mailq | grep -v "Mail queue is empty"
+    0 2 * * * francois /usr/bin/ssh -o ClearAllForwardings=yes -i /home/francois/.ssh/egilsstadir-mailq-check mailq-check@egilsstadir mailq | grep -v "Mail queue is empty"
 
 and that's it. I get a (locally delivered) email whenever the mail queue on
 the server is non-empty.
+
+The `ClearAllForwardings` option is there to disable any `LocalForward` you
+may have set in `~/.ssh/config` and which could cause this cron job to fail
+if you are already logged into that machine (and therefore using up the
+local port).
 
 There is a race condition built into this setup since it's possible that the
 server will want to send an email at 2am. However, all that does is send a
