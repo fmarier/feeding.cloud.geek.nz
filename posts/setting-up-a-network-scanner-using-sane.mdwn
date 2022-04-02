@@ -113,6 +113,12 @@ run into these errors:
 
 you're probably just one reboot away from getting it to work.
 
+One more time you may want to do on the server is to comment out the `pixma`
+line in `/etc/sane.d/dll.conf` if you don't need that backend. When it's
+enabled (in use or not), it ends up sending broadcast packets on UDP ports
+8612 and 8610 on the local network. If you want to avoid seeing this on
+your endpoint firewalls, simply disable that backend.
+
 # Configure the client
 
 On the client, all you need to do is add the following to
