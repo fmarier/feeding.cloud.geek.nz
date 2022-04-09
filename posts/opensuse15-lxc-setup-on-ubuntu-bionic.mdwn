@@ -46,7 +46,7 @@ before restarting the lxc networking:
 
 Once that's in place, you can finally create the OpenSUSE 15 container:
 
-    lxc-create -n opensuse15 -t download -- -d opensuse -r 15 -a amd64
+    lxc-create -n opensuse15 -t download -- -d opensuse -r 15 -a amd64 --keyserver hkp://keyserver.ubuntu.com
 
 To see a list of all distros available with the `download` template:
 

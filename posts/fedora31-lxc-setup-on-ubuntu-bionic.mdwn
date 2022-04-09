@@ -46,7 +46,7 @@ before restarting the lxc networking:
 
 Once that's in place, you can finally create the Fedora 29 container:
 
-    lxc-create -n fedora31 -t download -- -d fedora -r 31 -a amd64
+    lxc-create -n fedora31 -t download -- -d fedora -r 31 -a amd64 --keyserver hkp://keyserver.ubuntu.com
 
 To see a list of all distros available with the `download` template:
 
