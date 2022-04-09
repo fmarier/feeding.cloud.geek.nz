@@ -51,7 +51,7 @@ Once that's in place, you can finally create the Fedora 29 container:
 
 To see a list of all distros available with the `download` template:
 
-    lxc-create -n foo --template=download -- --list
+    lxc-create -n foo --template=download -- --list --no-validate
 
 # Logging in as root
 
