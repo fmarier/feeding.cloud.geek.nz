@@ -1,0 +1,113 @@
+[[!meta title="Upgrading the Wi-Fi cards in a Turris Omnia 2020"]]
+[[!meta date="2022-04-10T00:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I've been [very
+happy](https://twitter.com/fmarier/status/1204117367149645825) with my
+[Turris Omnia router](https://www.turris.com/en/omnia/overview/) and decided
+recently to take advantage of the fact that is is easily upgradable to
+replace the original radios for [Wave
+2](https://en.wikipedia.org/wiki/IEEE_802.11ac-2013#Wave_1_vs._Wave_2)
+models.
+
+I didn't go for a [Wi-Fi 6](https://en.wikipedia.org/wiki/Wi-Fi_6)-capable
+card because I don't have any devices that support it at this point. There
+is also an [official WiFi 6 upgrade kit](https://youtu.be/qiuLtIqjK-U?t=390)
+in the works and so I might just go with that later.
+
+## Wi-Fi card selection
+
+After seeing a report that [someone was already using these cards on the
+Omnia](https://forum.turris.cz/t/what-mini-pci-express-version-is-omnia-turris-using/11691/2?u=fmarier),
+I decided to look for the following:
+
+- [Compex WLE1216V2-20](https://compex.com.sg/shop/wifi-module/802-11ac-wave-2/wle1216v2-20-2/)
+- [Compex WLE1216V5-20](https://compex.com.sg/shop/wifi-module/802-11ac-wave-2/wle1216v5-20-2/)
+
+Compex themselves don't appear to sell to consumers, but I found an American
+store that would sell them to me and ship to Canada:
+
+- <https://www.embeddedworks.net/wlan721/>
+- <https://www.embeddedworks.net/wlan720/>
+
+Each card uses 4 antennas, which means that I would need an additional
+diplexer, an extra pigtail to SMA-RP connector, and two more antennas to
+wire everything up. Thankfully, the Omnia already comes with two extra holes
+drilled into the back of the router (covered by plastic caps) and so there
+is no need for drilling the case.
+
+I put the two cards in the middle and right-most slots (they don't seem to
+go in the left-most slot because of the SIM card holder being in the way)
+without worrying about antennas just yet.
+
+## Driver installation
+
+I made sure that the chipsets were supported in [OpenWRT
+19.07](https://openwrt.org/releases/19.07/start) (LTS 4.14 kernel) and found
+that support for the [Qualcomm
+QCA9984](https://www.qualcomm.com/products/technology/wi-fi/qca9984) chipset
+was [added in the `ath10k` driver as of kernel
+4.8](https://github.com/torvalds/linux/commit/651b4cdcf97e75f6346784b75ca7bf3c85187143)
+but [only for two cards
+apparently](https://wireless.wiki.kernel.org/en/users/drivers/ath10k#supported_devices).
+
+I installed the following proprietary firmware package via the [advanced
+configuration
+interface](https://192.168.1.1/cgi-bin/luci/admin/system/opkg):
+
+    ath10k-firmware-qca9984
+
+and that automatically pulled in the free `ath10k` driver. After rebooting,
+I was able to see one of the two cards in the ReForis admin page and
+configure it.
+
+Note that there is an [alternative
+firmware](https://www.candelatech.com/ath10k-10.4.php) available in OpenWRT
+as well (look for packages ending in `-ct`), but since both firmware/driver
+combinations gave me the same initial results, I decided to go with the
+defaults.
+
+## Problems
+
+The first problem I ran into is that I could only see one of the two cards
+in the output of `lspci` (after `ssh`ing into the router). Looking for `ath`
+or `wlan` in the `dmesg` output, it doesn't look like the second card is
+being recognized at all.
+
+Neither the 2.4 GHz or 5 GHz Wave 2 card worked in the right-most slot, but
+either of them works fine when moved to the middle slot. The stock cards
+work just fine in the right-most slot. I have no explanation for this.
+
+The second problem was that I realized that the antenna holes are not all
+the same. The two on each end are fully round and can accommodate the
+diplexers which come with a round SMA-RP connector.
+
+On the other hand, the three middle ones have a notch at the top which can
+only accommodate the single antenna connectors which have a flat bit on one
+side. I would have to file one of holes in order to add a third diplexer to
+my setup.
+
+## Final working configuration
+
+Since I didn't see a way to use both new cards at once, I ended up on a
+different configuration that would nevertheless still upgrade both my 2.4
+GHz and 5 GHz Wi-Fi.
+
+I moved the [original dual-band
+card](https://compex.com.sg/shop/wifi-module/802-11ac-wave-1/wle900vx-2/) to
+the right-most slot and switched it to the 2.4 GHz band since it's more powerful
+(both in dB and in throughput) than the [original half-length
+card](https://compex.com.sg/shop/wifi-module/802-11n/wle200n2-2/).
+
+Then I put the WLE1216V5-20 into the middle slot.
+
+The only extra thing I had to buy were two extra [pigtails to SMA-RP
+connectors and antennas](https://www.amazon.ca/gp/product/B00TI1XBOE/).
+
+Here's what the final product looks like:
+
+![](/posts/upgrading-wifi-cards-turris-omnia/omnia-inside.jpg)
+
+![](/posts/upgrading-wifi-cards-turris-omnia/omnia-outside.jpg)
+
+[[!tag turris]] [[!tag openwrt]]
