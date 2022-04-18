@@ -38,6 +38,14 @@ and then authorized my new ssh key (see next section):
     mkdir ~/.ssh/
     cat - > ~/.ssh/authorized_keys
 
+Then I added `restrict,command="/usr/bin/mailq" ` to the `authorized_keys` entry so that
+it looks like this:
+
+    restrict,command="/usr/bin/mailq" ssh-ed25519 AAAAC3N... francois@machine
+
+This means that this account cannot use any of the powerful ssh features like port forwarding
+and is limited to running a single command.
+
 If your server also allows users to login using [GDM](https://wiki.gnome.org/Projects/GDM),
 then you'll probably want to hide that user from the list of available
 users by putting the following in `/var/lib/AccountsService/users/mailq-check`:
