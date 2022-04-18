@@ -174,9 +174,8 @@ Here's what one of my `authorized_keys` looks like:
 
     from="192.0.2.2" ssh-rsa AAAAB3Nz...zvCn bot@example
 
-You may also want to include the following options to each entry:
-`no-X11-forwarding`, `no-user-rc`, `no-pty`, `no-agent-forwarding` and
-`no-port-forwarding`.
+You may also want to include the `restrict` option to each entry since it
+will automatically disable powerful features.
 
 # Client configuration
 
