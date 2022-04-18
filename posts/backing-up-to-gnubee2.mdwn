@@ -159,6 +159,10 @@ Then I created a custom ssh key for each machine:
 
 and placed it in `/home/machine1/.ssh/authorized_keys` on the GnuBee.
 
+Then I added the `restrict` prefix in front of that key so that it looked like:
+
+    restrict ssh-ed25519 AAAAC3N... root@machine1
+
 On each machine, I added the following to `/root/.ssh/config`:
 
     Host foobar.local
