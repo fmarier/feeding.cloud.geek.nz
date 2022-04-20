@@ -194,4 +194,11 @@ recommendations](https://infosec.mozilla.org/guidelines/openssh#modern)
 modified according to the
 [ssh-audit](https://packages.debian.org/stable/ssh-audit) report.
 
+Note that if you need to connect to [Launchpad](https://launchpad.net/), you'll
+need to relax these settings in your `~/.ssh/config`:
+
+    Host *.launchpad.net
+        HostKeyAlgorithms rsa-sha2-512
+        MACs hmac-sha2-512
+
 [[!tag sysadmin]] [[!tag debian]] [[!tag security]] [[!tag ssh]]
