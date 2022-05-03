@@ -79,7 +79,7 @@ partition:
         echo "The ssd is not the boot partition"
         exit 1
     fi
-    nocache nice ionice -c3 rsync -aHx --delete --exclude=/boot/ssd.mounted --exclude=/boot/hdd.mounted --exclude=/boot/lost+found/* /boot /mnt/
+    nocache nice ionice -c3 rsync -aHx --inplace --delete --exclude=/boot/ssd.mounted --exclude=/boot/hdd.mounted --exclude=/boot/lost+found/* /boot /mnt/
 
 and a similar one (`/usr/local/sbin/ssd_root_backup`) for the root
 partition:
@@ -99,6 +99,10 @@ To ensure that each drive is properly mounted before the scripts run, I
 created empty `ssd.mounted` files in the root directory of each of the
 partitions on the SSD, and empty `hdd.mounted` files in the root directory
 of the hard drive partitions.
+
+Note that the boot partition `rsync` command uses the `--inplace` option.
+That's to prevent `No space left on device` errors on due to the temporary
+file copying (the `rsync` default mode of operation) on small partitions.
 
 # Cron jobs
 
