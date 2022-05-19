@@ -74,4 +74,4 @@ To ensure that the directory exists, you can put the following in `/etc/rc.local
 Finally, it seems like you **need to restart the machine** before this
 starts working. I'm not sure why restarting crashplan isn't enough.
 
-[[!tag mozilla]] [[!tag backup]]
+[[!tag mozilla]] [[!tag backup]] [[!tag crashplan]]
