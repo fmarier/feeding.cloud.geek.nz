@@ -85,7 +85,7 @@ service didn't start:
                     at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:275)
                     ... 28 more
     
-    [05.18.22 07:40:05.756 INFO  main         42.service.history.HistoryLogger] HISTORY:: Code42 stopped, version 10.0.0, GUID 883317873011545700
+    [05.18.22 07:40:05.756 INFO  main         42.service.history.HistoryLogger] HISTORY:: Code42 stopped, version 10.0.0
     [05.18.22 07:40:05.756 INFO  main           com.backup42.service.CPService] *****  STOPPING  *****
     [05.18.22 07:40:05.757 INFO  Thread-0       com.backup42.service.CPService] ShutdownHook...calling cleanup
     [05.18.22 07:40:05.759 INFO  STOPPING       com.backup42.service.CPService] SHUTDOWN:: Stopping service...
@@ -152,7 +152,7 @@ I simply edited `install.sh` like this:
     --- install.sh.orig	2022-05-18 16:47:52.176199965 -0700
     +++ install.sh	2022-05-18 16:57:26.231723044 -0700
     @@ -15,7 +15,7 @@
-     readonly IS_ROOT=$([[ $(id -u) -eq 0 ]] && echo true || echo false)
+     readonly IS_ROOT=$(\[[ $(id -u) -eq 0 ]] && echo true || echo false)
      readonly REQ_CMDS="chmod chown cp cpio cut grep gzip hash id ls mkdir mv sed"
      readonly APP_VERSION_FILE="c42.version.properties"
     -readonly OS_NAME=$(grep "^ID=" /etc/os-release | cut -d = -f 2 | tr -d \" | tr '[:upper:]' '[:lower:]')
