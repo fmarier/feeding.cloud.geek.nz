@@ -1,0 +1,167 @@
+[[!meta title="Crashplan 10 won't start on Ubuntu derivatives"]]
+[[!meta date="2022-05-18T19:15:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+CrashPlan recently updated itself to version 10 on my
+[Pop!_OS](https://pop.system76.com/) laptop and stopped backing anything up.
+
+![](/posts/crashplan-10-wont-start-on-ubuntu-derivatives/crashplan-backup-alert-email.png)
+
+When trying to start the client, I got faced with this error message:
+
+> Code42 cannot connect to its backend service.
+
+![](/posts/crashplan-10-wont-start-on-ubuntu-derivatives/crashplan-error-message.png )
+
+## Digging through log files
+
+In `/usr/local/crashplan/log/service.log.0`, I found the reason why the
+service didn't start:
+
+    [05.18.22 07:40:05.756 ERROR main           com.backup42.service.CPService] Error starting up, java.lang.IllegalStateException: Failed to start authorized services.
+    STACKTRACE:: java.lang.IllegalStateException: Failed to start authorized services.
+            at com.backup42.service.ClientServiceManager.authorize(ClientServiceManager.java:552)
+            at com.backup42.service.CPService.startServices(CPService.java:2467)
+            at com.backup42.service.CPService.start(CPService.java:562)
+            at com.backup42.service.CPService.main(CPService.java:1574)
+    Caused by: com.google.inject.ProvisionException: Unable to provision, see the following errors:
+    
+    1) Error injecting constructor, java.lang.UnsatisfiedLinkError: Unable to load library 'uaw':
+    libuaw.so: cannot open shared object file: No such file or directory
+    libuaw.so: cannot open shared object file: No such file or directory
+    Native library (linux-x86-64/libuaw.so) not found in resource path (lib/com.backup42.desktop.jar:lang)
+      at com.code42.service.useractivity.UserActivityWatcherServiceImpl.<init>(UserActivityWatcherServiceImpl.java:67)
+      at com.code42.service.useractivity.UserActivityWatcherServiceImpl.class(UserActivityWatcherServiceImpl.java:23)
+      while locating com.code42.service.useractivity.UserActivityWatcherServiceImpl
+      at com.code42.service.AbstractAuthorizedModule.addServiceWithoutBinding(AbstractAuthorizedModule.java:77)
+      while locating com.code42.service.IAuthorizedService annotated with @com.google.inject.internal.Element(setName=,uniqueId=34, type=MULTIBINDER, keyType=)
+      while locating java.util.Set<com.code42.service.IAuthorizedService>
+    
+    1 error
+            at com.google.inject.internal.InternalProvisionException.toProvisionException(InternalProvisionException.java:226)
+            at com.google.inject.internal.InjectorImpl$1.get(InjectorImpl.java:1097)
+            at com.google.inject.internal.InjectorImpl.getInstance(InjectorImpl.java:1126)
+            at com.backup42.service.ClientServiceManager.getServices(ClientServiceManager.java:679)
+            at com.backup42.service.ClientServiceManager.authorize(ClientServiceManager.java:513)
+            ... 3 more
+    Caused by: java.lang.UnsatisfiedLinkError: Unable to load library 'uaw':
+    libuaw.so: cannot open shared object file: No such file or directory
+    libuaw.so: cannot open shared object file: No such file or directory
+    Native library (linux-x86-64/libuaw.so) not found in resource path (lib/com.backup42.desktop.jar:lang)
+            at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:301)
+            at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:461)
+            at com.sun.jna.Library$Handler.<init>(Library.java:192)
+            at com.sun.jna.Native.load(Native.java:596)
+            at com.sun.jna.Native.load(Native.java:570)
+            at com.code42.service.useractivity.UserActivityWatcherServiceImpl.<init>(UserActivityWatcherServiceImpl.java:72)
+            at com.code42.service.useractivity.UserActivityWatcherServiceImpl$$FastClassByGuice$$4bcc96f8.newInstance(<generated>)
+            at com.google.inject.internal.DefaultConstructionProxyFactory$FastClassProxy.newInstance(DefaultConstructionProxyFactory.java:89)
+            at com.google.inject.internal.ConstructorInjector.provision(ConstructorInjector.java:114)
+            at com.google.inject.internal.ConstructorInjector.construct(ConstructorInjector.java:91)
+            at com.google.inject.internal.ConstructorBindingImpl$Factory.get(ConstructorBindingImpl.java:306)
+            at com.google.inject.internal.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:40)
+            at com.code42.service.AuthorizedScope$1.get(AuthorizedScope.java:38)
+            at com.google.inject.internal.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:39)
+            at com.google.inject.internal.FactoryProxy.get(FactoryProxy.java:62)
+            at com.google.inject.internal.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:40)
+            at com.code42.service.AuthorizedScope$1.get(AuthorizedScope.java:38)
+            at com.google.inject.internal.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:39)
+            at com.google.inject.internal.SingleParameterInjector.inject(SingleParameterInjector.java:42)
+            at com.google.inject.internal.RealMultibinder$RealMultibinderProvider.doProvision(RealMultibinder.java:198)
+            at com.google.inject.internal.RealMultibinder$RealMultibinderProvider.doProvision(RealMultibinder.java:151)
+            at com.google.inject.internal.InternalProviderInstanceBindingImpl$Factory.get(InternalProviderInstanceBindingImpl.java:113)
+            at com.google.inject.internal.InjectorImpl$1.get(InjectorImpl.java:1094)
+            ... 6 more
+            Suppressed: java.lang.UnsatisfiedLinkError: libuaw.so: cannot open shared object file: No such file or directory
+                    at com.sun.jna.Native.open(Native Method)
+                    at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:191)
+                    ... 28 more
+            Suppressed: java.lang.UnsatisfiedLinkError: libuaw.so: cannot open shared object file: No such file or directory
+                    at com.sun.jna.Native.open(Native Method)
+                    at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:204)
+                    ... 28 more
+            Suppressed: java.io.IOException: Native library (linux-x86-64/libuaw.so) not found in resource path (lib/com.backup42.desktop.jar:lang)
+                    at com.sun.jna.Native.extractFromResourcePath(Native.java:1119)
+                    at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:275)
+                    ... 28 more
+    
+    [05.18.22 07:40:05.756 INFO  main         42.service.history.HistoryLogger] HISTORY:: Code42 stopped, version 10.0.0, GUID 883317873011545700
+    [05.18.22 07:40:05.756 INFO  main           com.backup42.service.CPService] *****  STOPPING  *****
+    [05.18.22 07:40:05.757 INFO  Thread-0       com.backup42.service.CPService] ShutdownHook...calling cleanup
+    [05.18.22 07:40:05.759 INFO  STOPPING       com.backup42.service.CPService] SHUTDOWN:: Stopping service...
+
+This suggests that a new library dependency (`uaw`) didn't get installed during the
+last upgrade.
+
+Looking at the upgrade log (`/usr/local/crashplan/log/upgrade..log`), I
+found that it detected my operating system as "pop 20":
+
+    Fri May 13 07:39:51 PDT 2022: Info : Resolve Native Libraries for pop 20...
+    Fri May 13 07:39:51 PDT 2022: Info :   Keep common libs
+    Fri May 13 07:39:51 PDT 2022: Info :   Keep pop 20 libs
+
+I unpacked the [official installer](https://console.us2.crashplanpro.com/app/#/console/app-downloads) (login required):
+
+    $ tar zxf CrashPlanSmb_10.0.0_15252000061000_303_Linux.tgz 
+    $ cd code42-install
+    $ gzip -dc CrashPlanSmb_10.0.0.cpi | cpio -i
+
+and found that `libuaw.so` is only shipped for 4 supported platforms
+(`rhel7`, `rhel8`, `ubuntu18` and `ubuntu20`):
+
+    $ find nlib/
+    nlib/
+    nlib/common
+    nlib/common/libfreeblpriv3.chk
+    nlib/common/libsoftokn3.chk
+    nlib/common/libsmime3.so
+    nlib/common/libnss3.so
+    nlib/common/libplc4.so
+    nlib/common/libssl3.so
+    nlib/common/libsoftokn3.so
+    nlib/common/libnssdbm3.so
+    nlib/common/libjss4.so
+    nlib/common/libleveldb.so
+    nlib/common/libfreeblpriv3.so
+    nlib/common/libfreebl3.chk
+    nlib/common/libplds4.so
+    nlib/common/libnssutil3.so
+    nlib/common/libnspr4.so
+    nlib/common/libfreebl3.so
+    nlib/common/libc42core.so
+    nlib/common/libc42archive64.so
+    nlib/common/libnssdbm3.chk
+    nlib/rhel7
+    nlib/rhel7/libuaw.so
+    nlib/rhel8
+    nlib/rhel8/libuaw.so
+    nlib/ubuntu18
+    nlib/ubuntu18/libuaw.so
+    nlib/ubuntu20
+    nlib/ubuntu20/libuaw.so
+
+## Fixing the installation script
+
+Others have fixed this problem by [copying the files
+manually](https://old.reddit.com/r/Crashplan/comments/upjjk3/fix_v10_fix_login_issue_missing_libuawso/)
+but since Pop!_OS is based on Ubuntu, I decided to fix this by forcing the
+OS to be detected as "ubuntu" in the installer.
+
+I simply edited `install.sh` like this:
+
+    --- install.sh.orig	2022-05-18 16:47:52.176199965 -0700
+    +++ install.sh	2022-05-18 16:57:26.231723044 -0700
+    @@ -15,7 +15,7 @@
+     readonly IS_ROOT=$([[ $(id -u) -eq 0 ]] && echo true || echo false)
+     readonly REQ_CMDS="chmod chown cp cpio cut grep gzip hash id ls mkdir mv sed"
+     readonly APP_VERSION_FILE="c42.version.properties"
+    -readonly OS_NAME=$(grep "^ID=" /etc/os-release | cut -d = -f 2 | tr -d \" | tr '[:upper:]' '[:lower:]')
+    +readonly OS_NAME=ubuntu
+     readonly OS_VERSION=$(grep "^VERSION_ID=" /etc/os-release | cut -d = -f 2 | tr -d \" | cut -d . -f1)
+     
+     SCRIPT_DIR="${0:0:${#0} - ${#SCRIPT_NAME}}"
+
+and then ran that install script as root again to _upgrade_ my existing
+installation.
+
+[[!tag backup]] [[!tag crashplan]]
