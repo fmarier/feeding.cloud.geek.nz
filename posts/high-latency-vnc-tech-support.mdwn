@@ -22,7 +22,7 @@ server and [ssvnc](http://www.karlrunge.com/x11vnc/ssvnc.html) for the
 client. They are both available in the standard Debian and Ubuntu repositories.
 
 Since I have ssh access on the machine that needs to run the server, I
-simply login and then run `x11vnc`. Here's what `~/.x11vnrc` contains:
+simply login and then run `x11vnc`. Here's what `~/.x11vncrc` contains:
 
     noxdamage
 
