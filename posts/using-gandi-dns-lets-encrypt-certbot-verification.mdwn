@@ -1,0 +1,61 @@
+[[!meta title="Using Gandi DNS for Let's Encrypt certbot verification"]]
+[[!meta date="2022-06-02T21:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I had some problems getting the [Gandi certbot
+plugin](https://github.com/obynio/certbot-plugin-gandi) to work in [Debian bullseye](https://www.debian.org/releases/bullseye/)
+since the [documentation](https://sources.debian.org/src/python-certbot-dns-gandi/1.2.5-3/README.md/) appears to be outdated.
+
+When running `certbot renew --dry-run`, I saw the following error message:
+
+> Plugin legacy name certbot-plugin-gandi:dns may be removed in a future version. Please use dns instead.
+
+Thanks to an [issue in another DNS
+plugin](https://github.com/ctrlaltcoop/certbot-dns-hetzner/issues/8), I was
+able to easily update my configuration to the new naming convention.
+
+## Setup
+
+Get an [API key from Gandi](https://api.gandi.net/docs/authentication/) and
+then put it in `/etc/letsencrypt/gandi.ini`:
+
+    # live dns v5 api key
+    dns_api_key=ABCDEF
+
+before make it only readable by `root`:
+
+    chown root:root /etc/letsencrypt/gandi.ini
+    chmod 600 /etc/letsencrypt/gandi.ini
+
+Then install the [required package](https://packages.debian.org/stable/python3-certbot-dns-gandi):
+
+    apt install python3-certbot-dns-gandi
+
+## Getting an initial certificate
+
+To get an initial certificate using the Gandi plugin, simply use the
+following command:
+
+    certbot certonly -a dns --dns-credentials /etc/letsencrypt/gandi.ini -d example.fmarier.org
+
+## Setting up automatic renewal
+
+If you have [automatic renewals enabled](posts/automatically-renewing-letsencrypt-certs-on-debian-using-certbot/),
+you'll want to ensure your `/etc/letsencrypt/renewal/example.fmarier.org.conf`
+file looks like this:
+
+    # renew_before_expiry = 30 days
+    version = 1.12.0
+    archive_dir = /etc/letsencrypt/archive/example.fmarier.org
+    cert = /etc/letsencrypt/live/example.fmarier.org/cert.pem
+    privkey = /etc/letsencrypt/live/example.fmarier.org/privkey.pem
+    chain = /etc/letsencrypt/live/example.fmarier.org/chain.pem
+    fullchain = /etc/letsencrypt/live/example.fmarier.org/fullchain.pem
+    
+    [renewalparams]
+    account = abcdef
+    authenticator = dns
+    server = https://acme-v02.api.letsencrypt.org/directory
+    dns_credentials = /etc/letsencrypt/gandi.ini
+
+[[!tag letsencrypt]] [[!tag debian]] [[!tag sysadmin]]
