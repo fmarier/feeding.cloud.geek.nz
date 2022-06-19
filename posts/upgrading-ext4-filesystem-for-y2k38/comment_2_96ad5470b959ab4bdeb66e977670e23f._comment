@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ ip="82.2.126.217"
+ claimedauthor="rjc"
+ subject="'ext4' with 'flex_gb' feature enabled"
+ date="2022-06-14T19:17:08Z"
+ content="""
+>     e2fsck -f /dev/sda1
+>     tune2fs -I 256 /dev/sda1
+
+That'll work just fine on `ext2` and `ext3` but fails on `ext4` filesystem with the `flex_bg` feature enabled:
+
+    # tune2fs -I 256 /dev/sda1
+    Changing the inode size not supported for filesystems with the flex_bg
+    feature enabled.
+
+Also, that flag cannot be cleared:
+
+    # tune2fs -O ^flex_bg /dev/sda1 
+    Clearing the flex_bg flag would cause the the filesystem to be
+    inconsistent.
+
+So, unless I'm missing something, there's no two ways about it and, as per the post, copy->mkfs->copy is the only way to fix it.
+
+BTW, the same issue will affect _XFS_ and, potentially, other filesystems.
+"""]]
