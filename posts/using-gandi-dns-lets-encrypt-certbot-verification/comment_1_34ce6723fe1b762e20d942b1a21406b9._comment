@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ ip="80.124.4.18"
+ claimedauthor="Pierre D"
+ subject="useful"
+ date="2022-06-30T10:39:12Z"
+ content="""
+Hello,
+Thank you for this post which was very useful to me. I prefer this method which doesn't use pip to install dns challenge gandi plugin, just apt.
+I also learned in the certbot documentation that you could combine a specific challenge with a specific automatic installation. For example if we have an Nginx server configured in http:
+
+    sudo certbot --authenticator dns --installer nginx --dns-credentials /etc/letsencrypt/gandi.ini --dns-propagation-seconds 30 -d your.domain.tld
+
+allows you to obtain a certificate and automatically configure the server in https.
+"""]]
