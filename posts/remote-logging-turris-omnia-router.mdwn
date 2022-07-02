@@ -1,0 +1,128 @@
+[[!meta title="Remote logging of Turris Omnia log messages using syslog-ng and rsyslog"]]
+[[!meta date="2022-07-01T20:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+As part of debugging an upstream connection problem I've been seeing
+recently, I wanted to be able to monitor the logs from my [Turris
+Omnia](https://www.turris.com/en/omnia/overview/) router. Here's how I
+configured it to send its logs to a server I already had on the local
+network.
+
+## Server setup
+
+The first thing I did was to open up my server's
+[rsyslog](https://www.rsyslog.com/) (Debian's default syslog server) to
+remote connections since it's going to be the destination host for the
+router's log messages.
+
+I added the following to `/etc/rsyslog.d/router.conf`:
+
+    module(load="imtcp")
+    input(type="imtcp" port="514")
+    
+    if $fromhost-ip == '192.168.1.1' then {
+        if $syslogseverity <= 5 then {
+            action(type="omfile" file="/var/log/router.log")
+        }
+        stop
+    }
+
+This is using the latest rsyslog configuration method: a handy scripting
+language called
+[RainerScript](https://www.rsyslog.com/doc/v8-stable/rainerscript/index.html).
+[Severity level](https://wiki.archlinux.org/title/Rsyslog#Severity_levels) 5
+maps to "notice" which consists of *unusual non-error conditions*, and
+`192.168.1.1` is of course the IP address of the router on the LAN side.
+With this, I'm directing all router log messages to a separate file,
+filtering out anything less important than severity 5.
+
+In order for rsyslog to pick up this new configuration file, I restarted it:
+
+    systemctl restart rsyslog.service
+
+and checked that it was running correctly (e.g. no syntax errors in the new
+config file) using:
+
+    systemctl status rsyslog.service
+
+Since I added a new log file, I also setup log rotation for it by putting
+the following in `/etc/logrotate.d/router`:
+
+    /var/log/router.log
+    {
+        rotate 4
+        weekly
+        missingok
+        notifempty
+        compress
+        delaycompress
+        sharedscripts
+        postrotate
+            /usr/lib/rsyslog/rsyslog-rotate
+        endscript
+    }
+
+In addition, since I use
+[logcheck](https://packages.debian.org/stable/logcheck) to monitor my server
+logs and email me errors, I had to add `/var/log/router.log` to
+`/etc/logcheck/logcheck.logfiles`.
+
+Finally I opened the rsyslog port to the router in my server's firewall by
+adding the following to `/etc/network/iptables.up.rules`:
+
+    # Allow logs from the router
+    -A INPUT -s 192.168.1.1 -p tcp --dport 514 -j ACCEPT
+
+and ran `iptables-apply`.
+
+With all of this in place, it was time to get the router to send messages.
+
+## Router setup
+
+As [suggested on the Turris
+forum](https://forum.turris.cz/t/remote-log-how-to-configure/992/3), I
+ssh'ed into my router and added this in `/etc/syslog-ng.d/remote.conf`:
+
+    destination d_loghost { tcp("192.168.1.200"); };
+    log {
+            source(src);
+            source(kernel);
+            destination(d_loghost);
+    };
+
+To ensure that the destination host always gets the same IP address
+(`192.168.1.200`), I went to the [advanced DHCP configuration
+page](https://192.168.1.1/cgi-bin/luci/admin/network/dhcp) and added a
+*static lease* for the server's MAC address so that it always gets assigned
+`192.168.1.200`. If that wasn't already the server's IP address, you'll have
+to restart it for this to take effect.
+
+Finally, I restarted the syslog-ng daemon on the router to pick up the new
+config file:
+
+    /etc/init.d/syslog-ng restart
+
+## Testing
+
+In order to test this configuration, I opened three terminal windows:
+
+1. `tail -f /var/log/syslog` on the server
+2. `tail -f /var/log/router.log` on the server
+3. `tail -f /var/log/messages` on the router
+
+I immediately started to see messages from the router in the third window
+and some of these, not all because of my severity-5 filter, were flowing to
+the second window as well. Also important is that none of the messages make
+it to the first window, otherwise log messages from the router would be mixed
+in with the server's own logs. That's the purpose of the `stop` command in
+`/etc/rsyslog.d/router.conf`.
+
+To force a log messages to be emitted by the router, simply ssh into it and
+issue the following command:
+
+    logger Test
+
+It should show up in the second and third windows immediately if you've got
+everything setup correctly
+
+[[!tag turris]] [[!tag debian]] [[!tag rsyslog]] [[!tag sysadmin]] [[!tag openwrt]]
