@@ -1,0 +1,4 @@
+[[!meta title="pages tagged rsyslog"]]
+
+[[!inline pages="tagged(rsyslog)" actions="no" archive="yes"
+feedshow=10]]
