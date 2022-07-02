@@ -48,4 +48,4 @@ Now whenever I have to troubleshoot network problems, I can keep a terminal open
 
 
 
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag openwrt]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag gargoyle]] 
+[[!tag rsyslog]] [[!tag debian]] [[!tag sysadmin]] [[!tag openwrt]] [[!tag ubuntu]] [[!tag gargoyle]]
