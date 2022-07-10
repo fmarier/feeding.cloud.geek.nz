@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="francois@665656f0ba400877c9b12e8fbb086e45aa01f7c0"
+ nickname="francois"
+ subject="Re: safe browsing provider"
+ date="2022-07-10T03:00:40Z"
+ content="""
+> Is there any other provider (other than Google )?
+
+[Yandex](https://yandex.com/) has a [publicly documented Safe Browsing API](https://yandex.com/dev/safebrowsing/doc/quickstart/concepts/about.html) and I believe that [Naver](https://www.naver.com/) and [Baidu](https://www.baidu.com/) also have one.
+"""]]
