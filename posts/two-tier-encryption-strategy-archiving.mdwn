@@ -36,7 +36,7 @@ Fix the permissions so that you can write to this partition with your normal use
 
     cryptmount archives
     cd archives
-    sudo chown francois:francois
+    sudo chown francois:francois .
     cryptmount -u archives
 
 Then you can mount and umount that partition using:
