@@ -83,7 +83,10 @@ As [suggested on the Turris
 forum](https://forum.turris.cz/t/remote-log-how-to-configure/992/3), I
 ssh'ed into my router and added this in `/etc/syslog-ng.d/remote.conf`:
 
-    destination d_loghost { network("192.168.1.200" time-zone("America/Vancouver")); };
+    destination d_loghost {
+            network("192.168.1.200" time-zone("America/Vancouver"));
+    };
+    
     log {
             source(src);
             source(net);
