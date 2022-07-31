@@ -87,10 +87,15 @@ ssh'ed into my router and added this in `/etc/syslog-ng.d/remote.conf`:
             network("192.168.1.200" time-zone("America/Vancouver"));
     };
     
+    source dns {
+            file("/var/log/resolver");
+    };
+    
     log {
             source(src);
             source(net);
             source(kernel);
+            source(dns);
             destination(d_loghost);
     };
 
