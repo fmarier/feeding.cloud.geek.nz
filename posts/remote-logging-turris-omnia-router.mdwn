@@ -83,12 +83,15 @@ As [suggested on the Turris
 forum](https://forum.turris.cz/t/remote-log-how-to-configure/992/3), I
 ssh'ed into my router and added this in `/etc/syslog-ng.d/remote.conf`:
 
-    destination d_loghost { tcp("192.168.1.200"); };
+    destination d_loghost { tcp("192.168.1.200" time_zone("America/Vancouver")); };
     log {
             source(src);
             source(kernel);
             destination(d_loghost);
     };
+
+Setting the [timezone](https://www.syslog-ng.com/technical-documents/doc/syslog-ng-open-source-edition/3.33/administration-guide/time-zone) to the same as my server was needed because the router
+messages were otherwise sent with UTC timestamps.
 
 To ensure that the destination host always gets the same IP address
 (`192.168.1.200`), I went to the [advanced DHCP configuration
