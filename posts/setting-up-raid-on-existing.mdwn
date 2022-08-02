@@ -215,6 +215,6 @@ Something else you should seriously consider is to install the `smartmontools` p
     /dev/sdb -a -d ata -o on -S on -s (S/../.././02|L/../../6/03)
 
 
-These checks, performed by the hard disk controllers directly, could warn you of imminent failures ahead of time. Personally, when I start seeing errors in the SMART log (`smartctl -a /dev/sda`), I order a new drive straight away.
+These checks, performed by the hard disk controllers directly, could warn you of imminent failures ahead of time. Personally, when I start seeing [errors in the SMART log](https://www.backblaze.com/blog/what-smart-stats-indicate-hard-drive-failures/) (`smartctl -a /dev/sda`), I order a new drive straight away.
 
-[[!tag grub]] [[!tag raid]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag ext4]]
+[[!tag grub]] [[!tag raid]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag ext4]] [[!tag smart]]

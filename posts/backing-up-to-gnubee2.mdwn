@@ -125,6 +125,8 @@ and restarting the daemon:
 
     systemctl restart smartd.service
 
+[Some of these errors](https://www.backblaze.com/blog/what-smart-stats-indicate-hard-drive-failures/) reported by this tool are good predictors of imminent failure.
+
 ## Backup setup
 
 I started by using [duplicity](http://duplicity.nongnu.org/) since I have
@@ -281,4 +283,4 @@ Finally, I printed a copy of each of my backup script, using
 This is actually a pretty important step since **without the password, you
 won't be able to decrypt and restore what's on the GnuBee**.
 
-[[!tag duplicity]] [[!tag gnubee]] [[!tag restic]] [[!tag backup]] [[!tag debian]]
+[[!tag duplicity]] [[!tag gnubee]] [[!tag restic]] [[!tag backup]] [[!tag debian]] [[!tag smart]]
