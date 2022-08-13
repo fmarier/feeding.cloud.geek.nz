@@ -1,0 +1,143 @@
+[[!meta title="Using a Streamzap remote control with VLC on a Raspberry Pi"]]
+[[!meta date="2022-08-13T12:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+First of all, I am starting from a [working Streamzap remote in
+Kodi](/posts/using-streamzap-remote-with-kodi/). If
+[VLC](https://www.videolan.org/) is the first application you are setting up
+with the [Streamzap
+remote](http://www.streamzap.com/consumer/pc_remote/index.php) then you will
+probably need to read the above blog post first.
+
+Once you know you have a working remote, put the following [`lircrc`
+config](https://code.videolan.org/videolan/vlc/-/blob/master/doc/lirc/example.lircrc)
+into `/home/pi/.lircrc`:
+
+    begin
+      prog = vlc
+      button = KEY_PLAY
+      config = key-play
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_PAUSE
+      config = key-pause
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_STOP
+      config = key-stop
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_POWER
+      config = key-quit
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_NEXT
+      config = key-next
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_PREVIOUS
+      config = key-prev
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_RED
+      config = key-fullscreen
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_REWIND
+      config = key-slower
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_FORWARD
+      config = key-faster
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_VOLUMEDOWN
+      config = key-vol-down
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_VOLUMEUP
+      config = key-vol-up
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_BLUE
+      config = key-audio-track
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_MUTE
+      config = key-vol-mute
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_LEFT
+      config = key-nav-left 
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_DOWN
+      config = key-nav-down
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_UP
+      config = key-nav-up
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_RIGHT
+      config = key-nav-right
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_MENU
+      config = key-nav-activate
+    end
+    
+    begin
+      prog = vlc
+      button = KEY_GREEN
+      config = key-subtitle-track
+    end
+
+and then after starting VLC:
+
+1. Open *Tools | Preferences*.
+2. Select *All* under *Show Settings* in the bottom left corner.
+3. Open *Interface | Control Interfaces* in the left side-bar.
+4. Enable *Infrared remote control interface*.
+
+Now you should see `lirc` in the text box at the bottom of *Control
+Interfaces* and the following in your `~/.config/vlc/vlcrc`:
+
+    [core]
+    control=lirc
+
+[[!tag lirc]] [[!tag vlc]] [[!tag raspberrypi]]
