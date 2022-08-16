@@ -137,4 +137,39 @@ issue the following command:
 It should show up in the second and third windows immediately if you've got
 everything setup correctly
 
+## Timezone problems
+
+If I do the following on my router:
+
+  /etc/init.d/syslog-ng restart
+  logger TestA
+
+I see the following in `/var/log/messages`:
+
+  Aug 14 20:39:35 hostname syslog-ng[9860]: syslog-ng shutting down; version='3.37.1'
+  Aug 14 20:39:36 hostname syslog-ng[10024]: syslog-ng starting up; version='3.37.1'
+  Aug 15 03:39:49 hostname root: TestA
+
+The correct timezone is the one in the first two lines. Other daemon
+messages are displayed using an incorrect timezone like `logger`.
+
+Thanks to a [very helpful `syslog-ng` mailing list thread](https://lists.balabit.hu/pipermail/syslog-ng/2022-August/thread.html#26509), I found that this is actually an [upstream OpenWRT bug](https://gitlab.nic.cz/turris/os/packages/-/issues/471).
+
+My favourite work-around is to tell syslog-ng to simply ignore the timestamp
+provided by the application and to use the time of reception (of the log
+message) instead. To do this, simply change the following in
+`/etc/syslog-ng.conf`:
+
+    source src {
+        internal();
+        unix-dgram("/dev/log");
+    };
+
+to:
+
+    source src {
+        internal();
+        unix-dgram("/dev/log", keep-timestamp(no));
+    };
+
 [[!tag turris]] [[!tag debian]] [[!tag rsyslog]] [[!tag sysadmin]] [[!tag openwrt]]
