@@ -52,7 +52,7 @@ into `/home/pi/.lircrc`:
     begin
       prog = vlc
       button = KEY_RED
-      config = key-fullscreen
+      config = key-toggle-fullscreen
     end
     
     begin
@@ -139,5 +139,8 @@ Interfaces* and the following in your `~/.config/vlc/vlcrc`:
 
     [core]
     control=lirc
+
+If you're looking to customize the above key mapping, you can find
+the VLC key codes in the output of `vlc -H --extended | grep -- --key-`.
 
 [[!tag lirc]] [[!tag vlc]] [[!tag raspberrypi]]
