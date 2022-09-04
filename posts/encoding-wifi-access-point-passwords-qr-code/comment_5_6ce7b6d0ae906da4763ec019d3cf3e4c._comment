@@ -1,0 +1,60 @@
+[[!comment format=mdwn
+ ip="68.37.194.119"
+ claimedauthor="Mike"
+ subject="QR CODE WiFi format"
+ date="2022-09-01T12:56:18Z"
+ content="""
+Wi-Fi Network config (Android, iOS 11+)
+
+**WIFI:T:WPA;S:mynetwork;P:mypass;;**
+
+<table>
+<tr>
+<td><b>Paramater</b></td>
+<td><b>Example</b></td>
+<td><b>Description</b></td>
+</tr>
+<tr>
+<td>T</td>
+<td>WPA</td>
+<td>Authentication type; can be WEP or WPA or WPA2-EAP, or nopass for no password. Or, omit for no password.</td>
+</tr>
+<tr>
+<td>S</td>
+<td>mynetwork</td>
+<td>Network SSID. Required. Enclose in double quotes if it is an ASCII name, but could be interpreted as hex (i.e. \"ABCD\")</td>
+</tr>
+<tr>
+<td>P</td>
+<td>mypass</td>
+<td>Password, ignored if T is nopass (in which case it may be omitted). Enclose in double quotes if it is an ASCII name, but could be interpreted as hex (i.e. \"ABCD\")</td>
+</tr>
+<tr>
+<td>H</td>
+<td>true</td>
+<td>Optional. True if the network SSID is hidden. Note this was mistakenly also used to specify phase 2 method in releases up to 4.7.8 / Barcode Scanner 3.4.0. If not a boolean, it will be interpreted as phase 2 method (see below) for backwards-compatibility</td>
+</tr>
+<tr>
+<td>E</td>
+<td>TTLS</td>
+<td>(WPA2-EAP only) EAP method, like TTLS or PWD</td>
+</tr>
+<tr>
+<td>A</td>
+<td>anon</td>
+<td>(WPA2-EAP only) Anonymous identity</td>
+</tr>
+<tr>
+<td>I</td>
+<td>myidentity</td>
+<td>(WPA2-EAP only) Identity</td>
+</tr>
+<tr>
+<td>PH2</td>
+<td>MSCHAPV2</td>
+<td>(WPA2-EAP only) Phase 2 method, like MSCHAPV2</td>
+</tr>
+</table>
+
+Order of fields does not matter. Special characters \, ;, ,, \" and : should be escaped with a backslash (\). For example, if an SSID was literally \"foo;bar\baz\" (with double quotes part of the SSID name itself) then it would be encoded like: WIFI:S:\\"foo\;bar\\baz\\";;
+"""]]
