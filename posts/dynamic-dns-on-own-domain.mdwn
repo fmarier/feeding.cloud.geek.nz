@@ -65,7 +65,6 @@ and the following in `/etc/default/ddclient`:
 
     run_dhclient="false"
     run_ipup="false"
-    run_daemon="true"
     daemon_interval="3600"
 
 Then restart the service:
@@ -93,4 +92,4 @@ panel](https://www.noip.com/members/dns/) and in DNS lookups:
 
     dig +short machinename.dyn.fmarier.org
 
-[[!tag debian]] [[!tag nzoss]] [[!tag dns]]
+[[!tag debian]] [[!tag dns]]

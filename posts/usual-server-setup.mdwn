@@ -281,16 +281,9 @@ Finally, to check that daemon restarting is taking place, install the
 Most of these tools are configuration-free, except for sysstat, which requires
 enabling data collection in `/etc/default/sysstat` to be useful.
 
-Also, [`command-not-found` won't work until you update the apt cache](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=857090):
-
-    apt update
-    update-command-not-found
-    apt-file update
-
 # Apache configuration
 
     apt install apache2
-    a2enmod mpm_event
     a2dismod status
 
 While configuring apache is often specific to each server and the services

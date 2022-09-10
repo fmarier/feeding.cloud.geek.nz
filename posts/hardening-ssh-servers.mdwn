@@ -22,6 +22,10 @@ This is what I put in `/etc/rkhunter.conf.local`:
 
 This is what my `/etc/ssh/sshd_config.d/local.conf` contains:
 
+    AuthorizedKeysFile	.ssh/authorized_keys
+    
+    AcceptEnv LANG LC_* TZ
+    
     HostKey /etc/ssh/ssh_host_ed25519_key
     
     KexAlgorithms curve25519-sha256@libssh.org,curve25519-sha256,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256
@@ -46,11 +50,6 @@ The above configuration is based on the [Mozilla
 recommendations](https://infosec.mozilla.org/guidelines/openssh#modern-openssh-67)
 and then tightened up using the
 [`ssh-audit`](https://github.com/jtesta/ssh-audit) package.
-
-I also have the following in my `/etc/ssh/sshd_config.d/local.conf`:
-
-    AuthorizedKeysFile	.ssh/authorized_keys
-    AcceptEnv LANG LC_* TZ
 
 While Mozilla recommends disabling short Diffie-Hellman moduli:
 
