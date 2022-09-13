@@ -65,7 +65,7 @@ via [LIRC](https://lirc.org/), which can be installed like this:
 
     apt install lirc
 
-Put the following in `/etc/lirc/lirc_options`:
+Put the following in `/etc/lirc/lirc_options.conf`:
 
     driver=default
     device=/dev/lirc0
