@@ -95,8 +95,12 @@ before removing its admin permissions:
     deluser pi cdrom
     deluser pi lpadmin
 
-Finally, I enabled the [Uncomplicated Firewall](https://launchpad.net/ufw)
-by installing its package:
+Finally, I enabled the [Uncomplicated Firewall](https://launchpad.net/ufw).
+I had to reconfigure debconf to see all medium-priority questions:
+
+    dpkg-reconfigure debconf
+
+before installing the `ufw` package:
 
     apt install ufw
 
@@ -155,7 +159,7 @@ server, then add it to the `/etc/hosts` file on your NFS server:
 
 Install the NFS server package:
 
-    apt instal nfs-kernel-server
+    apt install nfs-kernel-server
 
 Setup the directories to share in `/etc/exports`:
 
@@ -186,6 +190,10 @@ and this in `/etc/fstab`:
 
     fileserver:/data/movies  /kodi/movies  nfs  ro,bg,hard,noatime,async,nolock  0  0
     fileserver:/data/tv      /kodi/tv      nfs  ro,bg,hard,noatime,async,nolock  0  0
+
+Install the NFS client package:
+
+    apt install nfs-common
 
 Then create the mount points and mount everything:
 
