@@ -42,17 +42,12 @@ Using `sudo raspi-config`, I changed the following:
 - Configure locale, timezone and keyboard (*Localisation Options*)
 - Set WiFi country (*Localisation Options*)
 
-Then I [enabled automatic updates](https://raspberrypi.stackexchange.com/a/102350):
+Then I installed `anacron` to make sure that all cron jobs get run even when
+the machine is off:
 
-    apt install unattended-upgrades anacron
+    apt install anacron
 
-    echo 'Unattended-Upgrade::Origins-Pattern {
-            "origin=Debian,codename=${distro_codename},label=Debian";
-            "origin=Debian,codename=${distro_codename},label=Debian-Security";
-            "origin=Raspbian,codename=${distro_codename},label=Raspbian";
-            "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
-    };' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-raspbian
-
+I found that automatic updates are already enabled by `apt-daily-upgrade.timer`.
 
 ### Headless setup
 
