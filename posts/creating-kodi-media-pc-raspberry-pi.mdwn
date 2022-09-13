@@ -11,8 +11,9 @@ The hardware is fairly straightforward, but here's what I ended up getting:
 
 - [Raspberry Pi 4 board](https://www.amazon.ca/gp/product/B089GNJNDS): I
   went for the maximum amount of RAM (8 GB).
-- [SD-card](https://www.amazon.ca/gp/product/B07DKGP6RB): Since I'm not
-  going to store any media on here, 32 GB is plenty.
+- [SD-card](https://www.amazon.ca/gp/product/B089DNFTQF/): Since I'm not
+  going to store any media on here, 64 GB is plenty. However speed is very
+  important for the UI to feel responsive. Look for V30, U3 and A2 ratings.
 - [HDMI to **micro**-HDMI cable](https://www.amazon.ca/gp/product/B00Z07JYLE)
 - [Case and power supply](https://www.amazon.ca/gp/product/B08CRDKX6T)
 
