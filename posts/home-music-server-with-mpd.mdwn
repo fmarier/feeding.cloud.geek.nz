@@ -72,6 +72,9 @@ silence unnecessary log messages in
 and created a cronjob in `/etc/cron.d/mpd-francois` to update the database
 daily and stop the music automatically in the evening:
 
+    # Fix any broken permissions
+    4 * * * *  root  find /path/to/music -type d -exec chmod a+rx {} \;
+    4 * * * *  root  find /path/to/music -type f -exec chmod a+r {} \;
     # Refresh DB once an hour
     5 * * * *  mpd  test -r /run/mpd/socket && MPD_HOST=Password1@/run/mpd/socket /usr/bin/mpc --quiet update
     # Think of the neighbours
