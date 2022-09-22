@@ -197,4 +197,12 @@ Then create the mount points and mount everything:
     mount /kodi/movies
     mount /kodi/tv
 
+In order for these directories to get mounted at boot, you need to enable
+the "S6 Network at Boot" option in `raspi-config` (*System options* section)
+and then run the folowing:
+
+    systemctl enable NetworkManager-wait-online.service
+
+to further wait for the network.
+
 [[!tag raspberrypi]] [[!tag kodi]] [[!tag debian]] [[!tag nfs]] [[!tag tor]]
