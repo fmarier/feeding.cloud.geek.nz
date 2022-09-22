@@ -53,7 +53,7 @@ In order for the phone to update its clock automatically using [NTP](https://en.
 
     apt install chrony
 
-then I configured it to listen on the private network interface and allow access from the VoIP phone by adding the following to `/etc/chrony/chrony.conf`:
+then I configured it to listen on the private network interface and allow access from the VoIP phone by adding the following to `/etc/chrony/conf.d/asterisk-local.conf`:
 
     bindaddress 192.168.2.2
     allow 192.168.2.3
