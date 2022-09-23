@@ -50,12 +50,14 @@ blurb in `/etc/asterisk/extensions.conf`:
     exten => 1000,1,Dial(SIP/1000,20)
     exten => 1000,n,Goto(in1000-${DIALSTATUS},1)
     exten => 1000,n,Hangup
-    exten => in1000-BUSY,1,Hangup(17)
-    exten => in1000-CONGESTION,1,Hangup(3)
+    exten => in1000-BUSY,1,VoiceMail(1000@mailboxes,su)
+    exten => in1000-BUSY,n,Hangup
+    exten => in1000-CONGESTION,1,VoiceMail(1000@mailboxes,su)
+    exten => in1000-CONGESTION,n,Hangup
     exten => in1000-CHANUNAVAIL,1,VoiceMail(1000@mailboxes,su)
-    exten => in1000-CHANUNAVAIL,n,Hangup(3)
+    exten => in1000-CHANUNAVAIL,n,Hangup
     exten => in1000-NOANSWER,1,VoiceMail(1000@mailboxes,su)
-    exten => in1000-NOANSWER,n,Hangup(16)
+    exten => in1000-NOANSWER,n,Hangup
     exten => _in1000-.,1,Hangup(16)
 
 the `internal` [context](http://the-asterisk-book.com/1.6/der-context.html)
