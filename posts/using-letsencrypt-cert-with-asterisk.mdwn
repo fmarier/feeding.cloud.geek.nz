@@ -71,15 +71,15 @@ and then writing my own script in `/etc/cron.daily/certbot-francois`:
     cp /etc/letsencrypt/live/hostname.example.com/fullchain.pem /etc/asterisk/asterisk.cert
     chown asterisk:asterisk /etc/asterisk/asterisk.cert /etc/asterisk/asterisk.key
     chmod go-rwx /etc/asterisk/asterisk.cert /etc/asterisk/asterisk.key
-    /bin/systemctl restart asterisk.service
     
-    # Commit changes to etckeeper.
+    # Commit changes to etckeeper and restart asterisk.
     pushd /etc/ > /dev/null
     /usr/bin/git add letsencrypt asterisk
     DIFFSTAT="$(/usr/bin/git diff --cached --stat)"
     if [ -n "$DIFFSTAT" ] ; then
         /usr/bin/git commit --quiet -m "Renewed letsencrypt certs." letsencrypt asterisk
         echo "$DIFFSTAT"
+        /bin/systemctl restart asterisk.service
     fi
     popd > /dev/null
 
