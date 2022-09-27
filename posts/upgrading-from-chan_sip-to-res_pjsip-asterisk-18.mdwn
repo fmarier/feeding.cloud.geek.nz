@@ -1,0 +1,314 @@
+[[!meta title="Upgrading from chan_sip to res_pjsip in Asterisk 18"]]
+[[!meta date="2022-09-27T16:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+After upgrading to [Ubuntu Jammy](https://releases.ubuntu.com/22.04/) and
+[Asterisk](https://www.asterisk.org/) 18.10, I saw the following messages in
+my logs:
+
+    WARNING[360166]: loader.c:2487 in load_modules: Module 'chan_sip' has been loaded but was deprecated in Asterisk version 17 and will be removed in Asterisk version 21.
+    WARNING[360174]: chan_sip.c:35468 in deprecation_notice: chan_sip has no official maintainer and is deprecated.  Migration to
+    WARNING[360174]: chan_sip.c:35469 in deprecation_notice: chan_pjsip is recommended.  See guides at the Asterisk Wiki:
+    WARNING[360174]: chan_sip.c:35470 in deprecation_notice: https://wiki.asterisk.org/wiki/display/AST/Migrating+from+chan_sip+to+res_pjsip
+    WARNING[360174]: chan_sip.c:35471 in deprecation_notice: https://wiki.asterisk.org/wiki/display/AST/Configuring+res_pjsip
+
+and so I decided it was time to stop postponing the
+[overdue migration](https://wiki.asterisk.org/wiki/display/AST/Migrating+from+chan_sip+to+res_pjsip)
+of my working setup from
+[`chan_sip`](https://wiki.asterisk.org/wiki/display/AST/Configuring+chan_sip)
+to
+[`res_pjsip`](https://wiki.asterisk.org/wiki/display/AST/Configuring+res_pjsip).
+
+It turns out that it was not as painful as I expected, though the
+[conversion script bundled with
+Asterisk](https://github.com/asterisk/asterisk/tree/master/contrib/scripts/sip_to_pjsip)
+didn't work for me out of the box.
+
+## Debugging
+
+Before you start, one very important thing to note is that the SIP debug
+information you used to see when running this in the asterisk console
+(`asterisk -r`):
+
+    sip set debug on
+
+now lives behind this command:
+
+    pjsip set logger on
+
+## SIP phones
+
+The first thing I migrated was the config for my two SIP phones (Snom 300
+and Snom D715).
+
+The original config for them in `sip.conf` was:
+
+    [2000]
+    ; Snom 300
+    type=friend
+    qualify=yes
+    secret=password123
+    encryption=no
+    context=full
+    host=dynamic
+    nat=no
+    directmedia=no
+    mailbox=10@internal
+    vmexten=707
+    dtmfmode=rfc2833
+    call-limit=2
+    disallow=all
+    allow=g722
+    allow=ulaw
+    
+    [2001]
+    ; Snom D715
+    type=friend
+    qualify=yes
+    secret=password456
+    encryption=no
+    context=full
+    host=dynamic
+    nat=no
+    directmedia=yes
+    mailbox=10@internal
+    vmexten=707
+    dtmfmode=rfc2833
+    call-limit=2
+    disallow=all
+    allow=g722
+    allow=ulaw
+
+and that became the following in `pjsip.conf`:
+
+    [2000]
+    type = aor
+    max_contacts = 1
+    
+    [2000]
+    type = auth
+    username = 2000
+    password = password123
+    
+    [2000]
+    type = endpoint
+    context = full
+    dtmf_mode = rfc4733
+    disallow = all
+    allow = g722
+    allow = ulaw
+    direct_media = no
+    mailboxes = 10@internal
+    auth = 2000
+    outbound_auth = 2000
+    aors = 2000
+    
+    [2001]
+    type = aor
+    max_contacts = 1
+    
+    [2001]
+    type = auth
+    username = 2001
+    password = password456
+    
+    [2001]
+    type = endpoint
+    context = full
+    dtmf_mode = rfc4733
+    disallow = all
+    allow = g722
+    allow = ulaw
+    direct_media = yes
+    mailboxes = 10@internal
+    auth = 2001
+    outbound_auth = 2001
+    aors = 2001
+
+The different `direct_media` line between the two phones has to do with how
+they each [connect to my Asterisk
+server](https://feeding.cloud.geek.nz/posts/connecting-voip-phone-directly-to-asterisk-server/)
+and whether or not they have access to the Internet.
+
+## Internal calls
+
+For some reason, my internal calls (from one SIP phone to the other) didn't
+work when using "aliases". I fixed it by changing this blurb in
+`extensions.conf` from:
+
+    [speeddial]
+    exten => 1000,1,Dial(SIP/2000,20)
+    exten => 1001,1,Dial(SIP/2001,20)
+
+to:
+
+    [speeddial]
+    exten => 1000,1,Dial(${PJSIP_DIAL_CONTACTS(2000)},20)
+    exten => 1001,1,Dial(${PJSIP_DIAL_CONTACTS(2001)},20)
+
+I have not yet dug into what this changes or why it's necessary and so feel
+free to leave a comment if you know more here.
+
+## PSTN trunk
+
+Once I had the internal phones working, I moved to making and receiving
+phone calls over the
+[PSTN](https://en.wikipedia.org/wiki/Public_switched_telephone_network), for
+which I use [VoIP.ms](https://wiki.voip.ms/article/Asterisk_%28PJSIP%29) with
+[encryption](https://feeding.cloud.geek.nz/posts/sip-encryption-on-voip-ms/).
+
+I had to change the following in my `sip.conf`:
+
+    [general]
+    register => tls://555123_myasterisk:password789@vancouver2.voip.ms
+    externhost=myasterisk.dyn.example.com
+    localnet=192.168.0.0/255.255.0.0
+    tcpenable=yes
+    tlsenable=yes
+    tlscertfile=/etc/asterisk/asterisk.cert
+    tlsprivatekey=/etc/asterisk/asterisk.key
+    tlscapath=/etc/ssl/certs/
+    
+    [voipms]
+    type=peer
+    host=vancouver2.voip.ms
+    secret=password789
+    defaultuser=555123_myasterisk
+    context=from-voipms
+    disallow=all
+    allow=ulaw
+    allow=g729
+    insecure=port,invite
+    canreinvite=no
+    trustrpid=yes
+    sendrpid=yes
+    transport=tls
+    encryption=yes
+
+to the following in `pjsip.conf`:
+
+    [transport-tls]
+    type = transport
+    protocol = tls
+    bind = 0.0.0.0
+    external_media_address = myasterisk.dyn.example.com
+    external_signaling_address = myasterisk.dyn.example.com
+    local_net = 192.168.0.0/255.255.0.0
+    cert_file = /etc/asterisk/asterisk.cert
+    priv_key_file = /etc/asterisk/asterisk.key
+    ca_list_path = /etc/ssl/certs/
+    method = tlsv1_2
+
+    [voipms]
+    type = registration
+    transport = transport-tls
+    outbound_auth = voipms
+    client_uri = sip:555123_myasterisk@vancouver2.voip.ms
+    server_uri = sip:vancouver2.voip.ms
+    
+    [voipms]
+    type = auth
+    password = password789
+    username = 555123_myasterisk
+    
+    [voipms]
+    type = aor
+    contact = sip:555123_myasterisk@vancouver2.voip.ms
+    
+    [voipms]
+    type = identify
+    endpoint = voipms
+    match = vancouver2.voip.ms
+    
+    [voipms]
+    type = endpoint
+    context = from-voipms
+    disallow = all
+    allow = ulaw
+    allow = g729
+    from_user = 555123_myasterisk
+    trust_id_inbound = yes
+    direct_media = no
+    media_encryption = sdes
+    auth = voipms
+    outbound_auth = voipms
+    aors = voipms
+    rtp_symmetric = yes
+    rewrite_contact = yes
+    send_rpid = yes
+
+The TLS `method` line is needed since the [default in Debian OpenSSL is too
+strict](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=966636).
+
+Finally, I changed the `Dial()` lines in these `extensions.conf` blurbs from:
+
+    [from-voipms]
+    exten => 5551231000,1,Goto(2000,1)
+    exten => 2000,1,Dial(SIP/2000&SIP/2001,20)
+    exten => 2000,n,Goto(in2000-${DIALSTATUS},1)
+    exten => 2000,n,Hangup
+    exten => in2000-BUSY,1,VoiceMail(10@internal,su)
+    exten => in2000-BUSY,n,Hangup
+    exten => in2000-CONGESTION,1,VoiceMail(10@internal,su)
+    exten => in2000-CONGESTION,n,Hangup
+    exten => in2000-CHANUNAVAIL,1,VoiceMail(10@internal,su)
+    exten => in2000-CHANUNAVAIL,n,Hangup
+    exten => in2000-NOANSWER,1,VoiceMail(10@internal,su)
+    exten => in2000-NOANSWER,n,Hangup
+    exten => _in2000-.,1,Hangup(16)
+
+    [pstn-voipms]
+    exten => _1NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <5551231000>)
+    exten => _1NXXNXXXXXX,n,Dial(SIP/voipms/${EXTEN})
+    exten => _1NXXNXXXXXX,n,Hangup()
+    exten => _NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <5551231000>)
+    exten => _NXXNXXXXXX,n,Dial(SIP/voipms/1${EXTEN})
+    exten => _NXXNXXXXXX,n,Hangup()
+    exten => _011X.,1,Set(CALLERID(all)=Francois Marier <5551231000>)
+    exten => _011X.,n,Authenticate(1234)
+    exten => _011X.,n,Dial(SIP/voipms/${EXTEN})
+    exten => _011X.,n,Hangup()
+    exten => _00X.,1,Set(CALLERID(all)=Francois Marier <5551231000>)
+    exten => _00X.,n,Authenticate(1234)
+    exten => _00X.,n,Dial(SIP/voipms/${EXTEN})
+    exten => _00X.,n,Hangup()
+
+to:
+
+    [from-voipms]
+    exten => 5551231000,1,Goto(2000,1)
+    exten => 2000,1,Dial(PJSIP/2000&PJSIP/2001,20)
+    exten => 2000,n,Goto(in2000-${DIALSTATUS},1)
+    exten => 2000,n,Hangup
+    exten => in2000-BUSY,1,VoiceMail(10@internal,su)
+    exten => in2000-BUSY,n,Hangup
+    exten => in2000-CONGESTION,1,VoiceMail(10@internal,su)
+    exten => in2000-CONGESTION,n,Hangup
+    exten => in2000-CHANUNAVAIL,1,VoiceMail(10@internal,su)
+    exten => in2000-CHANUNAVAIL,n,Hangup
+    exten => in2000-NOANSWER,1,VoiceMail(10@internal,su)
+    exten => in2000-NOANSWER,n,Hangup
+    exten => _in2000-.,1,Hangup(16)
+
+    [pstn-voipms]
+    exten => _1NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <5551231000>)
+    exten => _1NXXNXXXXXX,n,Dial(PJSIP/${EXTEN}@voipms)
+    exten => _1NXXNXXXXXX,n,Hangup()
+    exten => _NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <5551231000>)
+    exten => _NXXNXXXXXX,n,Dial(PJSIP/1${EXTEN}@voipms)
+    exten => _NXXNXXXXXX,n,Hangup()
+    exten => _011X.,1,Set(CALLERID(all)=Francois Marier <5551231000>)
+    exten => _011X.,n,Authenticate(1234)
+    exten => _011X.,n,Dial(PJSIP/${EXTEN}@voipms)
+    exten => _011X.,n,Hangup()
+    exten => _00X.,1,Set(CALLERID(all)=Francois Marier <5551231000>)
+    exten => _00X.,n,Authenticate(1234)
+    exten => _00X.,n,Dial(PJSIP/${EXTEN}@voipms)
+    exten => _00X.,n,Hangup()
+
+Note that it's not just replacing `SIP/` with `PJSIP/`, but it was also
+necessary to use a [format supported by
+pjsip](https://wiki.asterisk.org/wiki/display/AST/Dialing+PJSIP+Channels)
+for the channel since `SIP/trunkname/extension` isn't supported by pjsip.
+
+[[!tag debian]] [[!tag asterisk]] [[!tag voipms]]
