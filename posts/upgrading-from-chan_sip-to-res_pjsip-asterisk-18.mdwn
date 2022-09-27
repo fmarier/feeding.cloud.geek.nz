@@ -127,7 +127,7 @@ and that became the following in `pjsip.conf`:
 
 The different `direct_media` line between the two phones has to do with how
 they each [connect to my Asterisk
-server](https://feeding.cloud.geek.nz/posts/connecting-voip-phone-directly-to-asterisk-server/)
+server](/posts/connecting-voip-phone-directly-to-asterisk-server/)
 and whether or not they have access to the Internet.
 
 ## Internal calls
@@ -155,7 +155,7 @@ Once I had the internal phones working, I moved to making and receiving
 phone calls over the
 [PSTN](https://en.wikipedia.org/wiki/Public_switched_telephone_network), for
 which I use [VoIP.ms](https://wiki.voip.ms/article/Asterisk_%28PJSIP%29) with
-[encryption](https://feeding.cloud.geek.nz/posts/sip-encryption-on-voip-ms/).
+[encryption](/posts/sip-encryption-on-voip-ms/).
 
 I had to change the following in my `sip.conf`:
 
