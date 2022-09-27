@@ -228,7 +228,6 @@ to the following in `pjsip.conf`:
     allow = g729
     from_user = 555123_myasterisk
     trust_id_inbound = yes
-    direct_media = no
     media_encryption = sdes
     auth = voipms
     outbound_auth = voipms
