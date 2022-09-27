@@ -24,79 +24,79 @@ In response, you will receive a message containing:
 
 # Add SIP account to your Asterisk config
 
-First of all, I added the following near the top of my
-`/etc/asterisk/sip.conf`:
+First of all, I added the following to my `/etc/asterisk/pjsip.conf`:
 
-    [general]
-    register => username:three secret words@jmp.cbcbc7.auth.bandwidth.com:5008/username
-
-Note the extra `/username` at the end here. Registration will succeed without it
-and strangely incoming calls will work, but **outgoing calls won't work**
-without it.
-
-The other non-default options I have set in `[general]` are:
-
-    context=public
-    allowoverlap=no
-    udpbindaddr=0.0.0.0
-    tcpenable=yes
-    tcpbindaddr=0.0.0.0
-    tlsenable=yes
-    transport=udp
-    srvlookup=no
-    vmexten=voicemail
-    relaxdtmf=yes
-    useragent=Asterisk PBX
-    tlscertfile=/etc/asterisk/asterisk.cert
-    tlsprivatekey=/etc/asterisk/asterisk.key
-    tlscapath=/etc/ssl/certs/
-    externhost=machinename.dyndns.org
-    localnet=192.168.0.0/255.255.0.0
-
-Note that you can have more than one `register` line in your config if you
-use more than one SIP provider, but **you must register with the server
-whether you want to receive incoming calls or not**.
-
-Then I added a new blurb to the bottom of the same file:
+    [transport-udp]
+    type = transport
+    protocol = udp
+    bind = 0.0.0.0
+    external_media_address = myasterisk.dyn.example.com
+    external_signaling_address = myasterisk.dyn.example.com
+    local_net = 192.168.0.0/255.255.0.0
 
     [jmp]
-    type=peer
-    host=mp.cbcbc7.auth.bandwidth.com
-    port=5008
-    secret=three secret words
-    defaultuser=username
-    context=from-jmp
-    disallow=all
-    allow=ulaw
-    allow=g729
-    insecure=port,invite
-    canreinvite=no
-    dtmfmode=rfc2833
+    type = registration
+    contact_user = 5554561000
+    transport = transport-udp
+    outbound_auth = jmp
+    client_uri = sip:5554561000@jmp.cbcbc7.auth.bandwidth.com:5008
+    server_uri = sip:jmp.cbcbc7.auth.bandwidth.com:5008
+    
+    [jmp]
+    type = auth
+    password = three secret words
+    username = 5554561000
+    
+    [jmp]
+    type = aor
+    contact = sip:5554561000@jmp.cbcbc7.auth.bandwidth.com:5008
+    
+    [jmp]
+    type = identify
+    endpoint = jmp
+    match = jmp.cbcbc7.auth.bandwidth.com
+    
+    [jmp]
+    type = endpoint
+    context = from-jmp
+    dtmf_mode = rfc4733
+    disallow = all
+    allow = ulaw
+    allow = g729
+    auth = jmp
+    outbound_auth = jmp
+    aors = jmp
+    rtp_symmetric = yes
+    rewrite_contact = yes
+    send_rpid = yes
 
 and for reference, here's the blurb for my [Snom 300](https://service.snom.com/display/wiki/User+Manuals?preview=%2F48399335%2F48399359%2FUM_snom3xx_V2.2_en.pdf) SIP phone:
 
-    [1001]
-    ; Snom 300
-    type=friend
-    qualify=yes
-    secret=password
-    encryption=no
-    context=full
-    host=dynamic
-    nat=no
-    directmedia=no
-    mailbox=1000@internal
-    vmexten=707
-    dtmfmode=rfc2833
-    call-limit=2
-    disallow=all
-    allow=g722
-    allow=ulaw
+    [2000]
+    type = aor
+    max_contacts = 1
+    
+    [2000]
+    type = auth
+    username = 2000
+    password = password123
+    
+    [2000]
+    type = endpoint
+    context = full
+    dtmf_mode = rfc4733
+    disallow = all
+    allow = g722
+    allow = ulaw
+    mailboxes = 10@internal
+    auth = 2000
+    outbound_auth = 2000
+    aors = 2000
 
 I checked that the registration was successful by running `asterisk -r` and
 then typing:
 
-    sip set debug on
+    pjsip set logger on
 
 before reloading the configuration using:
 
@@ -111,9 +111,9 @@ In `/etc/asterisk/extensions.conf`, I added the following:
 
     [from-jmp]
     include => home
-    exten => s,1,Goto(1000,1)
+    exten => s,1,Goto(2000,1)
 
-where `home` is the context which includes my local SIP devices and `1000`
+where `home` is the context which includes my local SIP devices and `2000`
 is the extension I want to ring.
 
 Then I added the following to enable calls to any destination within the
@@ -121,10 +121,10 @@ Then I added the following to enable calls to any destination within the
 
     [pstn-jmp]
     exten => _1NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <username>)
-    exten => _1NXXNXXXXXX,n,Dial(SIP/jmp/${EXTEN})
+    exten => _1NXXNXXXXXX,n,Dial(PJSIP/${EXTEN}@jmp)
     exten => _1NXXNXXXXXX,n,Hangup()
     exten => _NXXNXXXXXX,1,Set(CALLERID(all)=Francois Marier <username>)
-    exten => _NXXNXXXXXX,n,Dial(SIP/jmp/1${EXTEN})
+    exten => _NXXNXXXXXX,n,Dial(PJSIP/1${EXTEN}@jmp)
     exten => _NXXNXXXXXX,n,Hangup()
 
 Here `username` is my bwsip numerical username. When calls are placed, this gets
@@ -153,22 +153,21 @@ For reference, here's the rest of my dialplan in `/etc/asterisk/extensions.conf`
     [full]
     include => internal
     include => pstn-jmp
-    exten => 707,1,VoiceMailMain(1000@internal)
+    exten => 707,1,VoiceMailMain(10@internal)
     
     [home]
-    ; Internal extensions
-    exten => 1000,1,Dial(SIP/1001,20)
-    exten => 1000,n,Goto(in1000-${DIALSTATUS},1)
-    exten => 1000,n,Hangup
-    exten => in1000-BUSY,1,VoiceMail(1000@internal,su)
-    exten => in1000-BUSY,n,Hangup
-    exten => in1000-CONGESTION,1,VoiceMail(1000@internal,su)
-    exten => in1000-CONGESTION,n,Hangup
-    exten => in1000-CHANUNAVAIL,1,VoiceMail(1000@internal,su)
-    exten => in1000-CHANUNAVAIL,n,Hangup
-    exten => in1000-NOANSWER,1,VoiceMail(1000@internal,su)
-    exten => in1000-NOANSWER,n,Hangup
-    exten => _in1000-.,1,Hangup(16)
+    exten => 2000,1,Dial(PJSIP/2000,20)
+    exten => 2000,n,Goto(in2000-${DIALSTATUS},1)
+    exten => 2000,n,Hangup
+    exten => in2000-BUSY,1,VoiceMail(10@internal,su)
+    exten => in2000-BUSY,n,Hangup
+    exten => in2000-CONGESTION,1,VoiceMail(10@internal,su)
+    exten => in2000-CONGESTION,n,Hangup
+    exten => in2000-CHANUNAVAIL,1,VoiceMail(10@internal,su)
+    exten => in2000-CHANUNAVAIL,n,Hangup
+    exten => in2000-NOANSWER,1,VoiceMail(10@internal,su)
+    exten => in2000-NOANSWER,n,Hangup
+    exten => _in2000-.,1,Hangup(16)
 
 # Firewall
 
