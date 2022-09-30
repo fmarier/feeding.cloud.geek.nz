@@ -81,6 +81,14 @@ The original config for them in `sip.conf` was:
 
 and that became the following in `pjsip.conf`:
 
+    [transport-udp]
+    type = transport
+    protocol = udp
+    bind = 0.0.0.0
+    external_media_address = myasterisk.dyn.example.com
+    external_signaling_address = myasterisk.dyn.example.com
+    local_net = 192.168.0.0/255.255.0.0
+
     [2000]
     type = aor
     max_contacts = 1
