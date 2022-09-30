@@ -235,9 +235,11 @@ to the following in `pjsip.conf`:
     rtp_symmetric = yes
     rewrite_contact = yes
     send_rpid = yes
+    timers = no
 
 The TLS `method` line is needed since the [default in Debian OpenSSL is too
-strict](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=966636).
+strict](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=966636). The `timers`
+line is to prevent [outbound calls from getting dropped after 15 minutes](https://community.freepbx.org/t/outbound-calls-dropping-after-15-minutes/38029/16).
 
 Finally, I changed the `Dial()` lines in these `extensions.conf` blurbs from:
 

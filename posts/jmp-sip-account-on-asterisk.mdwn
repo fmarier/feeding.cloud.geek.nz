@@ -69,6 +69,7 @@ First of all, I added the following to my `/etc/asterisk/pjsip.conf`:
     rtp_symmetric = yes
     rewrite_contact = yes
     send_rpid = yes
+    timers = no
 
 and for reference, here's the blurb for my [Snom 300](https://service.snom.com/display/wiki/User+Manuals?preview=%2F48399335%2F48399359%2FUM_snom3xx_V2.2_en.pdf) SIP phone:
 
