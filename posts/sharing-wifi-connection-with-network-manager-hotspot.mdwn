@@ -21,7 +21,7 @@ bar and select "Edit Connections..." (**not** "Create New WiFi Network..."
 despite the promising name).
 
 From there click the "+" button in the lower right then "WiFi" as the
-Connection Type. I like to use the computer name as the "Connection name".
+Connection Type. I like to use *Hotspot* as the "Connection name".
 
 In the *WiFi* tab, set the following:
 
@@ -97,5 +97,12 @@ on my machine's local firewall:
     -A INPUT -d 239.255.255.250 -s 10.42.0.1 -j ACCEPT
     -A INPUT -d 10.42.0.255 -s 10.42.0.1 -j ACCEPT
     -A INPUT -d 10.42.0.1 -s 10.42.0.0/24 -j ACCEPT
+
+# Starting the hotspot
+
+If you named your network connection *Hotspot*, then you can start it from the
+command line like this:
+
+   nmcli connection up Hotspot
 
 [[!tag gnome]] [[!tag debian]] [[!tag wifi]] [[!tag networkmanager]]
