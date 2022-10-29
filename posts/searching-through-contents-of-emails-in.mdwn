@@ -23,7 +23,7 @@ Then you need to run mairix once to index all of your emails:
 
 which you will of course want to run regularly. I created this cronjob in /etc/cron.d/mairix-username:  
 
-    17,37,57 * * * * username /usr/bin/on_ac_power && /usr/bin/mairix
+    17,37,57 * * * * username /usr/bin/on_ac_power && /usr/bin/mairix || true
 
 (To avoid waking up the hard drive needlessly, I prefer to restrict the indexing runs for when I'm running on AC power. Take that out if you're not running it on a laptop.)  
   
@@ -38,6 +38,7 @@ If you use GPG, you should also add this to your `~/.muttrc` to make sure that m
     set fcc_clear=yes
     bind index s decrypt-save
     bind pager s decrypt-save
+    bind index \ec decrypt-copy
+    bind pager \ec decrypt-copy
 
-
-[[!tag mutt]] [[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] [[!tag email]]
+[[!tag mutt]] [[!tag debian]] [[!tag email]]
