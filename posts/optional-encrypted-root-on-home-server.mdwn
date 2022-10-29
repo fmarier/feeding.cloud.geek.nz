@@ -1,0 +1,44 @@
+[[!meta title="Making the mounting of an encrypted /home optional on a home server"]]
+[[!meta date="2022-10-28T23:45:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I have a computer that serves as a home server as well as a desktop
+machine. It has an encrypted home directory to protect user files and, in
+the default configuration, that unfortunately interferes with unattended
+reboots since someone needs to be present to enter the encryption password.
+
+Here's how I added a timeout and made `/home` optional on that machine.
+
+I started by adding a one-minute timeout on the password prompt by adding
+`timeout=60` in my `/etc/crypttab`:
+
+    crypt  UUID=7e12c123-abcd-5555-8c40-900d1f8cc281  none  luks,timeout=60
+
+then I made `/home` optional by adding `nofail` to the appropriate mount
+point in `/etc/fstab`:
+
+    /dev/mapper/crypt  /home  ext4  nodev,noatime,nosuid,nofail  0  2
+
+Before that, the password prompt would timeout but the system would be
+unable to boot since one of the required partitions had failed to mount.
+
+Now, to ensure that I don't accidentally re-create home directories for
+users when the system is mounted without a `/home`, I made the `/home`
+directory on the non-encrypted drive read-only:
+
+    umount /home
+    cd /home
+    chmod a-w .
+
+Finally, with all of this in place, I was now happy to configure the
+machine to automatically reboot after a kernel panic by putting the
+following in `/etc/sysctl.d/local.conf`:
+
+    # Automatic reboot 10 seconds after a kernel panic
+    kernel.panic = 10
+
+since I know that the machine will come back up just fine and that all
+services will be running. I simply won't be able to log into that machine as
+any other user than `root` until I manually unlock and mount `/home`.
+
+[[!tag luks]] [[!tag debian]]
