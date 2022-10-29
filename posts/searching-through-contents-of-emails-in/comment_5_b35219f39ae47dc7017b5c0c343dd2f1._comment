@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="47.216.223.19"
+ claimedauthor="muttuser"
+ subject="then what?"
+ date="2022-10-26T16:44:54Z"
+ content="""
+I have followed the steps, and then in mutt I hit esc+b, enter a word, hit enter, then nothing happens. If mairix finds nothing I do get to see some output though.
+
+If i run mairix in a terminal, the output just says \"1 match\" - how do you get it to show you the actual results?
+"""]]

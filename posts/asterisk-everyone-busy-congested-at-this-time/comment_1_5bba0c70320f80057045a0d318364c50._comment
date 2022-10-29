@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="2001:470:b009:0:1262:e5ff:fe97:9f7b"
+ claimedauthor="Snork"
+ url="https://snork.ca/"
+ subject="Same Problem, Yealink Desk Phone"
+ date="2022-10-17T16:41:01Z"
+ content="""
+I had a very similar problem, and when I called the \"busy\" phone from a Sipdroid client it said that the codecs were incompatible.  The codecs were fine, but I [finally] noticed that I had been screwing with TLS and my Yealink desk phone had **call encryption** set to **Compulsory**. Switching it to optional allowed calls to flow again.  Hopefully this may save someone else some head banging. :-)
+"""]]
