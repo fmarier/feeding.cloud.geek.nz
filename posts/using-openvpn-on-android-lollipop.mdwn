@@ -51,6 +51,7 @@ Server list:
 
 Authentication/Encryption:
 
+- TLS Security Profile: `preferred`
 - Expect TLS server certificate: `YES`
 - Certificate hostname check: `YES`
 - Remote certificate subject: `server`
