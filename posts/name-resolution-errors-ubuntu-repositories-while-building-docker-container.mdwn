@@ -1,0 +1,64 @@
+[[!meta title="Name resolution errors in Ubuntu repositories while building a docker container"]]
+[[!meta date="2022-11-23T00:10:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I ran into what seemed to be a DNS problem when building a [Docker](https://www.docker.com/) container:
+
+    Err http://archive.ubuntu.com jammy Release.gpg
+      Could not resolve 'archive.ubuntu.com'
+    
+    W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy/Release.gpg  Could not resolve 'archive.ubuntu.com'
+    
+    W: Some index files failed to download. They have been ignored, or old ones used instead.
+
+
+I found that [many solutions](https://robinwinslow.uk/fix-docker-networking-dns) talked about
+setting the default DNS server explicitly in `/etc/docker/daemon.json`:
+
+    {
+        "dns": ["1.1.1.1"]
+    }
+
+but that didn't work for me.
+
+I noticed however that I was having these problems whenever I connected to my VPN.
+So what did work for me was **restarting the docker daemon whenever
+there is a change in networking** (e.g. enabling/disabling VPN) by putting the
+following in `/etc/NetworkManager/dispatcher.d/docker-local`:
+
+    #!/bin/sh
+    
+    LOGFILE=/var/log/docker-restarts.log
+    
+    if [ -z "$1" ]; then
+        echo "$0: called with no interface" >> $LOGFILE
+        exit 1;
+    fi
+    
+    if [ "$1" = lo ]; then
+        # Ignoring the loopback interface
+        exit 0;
+    fi
+    
+    case "$2" in
+        up|vpn-up|down|vpn-down)
+            echo "$0: restarting docker due to action \`$2' on interface \`$1'" >> $LOGFILE
+            /bin/systemctl restart docker.service
+            ;;
+        *)
+            echo "$0: ignoring action \`$2' on interface \`$1'" >> $LOGFILE
+            ;;
+    esac
+
+and then making that new file executable:
+
+    chmod +x /etc/NetworkManager/dispatcher.d/docker-local
+
+You can confirm that it's working as intended by watching the logs:
+
+    tail -f /var/log/docker-restarts.log
+
+while enabling/disable your VPN or your network connection. If you don't see
+any output, then something is wrong and the Docker restart isn't happening.
+
+[[!tag debian]] [[!tag docker]]
