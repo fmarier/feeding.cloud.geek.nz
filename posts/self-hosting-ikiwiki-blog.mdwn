@@ -100,7 +100,6 @@ things in it:
     - search
     - theme
     - moderatedcomments
-    - flattr
     - calendar
     - headinganchors
     - notifyemail
