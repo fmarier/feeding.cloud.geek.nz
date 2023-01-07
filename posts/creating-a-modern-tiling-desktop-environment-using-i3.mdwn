@@ -66,8 +66,8 @@ While keyboard shortcuts can be configured in GNOME, they don't work within i3, 
     bindsym XF86AudioMute exec /usr/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle
 
     # brightness control
-    bindsym XF86MonBrightnessDown exec /home/francois/bin/set-brightness -
-    bindsym XF86MonBrightnessUp exec /home/francois/bin/set-brightness +
+    bindsym XF86MonBrightnessDown exec /usr/bin/brightnessctl set 10%-
+    bindsym XF86MonBrightnessUp exec /usr/bin/brightnessctl set +10%
 
     # show battery stats
     bindsym XF86Battery exec gnome-power-statistics
@@ -82,8 +82,12 @@ to make volume control, screen brightness, battery status and print screen butto
 These bindings require the following packages or scripts:
 
 * [pulseaudio-utils](https://packages.debian.org/stable/pulseaudio-utils)
-* [set-brightness](https://github.com/fmarier/user-scripts/blob/master/set-brightness)
+* [brightnessctl](https://packages.debian.org/stable/brightnessctl)
 * [gnome-power-manager](https://packages.debian.org/stable/gnome-power-manager)
+
+and your user account needs to be in the `video` group:
+
+    adduser francois video
 
 # Keyboard layout switcher
 
