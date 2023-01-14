@@ -44,6 +44,10 @@ and then issue a Secure Erase command:
 
     hdparm --user-master u --security-erase-enhanced p /dev/sdX
 
+If you get errors like "bad/missing sense data", then you may need to
+use one of the tricks [described in this thread](https://superuser.com/questions/1213715/hdparm-error-sg-io-bad-missing-sense-data). For me, suspending the laptop
+and then waking it up did the trick.
+
 # NVMe solid-state drives
 
 For SSDs using an NVMe connector, simply request a [User Data
