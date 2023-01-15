@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="178.191.160.212"
+ claimedauthor="theltalpha"
+ subject="IP address of resolver"
+ date="2023-01-08T21:07:39Z"
+ content="""
+Hallo!
+
+How do you manage that dnscrypt-proxy is set up to operate on 127.0.2.1? On Debian 11 it is set to 127.0.0.1, and I yet have to find a way to change it.
+"""]]
