@@ -25,7 +25,7 @@ I made my own custom keymap by by copying the original keymap:
 and then modifying it to adapt it to what MythTV needs. This is what I ended
 up with:
 
-    [[protocols]]
+    \[[protocols]]
     name = "streamzap"
     protocol = "rc-5-sz"
     [protocols.scancodes]
