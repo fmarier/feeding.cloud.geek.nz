@@ -1,0 +1,66 @@
+[[!meta title="Upgrading from Ubuntu 20.04 focal to 22.04 jammy"]]
+[[!meta date="2023-01-27T16:15:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+A few weeks ago, I upgraded a few machines from Ubuntu 20.04 (focal) to
+22.04 (jammy). Here are the things that needed fixing after the upgrade.
+
+## Network problems
+
+Firstly, I had to fix the resolution of `.local` domains the [same
+way](https://feeding.cloud.geek.nz/posts/upgrading-from-ubuntu-bionic-to-focal/#Network_problems)
+as I did when I upgraded a different machine from 18.04 (bionic) to 20.04
+(focal).
+
+## ssh agent problems
+
+Then, I found that `ssh-add` no longer worked and instead returned this error:
+
+> Could not open connection to your authentication agent
+
+While this appears to be a [known
+issue](https://bugs.launchpad.net/ubuntu/+source/xorg/+bug/1922414), the
+work-around suggested in the [i3
+forum](https://github.com/i3/i3/discussions/5025) didn't work for me. What
+did work was the solution described in [this blog
+post](https://eklitzke.org/using-ssh-agent-and-ed25519-keys-on-gnome):
+
+1. Add this to my `~/.bash_profile`:
+
+      eval $(systemctl --user show-environment | grep SSH_AUTH_SOCK)
+      export SSH_AUTH_SOCK
+
+2. Add this to my [startup
+   script](https://github.com/fmarier/user-scripts/blob/master/startup):
+
+      /usr/bin/systemctl --user start ssh-agent.service
+
+I'm not sure why ED25519 keys don't work in gnome-keyring since [that
+bug](https://bugzilla.gnome.org/show_bug.cgi?id=723274) was supposedly fixed
+a while back, but starting `gnome-keyring-ssh.service` instead of
+`ssh-agent.service` didn't work for me.
+
+## Packges
+
+When it comes to specific packages, I removed these two obsolete packages:
+
+- `popularity-contest`
+- `unattended-upgrades`
+
+The former appears to no longer used by Ubuntu, while the latter is subsumed
+by built-in systemd functionality:
+
+    systemctl enable apt-daily-upgrade.timer
+    systemctl start apt-daily-upgrade.timer
+
+I also installed these two new packages:
+
+- [`rng-tools5`](https://packages.debian.org/stable/rng-tools5) (a more modern version of [`rng-tools`](https://packages.debian.org/buster/rng-tools))
+- [`exfatprogs`](https://packages.debian.org/stable/exfatprogs) (eliminates [`exfat-fuse`](https://packages.debian.org/stable/exfat-fuse)'s dependency on fuse)
+
+As always, I put any packages I backport from Debian unstable into my
+[PPA](https://launchpad.net/~fmarier/+archive/ubuntu/ppa?field.series_filter=jammy).
+So far with jammy, I only had to update
+[`tiger`](https://packages.debian.org/stable/tiger) to silence some bogus warnings.
+
+[[!tag ubuntu]] [[!tag systemd]] [[!tag ssh]]
