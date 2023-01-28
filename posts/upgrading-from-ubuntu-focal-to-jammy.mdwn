@@ -27,13 +27,13 @@ post](https://eklitzke.org/using-ssh-agent-and-ed25519-keys-on-gnome):
 
 1. Add this to my `~/.bash_profile`:
 
-      eval $(systemctl --user show-environment | grep SSH_AUTH_SOCK)
-      export SSH_AUTH_SOCK
+       eval $(systemctl --user show-environment | grep SSH_AUTH_SOCK)
+       export SSH_AUTH_SOCK
 
 2. Add this to my [startup
    script](https://github.com/fmarier/user-scripts/blob/master/startup):
 
-      /usr/bin/systemctl --user start ssh-agent.service
+       /usr/bin/systemctl --user start ssh-agent.service
 
 I'm not sure why ED25519 keys don't work in gnome-keyring since [that
 bug](https://bugzilla.gnome.org/show_bug.cgi?id=723274) was supposedly fixed
