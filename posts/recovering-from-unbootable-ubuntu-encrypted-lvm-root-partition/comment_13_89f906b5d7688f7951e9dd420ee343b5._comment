@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ ip="154.159.237.235"
+ claimedauthor="Titus Cheserem"
+ url="Uelekezo.blogspot.com"
+ subject="initramfs /etc/crypttab boot fix after upgrade"
+ date="2023-02-17T08:33:23Z"
+ content="""
+This suggested fix does not require a live OS.
+# ramfs shell commands
+(initramfs) blkid
+#get the driver with LuKs crypt
+(initramfs) cryptsetup luksOpen /dev/luksdrive sameluksdrivenamethenappend_crypt
+(initramfs) vgchange -ay
+(initramfs) exit
+# system boots normally
+# fixing issue
+# edit /etc/crypttab
+#rename the first space delimited
+# occurrence with sameluksdrivenamethenappend_crypt
+# quit n save
+# finally run
+root@ubuntu# update-initramfs -u -v
+# finally reboot
+# fixed.
+
+"""]]
