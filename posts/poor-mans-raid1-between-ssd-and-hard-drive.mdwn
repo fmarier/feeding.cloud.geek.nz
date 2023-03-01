@@ -93,7 +93,7 @@ partition:
         echo "The ssd is not the root partition"
         exit 1
     fi
-    nocache nice ionice -c3 rsync -aHx --delete --exclude=/dev/* --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/boot/* --exclude=/mnt/* --exclude=/lost+found/* --exclude=/media/* --exclude=/scratch/* --exclude=/var/tmp/* --exclude=/ssd.mounted --exclude=/var/lock/* /* /mnt/root/
+    nocache nice ionice -c3 rsync -aHx --delete --exclude=/dev/* --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/boot/* --exclude=/mnt/* --exclude=/lost+found/* --exclude=/media/* --exclude=/run/* --exclude=/scratch/* --exclude=/var/tmp/* --exclude=/ssd.mounted --exclude=/var/lock/* /* /mnt/root/
 
 To ensure that each drive is properly mounted before the scripts run, I
 created empty `ssd.mounted` files in the root directory of each of the
