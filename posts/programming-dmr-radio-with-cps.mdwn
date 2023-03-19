@@ -178,7 +178,7 @@ identifies two frequencies in particular:
 # Learn more
 
 If you'd like to learn more about DMR, I would suggest you start with [this
-excellent guide](http://www.k4usd.org/guide.pdf) (also [mirrored
-here](https://www.raqi.ca/~ve2rae/dmr/Amateur_Radio_Guide_to_DMR.pdf)).
+excellent guide](https://web.archive.org/web/20210127164034/http://www.k4usd.org/guide.pdf) (also [mirrored
+here](https://web.archive.org/web/20210507001057/https://www.raqi.ca/~ve2rae/dmr/Amateur_Radio_Guide_to_DMR.pdf)).
 
 [[!tag ham]] [[!tag anytone]]
