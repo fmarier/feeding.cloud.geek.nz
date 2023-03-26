@@ -70,10 +70,10 @@ Put the following in `/etc/lirc/lirc_options.conf`:
     driver=default
     device=/dev/lirc0
 
-and install [this remote configuration](https://github.com/graysky2/streamzap/blob/master/00-Streamzap_PC_Remote.conf) as `/etc/lirc/lircd.conf.d/streamzap.conf`:
+and install [this remote configuration](https://github.com/graysky2/streamzap/blob/old/00-Streamzap_PC_Remote.conf) as `/etc/lirc/lircd.conf.d/streamzap.conf`:
 
     cd /etc/lirc/lircd.conf.d/
-    curl https://raw.githubusercontent.com/graysky2/streamzap/master/00-Streamzap_PC_Remote.conf > streamzap.conf
+    curl https://raw.githubusercontent.com/graysky2/streamzap/old/00-Streamzap_PC_Remote.conf > streamzap.conf
 
 Make sure you don't use the config file that comes with the [`lirc-compat-remotes` package](https://packages.debian.org/stable/lirc-compat-remotes) or you will likely end up with an over-sensitive remote which tends to double key presses (e.g. pressing the down arrow will go down more than once).
 
@@ -91,7 +91,7 @@ to display the decoded key presses.
 
 ## Kodi configuration
 
-Finally, as the `pi` user, put the [following config](https://raw.githubusercontent.com/graysky2/streamzap/master/kodi/Lircmap.xml) in `~/.kodi/userdata/Lircmap.xml`:
+Finally, as the `pi` user, put the [following config](https://raw.githubusercontent.com/graysky2/streamzap/old/kodi/Lircmap.xml) in `~/.kodi/userdata/Lircmap.xml`:
 
     <lircmap>
       <remote device="Streamzap_PC_Remote">
