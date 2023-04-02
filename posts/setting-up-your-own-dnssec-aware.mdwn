@@ -103,7 +103,7 @@ Once everything is configured properly, the best way I found to test that this s
 
   * [http://www.dnssec.cz/](http://www.dnssec.cz/) should show a green key
   * [http://www.rhybar.cz/](http://www.rhybar.cz/) should not be reachable
-  * <https://dnssec.vs.uni-due.de/>
+  * <https://wander.science/projects/dns/dnssec-resolver-test/>
 
 and using dig:
 
