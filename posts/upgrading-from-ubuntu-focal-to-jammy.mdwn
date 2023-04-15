@@ -40,18 +40,11 @@ bug](https://bugzilla.gnome.org/show_bug.cgi?id=723274) was supposedly fixed
 a while back, but starting `gnome-keyring-ssh.service` instead of
 `ssh-agent.service` didn't work for me.
 
-## Packges
+## Packages
 
-When it comes to specific packages, I removed these two obsolete packages:
+When it comes to specific packages, I removed this obsolete package:
 
 - `popularity-contest`
-- `unattended-upgrades`
-
-The former appears to no longer used by Ubuntu, while the latter is subsumed
-by built-in systemd functionality:
-
-    systemctl enable apt-daily-upgrade.timer
-    systemctl start apt-daily-upgrade.timer
 
 I also installed these two new packages:
 
