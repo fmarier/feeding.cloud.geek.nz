@@ -123,13 +123,10 @@ Finally, I also remove the default license notice at login:
     apt purge john john-data rpcbind tripwire unhide unhide.rb
 
 Logcheck is the main tool I use to keep an eye on log files, which is why I
-add a few additional log files to the default list in
-`/etc/logcheck/logcheck.logfiles`:
+add a few additional log files to the default list by putting the following in
+`/etc/logcheck/logcheck.logfiles.d/local.logfiles`:
 
     /var/log/apache2/error.log
-    /var/log/mail.err
-    /var/log/mail.warn
-    /var/log/mail.info
     /var/log/fail2ban.log
 
 while ensuring that the apache logfiles are readable by logcheck:
@@ -141,11 +138,6 @@ and fixing the log rotation configuration by adding the following to
 `/etc/logrotate.d/apache2`:
 
     create 644 root adm
-
-I usually create these empty files to silence logcheck errors:
-
-    touch /var/log/mail.{err,warn}
-    chown root:adm /var/log/mail.{err,warn}
 
 I also modify the main logcheck configuration file
 (`/etc/logcheck/logcheck.conf`):
