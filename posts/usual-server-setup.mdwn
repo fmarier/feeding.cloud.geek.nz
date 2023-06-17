@@ -226,13 +226,11 @@ I also restrict the use of cron to the `root` user by putting the following in `
 
 Instead of using the default value for `UMASK`, I explicitly set it to `027` in `/etc/login.defs`. 
 
-# Entropy and timekeeping
+# Timekeeping
 
-    apt install rng-tools chrony
+    apt install chrony
 
-To keep the system clock accurate and increase the amount of entropy
-available to the server, I install the above packages and add the `tpm_rng`
-module to `/etc/modules`.
+To keep the system clock accurate, I install the above package.
 
 I also set the server timezone to **UTC** using `dpkg-reconfigure tzdata`.
 
