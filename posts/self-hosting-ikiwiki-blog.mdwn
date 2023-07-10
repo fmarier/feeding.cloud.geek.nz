@@ -294,7 +294,7 @@ generator](https://ssl-config.mozilla.org/#server=apache&version=2.4.38&config=i
 to improve the TLS config for my server.
 
 Then I added **[`security.txt`](https://securitytxt.org/)** and
-**[`gpc.json`](https://globalprivacycontrol.github.io/gpc-spec/)** to the root
+**[`gpc.json`](https://privacycg.github.io/gpc-spec/)** to the root
 of my git repo and then added the following aliases to put these files in
 [the right place](https://datatracker.ietf.org/doc/rfc8615/):
 
