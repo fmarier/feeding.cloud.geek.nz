@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ ip="72.49.35.73"
+ claimedauthor="Some guy"
+ subject="Not the kind of &quot;network scanner&quot; I'm looking for."
+ date="2023-07-17T08:58:48Z"
+ content="""
+This document is about how to use SANE to share a USB scanner over the network, and it seems to use some SANE-specific protocol. All the comments in the relative configuration files are written as if the remote scanner was an instance of SANE on a Linux machine.
+
+In my case, the scanner has built-in network support, and I haven't found any evidence that SANE supports this use case. That's unfortunate, since CUPS supports the printer portion of that device without much difficulty. I can't get the scanner close enough to my PC for a USB connection, so it looks like the only way I'm scanning from this thing from Linux is if I put a Raspberry Pi next to it just so it can serve SANE to me.
+"""]]
