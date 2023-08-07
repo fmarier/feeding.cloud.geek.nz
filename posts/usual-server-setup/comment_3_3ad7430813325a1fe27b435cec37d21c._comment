@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ ip="2a03:1b20:4:f011::1d"
+ claimedauthor="apraile"
+ subject="UMASK change requires the pam_umask module"
+ date="2023-08-06T07:25:31Z"
+ content="""
+Hello,
+Thank you for this very useful article!
+
+Just to comment that for the `UMASK` change to take effect, it is necessary (in Debian 12) to add the module `pam_umask.so` to the file `/etc/pam.d/common-session` with the following line:
+
+    session optional pam_umask.so
+
+References:
+
+https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#id-1.5.14.19
+https://salsa.debian.org/vorlon/pam/-/merge_requests/3
+"""]]
