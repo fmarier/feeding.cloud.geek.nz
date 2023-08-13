@@ -39,45 +39,41 @@ anything under `dyn.fmarier.org` to No-IP:
 # Client setup
 
 In order to update its IP address whenever it changes, I installed
-[ddclient](https://sourceforge.net/p/ddclient/wiki/Home/) on each of my
+[inadyn](https://github.com/troglobit/inadyn) on each of my
 machines:
 
-    apt install ddclient
+    apt install inadyn
 
-While the [ddclient package](https://packages.debian.org/stretch/ddclient)
-[won't help you
-configure](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=625715) your
-No-IP service during installation or [enable the web IP lookup
-method](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=285007), this can
-all be done by editing the configuration after the fact.
+I added the following to `/etc/inadyn.conf`:
 
-I put the following in `/etc/ddclient.conf`:
+    provider default@noip.com {
+           username = johndoe
+           password = Password1!
+           hostname = machinename.dyn.fmarier.org
+           checkip-server = fmarier.org
+           checkip-path = /whats-my-ip.shtml?machinename
+    }
 
-    ssl=yes
-    protocol=noip
-    use=web, web=checkip.dyndns.com, web-skip='IP Address'
-    server=dynupdate.no-ip.com
-    login=myusername
-    password='Password1!'
-    machinename.dyn.fmarier.org
+and set the following in `/etc/default/inadyn`:
 
-and the following in `/etc/default/ddclient`:
+    RUN_DAEMON="yes"
 
-    run_dhclient="false"
-    run_ipup="false"
-    daemon_interval="3600"
+before restarting the service:
 
-Then restart the service:
+    systemctl restart inadyn.service
 
-    systemctl restart ddclient.service
+Note that I am using [setup my own lightweight IP address echoing
+service](/posts/displaying-ip-address-apache-server-side-includes/) to get
+the external IP address, but using the default server seems to work fine
+too. In that case, there's no need to set the `checkip-server` and
+`checkip-path` variables.
 
-Note that you do need to change the default update interval or the
-`checkip.dyndns.com` server [will ban your IP
-address](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=489997).
+Since I use [logcheck](https://packages.debian.org/stable/logcheck), I also
+created a new `/etc/logcheck/ignore.d.server/local-inadyn` file with the
+following content:
 
-Alternatively, just [setup your own lightweight IP address echoing
-service](/posts/displaying-ip-address-apache-server-side-includes/)
-and avoid the problem entirely.
+    ^(\w{3} [ :[:digit:]]{11}|[0-9T:.+-]{32}) [._[:alnum:]-]+ inadyn\[[[:digit:]]+\]: Starting DynDNS client : inadyn.$
+    ^(\w{3} [ :[:digit:]]{11}|[0-9T:.+-]{32}) [._[:alnum:]-]+ inadyn\[[[:digit:]]+\]: In-a-dyn version [0-9.]+ -- Dynamic DNS update client.$
 
 # Testing
 
@@ -85,7 +81,7 @@ To test that the client software is working, wait 6 minutes (there is an
 internal check which cancels any client invocations within 5 minutes of
 another), then run it manually:
 
-    ddclient --verbose --debug
+    inadyn --once --force --foreground --loglevel=debug
 
 The IP for that machine should now be visible on the [No-IP control
 panel](https://www.noip.com/members/dns/) and in DNS lookups:
