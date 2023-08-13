@@ -1,0 +1,65 @@
+[[!meta title="Using iptables with systemd-networkd"]]
+[[!meta date="2023-08-13T15:00:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I used to rely on [ifupdown](https://packages.debian.org/stable/ifupdown) to
+bring up my [iptables](https://packages.debian.org/stable/iptables) firewall
+automatically using a config like this in `/etc/network/interfaces`:
+
+    allow-hotplug eno1
+    iface eno1 inet dhcp
+        pre-up iptables-restore /etc/network/iptables.up.rules
+    
+    iface eno1 inet6 dhcp
+        pre-up ip6tables-restore /etc/network/ip6tables.up.rules
+
+but I wanted to modernize my network configuration and make use of
+[systemd-networkd](https://wiki.debian.org/SystemdNetworkd) after upgrading
+one of my servers to [Debian
+bookworm](https://www.debian.org/releases/bookworm/).
+
+Since I already wrote an [`iptables` dispatcher script for
+NetworkManager](https://feeding.cloud.geek.nz/posts/using-iptables-with-network-manager/),
+I decided to follow the same approach for systemd-networkd.
+
+I started by installing [`networkd-dispatcher`](https://gitlab.com/craftyguy/networkd-dispatcher):
+
+    apt install networkd-dispatcher
+
+and then adding a script for the
+[routable](https://www.freedesktop.org/software/systemd/man/networkctl.html#routable)
+state in `/etc/networkd-dispatcher/routable.d/iptables`:
+
+    #!/bin/sh
+    
+    LOGFILE=/var/log/iptables.log
+    
+    if [ "$IFACE" = lo ]; then
+        echo "$0: ignoring $IFACE for \`$STATE'" >> $LOGFILE
+        exit 0
+    fi
+    
+    case "$STATE" in
+        routable)
+            echo "$0: restoring iptables rules for $IFACE" >> $LOGFILE
+            /sbin/iptables-restore /etc/network/iptables.up.rules >> $LOGFILE 2>&1
+            /sbin/ip6tables-restore /etc/network/ip6tables.up.rules >> $LOGFILE 2>&1
+            ;;
+        *)
+            echo "$0: nothing to do with $IFACE for \`$STATE'" >> $LOGFILE
+            ;;
+    esac
+    
+before finally **making that script executable** (otherwise it won't run):
+
+    chmod a+x /etc/NetworkManager/dispatcher.d/pre-up.d/iptables
+
+With this in place, I can put my iptables rules in the usual place
+(`/etc/network/iptables.up.rules` and `/etc/network/ip6tables.up.rules`) and
+use the handy `iptables-apply` and `ip6tables-apply` commands to test
+any changes to my firewall rules.
+
+Looking at `/var/log/iptables.log` confirms that it is being called
+correctly for each network interface as they are started.
+
+[[!tag debian]] [[!tag iptables]] [[!tag systemd]]
