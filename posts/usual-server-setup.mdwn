@@ -24,7 +24,7 @@ Then I check the hard drives using:
 
 # Configuration
 
-    apt install etckeeper git sudo vim dialog
+    apt install etckeeper git sudo vim dialog tig
 
 Since I use vim for all of my configuration file editing, I make it the
 default editor:
