@@ -31,6 +31,9 @@ Then install the [required package](https://packages.debian.org/stable/python3-c
 
     apt install python3-certbot-dns-gandi
 
+Note that this plugin uses Gandi's [LiveDNS API](https://api.gandi.net/docs/livedns/)
+and a generic "Developer Access API key" (from the _Security options_ in _User Settings_).
+
 ## Getting an initial certificate
 
 To get an initial certificate using the Gandi plugin, simply use the
