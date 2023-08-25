@@ -16,8 +16,12 @@ able to easily update my configuration to the new naming convention.
 
 ## Setup
 
-Get an [API key from Gandi](https://api.gandi.net/docs/authentication/) and
-then put it in `/etc/letsencrypt/gandi.ini`:
+The plugin we use here relies on Gandi's [LiveDNS API](https://api.gandi.net/docs/livedns/)
+and so you'll have to first [migrate your domain to LiveDNS](https://docs.gandi.net/en/domain_names/common_operations/changing_nameservers.html#switching-to-livedns)
+if you aren't already using it for your domain.
+
+Start by getting a [Developer Access API key from Gandi](https://api.gandi.net/docs/authentication/)
+and then put it in `/etc/letsencrypt/gandi.ini`:
 
     # live dns v5 api key
     dns_api_key=ABCDEF
@@ -31,8 +35,6 @@ Then install the [required package](https://packages.debian.org/stable/python3-c
 
     apt install python3-certbot-dns-gandi
 
-Note that this plugin uses Gandi's [LiveDNS API](https://api.gandi.net/docs/livedns/)
-and a generic "Developer Access API key" (from the _Security options_ in _User Settings_).
 
 ## Getting an initial certificate
 
