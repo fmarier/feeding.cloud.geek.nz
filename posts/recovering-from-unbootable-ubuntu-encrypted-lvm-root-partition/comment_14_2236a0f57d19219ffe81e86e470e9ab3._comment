@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ ip="84.68.104.67"
+ claimedauthor="Adam Preston"
+ subject="Slight issue with 2nd part of the fix"
+ date="2023-08-14T15:22:37Z"
+ content="""
+Hello - thanks for this info I've had the exact same issue and am now able to boot. Just struggling with the 2nd part of the fix;
+
+# system boots normally
+# fixing issue
+# edit /etc/crypttab
+#rename the first space delimited
+# occurrence with sameluksdrivenamethenappend_crypt
+# quit n save
+# finally run
+root@ubuntu# update-initramfs -u -v
+# finally reboot
+# fixed.
+
+I can't seem to edit the crypttab file to start with, do you know which viewer i should be using? And then is it simply a case of adding the _crypt to the first space delimited occurence?
+"""]]
