@@ -24,7 +24,7 @@ Start by getting a [Developer Access API key from Gandi](https://api.gandi.net/d
 and then put it in `/etc/letsencrypt/gandi.ini`:
 
     # live dns v5 api key
-    dns_api_key=ABCDEF
+    dns_gandi_api_key=ABCDEF
 
 before make it only readable by `root`:
 
@@ -41,7 +41,7 @@ Then install the [required package](https://packages.debian.org/stable/python3-c
 To get an initial certificate using the Gandi plugin, simply use the
 following command:
 
-    certbot certonly -a dns --dns-credentials /etc/letsencrypt/gandi.ini -d example.fmarier.org
+    certbot certonly --authenticator dns-gandi --dns-gandi-credentials /etc/letsencrypt/gandi.ini -d example.fmarier.org
 
 ## Setting up automatic renewal
 
@@ -50,7 +50,7 @@ you'll want to ensure your `/etc/letsencrypt/renewal/example.fmarier.org.conf`
 file looks like this:
 
     # renew_before_expiry = 30 days
-    version = 1.12.0
+    version = 1.21.0
     archive_dir = /etc/letsencrypt/archive/example.fmarier.org
     cert = /etc/letsencrypt/live/example.fmarier.org/cert.pem
     privkey = /etc/letsencrypt/live/example.fmarier.org/privkey.pem
@@ -59,8 +59,8 @@ file looks like this:
     
     [renewalparams]
     account = abcdef
-    authenticator = dns
+    authenticator = dns-gandi
     server = https://acme-v02.api.letsencrypt.org/directory
-    dns_credentials = /etc/letsencrypt/gandi.ini
+    dns_gandi_credentials = /etc/letsencrypt/gandi.ini
 
 [[!tag letsencrypt]] [[!tag debian]] [[!tag sysadmin]]
