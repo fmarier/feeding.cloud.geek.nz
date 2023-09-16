@@ -55,8 +55,8 @@ the former before enabling the latter:
 Once the `ntp` package has been removed, it is time to enable NTP support in
 `timesyncd`.
 
-Start by choosing the [NTP server pool](http://www.pool.ntp.org/en/) nearest
-you and put it in `/etc/systemd/timesyncd.conf`. For example, mine reads
+Start by choosing the [NTP server pool](https://www.pool.ntp.org/en/) nearest
+you and put it in `/etc/systemd/timesyncd.conf.d/local.conf`. For example, mine reads
 like this:
 
     [Time]
