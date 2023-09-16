@@ -29,6 +29,7 @@ In `/etc/unbound/unbound.conf.d/francois.conf`, I enabled the following security
         private-address: fc00::/7
         private-address: fe80::/10
         private-address: ::ffff:0:0/96
+        module-config: "validator iterator" # disable EDNS client subnet support
 
 and turned on prefetching to hopefully keep in cache the sites I visit regularly:
 
