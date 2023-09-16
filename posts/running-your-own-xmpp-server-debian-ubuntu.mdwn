@@ -101,6 +101,7 @@ permissions correctly:
        ## mod_avatar
        ## mod_mam
        ## mod_muc
+       ## mod_private
        ## mod_pubsub
 
 6. Restart the ejabberd daemon:
