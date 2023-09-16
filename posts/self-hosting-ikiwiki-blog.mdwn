@@ -21,13 +21,9 @@ Then I enabled the CGI module in Apache:
 
     a2enmod cgi
 
-disabled gitweb (which is pulled in by `ikiwiki-hosting-web`):
+and disabled gitweb (which is pulled in by `ikiwiki-hosting-web`):
 
     a2disconf gitweb
-
-and un-commented the following in `/etc/apache2/mods-available/mime.conf`:
-
-    AddHandler cgi-script .cgi
 
 ## Creating a separate user account
 
@@ -204,6 +200,7 @@ and the common config I put in `/etc/fmarier-org/blog-common`:
 
     <Location /blog.cgi>
             Options +ExecCGI
+            AddHandler cgi-script .cgi
     </Location>
 
 
