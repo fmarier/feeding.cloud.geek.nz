@@ -96,6 +96,13 @@ permissions correctly:
 
        openssl dhparam -out /etc/ejabberd/dhparams.pem 2048
 
+6. Optionally disable non-essential modules by commenting them out under the `modules:` section of `/etc/ejabberd/ejabberd.yml`:
+
+       ## mod_avatar
+       ## mod_mam
+       ## mod_muc
+       ## mod_pubsub
+
 6. Restart the ejabberd daemon:
 
        systemctl restart ejabberd.service
