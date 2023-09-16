@@ -67,6 +67,13 @@ to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
        
        auth_password_format: scram
        fqdn: "jabber-gw.fmarier.org"
+       listen:
+         -
+           port: 3478
+           ip: "::"
+           transport: udp
+           module: ejabberd_stun
+           use_turn: false
 
 3. Copy the SSL certificate into the `/etc/ejabberd/` directory and set the
 permissions correctly:
@@ -114,6 +121,7 @@ permissions correctly:
 
 8. Open up the following ports on the server's firewall:
 
+       iptables -A INPUT -p udp --dport 3478 -j ACCEPT
        iptables -A INPUT -p tcp --dport 5222 -j ACCEPT
        iptables -A INPUT -p tcp --dport 5269 -j ACCEPT
 
