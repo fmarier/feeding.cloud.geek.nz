@@ -27,23 +27,24 @@ is happy to allocate you an extra `/64` for free.
 If your server only has an single IPv4 address and a single IPv6 address,
 then a simple DHCP-backed network configuration will work fine.
 To add the second IPv6 block on the other hand, I had to change my network
-configuration (`/etc/network/interfaces`) to this:
+configuration (`/etc/systemd/network/20-wired.network`) to this:
 
-    auto lo
-    iface lo inet loopback
+    [Match]
+    Name=eth0
     
-    allow-hotplug eth0
-    iface eth0 inet dhcp
-    	pre-up iptables-restore /etc/network/iptables.up.rules
-    
-    iface eth0 inet6 static
-    	address 2600:3c01::xxxx:xxxx:xxxx:939f/64
-    	gateway fe80::1
-    	pre-up ip6tables-restore /etc/network/ip6tables.up.rules
-    
-    iface tun0 inet6 static
-    	address 2600:3c01:xxxx:xxxx::/64
-    	pre-up ip6tables-restore /etc/network/ip6tables.up.rules
+    [Network]
+    DHCP=yes
+    Address=2600:3c01::xxxx:xxxx:xxxx:939f/64
+    Gateway=fe80::1
+
+and create a new `/etc/systemd/network/21-vpn.network`:
+
+    [Match]
+    Name=tun0
+
+    [Network]
+    DHCP=ipv4
+    Address=2600:3c01:xxxx:xxxx::/64
 
 where `2600:3c01::xxxx:xxxx:xxxx:939f/64` (bound to `eth0`) is your main
 IPv6 address and
@@ -126,5 +127,5 @@ and then pinging your client from an IPv6-enabled host somewhere:
 If that works, other [online](http://test-ipv6.com/)
 [tests](http://ipv6-test.com/) should also work.
 
-[[!tag ipv6]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag openvpn]]
+[[!tag ipv6]] [[!tag debian]] [[!tag ubuntu]] [[!tag sysadmin]] [[!tag openvpn]]
 
