@@ -12,7 +12,7 @@ Reference](https://www.debian.org/doc/manuals/developers-reference/developers-re
 
 If I've missed anything, please leave an comment or send me an email!
 
-# Salsa for collaborative development
+## Salsa for collaborative development
 
 To foster collaboration and allow others to contribute to the packaging, I
 upload my package to a new [subproject on
@@ -25,7 +25,7 @@ I also like to upload the project logo in the settings page (i.e.
 show up on some dashboards like the [Package
 overview](https://qa.debian.org/developer.php?login=francois%40debian.org&set=yes&bugs=1&version=1&ubuntu=1&excuses=0&bin=0&buildd=1&problems=1&popc=1&watch=1&section=0&ordering=0&uploads=1&packages=&uploader=&mirror=http%3A%2F%2Fftp.debian.org%2Fdebian).
 
-# Launchpad for interacting with downstream Ubuntu users
+## Launchpad for interacting with downstream Ubuntu users
 
 While Debian is my primary focus, I also want to keep an eye on how my
 package is doing on derivative distributions like Ubuntu.
@@ -49,7 +49,7 @@ syncs](https://wiki.ubuntu.com/SyncRequestProcess) when an important update
 was uploaded after the [Debian Import
 Freeze](https://wiki.ubuntu.com/DebianImportFreeze).
 
-# Screenshots and tags
+## Screenshots and tags
 
 I take screenshots of my package and upload them on
 <https://screenshots.debian.net> to help users understand what my package
@@ -60,7 +60,7 @@ Similarly, I add tags to my package using <https://debtags.debian.org>. I'm
 not entirely sure where these tags are used, but they are visible from `apt
 show packagename`.
 
-# Monitoring Upstream Releases
+## Monitoring Upstream Releases
 
 Staying up-to-date with upstream releases is one of the most important
 duties of a software packager. There are a lot of different ways that upstream software
