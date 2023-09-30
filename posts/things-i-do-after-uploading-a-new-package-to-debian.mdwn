@@ -1,0 +1,98 @@
+[[!meta title="Things I do after uploading a new package to Debian"]]
+[[!meta date="2023-09-29T23:15:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+There are a couple of things I tend to do after [packaging a piece of
+software for Debian](https://www.debian.org/doc/manuals/maint-guide/),
+filing an [Intent To Package bug](https://wiki.debian.org/ITP) and uploading
+the package. This is both a checklist for me and (hopefully) a way to
+inspire other maintainers to go beyond the basic package maintainer duties
+as documented in the [Debian Developer's
+Reference](https://www.debian.org/doc/manuals/developers-reference/developers-reference.html).
+
+If I've missed anything, please leave an comment or send me an email!
+
+# Salsa for collaborative development
+
+To foster collaboration and allow others to contribute to the packaging, I
+upload my package to a new [subproject on
+Salsa](https://salsa.debian.org/debian). By doing this, I enable other
+Debian contributors to make improvements and propose changes via merge
+requests.
+
+I also like to upload the project logo in the settings page (i.e.
+<https://salsa.debian.org/debian/packagename/edit>) since that will
+show up on some dashboards like the [Package
+overview](https://qa.debian.org/developer.php?login=francois%40debian.org&set=yes&bugs=1&version=1&ubuntu=1&excuses=0&bin=0&buildd=1&problems=1&popc=1&watch=1&section=0&ordering=0&uploads=1&packages=&uploader=&mirror=http%3A%2F%2Fftp.debian.org%2Fdebian).
+
+# Launchpad for interacting with downstream Ubuntu users
+
+While Debian is my primary focus, I also want to keep an eye on how my
+package is doing on derivative distributions like Ubuntu.
+To do this, I [subscribe to bugs related to my
+package](https://bugs.launchpad.net/ubuntu/+source/workrave/+subscriptions)
+on Launchpad. Ubuntu bugs are rarely Ubuntu-specific and so I will often fix
+them in Debian.
+
+I also [set myself as the answer contact on Launchpad
+Answers](https://answers.launchpad.net/ubuntu/+source/workrave/+answer-contact)
+since these questions are often the sign of a Debian or a lack of
+documentation.
+
+I don't generally bother to fix bugs on Ubuntu directly though since
+I've not had much luck with packages in `universe` lately. I'd rather not
+spend much time preparing a package that's not going to end up being
+released to users as part of a [Stable Release
+Update](https://wiki.ubuntu.com/StableReleaseUpdates). On the other hand, I
+have succesfully requested simple [Debian
+syncs](https://wiki.ubuntu.com/SyncRequestProcess) when an important update
+was uploaded after the [Debian Import
+Freeze](https://wiki.ubuntu.com/DebianImportFreeze).
+
+# Screenshots and tags
+
+I take screenshots of my package and upload them on
+<https://screenshots.debian.net> to help users understand what my package
+offers and how it looks. I believe that these screenshots end up in software
+"stores" type of applications.
+
+Similarly, I add tags to my package using <https://debtags.debian.org>. I'm
+not entirely sure where these tags are used, but they are visible from `apt
+show packagename`.
+
+# Monitoring Upstream Releases
+
+Staying up-to-date with upstream releases is one of the most important
+duties of a software packager. There are a lot of different ways that upstream software
+authors publicize their new releases. Here are some of the things I do to
+monitor these releases:
+
+- I have a cronjob which run `uscan` once a day to check for new upstream
+  releases using the information specified in my `debian/watch` files:
+
+        0 12 * * 1-5   francois  test -e /home/francois/devel/deb && HTTPS_PROXY= https_proxy= uscan --report /home/francois/devel/deb || true
+
+- I subscribe to the upstream project's releases RSS feed, if available. For
+  example, I subscribe to the [GitHub tags feed for
+  `git-secrets`](https://github.com/awslabs/git-secrets/tags.atom) and
+  [Launchpad announcements for
+  `email-reminder`](https://feeds.launchpad.net/email-reminder/announcements.atom).
+
+- If the upstream project maintains an announcement mailing list, I
+  subscribe to it (e.g.
+  [rkhunter-announce](https://sourceforge.net/projects/rkhunter/lists/rkhunter-announce)
+  or [tor release announcements](https://forum.torproject.org/c/news/tor-release-announcement/28)).
+
+When nothing else is available, I write a cronjob that downloads the
+upstream changelog once a day and commits it to a local git repo:
+
+    #!/bin/bash
+    pushd /home/francois/devel/zlib-changelog > /dev/null
+    wget --quiet -O ChangeLog.txt https://zlib.net/ChangeLog.txt || exit 1
+    git diff
+    git commit -a -m "Updated changelog" > /dev/null
+    popd > /dev/null
+
+This sends me a diff by email when a new release is added (and no emails otherwise).
+
+[[!tag debian]] [[!tag ubuntu]] [[!tag packaging]]
