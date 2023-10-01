@@ -182,4 +182,4 @@ before restarting both services:
 
     systemctl restart unbound.service openvpn.service
 
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag dns]] [[!tag dnssec]] [[!tag openvpn]] [[!tag letsencrypt]]
+[[!tag unbound]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag dns]] [[!tag dnssec]] [[!tag openvpn]] [[!tag letsencrypt]]
