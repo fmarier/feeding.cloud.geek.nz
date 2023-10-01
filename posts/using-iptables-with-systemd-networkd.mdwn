@@ -24,7 +24,7 @@ I decided to follow the same approach for systemd-networkd.
 
 I started by installing [`networkd-dispatcher`](https://gitlab.com/craftyguy/networkd-dispatcher):
 
-    apt install networkd-dispatcher
+    apt install networkd-dispatcher moreutils
 
 and then adding a script for the
 [routable](https://www.freedesktop.org/software/systemd/man/networkctl.html#routable)
@@ -35,18 +35,18 @@ state in `/etc/networkd-dispatcher/routable.d/iptables`:
     LOGFILE=/var/log/iptables.log
     
     if [ "$IFACE" = lo ]; then
-        echo "$0: ignoring $IFACE for \`$STATE'" >> $LOGFILE
+        echo "$0: ignoring $IFACE for \`$STATE'" | ts >> $LOGFILE
         exit 0
     fi
     
     case "$STATE" in
         routable)
-            echo "$0: restoring iptables rules for $IFACE" >> $LOGFILE
-            /sbin/iptables-restore /etc/network/iptables.up.rules >> $LOGFILE 2>&1
-            /sbin/ip6tables-restore /etc/network/ip6tables.up.rules >> $LOGFILE 2>&1
+            echo "$0: restoring iptables rules for $IFACE" | ts >> $LOGFILE
+            /sbin/iptables-restore /etc/network/iptables.up.rules 2>&1 | ts >> $LOGFILE
+            /sbin/ip6tables-restore /etc/network/ip6tables.up.rules 2>&1 | ts >> $LOGFILE
             ;;
         *)
-            echo "$0: nothing to do with $IFACE for \`$STATE'" >> $LOGFILE
+            echo "$0: nothing to do with $IFACE for \`$STATE'" | ts >> $LOGFILE
             ;;
     esac
     

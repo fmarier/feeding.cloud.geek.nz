@@ -33,18 +33,18 @@ work on my Debian and Ubuntu machines. Instead, I had to create a new
     LOGFILE=/var/log/iptables.log
     
     if [ "$1" = lo ]; then
-        echo "$0: ignoring $1 for \`$2'" >> $LOGFILE
+        echo "$0: ignoring $1 for \`$2'" | ts >> $LOGFILE
         exit 0
     fi
     
     case "$2" in
         pre-up)
-            echo "$0: restoring iptables rules for $1" >> $LOGFILE
-            /sbin/iptables-restore /etc/network/iptables.up.rules >> $LOGFILE 2>&1
-            /sbin/ip6tables-restore /etc/network/ip6tables.up.rules >> $LOGFILE 2>&1
+            echo "$0: restoring iptables rules for $1" | ts >> $LOGFILE
+            /sbin/iptables-restore /etc/network/iptables.up.rules 2>&1 | ts >> $LOGFILE
+            /sbin/ip6tables-restore /etc/network/ip6tables.up.rules 2>&1 | ts >> $LOGFILE
             ;;
         *)
-            echo "$0: nothing to do with $1 for \`$2'" >> $LOGFILE
+            echo "$0: nothing to do with $1 for \`$2'" | ts >> $LOGFILE
             ;;
     esac
     
@@ -53,6 +53,11 @@ work on my Debian and Ubuntu machines. Instead, I had to create a new
 and then **make that script executable** (otherwise it won't run):
 
     chmod a+x /etc/NetworkManager/dispatcher.d/pre-up.d/iptables
+
+If you don't already have the `moreutils` package installed, you'll need
+it for the `ts` timestamps to work:
+
+    apt install moreutils
 
 With this in place, I can put my iptables rules in the usual place
 (`/etc/network/iptables.up.rules` and `/etc/network/ip6tables.up.rules`) and
