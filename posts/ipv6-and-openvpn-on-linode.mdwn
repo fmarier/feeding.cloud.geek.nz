@@ -43,7 +43,7 @@ and create a new `/etc/systemd/network/21-vpn.network`:
     Name=tun0
 
     [Network]
-    DHCP=ipv4
+    Address=10.8.0.1/24
     Address=2600:3c01:xxxx:xxxx::/64
 
 where `2600:3c01::xxxx:xxxx:xxxx:939f/64` (bound to `eth0`) is your main
