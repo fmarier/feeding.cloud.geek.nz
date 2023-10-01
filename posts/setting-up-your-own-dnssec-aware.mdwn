@@ -193,4 +193,43 @@ before restarting both services:
 
     systemctl restart unbound.service openvpn.service
 
+## Work-around for systemd-networkd
+
+If you're having problems with unbound attempting to start before
+systemd-networkd has finished bringing up the network interfaces, then you
+may find this work-around useful.
+
+Start by installing these packages:
+
+    apt install networkd-dispatcher moreutils
+
+and then put the following script in `/etc/networkd-dispatcher/routable.d/unbound-local`:
+
+    #!/bin/sh
+    
+    LOGFILE=/var/log/unbound-local.log
+    
+    if [ "$IFACE" = lo ]; then
+        echo "$0: ignoring $IFACE for \`$STATE'" | ts >> $LOGFILE
+        exit 0
+    fi
+    
+    case "$STATE" in
+        routable)
+            echo "$0: restarting unbound because of $IFACE" | ts >> $LOGFILE
+            systemctl stop unbound.service 2>&1 | ts >> $LOGFILE
+            sleep 2 # hack around unbound's rate limiter
+            systemctl start unbound.service 2>&1 | ts >> $LOGFILE
+            ;;
+        *)
+            echo "$0: nothing to do with $IFACE for \`$STATE'" | ts >> $LOGFILE
+            ;;
+    esac
+    
+    exit 0
+
+before making it executable:
+
+    chmod a+x /etc/networkd-dispatcher/routable.d/unbound-local
+
 [[!tag unbound]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag dns]] [[!tag dnssec]] [[!tag openvpn]] [[!tag letsencrypt]]
