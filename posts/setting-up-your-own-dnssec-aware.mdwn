@@ -232,4 +232,17 @@ before making it executable:
 
     chmod a+x /etc/networkd-dispatcher/routable.d/unbound-local
 
+Finally, create a new `/etc/logrotate.d/unbound-local` file to ensure that
+the log file does not grow unbounded:
+
+    /var/log/unbound-local.log {
+            monthly
+            rotate 1
+            nocreate
+            nomail
+            noolddir
+            notifempty
+            missingok
+    }
+
 [[!tag unbound]] [[!tag debian]] [[!tag sysadmin]] [[!tag security]] [[!tag ubuntu]] [[!tag dns]] [[!tag dnssec]] [[!tag openvpn]] [[!tag letsencrypt]]

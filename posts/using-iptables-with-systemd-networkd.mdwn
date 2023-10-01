@@ -62,4 +62,17 @@ any changes to my firewall rules.
 Looking at `/var/log/iptables.log` confirms that it is being called
 correctly for each network interface as they are started.
 
+Finally, create a new `/etc/logrotate.d/iptables-local` file to ensure that
+the log file does not grow unbounded:
+
+    /var/log/iptables.log {
+            monthly
+            rotate 1
+            nocreate
+            nomail
+            noolddir
+            notifempty
+            missingok
+    }
+
 [[!tag debian]] [[!tag iptables]] [[!tag systemd]]
