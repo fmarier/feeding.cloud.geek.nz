@@ -167,6 +167,17 @@ certificates using [Certbot](https://certbot.eff.org/). The
 used automatically by certain VPN clients (e.g. Android) who will try to
 upgrade to secure DNS automatically.
 
+If you are using AppArmor, then you'll need to put the following in
+`/etc/apparmor.d/local/usr.sbin.unbound` to ensure that Unbound can read
+the TLS cert it needs:
+
+    /etc/letsencrypt/archive/** r,
+    /etc/letsencrypt/live/** r,
+
+and then run this:
+
+    apparmor_parser --replace /etc/apparmor.d/usr.sbin.unbound
+
 Then put the following in `/etc/openvpn/server.conf`:
 
     push "dhcp-option DNS 10.8.0.1"
