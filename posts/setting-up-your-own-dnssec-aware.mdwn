@@ -218,7 +218,7 @@ and then put the following script in `/etc/networkd-dispatcher/routable.d/unboun
         routable)
             echo "$0: restarting unbound because of $IFACE" | ts >> $LOGFILE
             systemctl stop unbound.service 2>&1 | ts >> $LOGFILE
-            sleep 2 # hack around unbound's rate limiter
+            sleep 5 # hack around unbound's rate limiter
             systemctl start unbound.service 2>&1 | ts >> $LOGFILE
             ;;
         *)
