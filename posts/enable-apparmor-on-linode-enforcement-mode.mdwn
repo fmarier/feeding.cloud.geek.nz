@@ -41,7 +41,7 @@ worked for me:
 # Unbound + Let's Encrypt fix
 
 Finally, my [local Unbound
-installation](https:///posts/setting-up-your-own-dnssec-aware/) stopped
+installation](/posts/setting-up-your-own-dnssec-aware/) stopped
 working because it couldn't access the Let's Encrypt certificates anymore.
 
 The [solution](https://serverfault.com/a/1011037/93738) to this was pretty
