@@ -1,0 +1,55 @@
+[[!meta title="Enabling AppArmor on a Linode VPS in enforcement mode"]]
+[[!meta date="2023-10-14T15:15:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Enabling AppArmor on a Debian Linode VPS is not entirely straightforward.
+Here's what I had to do in order to make it work.
+
+# Packages to install
+
+The easy bit was to install a few packages:
+
+    apt install grub2 apparmor-profiles-extra apparmor-profiles apparmor
+
+and then adding `apparmor=1 security=apparmor` to the kernel command line
+(`GRUB_CMDLINE_LINUX`) in `/etc/default/grub`.
+
+# Move away from using Linode's kernels
+
+As mentioned in [this blog
+post](https://isawan.net/posts/apparmor-debian-linode), I found out that
+these parameters are ignored by the Linode kernels.
+
+I had to:
+
+1. login to the Linode Manager (i.e.
+   `https://cloud.linode.com/linodes/<linode ID>/configurations`),
+2. click the node relevant node,
+3. click "Edit" next to the _configuration profile_, and
+4. change the kernel to "GRUB 2".
+
+# Fix grub
+
+Next I found out that grub doesn't actually install itself properly because
+it can't be installed directly on the virtual drives provided by Linode
+(KVM). Manually running this
+[hack](https://www.linode.com/community/questions/10319/grub2-menu-missing#answer-49455)
+worked for me:
+
+    grub-install --grub-setup=/bin/true /dev/null
+
+# Unbound + Let's Encrypt fix
+
+Finally, my [local Unbound
+installation](https:///posts/setting-up-your-own-dnssec-aware/) stopped
+working because it couldn't access the Let's Encrypt certificates anymore.
+
+The [solution](https://serverfault.com/a/1011037/93738) to this was pretty
+straightforward. All I needed to do was to add the following to
+`/etc/apparmor.d/local/usr.sbin.unbound`:
+
+    /etc/letsencrypt/archive/** r,
+    /etc/letsencrypt/live/** r,
+
+[[!tag linode]] [[!tag apparmor]] [[!tag letsencrypt]] [[!tag unbound]]
+[[!tag debian]] [[!tag grub]]
