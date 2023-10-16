@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="84.58.232.38"
+ claimedauthor="Driveby Scanner"
+ subject="Re: Not the kind of &quot;network scanner&quot; I'm looking for. "
+ date="2023-10-15T12:03:35Z"
+ content="""
+@Some Guy: there exist backends to make directly-network-attached scanners available to the sane ecosystem. Look for \"sane-escl\" (part of core Sane project, airprint/airscan protocol) and/or \"[sane-airscan](https://github.com/alexpevzner/sane-airscan) \" (3rd party open source, airprint/airscan + Microsoft WSD \"WEB Service for devices\" ).
+
+Debian Wiki goes into more detail:
+[SaneOverNetwork > escl protocol](https://wiki.debian.org/SaneOverNetwork#Scanning_with_the_eSCL_Protocol) 
+"""]]
