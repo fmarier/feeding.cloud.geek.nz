@@ -66,6 +66,7 @@ to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
          - "fmarier.org"
        
        auth_password_format: scram
+       auth_scram_hash: sha512
        fqdn: "jabber-gw.fmarier.org"
        listen:
          -
