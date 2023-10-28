@@ -1,0 +1,52 @@
+[[!meta title="Monitoring browser network traffic on Android using mitmproxy"]]
+[[!meta date="2023-10-27T20:05:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Using [mitmproxy](https://mitmproxy.org/) to intercept your packets is a convenient way to inspect a browser's network traffic.
+
+It's pretty straightforward to setup on a desktop computer:
+
+1. Install mitmproxy (`apt install mitmproxy` on Debian) and start it:
+
+        mitmproxy --mode socks5 --listen-port 9000
+
+2. Start your browser specifying the proxy to use:
+
+        chrome --proxy-server="socks5://localhost:9000"
+        brave-browser --proxy-server="socks5://localhost:9000"
+
+3. Add its [certificate authority](https://docs.mitmproxy.org/stable/concepts-certificates/) to your browser.
+
+At this point, all of the traffic from that browser should be flowing
+through your mitmproxy instance.
+
+# Android setup
+
+On Android, it's a little less straightforward:
+
+1. Start mitmproxy on your desktop:
+
+        mitmproxy --mode regular --listen-port 9000
+
+2. Open that port on your desktop firewall if needed.
+3. On your Android device, change your WiFi settings for the current access point:
+  - Proxy: Manual
+  - Proxy hostname: `192.168.1.100` (IP address of your desktop)
+  - Proxy port: `9000`
+4. Turn off any VPN.
+5. Turn off WiFi.
+6. Turn WiFi back on.
+7. Open <http://mitm.it> in a browser to download the certificate authority file.
+8. Open the system Settings, _Security and privacy_, _More security and
+   privacy_, _Encryption & credentials_, _Install a certificate_ and finally
+   choose _CA certificate_.
+9. Tap _Install anyway_ to dismiss the warning and select the file you just downloaded.
+
+Once you have gone through all of these steps, you should be able to monitor
+(on your desktop) the HTTP and HTTPS requests made inside of your Android
+browsers.
+
+Note that many applications will start failing due to [certificate
+pinning](https://docs.mitmproxy.org/stable/concepts-certificates/#certificate-pinning).
+
+[[!tag android]] [[!tag mitmproxy]] [[!tag chromium]] [[!tag brave]] [[!tag privacy]]
