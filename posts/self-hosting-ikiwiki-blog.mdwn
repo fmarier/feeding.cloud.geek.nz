@@ -432,4 +432,4 @@ This is obviously not ideal since many feed readers will refuse to add a
 feed which is currently not found even though it could become real in the future. If
 you know of a way to fix this, please let me know.
 
-[[!tag debian]] [[!tag ikiwiki]]
+[[!tag debian]] [[!tag ikiwiki]] [[!tag logcheck]]

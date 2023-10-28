@@ -393,4 +393,4 @@ each server:
 
     apt install installation-birthday uptimed
 
-[[!tag sysadmin]] [[!tag debian]] [[!tag duplicity]]
+[[!tag sysadmin]] [[!tag debian]] [[!tag duplicity]] [[!tag logcheck]]

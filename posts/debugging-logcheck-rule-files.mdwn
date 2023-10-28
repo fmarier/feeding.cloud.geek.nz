@@ -83,4 +83,4 @@ path != NULL <b>\|\|</b> column != NULL
 Maybe I should periodically print a message to syslog to make sure that logcheck is still working...
 
 
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag nzoss]] 
+[[!tag logcheck]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]]

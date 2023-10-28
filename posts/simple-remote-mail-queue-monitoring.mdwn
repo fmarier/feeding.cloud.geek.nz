@@ -81,4 +81,4 @@ server will want to send an email at 2am. However, all that does is send a
 spurious warning email in that case and so it's a pretty small price to pay
 for a dirt simple setup that's unlikely to break.
 
-[[!tag sysadmin]] [[!tag debian]] [[!tag nzoss]] [[!tag postfix]]
+[[!tag sysadmin]] [[!tag debian]] [[!tag logcheck]] [[!tag postfix]]

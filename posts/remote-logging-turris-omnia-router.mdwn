@@ -176,4 +176,4 @@ Unfortunately, I wasn't able to fix it in a way that would survive a
 `syslog-ng` package update, but since this is supposedly fixed in Turris 6.0,
 it shouldn't be a problem for much longer.
 
-[[!tag turris]] [[!tag debian]] [[!tag rsyslog]] [[!tag sysadmin]] [[!tag openwrt]]
+[[!tag turris]] [[!tag debian]] [[!tag rsyslog]] [[!tag sysadmin]] [[!tag openwrt]] [[!tag logcheck]]
