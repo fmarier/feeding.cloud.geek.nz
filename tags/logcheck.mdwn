@@ -1,0 +1,4 @@
+[[!meta title="pages tagged logcheck"]]
+
+[[!inline pages="tagged(logcheck)" actions="no" archive="yes"
+feedshow=10]]
