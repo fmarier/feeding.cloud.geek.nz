@@ -56,4 +56,4 @@ As always, I put any packages I backport from Debian unstable into my
 So far with jammy, I only had to update
 [`tiger`](https://packages.debian.org/stable/tiger) to silence some bogus warnings.
 
-[[!tag ubuntu]] [[!tag systemd]] [[!tag ssh]]
+[[!tag ubuntu]] [[!tag systemd]] [[!tag ssh]] [[!tag upgrade]]

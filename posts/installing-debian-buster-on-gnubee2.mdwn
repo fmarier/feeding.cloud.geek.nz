@@ -298,4 +298,4 @@ a daily reboot in `/etc/cron.d/reboot-daily`:
 The extra check is there to ensure that the machine doesn't reboot if it's
 busy re-synchronizing the RAID array.
 
-[[!tag debian]] [[!tag gnubee]]
+[[!tag debian]] [[!tag gnubee]] [[!tag upgrade]]
