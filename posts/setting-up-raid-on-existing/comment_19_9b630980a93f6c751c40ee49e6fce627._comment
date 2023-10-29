@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ ip="2600:1700:a35d:1a10::19"
+ claimedauthor="James"
+ subject="Get &quot;partition table exists&quot; and other warning when trying to create mdadm"
+ date="2023-10-27T23:33:32Z"
+ content="""
+I've followed the instructions, but when it comes to the \"mdadm --create /dev/md0 --level=1 --raid-disks=2 missing /dev/sdh1\" command, I get:
+
+mdadm: partition table exists on /dev/sdh1
+
+mdadm: partition table exists on /dev/sdh1 but will be lost or
+       meaningless after creating array
+
+mdadm: Note: this array has metadata at the start and
+    may not be suitable as a boot device.  If you plan to
+    store '/boot' on this device please ensure that
+    your boot-loader understands md/v1.x metadata, or use
+    --metadata=0.90
+
+Continue creating array? 
+
+...I answer no at that point, but what should I do? 
+
+My OS is AlmaLinux, but I would think the instructions would apply. It uses an LVM partition system, but other instructions I've found that include LVM have the same steps.
+
+Thanks for any help.
+"""]]
