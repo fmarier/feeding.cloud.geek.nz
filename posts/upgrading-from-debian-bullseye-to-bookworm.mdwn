@@ -1,0 +1,169 @@
+[[!meta title="Upgrading from Debian 11 bullseye to 12 bookworm"]]
+[[!meta date="2023-11-01T20:40:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Over the last few months, I upgraded my Debian machines from
+[bullseye](https://www.debian.org/releases/bullseye/) to
+[bookworm](https://www.debian.org/releases/bookworm/). The process was
+uneventful, but I ended up reconfiguring several things afterwards in
+order to modernize my upgraded machines.
+
+# Logcheck
+
+I noticed in this release that the transition to
+[journald](https://wiki.archlinux.org/title/Systemd/Journal) is essentially
+complete. This means that `rsyslog` is no longer needed on most of my systems:
+
+    apt purge rsyslog
+
+Once that was done, I was able to comment out the following lines in
+`/etc/logcheck/logcheck.logfiles.d/syslog.logfiles`:
+
+    #/var/log/syslog
+    #/var/log/auth.log
+
+I did have to adjust some of my custom logcheck rules, particularly the ones that
+deal with kernel messages:
+
+    --- a/logcheck/ignore.d.server/local-kernel
+    +++ b/logcheck/ignore.d.server/local-kernel
+    @@ -1,1 +1,1 @@
+    -^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ kernel: \[[0-9. ]+]\ IN=eno1 OUT= MAC=[0-9a-f:]+ SRC=[0-9a-f.:]+
+    +^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ kernel: (\[[0-9. ]+]\ )?IN=eno1 OUT= MAC=[0-9a-f:]+ SRC=[0-9a-f.:]+
+
+Then I moved local entries from `/etc/logcheck/logcheck.logfiles` to `/etc/logcheck/logcheck.logfiles.d/local.logfiles`
+(`/var/log/syslog` and `/var/log/auth.log` are enabled by default when
+needed) and removed some files that are no longer used:
+
+    rm /var/log/mail.err*
+    rm /var/log/mail.warn*
+    rm /var/log/mail.info*
+
+Finally, I had to fix any unescaped `|` characters in my local rules. For example
+`error == NULL || \*error == NULL` must now be written as `error == NULL \|\| \*error == NULL`.
+
+# Networking
+
+After the upgrade, I got a notice that the `isc-dhcp-client` is now
+deprecated and so I removed if from my system:
+
+    apt purge isc-dhcp-client
+
+This however meant that I need to ensure that my network configuration
+software does not depend on the now-deprecated DHCP client.
+
+On my laptop, I was already using
+[NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) for my main
+network interfaces and that has built-in DHCP support.
+
+## Migration to systemd-networkd
+
+On my backup server, I took this opportunity to switch from `ifupdown` to
+[`systemd-networkd`](https://wiki.archlinux.org/title/systemd-networkd) by
+removing `ifupdown`:
+
+    apt purge ifupdown
+    rm /etc/network/interfaces
+
+putting the following in `/etc/systemd/network/20-wired.network`:
+
+    [Match]
+    Name=eno1
+    
+    [Network]
+    DHCP=yes
+
+and then enabling/starting `systemd-networkd`:
+
+    systemctl enable systemd-networkd
+    systemctl start systemd-networkd
+
+I also needed to install polkit:
+
+    apt install --no-install-recommends policykit-1
+
+in order to [allow `systemd-networkd` to set the hostname](https://github.com/systemd/systemd/issues/16656).
+
+In order to start my firewall automatically as interfaces are brought up, I
+wrote a [dispatcher script to apply my existing `iptables`
+rules](https://feeding.cloud.geek.nz/posts/using-iptables-with-systemd-networkd/).
+
+## Migration to predictacle network interface names
+
+On my Linode server, I did the same as on the backup server, but I put the
+following in `/etc/systemd/network/20-wired.network` since it has a static
+IPv6 allocation:
+
+    [Match]
+    Name=enp0s4
+    
+    [Network]
+    DHCP=yes
+    Address=2600:3c01::xxxx:xxxx:xxxx:939f/64
+    Gateway=fe80::1
+
+and switched to predictable network interface names by deleting these two
+files:
+
+- `/etc/systemd/network/50-virtio-kernel-names.link`
+- `/etc/systemd/network/99-default.link`
+
+and then changing `eth0` to `enp0s4` in:
+
+- `/etc/network/iptables.up.rules`
+- `/etc/network/ip6tables.up.rules`
+- `/etc/rc.local` (for [OpenVPN](https://feeding.cloud.geek.nz/posts/creating-a-linode-based-vpn-setup-using_openvpn_on_debian_or_ubuntu/))
+- `/etc/logcheck/ignored.d.*/*`
+
+Then I regenerated all initramfs:
+
+    update-initramfs -u -k all
+
+and rebooted the virtual machine.
+
+## Dynamic DNS
+
+I replaced [ddclient](https://packages.debian.org/bookworm/ddclient) with
+[inadyn](https://packages.debian.org/bookworm/inadyn) since it [doesn't work
+with no-ip.com
+anymore](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1038431), using
+the [configuration I described in an old blog
+post](https://feeding.cloud.geek.nz/posts/dynamic-dns-on-own-domain/#Client_setup).
+
+# chkrootkit
+
+I moved my customizations in `/etc/chkrootkit.conf` to
+`/etc/chkrootkit/chkrootkit.conf` after seeing this message in my logs:
+
+> WARNING: /etc/chkrootkit.conf is deprecated. Please put your
+> settings in /etc/chkrootkit/chkrootkit.conf instead: /etc/chkrootkit.conf
+> will be ignored in a future release and should be deleted.
+
+# ssh
+
+As mentioned in [Debian bug#1018106](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1018106),
+to silence the following warnings:
+
+    sshd[6283]: pam_env(sshd:session): deprecated reading of user environment enabled
+
+I changed the following in `/etc/pam.d/sshd`:
+
+    --- a/pam.d/sshd
+    +++ b/pam.d/sshd
+    @@ -44,7 +44,7 @@ session    required     pam_limits.so
+     session    required     pam_env.so # [1]
+     # In Debian 4.0 (etch), locale-related environment variables were moved to
+     # /etc/default/locale, so read that as well.
+    -session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale
+    +session    required     pam_env.so envfile=/etc/default/locale
+     
+     # SELinux needs to intervene at login time to ensure that the process starts
+     # in the proper default security context.  Only sessions which are intended
+
+I also made the following changes to `/etc/ssh/sshd_config.d/local.conf`
+based on the advice of [ssh-audit](https://www.ssh-audit.com/) 2.9.0:
+
+    -KexAlgorithms curve25519-sha256@libssh.org,curve25519-sha256,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256
+    +KexAlgorithms curve25519-sha256@libssh.org,curve25519-sha256,sntrup761x25519-sha512@openssh.com,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+
+[[!tag debian]] [[!tag upgrade]] [[!tag systemd]] [[!tag ssh]] [[!tag dns]] [[!tag logcheck]]
