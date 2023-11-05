@@ -137,6 +137,22 @@ and then removed no-longer-needed packages:
 
     apt purge resolvconf avahi-daemon
 
+I also disabled support for [Link-Local Multicast Name Resolution (LLMNR)](https://en.wikipedia.org/wiki/Link-Local_Multicast_Name_Resolution) after reading [this person's reasoning](https://brokkr.net/2022/07/03/switching-to-systemd-resolved-for-mdns/) by putting the following in `/etc/systemd/resolved.conf.d/llmnr.conf`:
+
+    [Resolve]
+    LLMNR=no
+
+I verified that mDNS is enabled and LLMNR is disabled:
+
+    $ resolvectl mdns
+    Global: yes
+    Link 2 (enp0s25): yes
+    Link 3 (wlp3s0): yes
+    $ resolvectl llmnr
+    Global: no
+    Link 2 (enp0s25): no
+    Link 3 (wlp3s0): no
+
 ## Dynamic DNS
 
 I replaced [ddclient](https://packages.debian.org/bookworm/ddclient) with
