@@ -121,6 +121,21 @@ Then I regenerated all initramfs:
 
 and rebooted the virtual machine.
 
+## Giving systemd-resolved control of `/etc/resolv.conf`
+
+After reading [this history of DNS resolution on
+Linux](https://tailscale.com/blog/sisyphean-dns-client-linux/), I decided to
+modernize my `resolv.conf` setup and let `systemd-resolved` handle
+`/etc/resolv.conf`.
+
+I installed the package:
+
+    apt install systemd-resolved
+
+and then removed no-longer-needed packages:
+
+    apt purge resolvconf avahi-daemon
+
 ## Dynamic DNS
 
 I replaced [ddclient](https://packages.debian.org/bookworm/ddclient) with
