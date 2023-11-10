@@ -283,4 +283,4 @@ Finally, I printed a copy of each of my backup script, using
 This is actually a pretty important step since **without the password, you
 won't be able to decrypt and restore what's on the GnuBee**.
 
-[[!tag duplicity]] [[!tag gnubee]] [[!tag restic]] [[!tag backup]] [[!tag debian]] [[!tag smart]]
+[[!tag duplicity]] [[!tag gnubee]] [[!tag restic]] [[!tag backup]] [[!tag debian]] [[!tag smart]] [[!tag avahi]]
