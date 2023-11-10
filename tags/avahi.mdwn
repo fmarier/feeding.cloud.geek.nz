@@ -1,0 +1,4 @@
+[[!meta title="pages tagged avahi"]]
+
+[[!inline pages="tagged(avahi)" actions="no" archive="yes"
+feedshow=10]]
