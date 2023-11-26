@@ -319,6 +319,7 @@ Change the following in `/etc/postfix/main.cf`:
     smtpd_banner = $myhostname ESMTP
     smtp_tls_security_level = may
     smtp_tls_protocols = !SSLv2, !SSLv3
+    initial_destination_concurrency = 2
 
 Set the following aliases in `/etc/aliases`:
 
