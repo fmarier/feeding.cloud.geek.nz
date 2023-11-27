@@ -1,0 +1,69 @@
+[[!meta title="Automatically rebooting for kernel updates"]]
+[[!meta date="2023-11-27T15:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I use
+[`reboot-notifier`](https://feeding.cloud.geek.nz/posts/introducing-reboot-notifier/)
+on most of my
+[servers](https://feeding.cloud.geek.nz/posts/usual-server-setup/) to let me
+know when I need to reboot them for kernel updates since I want to decide
+exactly when those machines go down. On the other hand, my home backup
+server has very predictable usage patterns and so I decided to go one step
+further there and automate these necessary reboots.
+
+To do that, I first installed
+[`reboot-notifier`](https://packages.debian.org/bookworm/admin/reboot-notifier)
+which puts the following script in `/etc/kernel/postinst.d/reboot-notifier`
+to detect when a new kernel was installed:
+
+    #!/bin/sh
+    
+    if [ "$0" = "/etc/kernel/postinst.d/reboot-notifier" ]; then
+        DPKG_MAINTSCRIPT_PACKAGE=linux-base
+    fi
+    
+    echo "*** System restart required ***" > /var/run/reboot-required
+    echo "$DPKG_MAINTSCRIPT_PACKAGE" >> /var/run/reboot-required.pkgs
+
+Note that
+[`unattended-upgrades`](https://packages.debian.org/bookworm/admin/unattended-upgrades)
+puts a similar script in `/etc/kernel/postinst.d/unattended-upgrades`:
+
+    #!/bin/sh
+    
+    case "$DPKG_MAINTSCRIPT_PACKAGE::$DPKG_MAINTSCRIPT_NAME" in
+       linux-image-extra*::postrm)
+          exit 0;;
+    esac
+    
+    if [ -d /var/run ]; then
+        touch /var/run/reboot-required
+        if ! grep -q "^$DPKG_MAINTSCRIPT_PACKAGE$" /var/run/reboot-required.pkgs 2> /dev/null ; then
+            echo "$DPKG_MAINTSCRIPT_PACKAGE" >> /var/run/reboot-required.pkgs
+        fi
+    fi
+
+and so you only need one of them to be installed since they both write to
+`/var/run/reboot-required`. It doesn't hurt to have both of them though.
+
+Then I created the following cron job (`/etc/cron.daily/reboot-local`) to
+actually reboot the server:
+
+    #!/bin/bash
+    
+    REBOOT_REQUIRED=/var/run/reboot-required
+    
+    if [ -s $REBOOT_REQUIRED ] ; then
+        cat "$REBOOT_REQUIRED" | /usr/bin/mail -s "Rebooting $HOSTNAME" root
+        /bin/systemctl reboot
+    fi
+
+With that in place, my server will send me an email and then automatically
+reboot itself.
+
+This is a work in progress because I'd like to add some checks later on to
+make sure that no backup is in progress during that time (maybe by looking
+for active ssh connections?), but it works well enough for now. Feel free to
+leave a comment if you've got a smarter script you'd like to share.
+
+[[!tag debian]]
