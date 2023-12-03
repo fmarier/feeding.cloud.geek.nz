@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ ip="88.119.87.30"
+ claimedauthor="Marius Gedminas"
+ url="https://gedmin.as"
+ subject="unattended-upgrades?"
+ date="2023-11-28T09:26:41Z"
+ content="""
+Do you use special filename prefixes to ensure that this script is the last daily cron script to run?  Because I'm not sure I'd trust cron to resume running the rest of the scripts automatically after the reboot.
+
+I tend to enable automatic reboots in unattended-upgrades at a fixed hour when I know no cron scripts are supposed to be running (`Unattended-Upgrade::Automatic-Reboot \"true\"; Unattended-Upgrade::Automatic-Reboot-Time \"04:30\";` in `/etc/apt/apt.conf.d/50unattended-upgrades-local`).  So far it has worked out well.
+"""]]
