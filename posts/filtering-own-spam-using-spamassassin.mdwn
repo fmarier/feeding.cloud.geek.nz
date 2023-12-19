@@ -1,0 +1,186 @@
+[[!meta title="Filtering your own spam using SpamAssassin"]]
+[[!meta date="2023-12-18T22:20:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I know that people rave about GMail's spam filtering, but it didn't work for
+me: I was seeing too many false positives. I personally prefer to see some
+false negatives (i.e. letting some spam through), but to reduce false
+positives as much as possible (and ideally have a way to tune this).
+
+Here's the local [SpamAssassin](https://spamassassin.apache.org/) setup I
+have put together over many years. In addition to the parts I describe here,
+I also turn off
+[greylisting](https://en.wikipedia.org/wiki/Greylisting_%28email%29) on my email
+provider ([KolabNow](https://kolabnow.com/)) because I don't want to have to
+wait for up to 10 minutes for a "2FA" email to go through.
+
+This setup assumes that you download all of your emails to your local
+machine. I use [fetchmail](https://www.fetchmail.info/) for this, though
+similar tools should work too.
+
+## Three tiers of emails
+
+The main reason my setup works for me, despite my receiving hundreds of spam
+messages every day, is that I split incoming emails into three tiers via
+[procmail](https://github.com/BuGlessRB/procmail):
+
+1. *not spam*: delivered to inbox
+2. *likely spam*: quarantined in a `soft_spam/` folder
+3. *definitely spam*: silently deleted
+
+I only ever have to review the *likely spam* tier for false positives, which
+is on the order of 10-30 spam emails a day. I never even see the the
+hundreds that are silently deleted due to a very high score.
+
+This is implemented based on a threshold in my `.procmailrc`:
+
+    # Use spamassassin to check for spam
+    :0fw: .spamassassin.lock
+    | /usr/bin/spamassassin
+    
+    # Throw away messages with a score of > 12.0
+    :0
+    * ^X-Spam-Level: \*\*\*\*\*\*\*\*\*\*\*\*
+    /dev/null
+    
+    :0:
+    * ^X-Spam-Status: Yes
+    $HOME/Mail/soft_spam/
+    
+    # Deliver all other messages
+    :0:
+    ${DEFAULT}
+
+I also use the following `~/.muttrc` configuration to easily report false
+negatives/positives and examine my *likely spam* folder via a shortcut in
+[mutt](http://www.mutt.org/):
+
+    unignore X-Spam-Level
+    unignore X-Spam-Status
+    
+    macro index S "c=soft_spam/\n" "Switch to soft_spam"
+    
+    # Tell mutt about SpamAssassin headers so that I can sort by spam score
+    spam "X-Spam-Status: (Yes|No), (hits|score)=(-?[0-9]+\.[0-9])" "%3"
+    folder-hook =soft_spam 'push ol'
+    folder-hook =spam 'push ou'
+    
+    # <Esc>d = de-register as non-spam, register as spam, move to spam folder.
+    macro index \ed "<enter-command>unset wait_key\n<pipe-entry>spamassassin -r\n<enter-command>set wait_key\n<save-message>=spam\n" "report the message as spam"
+    
+    # <Esc>u = unregister as spam, register as non-spam, move to inbox folder.
+    macro index \eu "<enter-command>unset wait_key\n<pipe-entry>spamassassin -k\n<enter-command>set wait_key\n<save-message>=inbox\n" "correct the false positive (this is not spam)"
+
+## Custom SpamAssassin rules
+
+In addition to the default ruleset that comes with SpamAssassin, I've also
+accrued a number of custom rules over the years.
+
+The first set comes from the (now defunct) [SpamAssassin Rules
+Emporium](https://web.archive.org/web/20100416022759/http://www.rulesemporium.com/rules.htm).
+The second set is [the one that backs `bugs.debian.org` and
+`lists.debian.org`](https://salsa.debian.org/debian-listmasters/spamassassin_config).
+Note this second one includes archived copies of some of the SARE rules and
+so I only use some of the rules in the `common/` directory.
+
+Finally, I wrote [a few custom rules of my
+own](https://gist.github.com/fmarier/5e67daffdc7f43c0ed402a3a326d42e4) based
+on specific kinds of emails I have seen slip through the cracks. I haven't
+written any of those in a long time and I suspect some of my rules are now
+obsolete. You may want to do your own testing before you copy these outright.
+
+In addition to rules to match more spam, I've also written a [ruleset to
+remove false positives in French
+emails](https://gist.github.com/fmarier/117bde37015fde22d6639f7d307bc187)
+coming from many of the above custom rules. I also wrote a rule to get a
+bonus to any email that comes with a patch:
+
+    describe FM_PATCH	Includes a patch
+    body FM_PATCH	/\bdiff -pruN\b/
+    score FM_PATCH	-1.0
+
+since it's not very common in spam emails :)
+
+## SpamAssassin settings
+
+When it comes to my system-wide SpamAssassin configuration in
+`/etc/spamassassin/`, I enable the following plugins:
+
+    loadplugin Mail::SpamAssassin::Plugin::AntiVirus
+    loadplugin Mail::SpamAssassin::Plugin::AskDNS
+    loadplugin Mail::SpamAssassin::Plugin::ASN
+    loadplugin Mail::SpamAssassin::Plugin::AutoLearnThreshold
+    loadplugin Mail::SpamAssassin::Plugin::Bayes
+    loadplugin Mail::SpamAssassin::Plugin::BodyEval
+    loadplugin Mail::SpamAssassin::Plugin::Check
+    loadplugin Mail::SpamAssassin::Plugin::DKIM
+    loadplugin Mail::SpamAssassin::Plugin::DNSEval
+    loadplugin Mail::SpamAssassin::Plugin::FreeMail
+    loadplugin Mail::SpamAssassin::Plugin::FromNameSpoof
+    loadplugin Mail::SpamAssassin::Plugin::HashBL
+    loadplugin Mail::SpamAssassin::Plugin::HeaderEval
+    loadplugin Mail::SpamAssassin::Plugin::HTMLEval
+    loadplugin Mail::SpamAssassin::Plugin::HTTPSMismatch
+    loadplugin Mail::SpamAssassin::Plugin::ImageInfo
+    loadplugin Mail::SpamAssassin::Plugin::MIMEEval
+    loadplugin Mail::SpamAssassin::Plugin::MIMEHeader
+    loadplugin Mail::SpamAssassin::Plugin::OLEVBMacro
+    loadplugin Mail::SpamAssassin::Plugin::PDFInfo
+    loadplugin Mail::SpamAssassin::Plugin::Phishing
+    loadplugin Mail::SpamAssassin::Plugin::Pyzor
+    loadplugin Mail::SpamAssassin::Plugin::Razor2
+    loadplugin Mail::SpamAssassin::Plugin::RelayEval
+    loadplugin Mail::SpamAssassin::Plugin::ReplaceTags
+    loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody
+    loadplugin Mail::SpamAssassin::Plugin::SpamCop
+    loadplugin Mail::SpamAssassin::Plugin::TextCat
+    loadplugin Mail::SpamAssassin::Plugin::TxRep
+    loadplugin Mail::SpamAssassin::Plugin::URIDetail
+    loadplugin Mail::SpamAssassin::Plugin::URIEval
+    loadplugin Mail::SpamAssassin::Plugin::VBounce
+    loadplugin Mail::SpamAssassin::Plugin::WelcomeListSubject
+    loadplugin Mail::SpamAssassin::Plugin::WLBLEval
+
+Some of these require extra helper packages or Perl libraries to be
+installed. See the comments in the relevant `*.pre` files.
+
+My `~/.spamassassin/user_prefs` file contains the following configuration:
+
+    required_hits	5
+    ok_locales en fr
+    
+    # Bayes options
+    score BAYES_00 -4.0
+    score BAYES_40 -0.5
+    score BAYES_60 1.0
+    score BAYES_80 2.7
+    score BAYES_95 4.0
+    score BAYES_99 6.0
+    bayes_auto_learn 1
+    bayes_ignore_header X-Miltered
+    bayes_ignore_header X-MIME-Autoconverted
+    bayes_ignore_header X-Evolution
+    bayes_ignore_header X-Virus-Scanned
+    bayes_ignore_header X-Forwarded-For
+    bayes_ignore_header X-Forwarded-By
+    bayes_ignore_header X-Scanned-By
+    bayes_ignore_header X-Spam-Level
+    bayes_ignore_header X-Spam-Status
+
+as well as manual [score
+reductions](https://gist.github.com/fmarier/52db8ee8e8af38defa0719b4289657ba)
+due to false positives, and manual [score
+increases](https://gist.github.com/fmarier/bed781b61959ea90456d9b222e2fc0a2)
+to help push certain types of spam emails over the 12.0 *definitely spam*
+threshold.
+
+Finally, I have the [`FuzzyOCR`
+package](https://packages.debian.org/stable/fuzzyocr) installed since it has
+occasionally flagged some spam that other tools had missed. It is a little
+resource intensive though and so you may want to avoid this one if you are
+filtering spam for other people.
+
+As always, feel free to leave a comment if you do something else that works
+well and that's not included in my setup. This is a work-in-progress.
+
+[[!tag spamassassin]] [[!tag procmail]] [[!tag mutt]] [[!tag debian]] [[!tag email]]
