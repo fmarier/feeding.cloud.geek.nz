@@ -12,27 +12,6 @@ Using [fetchmail](http://fetchmail.berlios.de/), I can now download my received 
     poll pop.gmail.com protocol pop3 user "fmarier@gmail.com" is "francois" password "" fetchall ssl
     poll imap.gmail.com protocol imap user "fmarier@gmail.com" is "francois" password "" folder "[Gmail]/Spam" fetchall ssl
 
-I can then run all of my mail through my own [SpamAssassin](http://spamassassin.apache.org/) filter (to which I added these [excellent custom rules](http://www.rulesemporium.com/)) and sort my mail in one of three folders:  
+I can then run all of my mail through my own [local SpamAssassin setup](https://feeding.cloud.geek.nz/posts/filtering-own-spam-using-spamassassin/).
 
-  * definitely spam (conveniently located in `/dev/null`) for a score greater than 12
-  * probably spam (I need to check those manually once in a while)
-  * not spam for messages with a score less than 5
-
-This is done using [procmail](http://www.procmail.org/) with the following bit in my `~/.procmailrc`:  
-
-    # Use spamassassin to check for spam
-    # (only check messages < 400kB so that it doesn't choke)
-    :0fw:/etc/mail/spamc.lock
-    * < 409600
-    | /usr/bin/spamc
-    
-    # Throw away messages with a score of > 12.0
-    :0:
-    * ^X-Spam-Level: \*\*\*\*\*\*\*\*\*\*\*\*
-    /dev/null
-    
-    :0:
-    * ^X-Spam-Status: Yes
-    /home/francois/mail/spam
-
-[[!tag catalyst]] [[!tag debian]] [[!tag sysadmin]] [[!tag ubuntu]] [[!tag email]] [[!tag gmail]]
+[[!tag debian]] [[!tag sysadmin]] [[!tag email]] [[!tag gmail]] [[!tag spamassassin]] [[!tag fetchmail]]
