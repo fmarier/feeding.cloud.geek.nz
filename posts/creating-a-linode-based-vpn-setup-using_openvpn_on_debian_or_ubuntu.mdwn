@@ -147,7 +147,7 @@ The final piece of this solution is to setup my laptop, `akranes`, to
 connect to `hafnarfjordur` by installing the relevant
 [Network Manager](https://wiki.gnome.org/Projects/NetworkManager/) plugin:
 
-    apt-get install network-manager-openvpn-gnome
+    apt-get install network-manager-openvpn-gnome openvpn-systemd-resolved
 
 The laptop needs these files from the high-entropy machine:
 
