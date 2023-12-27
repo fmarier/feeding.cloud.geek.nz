@@ -27,16 +27,17 @@ lying around.
 Plug the SD card into a computer using a USB adapter.
 
 Download the [imager](https://www.raspberrypi.org/software/) and use it to
-install **Raspbian** on the SDcard.
+install **Raspberry Pi OS with desktop** on the SDcard.
 
 Then you can simply plug the SD card into the Pi and boot.
+
+I created a new `francois` user account for myself.
 
 ## System configuration
 
 Using `sudo raspi-config`, I changed the following:
 
 - Set hostname (*System Options*)
-- Wait for network at boot (*System Options*): [needed for NFS](https://raspberrypi.stackexchange.com/a/53147)
 - Disable screen blanking (*Display Options*)
 - Enable ssh (*Interface Options*)
 - Configure locale, timezone and keyboard (*Localisation Options*)
@@ -49,46 +50,11 @@ the machine is off:
 
 I found that automatic updates are already enabled by `apt-daily-upgrade.timer`.
 
-### Headless setup
-
-Should you need to do the setup without a monitor, you can enable ssh by
-inserting the SD card into a computer and then creating an empty file called
-`ssh` in the boot partition.
-
-Plug it into your router and boot it up. Check the IP that it received by
-looking at the active DHCP leases in your router's admin panel.
-
-Then login:
-
-    ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no pi@192.168.1.xxx
-
-using the default password of `raspberry`.
-
 ## Hardening
 
 In order to secure the Pi, I followed most of the [steps I usually take when
 setting up a new Linux
 server](/posts/usual-server-setup/).
-
-I created a new user account for admin and ssh access:
-
-    adduser francois
-    addgroup sshuser
-    adduser francois sshuser
-    adduser francois sudo
-
-and changed the `pi` user password to a random one:
-
-    pwgen -sy 32
-    sudo passwd pi
-
-before removing its admin permissions:
-
-    deluser pi adm
-    deluser pi sudo
-    deluser pi dialout
-    deluser pi cdrom
-    deluser pi lpadmin
 
 Finally, I enabled the [Uncomplicated Firewall](https://launchpad.net/ufw).
 I had to reconfigure debconf to see all medium-priority questions:
@@ -119,26 +85,21 @@ Kodi is very straightforward to install since it's now part of the Raspbian repo
     apt install kodi
 
 To make it start at boot/login, while still being able to exit and use other
-apps if needed:
+apps if needed, I put the following at the end of `~/.config/wayfire.ini`:
 
-    cp /etc/xdg/lxsession/LXDE-pi/autostart ~/.config/lxsession/LXDE-pi/
-    echo "@kodi" >> ~/.config/lxsession/LXDE-pi/autostart
+    [autostart]
+    kodi = kodi
 
 In order to improve privacy while fetching metadata, I also installed Tor:
 
     apt install tor
+    apt purge torsocks
 
 and then set a proxy in the Kodi [*System | Internet access* settings](https://kodi.wiki/view/Settings/System/Internet_access#Proxy_type):
 
 - Proxy type: `SOCKS5 with remote DNS resolving`
 - Server: `localhost`
 - Port: `9050`
-
-Note that you should set the following in `/etc/tor/torrc`:
-
-    SocksPort localhost:9050
-
-so that the Tor daemon is only available locallyj
 
 ## Network File System
 
@@ -196,13 +157,5 @@ Then create the mount points and mount everything:
     mkdir /kodi/tv
     mount /kodi/movies
     mount /kodi/tv
-
-In order for these directories to get mounted at boot, you need to enable
-the "S6 Network at Boot" option in `raspi-config` (*System options* section)
-and then run the folowing:
-
-    systemctl enable NetworkManager-wait-online.service
-
-to further wait for the network.
 
 [[!tag raspberrypi]] [[!tag kodi]] [[!tag debian]] [[!tag nfs]] [[!tag tor]]
