@@ -157,6 +157,11 @@ customize a few tiger settings in `/etc/tiger/tigerrc`:
     Tiger_Running_Procs='rsyslogd cron /usr/sbin/apache2 postgres'
     Tiger_Listening_ValidProcs='sshd|mosh-server|ntpd'
 
+I turned off the duplicate chkrootkit cronjob (it gets run automatically by tiger) using:
+
+    systemctl disable chkrootkit.timer
+    systemctl stop chkrootkit.timer
+
 I also add these to `/etc/fcheck/fcheck.local.cfg`:
 
     Directory      = /var/www
