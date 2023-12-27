@@ -352,7 +352,7 @@ To monitor that mail never stops flowing, add this machine to a free
 
 # Monitoring
 
-    apt install --no-install-recommends mon libfilesys-diskspace-perl libfilesys-df-perl
+    apt install --no-install-recommends mon libfilesys-diskspace-perl libfilesys-df-perl libsys-filesystem-perl
 
 In order to ensure that the root partition never has less than 1G of free
 space, I put the following in `/etc/mon/mon.cf`:
