@@ -101,6 +101,12 @@ and then set a proxy in the Kodi [*System | Internet access* settings](https://k
 - Server: `localhost`
 - Port: `9050`
 
+Finally, to prevent Kodi from listening on UDP port 3702 on the local network:
+
+    --WARN-- [lin003w] The process `kodi.bin' is listening on socket 3702 (UDP on every interface) is run by francois.
+
+Disable [WS-Discovery](https://en.wikipedia.org/wiki/Zero-configuration_networking#WS-Discovery) from [*Services | SMB Client* settings](https://kodi.wiki/view/Settings/Services/SMB_Client#WS-Discovery).
+
 ## Network File System
 
 In order to avoid having to have all media storage connected directly to the
