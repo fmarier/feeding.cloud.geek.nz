@@ -160,6 +160,46 @@ verify that it works using:
 
     sudo lpinfo --include-schemes dnssd -v
 
+Also, if you haven't migrated to `systemd-networkd` yet and are still using
+`ifupdown` with a static IP address, you will likely run into [DNS
+problems](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1031236) which
+can be fixed using the following patch to `/etc/network/if-up.d/resolved`:
+
+    @@ -43,11 +43,11 @@ if systemctl is-enabled systemd-resolved > /dev/null 2>&1; then
+         fi
+         if  [ -n "$NEW_DNS" ]; then
+             cat <<EOF >"$mystatedir/ifupdown-${ADDRFAM}-$interface"
+    -"$DNS"="$NEW_DNS"
+    +$DNS="$NEW_DNS"
+     EOF
+             if  [ -n "$NEW_DOMAINS" ]; then
+                 cat <<EOF >>"$mystatedir/ifupdown-${ADDRFAM}-$interface"
+    -"$DOMAINS"="$NEW_DOMAINS"
+    +$DOMAINS="$NEW_DOMAINS"
+     EOF
+             fi
+         fi
+    @@ -66,7 +66,7 @@ EOF
+         # ignore errors due to nonexistent file
+         md5sum "$mystatedir/isc-dhcp-v4-$interface" "$mystatedir/isc-dhcp-v6-$interface" "$mystatedir/ifupdown-inet-$interface" "$mystatedir/ifupdown-inet6-$interface" > "$newstate" 2> /dev/null || true
+         if ! cmp --silent "$oldstate" "$newstate" 2>/dev/null; then
+    -        DNS DNS6 DOMAINS DOMAINS6 DEFAULT_ROUTE
+    +        unset DNS DNS6 DOMAINS DOMAINS6 DEFAULT_ROUTE
+             # v4 first
+             if [ -e "$mystatedir/isc-dhcp-v4-$interface" ]; then
+                 . "$mystatedir/isc-dhcp-v4-$interface"
+
+and make sure you have nameservers setup in your static config, for example
+one of my servers' `/etc/network/interfaces` looks like this:
+
+    iface enp4s0 inet static
+         address 192.168.1.2
+         netmask 255.255.255.0
+         gateway 192.168.1.1
+         dns-nameservers 149.112.121.20
+         dns-nameservers 149.112.122.20
+         pre-up iptables-restore /etc/network/iptables.up.rules
+
 ## Dynamic DNS
 
 I replaced [ddclient](https://packages.debian.org/bookworm/ddclient) with
