@@ -164,4 +164,18 @@ Then create the mount points and mount everything:
     mount /kodi/movies
     mount /kodi/tv
 
-[[!tag raspberrypi]] [[!tag kodi]] [[!tag debian]] [[!tag nfs]] [[!tag tor]]
+## VLC
+
+If you also want to play videos outside of Kodi, you may be interested in
+[vlc](https://www.videolan.org/vlc/). In that case, make sure you install
+these additional packages:
+
+    apt install vlc-plugin-pipewire pipewire-audio
+
+and then set the default video output plugin to *wayland* and the default
+audio output plugin to *pipewire*.
+
+I have found that sometimes no sound is coming out of vlc, but for some reason
+starting kodi and then shutting it down seems to reset pipewire.
+
+[[!tag raspberrypi]] [[!tag kodi]] [[!tag debian]] [[!tag nfs]] [[!tag tor]] [[!tag vlc]]
