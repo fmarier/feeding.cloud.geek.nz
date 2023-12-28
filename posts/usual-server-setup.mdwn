@@ -392,6 +392,17 @@ and the following to improve congestion control and
     net.ipv4.tcp_congestion_control = bbr
     net.ipv4.tcp_notsent_lowat = 16384
 
+# Power management
+
+In order to ensure that systemd will not power down my servers to save power,
+I put the following in `/etc/systemd/sleep.conf.d/nosuspend.conf`:
+
+    [Sleep]
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowSuspendThenHibernate=no
+    AllowHybridSleep=no
+
 # Fun
 
 Finally, I also like to install these packages which generate fun stats about
