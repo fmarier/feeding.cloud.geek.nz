@@ -5,7 +5,8 @@
 Over the last few months, I upgraded my Debian machines from
 [bullseye](https://www.debian.org/releases/bullseye/) to
 [bookworm](https://www.debian.org/releases/bookworm/). The process was
-uneventful, but I ended up reconfiguring several things afterwards in
+uneventful (besides the [asterisk](https://packages.debian.org/bullseye/asterisk)
+issue described below), but I ended up reconfiguring several things afterwards in
 order to modernize my upgraded machines.
 
 # Logcheck
@@ -262,5 +263,16 @@ unwanted systemd-based power management:
     AllowHibernation=no
     AllowSuspendThenHibernate=no
     AllowHybridSleep=no
+
+# Asterisk has been removed from Debian
+
+The only major problem I ran into while upgrading to bookworm is that I discovered
+that [Asterisk](https://www.asterisk.org/) has been [removed from `stable` and `testing`](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1031046).
+For some reason, this was not mentioned in the [release notes](https://www.debian.org/releases/bookworm/amd64/release-notes/ch-information.en.html#noteworthy-obsolete-packages)
+and I have not yet found a good solution.
+
+If you upgrade to bookworm, be warned that the `bullseye` packages will remain
+installed (and will work fine in my experience) unless you "clean them up" with
+`apt purge '~o'` accidentally and then you'll have to fetch these old debs manually.
 
 [[!tag debian]] [[!tag upgrade]] [[!tag systemd]] [[!tag ssh]] [[!tag dns]] [[!tag logcheck]] [[!tag printing]] [[!tag avahi]]
