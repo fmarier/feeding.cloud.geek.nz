@@ -253,10 +253,10 @@ based on the advice of [ssh-audit](https://www.ssh-audit.com/) 2.9.0:
 # Unwanted power management
 
 I ran into a problem with one of my servers where it would [suspend](https://wiki.debian.org/Suspend)
-itself after a certain amount of time.
-
-I put the following in `/etc/systemd/sleep.conf.d/nosuspend.conf` to prevent this
-unwanted systemd-based power management:
+itself after a certain amount of time. This was due to default GDM behaviour
+it turns out and while I could [tell gdm not to sleep on inactivity](https://unix.stackexchange.com/a/749863/55688),
+I instead put the following in `/etc/systemd/sleep.conf.d/nosuspend.conf` to fully
+disable systemd-based suspend or hibernate:
 
     [Sleep]
     AllowSuspend=no
