@@ -36,11 +36,11 @@ packages they were registered to:
     $ dpkg -S /etc/bash_completion.d/insserv
     initramfs-tools: /etc/bash_completion.d/insserv
 
-and then followed
-[Paul Wise's instructions](https://lists.debian.org/debian-mentors/2013/05/msg00115.html):
+and then did the following based on [Paul Wise's instructions](https://lists.debian.org/debian-mentors/2013/05/msg00115.html)
+and [this StackExchange answer](https://unix.stackexchange.com/a/277197/55688):
 
     $ rm /etc/bash_completion.d/initramfs-tools /etc/bash_completion.d/insserv
-    $ apt install --reinstall initramfs-tools insserv
+    $ apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall initramfs-tools insserv
 
 For some reason that didn't work for the `/etc/dbus-1/system.d/` files
 and I had to purge and reinstall the relevant package:
