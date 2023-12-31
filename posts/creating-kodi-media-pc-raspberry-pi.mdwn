@@ -88,7 +88,7 @@ To make it start at boot/login, while still being able to exit and use other
 apps if needed, I put the following at the end of `~/.config/wayfire.ini`:
 
     [autostart]
-    kodi = kodi
+    kodi=kodi -fs
 
 and the following to prevent any form of sleep or screen locking:
 
