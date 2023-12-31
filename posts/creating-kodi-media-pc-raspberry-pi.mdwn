@@ -90,6 +90,13 @@ apps if needed, I put the following at the end of `~/.config/wayfire.ini`:
     [autostart]
     kodi = kodi
 
+and the following to prevent any form of sleep or screen locking:
+
+    [idle]
+    disable_initially=true
+    dpms_timeout=-1
+    screensaver_timeout=-1
+
 In order to improve privacy while fetching metadata, I also installed Tor:
 
     apt install tor
