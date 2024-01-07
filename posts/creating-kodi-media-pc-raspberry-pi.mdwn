@@ -186,4 +186,21 @@ audio output plugin to *pipewire*.
 I have found that sometimes no sound is coming out of vlc, but for some reason
 starting kodi and then shutting it down seems to reset pipewire.
 
+## Prevent frequent Wayland crashes back to the login screen
+
+I was running into frequent problems whereby Kodi would be gone and replaced with what I
+initially thought was a lock screen. After looking into disabling any kind of power
+management or screensaver, I realized it wasn't actually a lock screen, but instead a
+login screen similar to the [one reported here](https://raspberrypi.stackexchange.com/questions/98425/disable-automatic-locking-of-screen-and-all-other-interruptions).
+
+This suggested that something was causing Wayland to crash and restart back to the login
+screen (even though I have automatic login enabled). After running `wlr-randr` (not installed
+by default, but just an `apt install wlr-randr` away), I confirmed that my TV was connected
+to `HDMI-A-1` and then appended the following to my `/boot/cmdline.txt` before rebooting:
+
+    vc4.force_hotplug=1
+
+This [workaround](https://github.com/raspberrypi/bookworm-feedback/issues/67#issuecomment-1863340591)
+is apparently useful in cases of unidentified HDMI hotplug-related bugs.
+
 [[!tag raspberrypi]] [[!tag kodi]] [[!tag debian]] [[!tag nfs]] [[!tag tor]] [[!tag vlc]]
