@@ -4,6 +4,7 @@
 
 Here's how I set up a media PC using [Kodi](https://kodi.tv/) (formerly XMBC) and a
 [Raspberry Pi 4](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/).
+These instructions are for the **bookworm** version of Raspberry Pi OS.
 
 ## Hardware
 
