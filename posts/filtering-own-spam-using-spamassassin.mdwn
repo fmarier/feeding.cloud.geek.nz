@@ -142,7 +142,10 @@ When it comes to my system-wide SpamAssassin configuration in
     loadplugin Mail::SpamAssassin::Plugin::WLBLEval
 
 Some of these require extra helper packages or Perl libraries to be
-installed. See the comments in the relevant `*.pre` files.
+installed. See the comments in the relevant `*.pre` files or use this
+command to install everything:
+
+    apt install spamassassin  pyzor razor libencode-detect-perl liblog-log4perl-perl libgeoip-dev libmail-dkim-perl libarchive-zip-perl libio-string-perl libmail-dmarc-perl fuzzyocr
 
 My `~/.spamassassin/user_prefs` file contains the following configuration:
 
