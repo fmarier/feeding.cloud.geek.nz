@@ -233,9 +233,13 @@ Instead of using the default value for `UMASK`, I explicitly set it to `027` in 
 
 # Timekeeping
 
-    apt install chrony
+    apt install systemd-timesyncd
 
-To keep the system clock accurate, I install the above package.
+To keep the system clock accurate, I install the above package and then put the
+following in `/etc/systemd/timesyncd.conf.d/local.conf`:
+
+    [Time]
+    NTP=time.cloudflare.com
 
 I also set the server timezone to **UTC** using `dpkg-reconfigure tzdata`.
 
