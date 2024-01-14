@@ -15,7 +15,8 @@ Prior to spending any time configuring a new physical server, I like to
 ensure that the hardware is fine.
 
 To check memory, I boot into memtest86+ from the grub menu and let it run
-overnight.
+overnight. This [currently requires](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1032375)
+that Secure Boot be disabled (not enforced) in the BIOS.
 
 Then I check the hard drives using:
 
