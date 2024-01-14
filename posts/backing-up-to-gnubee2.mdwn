@@ -155,7 +155,7 @@ and then matching directories under `/mnt/data/home/`:
     chown machine1:machine1 /mnt/data/home/machine1
     chmod 700 /mnt/data/home/machine1
 
-Then I created a custom ssh key for each machine:
+Then I created a custom **passwordless** ssh key for each machine:
 
     ssh-keygen -f /root/.ssh/foobar_backups -t ed25519
 
