@@ -275,4 +275,4 @@ If you upgrade to bookworm, be warned that the `bullseye` packages will remain
 installed (and will work fine in my experience) unless you "clean them up" with
 `apt purge '~o'` accidentally and then you'll have to fetch these old debs manually.
 
-[[!tag debian]] [[!tag upgrade]] [[!tag systemd]] [[!tag ssh]] [[!tag dns]] [[!tag logcheck]] [[!tag printing]] [[!tag avahi]]
+[[!tag debian]] [[!tag upgrade]] [[!tag systemd]] [[!tag ssh]] [[!tag dns]] [[!tag logcheck]] [[!tag printing]] [[!tag avahi]] [[!tag networkmanager]]
