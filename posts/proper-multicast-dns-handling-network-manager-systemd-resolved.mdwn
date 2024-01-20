@@ -1,0 +1,114 @@
+[[!meta title="Proper Multicast DNS Handling with NetworkManager and systemd-resolved"]]
+[[!meta date="2024-01-19T17:10:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Using [NetworkManager](https://networkmanager.dev/) and [`systemd-resolved`](https://packages.debian.org/stable/systemd-resolved) together in Debian
+bookworm does not work out of the box. The first sign of trouble was these constant
+messages in my logs:
+
+    avahi-daemon[pid]: Host name conflict, retrying with hostname-2
+
+Then I realized that [CUPS](https://www.cups.org/) printer discovery didn't work: my network
+printer could not be found. Since this discovery now relies on [Multicast DNS](https://en.wikipedia.org/wiki/Multicast_DNS),
+it would make sense that both problems are related to an incompatibility
+between NetworkManager and [Avahi](https://avahi.org/).
+
+## What didn't work
+
+The first attempt I made at fixing this was to look for known bugs in Avahi.
+Neither of the work-arounds I found worked:
+
+- the one proposed in <https://github.com/avahi/avahi/issues/117#issuecomment-1651475104>:
+
+        [publish]
+        publish-aaaa-on-ipv4=no
+        publish-a-on-ipv6=no
+
+- nor the one proposed in <https://github.com/avahi/avahi/issues/117#issuecomment-442201162>:
+
+        [server]
+        cache-entries-max=0
+
+## What worked
+
+The real problem turned out to be the fact that NetworkManager turns on full
+mDNS support in `systemd-resolved` which conflicts with the mDNS support in
+`avahi-daemon`.
+
+You can see this in the output of `resolvectl status`:
+
+    Global
+           Protocols: -LLMNR +mDNS -DNSOverTLS DNSSEC=no/unsupported
+    resolv.conf mode: stub
+    
+    Link 2 (enp6s0)
+        Current Scopes: DNS mDNS/IPv4 mDNS/IPv6
+             Protocols: +DefaultRoute -LLMNR +mDNS -DNSOverTLS
+                        DNSSEC=no/unsupported
+    Current DNS Server: 192.168.1.1
+           DNS Servers: 192.168.1.1
+            DNS Domain: lan
+
+which includes `+mDNS` for the main network adapter.
+
+I initially thought that I could just uninstall `avahi-daemon` and rely on the
+`systemd-resolved` mDNS stack, but [it's not actually compatible with
+CUPS](https://github.com/apple/cups/issues/5452).
+
+The solution was to tell NetworkManager to set mDNS to resolve-only mode in
+`systemd-resolved` by adding the following to
+`/etc/NetworkManager/conf.d/mdns.conf`:
+
+    [connection]
+    connection.mdns=1
+
+leaving `/etc/avahi/avahi-daemon.conf` to the default Debian configuration.
+
+## Verifying the configuration
+
+After rebooting, `resolvectl status` now shows the following:
+
+    Global
+           Protocols: -LLMNR +mDNS -DNSOverTLS DNSSEC=no/unsupported
+    resolv.conf mode: stub
+    
+    Link 2 (enp6s0)
+        Current Scopes: DNS mDNS/IPv4 mDNS/IPv6
+             Protocols: +DefaultRoute -LLMNR mDNS=resolve -DNSOverTLS
+                        DNSSEC=no/unsupported
+    Current DNS Server: 192.168.1.1
+           DNS Servers: 192.168.1.1
+            DNS Domain: lan
+
+Avahi finally sees my printer (called `hp` in the output below):
+
+    $ avahi-browse -at | grep Printer
+    + enp6s0 IPv6 hp @ myprintserver   Secure Internet Printer local
+    + enp6s0 IPv4 hp @ myprintserver   Secure Internet Printer local
+    + enp6s0 IPv6 hp @ myprintserver   Internet Printer        local
+    + enp6s0 IPv4 hp @ myprintserver   Internet Printer        local
+    + enp6s0 IPv6 hp @ myprintserver   UNIX Printer            local
+    + enp6s0 IPv4 hp @ myprintserver   UNIX Printer            local
+
+and so does CUPS:
+
+    $ sudo lpinfo --include-schemes dnssd -v
+    network dnssd://myprintserver%20%40%20hp._ipp._tcp.local/cups?uuid=d46942a2-b730-11ee-b05c-a75251a34287
+
+## Firewall rules
+
+Since printer discovery in CUPS relies on mDNS, another thing to
+double-check is that the correct ports are open on the firewall.
+
+This is what I have in `/etc/network/iptables.up.rules`:
+
+    # Allow mDNS for local service discovery
+    -A INPUT -d 100.64.0.0/10 -p udp --dport 5353 -j ACCEPT
+    -A INPUT -d 192.168.1.0/24 -p udp --dport 5353 -j ACCEPT
+
+and in `etc/network/ip6tables.up.rules`:
+
+    # Allow mDNS for local service discovery
+    -A INPUT -d ff02::/16 -p udp --dport 5353 -j ACCEPT
+
+[[!tag networkmanager]] [[!tag avahi]] [[!tag systemd]] [[!tag debian]] [[!tag dns]] [[!tag cups]] [[!tag printing]]
