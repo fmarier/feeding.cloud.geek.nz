@@ -154,14 +154,9 @@ I verified that mDNS is enabled and LLMNR is disabled:
     Link 2 (enp0s25): no
     Link 3 (wlp3s0): no
 
-### Problems with auto-discovery of local printers
-
-Note that if you want auto-discovery of local printers using CUPS, you need
-to keep `avahi-daemon` since [`cups-browsed` doesn't support
-`systemd-resolved`](https://github.com/apple/cups/issues/5452). You can
-verify that it works using:
-
-    sudo lpinfo --include-schemes dnssd -v
+Note that if you want auto-discovery of local printers using CUPS, you
+need to keep `avahi-daemon` and [ensure that `systemd-resolved` does
+not conflict with it](https://feeding.cloud.geek.nz/posts/proper-multicast-dns-handling-network-manager-systemd-resolved/).
 
 ### DNS resolution problems with ifupdown
 
