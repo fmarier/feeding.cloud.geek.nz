@@ -1,0 +1,4 @@
+[[!meta title="pages tagged cups"]]
+
+[[!inline pages="tagged(cups)" actions="no" archive="yes"
+feedshow=10]]
