@@ -136,7 +136,7 @@ I installed the package:
 
 and then removed no-longer-needed packages:
 
-    apt purge resolvconf avahi-daemon
+    apt purge openresolv resolvconf avahi-daemon
 
 I also disabled support for [Link-Local Multicast Name Resolution (LLMNR)](https://en.wikipedia.org/wiki/Link-Local_Multicast_Name_Resolution) after reading [this person's reasoning](https://brokkr.net/2022/07/03/switching-to-systemd-resolved-for-mdns/) by putting the following in `/etc/systemd/resolved.conf.d/llmnr.conf`:
 
