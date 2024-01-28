@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ ip="187.250.116.89"
+ claimedauthor="peter"
+ subject="debian wiki suggestion"
+ date="2024-01-20T12:17:59Z"
+ content="""
+this is a little over my head, so trying to learn a bit, I searched the Wiki.
+
+It needs some help, nothing about this issue is mentioned.
+https://wiki.debian.org/NetworkConfiguration#Using_systemd-resolved_for_DNS_resolution
+
+can you add something to help others?
+"""]]
