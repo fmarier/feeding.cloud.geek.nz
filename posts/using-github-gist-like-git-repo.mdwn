@@ -1,0 +1,39 @@
+[[!meta title="Using a GitHub Gist like a git repo"]]
+[[!meta date="2024-02-01T20:05:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+A GitHub gist is backed by a regular git repository, but it's not exposed
+explicitly via the user interface.
+
+For example, [this "secret"
+gist](https://gist.github.com/fmarier/b652bad2e759675e8650f3d3ee81ab08) can
+be cloned using this command:
+
+    git clone https://gist.github.com/fmarier/b652bad2e759675e8650f3d3ee81ab08.git test
+
+Within this `test` directory, the normal git commands can be used:
+
+    touch empty
+    git add empty
+    git commit -a -m "Nothing to see here"
+
+A gist can contain multiple files just like normal repositories.
+
+In order to push to this repo, add the following `pushurl`:
+
+   git remote set-url --push origin git@gist.github.com:b652bad2e759675e8650f3d3ee81ab08.git
+
+before pushing using the regular command:
+
+   git push
+
+Note that the [GitHub history
+UI](https://gist.github.com/fmarier/b652bad2e759675e8650f3d3ee81ab08/revisions)
+will not show you the normal commit details such as commit message and
+signatures.
+
+If you want to access the latest version of a file contained within this
+gist, simply access
+<https://gist.githubusercontent.com/fmarier/b652bad2e759675e8650f3d3ee81ab08/raw/readme.md>.
+
+[[!tag github]]
