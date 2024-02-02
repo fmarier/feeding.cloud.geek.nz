@@ -21,11 +21,11 @@ A gist can contain multiple files just like normal repositories.
 
 In order to push to this repo, add the following `pushurl`:
 
-   git remote set-url --push origin git@gist.github.com:b652bad2e759675e8650f3d3ee81ab08.git
+    git remote set-url --push origin git@gist.github.com:b652bad2e759675e8650f3d3ee81ab08.git
 
 before pushing using the regular command:
 
-   git push
+    git push
 
 Note that the [GitHub history
 UI](https://gist.github.com/fmarier/b652bad2e759675e8650f3d3ee81ab08/revisions)
