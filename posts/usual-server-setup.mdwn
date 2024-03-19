@@ -4,8 +4,8 @@
 
 I manage a few servers for myself, [friends and
 family](https://speakerdeck.com/fmarier/supporting-debian-machines-for-friends-and-family-1)
-as well as for the [Libravatar](https://www.libravatar.org) project. Here is
-how I customize recent releases of Debian on those servers.
+and [used to maintain some for the Libravatar project](https://blog.libravatar.org/posts/Libravatar.org_is_not_going_away/).
+Here is how I customize recent releases of Debian on those servers.
 
 # Hardware tests
 
