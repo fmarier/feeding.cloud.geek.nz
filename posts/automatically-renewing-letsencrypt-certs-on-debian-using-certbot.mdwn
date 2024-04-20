@@ -42,7 +42,9 @@ will email me any output) if certs have been renewed.
 
 Since I'm using [etckeeper](https://etckeeper.branchable.com/) to keep track of config changes on my
 servers, my renewal script also commits to the repository if any certs have
-changed.
+changed. To keep the lock file out of git, I put the following in `/etc/.gitignore`:
+
+    /letsencrypt/.certbot.lock
 
 Finally, since my
 [XMPP server](/posts/running-your-own-xmpp-server-debian-ubuntu/)
