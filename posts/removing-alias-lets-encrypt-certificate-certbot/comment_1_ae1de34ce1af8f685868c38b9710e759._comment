@@ -1,0 +1,28 @@
+[[!comment format=mdwn
+ ip="166.1.121.147"
+ subject="Doesn't seem to work with nginx, had to use the webroot option, but maybe it's me..."
+ date="2024-04-18T08:02:01Z"
+ content="""
+# certbot certificates
+Found the following certs:
+ Certificate Name: www.<domain>.org
+    .
+    Domains: mail.<domain>.org www.<domain>.org xmpp.<domain>.org
+
+# certbot delete www.<domain>.org
+usage: 
+  certbot [SUBCOMMAND] [options] [-d DOMAIN] [-d DOMAIN] ...
+
+# certbot delete --cert-name www.<domain>.org
+Are you sure you want to delete the above certificate(s)?
+(Y)es/(N)o: y
+Deleted all files relating to certificate www.<domain>.org
+
+# certbot certonly -d www.<domain>.org -d mail.<domain>.org --duplicate
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Error while running nginx -c /etc/nginx/nginx.conf -t.
+
+nginx: [emerg] cannot load certificate \"/etc/letsencrypt/live/www.<domain>.org/fullchain.pem\": BIO_new_file() failed (SSL: error:02001002:system library:fopen:No such file or directory:
+
+
+"""]]
