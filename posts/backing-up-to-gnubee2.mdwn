@@ -80,7 +80,7 @@ partition onto the RAID-5 array using a cronjob in `/etc/cron.d/hdd-sync`:
 which runs the `/usr/local/sbin/ssd_root_backup` script:
 
     #!/bin/sh
-    nocache nice ionice -c3 rsync -aHx --delete --exclude=/dev/* --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/mnt/* --exclude=/lost+found/* --exclude=/media/* --exclude=/var/tmp/* /* /mnt/data/root/
+    nice ionice -c3 rsync -aHx --delete --exclude=/dev/* --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/mnt/* --exclude=/lost+found/* --exclude=/media/* --exclude=/var/tmp/* /* /mnt/data/root/
 
 ### Drive spin down
 
@@ -265,8 +265,8 @@ to reuse on all of my computers:
 
 I run it with the following cronjob in `/etc/cron.d/backups`:
 
-    30 8 * * *    root  ionice nice nocache /root/backup/backup-machine1-to-foobar
-    30 2 * * Sun  root  ionice nice nocache /root/backup/backup-machine1-to-foobar --prune
+    30 8 * * *    root  ionice nice /root/backup/backup-machine1-to-foobar
+    30 2 * * Sun  root  ionice nice /root/backup/backup-machine1-to-foobar --prune
 
 in a way that [doesn't impact the rest of the system too much](/posts/three-wrappers-to-run-commands-without-impacting-the-rest-of-the-system/).
 

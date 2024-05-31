@@ -72,7 +72,7 @@ are installed.
 Similarly, I use [podget](http://podget.sourceforge.net/) to automatically
 fetch podcasts through this cron job in `/etc/cron.d/podget-francois`:
 
-    0 12 * * 1-5 francois	http_proxy=http://localhost:8008/ https_proxy=http://localhost:8008/ nocache nice ionice -n7 /usr/bin/podget -s
+    0 12 * * 1-5 francois	http_proxy=http://localhost:8008/ https_proxy=http://localhost:8008/ nice ionice -n7 /usr/bin/podget -s
 
 Prior to that, I was using
 [hpodder](https://github.com/jgoerzen/hpodder/wiki) and had the following in

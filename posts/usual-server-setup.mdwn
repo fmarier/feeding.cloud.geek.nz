@@ -276,7 +276,7 @@ Finally, to check that daemon restarting is taking place, install the
 
 # Handy utilities
 
-    apt install renameutils atool iotop sysstat lsof mtr-tiny mc netcat-openbsd command-not-found nocache apt-file man-db ripgrep zstd
+    apt install renameutils atool iotop sysstat lsof mtr-tiny mc netcat-openbsd command-not-found apt-file man-db ripgrep zstd
 
 Most of these tools are configuration-free, except for sysstat, which requires
 enabling data collection in `/etc/default/sysstat` to be useful.
