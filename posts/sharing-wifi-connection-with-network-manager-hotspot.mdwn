@@ -9,7 +9,12 @@ possible to easily create a WiFi hotspot using
 [external USB WiFi
 adapter](https://www.thinkpenguin.com/gnu-linux/penguin-wireless-n-usb-adapter-gnu-linux-tpe-n150usb).
 
-# Hardware setup
+# Dependencies
+
+The [dnsmasq package](https://packages.debian.org/stable/dnsmasq) package is required
+in order to run a local DHCP server for any clients connecting to the hotspot:
+
+    apt install dnsmasq
 
 Depending on the hardware you have, you may need to install the
 [firmware-ath9k-htc package](https://packages.debian.org/stable/firmware-ath9k-htc).
