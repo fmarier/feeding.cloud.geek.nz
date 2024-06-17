@@ -16,6 +16,7 @@ As soon as I log into my desktop, my [startup script](https://github.com/fmarier
 * [i3lock](https://packages.debian.org/stable/i3lock): locks the screen when I'm not around
 * [nm-applet](https://packages.debian.org/stable/network-manager-gnome): handles wifi and VPN connections
 * [syncthing](https://www.syncthing.net/): keeps my folders synchronized between machines
+* [xcompmgr](https://packages.debian.org/stable/xcompmgr): required for applications that display shadows and other similar effects
 
 Because of [a bug in gnome-settings-daemon](https://ask.fedoraproject.org/en/question/31186/my-mouse-cursor-dissapears-when-using-gnome3/) which makes the mouse cursor disappear as soon as gnome-settings-daemon is started, I had to run the following to disable the offending gnome-settings-daemon plugin:
 
@@ -176,4 +177,4 @@ This was fixed using [this work-around](https://www.reddit.com/r/i3wm/comments/e
     mkdir -p ~/.icons/default
     cp -r /usr/share/icons/Pop/* ~/.icons/default/
 
-[[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag nzoss]] [[!tag systemd]]
+[[!tag debian]] [[!tag i3]] [[!tag gnome]] [[!tag systemd]]
