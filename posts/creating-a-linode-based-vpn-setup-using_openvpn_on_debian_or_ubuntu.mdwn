@@ -32,7 +32,7 @@ I personally use a machine fitted with a
 
 The first step is to install the required package:
 
-    sudo apt-get install easy-rsa openvpn
+    apt install easy-rsa openvpn
 
 Then, copy the following file in your home directory (no need to run any of
 this as root):
@@ -81,7 +81,7 @@ Finally, generate the keys:
 On my server, called `hafnarfjordur.fmarier.org`, I installed the
 [openvpn package](http://packages.debian.org/stable/openvpn):
 
-    apt-get install openvpn
+    apt install openvpn openvpn-systemd-resolved openvpn-dco-dkms
 
 and then copied the following files from my high-entropy machine:
 
@@ -130,7 +130,7 @@ Finally, I added the following to these configuration files:
 
 and ran `sysctl -p` before starting OpenVPN:
 
-    /etc/init.d/openvpn start
+    systemctl start openvpn.service
 
 If the server has a firewall, you'll need to [open up this port](http://docs.openvpn.net/frequently-asked-questions/):
 
