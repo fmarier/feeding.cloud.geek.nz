@@ -244,6 +244,7 @@ to the following in `pjsip.conf`:
     rewrite_contact = yes
     send_rpid = yes
     timers = no
+    dtmf_mode = rfc4733
 
 The TLS `method` line is needed since the [default in Debian OpenSSL is too
 strict](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=966636). The `timers`
