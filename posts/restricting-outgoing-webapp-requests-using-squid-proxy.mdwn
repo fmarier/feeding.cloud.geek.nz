@@ -88,6 +88,8 @@ and set the following in `/etc/squid3/squid.conf`:
     http_access deny all
     
     http_port 127.0.0.1:3128
+    
+    cache deny all
 
 Ideally, I would like to use a whitelist approach to restrict requests to a
 small set of valid URLs, but in the case of OpenID, the set of valid URLs is
@@ -114,4 +116,4 @@ URLs that include a port number, and there is [an open issue in
 python-openid](https://github.com/openid/python-openid/issues/83) around
 proxies and OpenID.
 
-[[!tag libravatar]] [[!tag openid]] [[!tag web]] [[!tag owasp]] [[!tag squid]] [[!tag django]] [[!tag nzoss]]
+[[!tag libravatar]] [[!tag openid]] [[!tag web]] [[!tag owasp]] [[!tag squid]] [[!tag django]]
