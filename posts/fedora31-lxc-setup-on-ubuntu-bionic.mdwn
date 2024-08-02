@@ -52,7 +52,7 @@ To see a list of all distros available with the `download` template:
 
     lxc-create -n foo --template=download -- --list --no-validate
 
-Once the container has been created, disable AppArmor for it:
+Once the container has been created, disable AppArmor for it by putting the following in `/var/lib/lxc/fedora31/config`:
 
     lxc.apparmor.profile = unconfined
 
@@ -91,7 +91,7 @@ and ran the following:
 
 then started the ssh service:
 
-  systemctl start sshd.service
+    systemctl start sshd.service
 
 Then I installed a few other packages as root:
 
@@ -120,4 +120,4 @@ of:
 
     lxc-ls --fancy
 
-[[!tag debian]] [[!tag lxc]] [[!tag nzoss]] [[!tag ubuntu]]
+[[!tag debian]] [[!tag lxc]] [[!tag ubuntu]]
