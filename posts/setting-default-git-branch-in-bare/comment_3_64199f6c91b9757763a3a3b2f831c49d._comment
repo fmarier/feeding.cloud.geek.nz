@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ ip="2001:4479:4608:1b00:b535:ec39:8aac:9521"
+ claimedauthor="alecthegeek"
+ url="https://alecthegeek.gitlab.io/"
+ subject="Works in a worktree as well."
+ date="2024-09-23T22:09:47Z"
+ content="""
+Thanks for the tip.
+
+This also works in a checkout worktree.
+
+I have an obscure usecase:
+
+If you need to clone a repo and you can't control the checkout branch (because you are using another tool that assumes the default branch), you can still control which branch will be checked out on clone.
+
+"""]]
