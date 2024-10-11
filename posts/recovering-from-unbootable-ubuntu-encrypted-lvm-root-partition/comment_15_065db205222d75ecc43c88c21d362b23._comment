@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ ip="125.209.110.66"
+ claimedauthor="Danish"
+ subject="LVM encryption in Ubunto 24 version"
+ date="2024-10-11T13:21:06Z"
+ content="""
+I tried these method but not able recover from intrimfs  terminal  after implementing LVM encryption  during installing then  i decided to  make a boot key to recover from boot with out asking any encrytion key 
+"""]]
