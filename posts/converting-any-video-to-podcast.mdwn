@@ -30,7 +30,7 @@ or create an MP3 using [lame](http://lame.sourceforge.net/):
     lame -mm audiodump.wav output.mp3
 
 
-It works very well with Youtube videos, but you have to download the video first using [youtube-dl](http://www.arrakis.es/%7Erggi3/youtube-dl/) or [clive](http://clive.sf.net/).
+It works very well with YouTube videos, but you have to download the video first using [youtube-dl](http://www.arrakis.es/%7Erggi3/youtube-dl/) or [clive](http://clive.sf.net/).
 
 
 [[!tag podcast]] [[!tag debian]] [[!tag ubuntu]]
