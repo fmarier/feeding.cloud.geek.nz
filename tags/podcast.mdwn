@@ -1,0 +1,4 @@
+[[!meta title="pages tagged podcast"]]
+
+[[!inline pages="tagged(podcast)" actions="no" archive="yes"
+feedshow=10]]
