@@ -139,4 +139,4 @@ I can take advantage of GMail's excellent caching and preloading and run the
 whole thing over Tor by setting that entire browser profile to run its
 traffic through the Tor SOCKS proxy on port `9050`.
 
-[[!tag debian]] [[!tag privacy]] [[!tag tor]] [[!tag gpg]] [[!tag mozilla]] [[!tag xmpp]] [[!tag gmail]]
+[[!tag debian]] [[!tag privacy]] [[!tag tor]] [[!tag gpg]] [[!tag mozilla]] [[!tag xmpp]] [[!tag gmail]] [[!tag rss]]

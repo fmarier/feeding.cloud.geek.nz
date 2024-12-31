@@ -14,4 +14,4 @@ You can also subscribe to these feeds by email:
   * [Subscribe to Schedules Direct News by email](http://www.feedburner.com/fb/a/emailverifySubmit?feedId=1867352&loc=en_US)
 
 
-[[!tag catalyst]] [[!tag debian]] [[!tag ubuntu]] 
+[[!tag rss]] [[!tag debian]] [[!tag ubuntu]]

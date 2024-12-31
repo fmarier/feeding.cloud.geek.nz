@@ -78,4 +78,4 @@ the other ones:
 - <https://feeds.feedburner.com/DavidRoweLA>
 - <https://feeds.feedburner.com/HamishTaylorLA>
 
-[[!tag tor]]
+[[!tag tor]] [[!tag rss]]
