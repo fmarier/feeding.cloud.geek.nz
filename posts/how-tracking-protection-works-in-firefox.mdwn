@@ -82,7 +82,7 @@ developer tool console will expose the URL of the resource that was blocked:
 The blocklist is created by [Disconnect](https://disconnect.me/) according to their
 [definition of tracking](https://disconnect.me/trackerprotection#definition-of-tracking).
 
-The Disconnect list is on their [Github
+The Disconnect list is on their [GitHub
 page](https://github.com/disconnectme/disconnect-tracking-protection/blob/master/services.json),
 but the copy we use in Firefox is the copy we have in [our own
 repository](https://github.com/mozilla-services/shavar-prod-lists/blob/master/disconnect-blacklist.json).

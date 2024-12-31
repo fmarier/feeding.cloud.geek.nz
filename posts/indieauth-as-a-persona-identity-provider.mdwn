@@ -17,7 +17,7 @@ sessions, I wanted to explore the idea of IndieAuth (an implementation of
 
 The goal of this effort was to allow Indie Web developers to use their
 preferred email address with Persona and have IndieAuth authenticate them
-using any supported IndieAuth provider (e.g. [Twitter](https://dev.twitter.com/docs/auth/implementing-sign-twitter) or [Github](http://developer.github.com/guides/basics-of-authentication/)).
+using any supported IndieAuth provider (e.g. [Twitter](https://dev.twitter.com/docs/auth/implementing-sign-twitter) or [GitHub](http://developer.github.com/guides/basics-of-authentication/)).
 
 This work will help bridge the gap between these two projects and allow
 IndieAuth developers to log into more website using their

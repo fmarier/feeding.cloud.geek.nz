@@ -1,13 +1,13 @@
-[[!meta title="Attaching files to Github issues"]]
+[[!meta title="Attaching files to GitHub issues"]]
 [[!meta date="2012-06-21T15:13:00.001+12:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
-This is a hack to work-around the lack of support for file attachments on the Github issue tracker.
+This is a hack to work-around the lack of support for file attachments on the GitHub issue tracker.
 
 You can of course host your files somewhere else and link to them, but it's a bit annoying to not be able to attach files directly on a bug report because these remote files might go away in the future and make archived issues much less useful.
 
-### Hosting attachments on Github
+### Hosting attachments on GitHub
 
-To host file attachments on Github, you could create a [new repository](https://github.com/repositories/new), but then it would clutter up your list of personal repos. A better option is to create a new [gist](https://gist.github.com):
+To host file attachments on GitHub, you could create a [new repository](https://github.com/repositories/new), but then it would clutter up your list of personal repos. A better option is to create a new [gist](https://gist.github.com):
 
   * use the bug title as the description (ideally with the issue number too)
   * put "temp" as the filename (it will be deleted shortly)
@@ -36,7 +36,7 @@ Now, visit your [gist page](https://gist.github.com/2963192) and right-click on 
     https://gist.github.com/raw/2963192/5f708ea14fbd75c28e5e95ee891c36894ce48f46/grant_p-s_persona_bug.png
 
 
-### Embedding remote images in Github issues
+### Embedding remote images in GitHub issues
 
 Finally, to include the above images into my [bug report](https://github.com/mozilla/browserid/issues/1811), here's the [Markdown](http://daringfireball.net/projects/markdown/syntax#img) code I used:
 
@@ -45,7 +45,7 @@ Finally, to include the above images into my [bug report](https://github.com/moz
     ![Persona](https://gist.github.com/raw/2963192/5f708ea14fbd75c28e5e95ee891c36894ce48f46/grant_p-s_persona_bug.png)
 
 
-Hopefully Github will at some point listen to all of the users that have been asking for this feature. In the meantime, if you don't mind the hassle, it is possible to have issues and attachments on the same site (sort of).
+Hopefully GitHub will at some point listen to all of the users that have been asking for this feature. In the meantime, if you don't mind the hassle, it is possible to have issues and attachments on the same site (sort of).
 
 
 [[!tag github]] [[!tag mozilla]] 

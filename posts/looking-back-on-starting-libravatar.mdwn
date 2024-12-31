@@ -76,9 +76,9 @@ for contributions (or less desire for it). The fact [dev environment
 setup](https://wiki.libravatar.org/development_environment/) was not the
 easiest could definitely be a contributing factor, but I've only ever had a
 single person ask about it so it's not clear that this was the limiting
-factor. Also, while our source code repository was hosted on Github and open
+factor. Also, while our source code repository was hosted on GitHub and open
 for pull requests, we never even received a single drive-by contribution,
-hinting at the fact that Github is not the magic bullet for community
+hinting at the fact that GitHub is not the magic bullet for community
 contributions that many people think it is.
 
 Finally, it turns out that it is harder to delegate sysadmin work (you need
