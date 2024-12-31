@@ -1,0 +1,34 @@
+[[!meta title="Monitoring and Time-Shifting YouTube Podcasts"]]
+[[!meta date="2024-12-30T20:19:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+While most podcasts are available on multiple platforms and either offer an
+RSS feed or have one that can be
+[discovered](https://www.labnol.org/podcast/), some are only available in
+the form of a YouTube channel. Thankfully, it's possible to both **monitor
+them for new episodes** (i.e. new videos), and **time-shift the audio** for
+later offline listening.
+
+Subscribing to a channel via RSS is possible thanks to the built-in, but not
+easily discoverable, RSS feeds. See [these
+instructions](https://webapps.stackexchange.com/questions/111680/how-to-find-channel-rss-feed-on-youtube)
+for how to do it. As an example, the RSS feed for the official [Government of
+BC channel](https://www.youtube.com/channel/UC6n9tFQOVepHP3TIeYXnhSA) is
+<https://www.youtube.com/feeds/videos.xml?channel_id=UC6n9tFQOVepHP3TIeYXnhSA>.
+
+When it comes to downloading the audio, the most reliable tool I have found is
+[yt-dlp](https://github.com/yt-dlp/yt-dlp). Since the exact arguments needed
+to download just the audio as an MP3 are a bit of a mouthful, I wrote a [wrapper
+script](https://github.com/fmarier/user-scripts/blob/master/mkytpodcast)
+which also does a few extra things:
+
+- cleans up the filename so that it can be stored on any filesystem
+- adds ID3 tags so that MP3 players can have the metadata they need to
+  display and group related podcast episodes together
+
+If you find that script handy, you may also want to check out the
+[script](https://github.com/fmarier/user-scripts/blob/master/mkpodcast) I
+have in the same GitHub repo to [turn arbitrary video files into a
+podcast](https://feeding.cloud.geek.nz/posts/converting-any-video-to-podcast/).
+
+[[!tag youtube]] [[!tag rss]] [[!tag podcast]]
