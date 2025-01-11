@@ -86,7 +86,12 @@ Kodi is very straightforward to install since it's now part of the Raspbian repo
     apt install kodi
 
 To make it start at boot/login, while still being able to exit and use other
-apps if needed, I put the following at the end of `~/.config/wayfire.ini`:
+apps if needed, I put the following at the end of `~/.config/labwc/autostart`:
+
+    kodi -fs &
+
+Alternatively, if you are using Wayfire as your compositor, put the following at the end
+of `~/.config/wayfire.ini`:
 
     [autostart]
     kodi=kodi -fs
