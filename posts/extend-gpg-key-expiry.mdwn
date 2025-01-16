@@ -22,12 +22,12 @@ Upload the updated key to the keyservers:
 and then removing the old one from your [GitHub profile](https://github.com/settings/keys)
 and pasting in the output of:
 
-   gpg --armor --export KEYID | xsel -b
+    gpg --armor --export KEYID | xsel -b
 
 If you use [Enigmail](https://www.enigmail.net/) in [Thunderbird](https://www.thunderbird.net/),
 you'll need to also export the new public key:
 
-   gpg --export KEYID > newkey.gpg
+    gpg --export KEYID > newkey.gpg
 
 and import that `newkey.gpg` file into its keyring:
 
