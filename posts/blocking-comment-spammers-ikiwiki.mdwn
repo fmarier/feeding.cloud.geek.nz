@@ -1,0 +1,140 @@
+[[!meta title="Blocking comment spammers on an Ikiwiki blog"]]
+[[!meta date="2025-01-19T13:00:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Despite comments on my ikiwiki blog being fully moderated, spammers have
+been increasingly posting link spam comments on my blog. While I used to use
+the [blogspam plugin](https://ikiwiki.info/plugins/blogspam/), the
+underlying service was [likely retired circa
+2017](https://blog.steve.fi/possibly_retiring_blogspam_net) and its [public
+repositories](https://github.com/BlogSpam-net/) are all archived.
+
+It turns out that there is a relatively simple way to drastically reduce the
+amount of spam submitted to the moderation queue: ban the datacentre IP
+addresses that spammers are using.
+
+# Looking up AS numbers
+
+It all starts by looking at the IP address of a submitted comment:
+
+![](/posts/blocking-comment-spammers-ikiwiki/comment-spammer.png)
+
+From there, we can look it up using `whois`:
+
+    $ whois -r 2a0b:7140:1:1:5054:ff:fe66:85c5
+    
+    % This is the RIPE Database query service.
+    % The objects are in RPSL format.
+    %
+    % The RIPE Database is subject to Terms and Conditions.
+    % See https://docs.db.ripe.net/terms-conditions.html
+    
+    % Note: this output has been filtered.
+    %       To receive output for a database update, use the "-B" flag.
+    
+    % Information related to '2a0b:7140:1::/48'
+    
+    % Abuse contact for '2a0b:7140:1::/48' is 'abuse@servinga.com'
+    
+    inet6num:       2a0b:7140:1::/48
+    netname:        EE-SERVINGA-2022083002
+    descr:          servinga.com - Estonia
+    geoloc:         59.4424455 24.7442221
+    country:        EE
+    org:            ORG-SG262-RIPE
+    mnt-domains:    HANNASKE-MNT
+    admin-c:        CL8090-RIPE
+    tech-c:         CL8090-RIPE
+    status:         ASSIGNED
+    mnt-by:         MNT-SERVINGA
+    created:        2020-02-18T11:12:49Z
+    last-modified:  2024-12-04T12:07:26Z
+    source:         RIPE
+    
+    % Information related to '2a0b:7140:1::/48AS207408'
+    
+    route6:         2a0b:7140:1::/48
+    descr:          servinga.com - Estonia
+    origin:         AS207408
+    mnt-by:         MNT-SERVINGA
+    created:        2020-02-18T11:18:11Z
+    last-modified:  2024-12-11T23:09:19Z
+    source:         RIPE
+    
+    % This query was served by the RIPE Database Query Service version 1.114 (SHETLAND)
+
+The important bit here is this line:
+
+    origin:         AS207408
+
+which referts to [Autonomous System 207408](https://ipinfo.io/AS207408),
+owned by a hosting company in Germany called
+[Servinga](https://servinga.com/).
+
+# Looking up IP blocks
+
+[Autonomous Systems](https://en.wikipedia.org/wiki/Autonomous_system_%28Internet%29) are
+essentially organizations to which
+[IPv4](https://en.wikipedia.org/wiki/IPv4) and
+[IPv6](https://en.wikipedia.org/wiki/IPv6) blocks have been allocated.
+
+These allocations can be looked up easily on the command line either using a
+third-party service:
+
+    $ curl -sL https://ip.guide/as207408 | jq .routes.v4 >> servinga
+    $ curl -sL https://ip.guide/as207408 | jq .routes.v6 >> servinga
+
+or a local database downloaded from [IPtoASN](https://iptoasn.com/).
+
+This is what I ended up with in the case of Servinga:
+
+    [
+      "45.11.183.0/24",
+      "80.77.25.0/24",
+      "194.76.227.0/24"
+    ]
+    [
+      "2a0b:7140:1::/48"
+    ]
+
+# Preventing comment submission
+
+While I do want to eliminate this source of spam, I don't want to block
+these datacentre IP addresses outright since legitimate users could be using
+these servers as VPN endpoints or crawlers.
+
+I therefore added the following to my Apache config to restrict the CGI
+endpoint (used only for write operations such as commenting):
+
+    <Location /blog.cgi>
+            Include /etc/apache2/spammers.include
+            Options +ExecCGI
+            AddHandler cgi-script .cgi
+    </Location>
+
+and then put the following in `/etc/apache2/spammers.include`:
+
+    <RequireAll>
+        Require all granted
+    
+        # https://ipinfo.io/AS207408
+        Require not ip 46.11.183.0/24
+        Require not ip 80.77.25.0/24
+        Require not ip 194.76.227.0/24
+        Require not ip 2a0b:7140:1::/48
+    </RequireAll>
+
+Finally, I can restart the website and commit my changes:
+
+    $ apache2ctl configtest && systemctl restart apache2.service
+    $ git commit -a -m "Ban all IP blocks from Servinga"
+
+# Future improvements
+
+I will likely automate this process in the future, but at the moment my
+blog can go for a week without a single spam message (down from dozens every
+day). It's possible that I've already cut off the worst offenders.
+
+I have published the [list I am currently using](https://gist.github.com/fmarier/75a64cbb60c5cbbc21f5026a019f1193).
+
+[[!tag ikiwiki]] [[!tag spam]] [[!tag apache]] [[!tag debian]]
