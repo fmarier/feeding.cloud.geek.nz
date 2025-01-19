@@ -13,7 +13,7 @@ It turns out that there is a relatively simple way to drastically reduce the
 amount of spam submitted to the moderation queue: ban the datacentre IP
 addresses that spammers are using.
 
-# Looking up AS numbers
+## Looking up AS numbers
 
 It all starts by looking at the IP address of a submitted comment:
 
@@ -71,7 +71,7 @@ which referts to [Autonomous System 207408](https://ipinfo.io/AS207408),
 owned by a hosting company in Germany called
 [Servinga](https://servinga.com/).
 
-# Looking up IP blocks
+## Looking up IP blocks
 
 [Autonomous Systems](https://en.wikipedia.org/wiki/Autonomous_system_%28Internet%29) are
 essentially organizations to which
@@ -97,7 +97,7 @@ This is what I ended up with in the case of Servinga:
       "2a0b:7140:1::/48"
     ]
 
-# Preventing comment submission
+## Preventing comment submission
 
 While I do want to eliminate this source of spam, I don't want to block
 these datacentre IP addresses outright since legitimate users could be using
@@ -129,7 +129,7 @@ Finally, I can restart the website and commit my changes:
     $ apache2ctl configtest && systemctl restart apache2.service
     $ git commit -a -m "Ban all IP blocks from Servinga"
 
-# Future improvements
+## Future improvements
 
 I will likely automate this process in the future, but at the moment my
 blog can go for a week without a single spam message (down from dozens every
