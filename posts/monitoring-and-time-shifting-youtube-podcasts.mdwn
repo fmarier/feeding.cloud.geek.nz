@@ -31,4 +31,4 @@ If you find that script handy, you may also want to check out the
 have in the same GitHub repo to [turn arbitrary video files into a
 podcast](https://feeding.cloud.geek.nz/posts/converting-any-video-to-podcast/).
 
-[[!tag youtube]] [[!tag rss]] [[!tag podcast]]
+[[!tag youtube]] [[!tag rss]] [[!tag podcast]] [[!tag debian]]
