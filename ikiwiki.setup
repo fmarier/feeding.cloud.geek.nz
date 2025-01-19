@@ -45,7 +45,6 @@ add_plugins:
 - lockedit
 - 404
 - comments
-- blogspam
 - sidebar
 - ikiwikihosting
 - branchable
