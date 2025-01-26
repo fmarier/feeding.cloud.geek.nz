@@ -4,7 +4,7 @@
 I have an old motherboard that requires creating a DOS boot floppy in order to upgrade its BIOS. Fortunately, it's not too hard to do this with [FreeDOS](http://www.freedos.org/) and a USB stick.
 
 _The instructions below are based on an [old FDos wiki article](https://web.archive.org/web/20090301055636/http://wiki.fdos.org/Installation/BootDiskCreateUSB).
-You maye have more luck with the [latest instructions from the official wiki](http://wiki.freedos.org/wiki/index.php/USB)_
+You maye have more luck with an [article from a more recent FreeDOS wiki](https://web.archive.org/web/20210206144122/http://wiki.freedos.org/wiki/index.php/USB)_
 
 
 ### Downloading the dependencies
