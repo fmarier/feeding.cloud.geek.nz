@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ ip="2600:1702:50c0:26f0:e576:ed76:eacd:13ba"
+ claimedauthor="NOSNHOP"
+ subject="comment 1"
+ date="2025-02-23T18:36:18Z"
+ content="""
+I too got a WLE1216V5 for 5ghz, but went with an AR5BXB112 for 2.4ghz (for the more open ath9k driver). I differ on antenna arrangement as I put 2.4ghz to middle and 5ghz on the two new antennas for balance(I doubt it matters in use). I don’t think I’ll upgrade it with AX or BE, as the PCIe link would limit bandwidth even if some of the other advancements would be nice to have.
+I also put a mSATA ssd in slot three and consider the unit maxed out now.
+"""]]
