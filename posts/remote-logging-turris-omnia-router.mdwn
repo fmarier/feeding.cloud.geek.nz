@@ -141,14 +141,14 @@ everything setup correctly
 
 If I do the following on my router:
 
-  /etc/init.d/syslog-ng restart
-  logger TestA
+    /etc/init.d/syslog-ng restart
+    logger TestA
 
 I see the following in `/var/log/messages`:
 
-  Aug 14 20:39:35 hostname syslog-ng[9860]: syslog-ng shutting down; version='3.37.1'
-  Aug 14 20:39:36 hostname syslog-ng[10024]: syslog-ng starting up; version='3.37.1'
-  Aug 15 03:39:49 hostname root: TestA
+    Aug 14 20:39:35 hostname syslog-ng[9860]: syslog-ng shutting down; version='3.37.1'
+    Aug 14 20:39:36 hostname syslog-ng[10024]: syslog-ng starting up; version='3.37.1'
+    Aug 15 03:39:49 hostname root: TestA
 
 The correct timezone is the one in the first two lines. Other daemon
 messages are displayed using an incorrect timezone like `logger`.
