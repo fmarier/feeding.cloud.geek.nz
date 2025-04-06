@@ -35,7 +35,7 @@ and setup two encrypted mount points in `/etc/cryptmount/cmtab`:
       dev=/media/cdrom/backup.dat
       dir=/backup
       fstype=ext4
-      mountoptions=defaults,noatime,ro,noload
+      mountoptions=defaults,noatime,ro,noload,nofsck
 
       keyfile=/media/cdrom/backup.key
       keyhash=sha512
