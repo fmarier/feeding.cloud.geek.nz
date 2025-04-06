@@ -53,7 +53,7 @@ Make sure you have at least 4.3 GB of free disk space on `/` and then run:
     dd if=/dev/zero of=/backup.dat bs=1M count=4096
     cryptmount --generate-key 32 backup
     cryptmount --prepare backup
-    mkfs.ext4 -m 0 /dev/mapper/backup
+    mkfs.ext4 -m 0 -O ^orphan_file /dev/mapper/backup
     cryptmount --release backup
 
 Alternatively, if you're using a double-layer DVD then use this `dd` line:
