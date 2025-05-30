@@ -1,0 +1,121 @@
+[[!meta title="Implementing TOTP two-factor authentication in 2025"]]
+[[!meta date="2025-05-30T16:30:00.000-07:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Ignoring SMS, which is vulnerable to [SIM-swapping
+attacks](https://en.wikipedia.org/wiki/SIM_swap_scam), TOTP ([Time-based
+One-Time Passwords](https://prezu.ca/post/2021-08-16-totp-3/)) is probably
+the most popular second factor authentication method at the moment. While
+reviewing a [pull request adding support for
+TOTP](https://github.com/brave/accounts/pull/60), I decided to investigate
+the current state of authenticators in 2025 with regards to their support
+for the various [security
+parameters](https://github.com/google/google-authenticator/wiki/Key-Uri-Format#parameters).
+
+A [previous
+analysis](https://labanskoller.se/blog/2019/07/11/many-common-mobile-authenticator-apps-accept-qr-codes-for-modes-they-dont-support/)
+from 2019 found that many popular authenticators were happy to accept
+parameters they didn't actually support and then generate the wrong codes.
+At the time, a service wanting to offer TOTP to its users had to stick to
+the default security parameters or face major interoperability issues with
+common authenticator clients. Has the landscape changed or are we still
+stuck with [security decisions made 15 years
+ago](https://github.com/google/google-authenticator/commit/6649dd33687c5561663fb242a05f6949cf4d543f)?
+
+As an aside: yes, everybody is linking to a [wiki page](https://github.com/google/google-authenticator/wiki/Key-Uri-Format) for an archived Google repo because [there is no formal spec for the URI format](https://shkspr.mobi/blog/2022/05/why-is-there-no-formal-specification-for-otpauth-urls/).
+
+# Test results
+
+I tested a number of Android authenticators against the
+[oathtool](https://www.nongnu.org/oath-toolkit/) client:
+
+    /usr/bin/oathtool --totp=SHA1 --base32 JVRWCZDTMVZWK5BAMJSSAZLOMVZGK5TJMVXGIZLDN5SGKZBAOVZI 
+    /usr/bin/oathtool --totp=SHA256 --base32 JVRWCZDTMVZWK5BAMJSSAZLOMVZGK5TJMVXGIZLDN5SGKZBAOVZI
+
+1Password:
+
+- SHA1 (52 chars): yes
+- SHA256: not available
+
+Authy (Twillio):
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: no (treats it as SHA1)
+- Note: they also pick [random
+  logos](https://help.twilio.com/articles/5078017808283-The-Authy-App-is-Showing-the-Wrong-Logo-for-my-Verify-TOTP)
+  to attach to your brand.
+
+Bitwarden Authenticator:
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: yes
+
+Duo Security:
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: no (treats it as SHA1)
+
+[FreeOTP](https://f-droid.org/en/packages/org.fedorahosted.freeotp/):
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: yes
+
+Google Authenticator:
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: yes
+
+LastPass Authenticator:
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: yes
+
+Microsoft Authenticator:
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: no (treats it as SHA1)
+
+I also tested the [infamous](https://blog.dataforce.org.uk/2019/03/fun-with-totp-codes/) Google Authenticator on iOS:
+
+    otpauth://totp/francois+1%40brave.com?secret=JVRWCZDTMVZWK5BAMJSSAZLOMVZGK5TJ&issuer=Brave%20Account&algorithm=SHA1&image=https://account.brave.com/images/email/brave-41x40.png
+    otpauth://totp/francois+1%40brave.com?secret=JVRWCZDTMVZWK5BAMJSSAZLOMVZGK5TJMVXGIZLDN5SGKZBAOVZI&issuer=Brave%20Account&algorithm=SHA1&image=https://account.brave.com/images/email/brave-41x40.png
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): no (rejects it)
+- SHA256 (32 chars): yes
+
+# Recommendations to site owners
+
+So unfortunately, the [2019 recommendations](https://labanskoller.se/blog/2019/07/11/many-common-mobile-authenticator-apps-accept-qr-codes-for-modes-they-dont-support/#recommendation-to-site-owners) still stand:
+
+- Algorithm: SHA1
+- Key size: 32 characters (equivalent to 20 bytes / 160 bits)
+- Period: 30 seconds
+- Digits: 6
+
+You should also avoid putting the [`secret` parameter
+**last**](https://github.com/pquerna/otp/issues/94#issuecomment-2524954588) in the URI to avoid breaking
+some versions of Google Authenticator which parse these URIs incorrectly.
+
+Other security and user experience considerations:
+
+- Keep track of codes that are already used for as long they
+  are valid since these codes are meant to be [_one-time_ credentials](https://datatracker.ietf.org/doc/html/rfc6238#section-5.2).
+- Avoid storing the TOTP secret directly in plaintext inside the main app database
+  and instead store it in some kind of secrets manager. Note: it cannot be
+  hashed because the application needs the secret to generate the expected codes.
+- Provide a recovery mechanism since users will lose their
+  authenticators. This is often done through the use of one-time "scratch codes".
+- Consider including in generated URIs two parameters introduced by the [best Android client](https://github.com/freeotp/freeotp-android): [`image`](https://github.com/freeotp/freeotp-android/blob/master/URI.md#image)
+  and
+  [`color`](https://github.com/freeotp/freeotp-android/blob/master/URI.md#color).
+  Most clients will ignore them, but they also don't hurt.
+
+[[!tag security]] [[!tag android]] [[!tag ios]] [[!tag brave]]
