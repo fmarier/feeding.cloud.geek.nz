@@ -42,8 +42,7 @@ Authy (Twillio):
 - SHA1 (32 chars): yes
 - SHA1 (52 chars): yes
 - SHA256: no (treats it as SHA1)
-- Note: they also pick [random
-  logos](https://help.twilio.com/articles/5078017808283-The-Authy-App-is-Showing-the-Wrong-Logo-for-my-Verify-TOTP)
+- Note: they also pick [random logos](https://github.com/brave/accounts/issues/70)
   to attach to your brand.
 
 Bitwarden Authenticator:
