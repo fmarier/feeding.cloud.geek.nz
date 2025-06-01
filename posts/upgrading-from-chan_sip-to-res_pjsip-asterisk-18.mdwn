@@ -92,6 +92,7 @@ and that became the following in `pjsip.conf`:
     [2000]
     type = aor
     max_contacts = 1
+    remove_existing=yes
     
     [2000]
     type = auth
@@ -114,6 +115,7 @@ and that became the following in `pjsip.conf`:
     [2001]
     type = aor
     max_contacts = 1
+    remove_existing=yes
     
     [2001]
     type = auth
