@@ -71,6 +71,12 @@ which referts to [Autonomous System 207408](https://ipinfo.io/AS207408),
 owned by a hosting company in Germany called
 [Servinga](https://servinga.com/).
 
+Alternatively, you can use this [WHOIS](https://en.wikipedia.org/wiki/WHOIS) server with much better output:
+
+    $ whois -h whois.cymru.com -v 2a0b:7140:1:1:5054:ff:fe66:85c5
+    AS      | IP                                       | BGP Prefix          | CC | Registry | Allocated  | AS Name
+    207408  | 2a0b:7140:1:1:5054:ff:fe66:85c5          | 2a0b:7140:1::/48    | DE | ripencc  | 2017-07-11 | SERVINGA-EE, DE
+
 ## Looking up IP blocks
 
 [Autonomous Systems](https://en.wikipedia.org/wiki/Autonomous_system_%28Internet%29) are
