@@ -37,6 +37,13 @@ I tested a number of Android authenticators against the
 - SHA1 (52 chars): yes
 - SHA256: not available
 
+
+[Aegis](https://f-droid.org/en/packages/com.beemdevelopment.aegis/):
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: yes
+
 Authy (Twillio):
 
 - SHA1 (32 chars): yes
