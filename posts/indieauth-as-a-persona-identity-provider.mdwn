@@ -1,27 +1,27 @@
 [[!meta title="IndieAuth as a Persona Identity Provider"]]
 [[!meta date="2013-06-29T20:30:00.000-04:00"]]
 [[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
-Two weeks ago, I attended [Indie Web Camp](http://indiewebcamp.com) and had lots of interesting
+Two weeks ago, I attended [Indie Web Camp](https://indiewebcamp.com) and had lots of interesting
 [Persona](https://login.persona.org) conversations. As part of an
-[Auth Jam session](http://indiewebcamp.com/2013/Auth_Jam_Session), a few of us explored the idea of adding
+[Auth Jam session](https://indiewebcamp.com/2013/Auth_Jam_Session), a few of us explored the idea of adding
 non-[OAuth](https://en.wikipedia.org/wiki/OAuth)-based authentication mechanisms to
 [IndieAuth](https://indieauth.com).
 
-While [Aaron](http://aaronparecki.com) and [Austin](http://ozten.com) got
+While [Aaron](https://aaronparecki.com) and [Austin](https://ozten.com) got
 [SMS](https://github.com/aaronpk/IndieAuth/commit/1e5581b2a91b4d455be1310f833026a8c343ec71) and [Persona](https://github.com/aaronpk/IndieAuth/commit/2dd7d58e26b65af53ea0a3c8659e1779dcb7be41) working as IndieAuth providers during one of the Sunday hack
 sessions, I wanted to explore the idea of IndieAuth (an implementation of
-[RelMeAuth](http://microformats.org/wiki/RelMeAuth)) as a
+[RelMeAuth](https://microformats.org/wiki/RelMeAuth)) as a
 [Persona identity provider](https://developer.mozilla.org/en-US/docs/Mozilla/Persona/Implementing_a_Persona_IdP).
 
 # Using IndieAuth on any Persona-enabled site
 
 The goal of this effort was to allow Indie Web developers to use their
 preferred email address with Persona and have IndieAuth authenticate them
-using any supported IndieAuth provider (e.g. [Twitter](https://dev.twitter.com/docs/auth/implementing-sign-twitter) or [GitHub](http://developer.github.com/guides/basics-of-authentication/)).
+using any supported IndieAuth provider (e.g. [Twitter](https://dev.twitter.com/docs/auth/implementing-sign-twitter) or [GitHub](https://developer.github.com/guides/basics-of-authentication/)).
 
 This work will help bridge the gap between these two projects and allow
 IndieAuth developers to log into more website using their
-[hard-earned credentials](http://indiewebcamp.com/How_to_set_up_IndieAuth_on_your_own_domain).
+[hard-earned credentials](https://indiewebcamp.com/How_to_set_up_IndieAuth_on_your_own_domain).
 
 # User setup
 
@@ -29,7 +29,7 @@ In order to take advantage of this, users have to:
 
 1. Serve a [support document](https://developer.mozilla.org/en-US/docs/Mozilla/Persona/.well-known-browserid) on their *email* domain declaring
 `indieauth.com` as the authority for their domain.
-2. Include a [`rel="me"`](http://microformats.org/wiki/rel-me) link for their preferred
+2. Include a [`rel="me"`](https://microformats.org/wiki/rel-me) link for their preferred
 email address on their *personal* domain.
 3. Advertise their *personal* domain on their *email* domain via
 [WebFinger](https://tools.ietf.org/html/draft-ietf-appsawg-webfinger).
@@ -66,16 +66,16 @@ with the following in `/var/www/profile/francois@fmarier.org.json`:
       "subject": "acct:francois@fmarier.org",
       "links": [
         {
-          "rel": "http://webfinger.net/rel/avatar",
-          "href": "http://fmarier.org/img/francois_marier.jpg"
+          "rel": "https://webfinger.net/rel/avatar",
+          "href": "https://fmarier.org/img/francois_marier.jpg"
         },
         {
-          "rel": "http://webfinger.net/rel/profile-page",
-          "href": "http://fmarier.org/"
+          "rel": "https://webfinger.net/rel/profile-page",
+          "href": "https://fmarier.org/"
         },
         {
           "rel": "me",
-          "href": "http://fmarier.org/"
+          "href": "https://fmarier.org/"
         }
       ]
     }
@@ -92,4 +92,4 @@ address and IndieAuth will convert that email address to a personal domain
 (using WebFinger) before authenticating the user with one of the IndieAuth
 providers enabled on that domain.
 
-[[!tag indieweb]] [[!tag browserid]] [[!tag web]] [[!tag nzoss]] [[!tag mozilla]]
+[[!tag indieweb]] [[!tag browserid]] [[!tag web]] [[!tag mozilla]]
