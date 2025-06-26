@@ -58,7 +58,7 @@ together via WebFinger. Thankfully, he found a clever way to do this with
     RewriteEngine on
     RewriteMap unescape int:unescape
     RewriteCond ${unescape:%{QUERY_STRING}} resource=acct:(.+)
-    RewriteRule ^/.well-known/webfinger /profile/${unescape:%1}.json? [last]
+    RewriteRule ^/\.well-known/webfinger /profile/${unescape:%1}.json? [last]
 
 with the following in `/var/www/profile/francois@fmarier.org.json`:
 
