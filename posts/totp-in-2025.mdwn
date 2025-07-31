@@ -88,6 +88,12 @@ Microsoft Authenticator:
 - SHA1 (52 chars): yes
 - SHA256: no (treats it as SHA1)
 
+[Proton Authenticator](https://proton.me/authenticator/download):
+
+- SHA1 (32 chars): yes
+- SHA1 (52 chars): yes
+- SHA256: yes
+
 I also tested the [infamous](https://blog.dataforce.org.uk/2019/03/fun-with-totp-codes/) Google Authenticator on iOS:
 
     otpauth://totp/francois+1%40brave.com?secret=JVRWCZDTMVZWK5BAMJSSAZLOMVZGK5TJ&issuer=Brave%20Account&algorithm=SHA1&image=https://account.brave.com/images/email/brave-41x40.png
