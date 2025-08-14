@@ -156,6 +156,7 @@ customize a few tiger settings in `/etc/tiger/tigerrc`:
     Tiger_SSH_Protocol='2'
     Tiger_Passwd_Hashes='sha512'
     Tiger_Running_Procs='rsyslogd cron /usr/sbin/apache2 postgres'
+    Tiger_DPKG_Optimize=N
     Tiger_Listening_ValidProcs='sshd|mosh-server|ntpd'
 
 I turned off the duplicate chkrootkit cronjob (it gets run automatically by tiger) using:
