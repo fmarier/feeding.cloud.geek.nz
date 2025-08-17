@@ -95,11 +95,9 @@ I installed duplicity like this:
 
     apt install duplicity python3-boto3
 
-then used the following options:
+then used the following option:
 
-- `--s3-use-new-style`: apparently required on non-US regions
 - `--s3-use-ia`: recommended pricing structure for backups
-- `--s3-use-multiprocessing`: speeds up uploading of backup chunks
 
 and the following remote URL:
 
@@ -107,7 +105,7 @@ and the following remote URL:
 
 I ended up with the following command:
 
-    http_proxy= AWS_ACCESS_KEY_ID=<access_key> AWS_SECRET_ACCESS_KEY=<access_key_secret> PASSPHRASE=<password> duplicity --s3-use-new-style --s3-use-ia --s3-use-multiprocessing --no-print-statistics --verbosity 1 --exclude-device-files --exclude-filelist <exclude_file> --include-filelist <include_file> --exclude '**' / <remote_url>
+    http_proxy= AWS_ACCESS_KEY_ID=<access_key> AWS_SECRET_ACCESS_KEY=<access_key_secret> PASSPHRASE=<password> duplicity --s3-use-ia --no-print-statistics --verbosity 1 --exclude-device-files --exclude-filelist <exclude_file> --include-filelist <include_file> --exclude '**' / <remote_url>
 
 where `<exclude_file>` is a file which contains the list of paths to keep
 out of my backup:
