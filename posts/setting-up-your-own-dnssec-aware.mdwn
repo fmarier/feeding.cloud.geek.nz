@@ -96,7 +96,7 @@ You can test that
 [systemd-resolved](https://www.freedesktop.org/wiki/Software/systemd/resolved/)
 is configured properly using:
 
-    systemd-resolve --status
+    resolvectl status
 
 ## Testing DNSSEC resolution
 
