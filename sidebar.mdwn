@@ -8,8 +8,9 @@
 <br>Free and Open Source developer
 <br>
 <br>[Fediverse](https://fosstodon.org/@fmarier)
-<br>[Twitter](https://twitter.com/fmarier)
 <br>[LinkedIn](https://linkedin.com/in/fmarier)
+<br>[Bluesky](https://bsky.app/profile/fmarier.org)
+<br>[X](https://x.com/fmarier)
 
 # More from this blog
 
