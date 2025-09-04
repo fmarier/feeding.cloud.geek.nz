@@ -53,7 +53,7 @@ to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
 1. Install the [package](http://packages.debian.org/stable/ejabberd), using
 "admin" as the username for the administrative user:
 
-      apt install ejabberd
+      apt install ejabberd erlang-p1-sqlite3
 
 2. Set the following in `/etc/ejabberd/ejabberd.yml`:
 
@@ -75,6 +75,17 @@ to solve the [Pidgin](http://pidgin.im) "Not authorized" connection problems.
            transport: udp
            module: ejabberd_stun
            use_turn: false
+
+2. Improve the reliability of the message archive management (MAM) by
+changing adding these settings to `/etc/ejabberd/ejabberd.yml`:
+
+      sql_type: sqlite
+      sql_database: "/var/lib/ejabberd/ejabberd.db"
+      
+      modules:
+        mod_mam:
+          db_type: sql
+          compress_xml: true
 
 3. Copy the SSL certificate into the `/etc/ejabberd/` directory and set the
 permissions correctly:
