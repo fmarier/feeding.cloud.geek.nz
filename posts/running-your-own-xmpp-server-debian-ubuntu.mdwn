@@ -108,8 +108,6 @@ permissions correctly:
 
        ## mod_avatar
        ## mod_muc
-       ## mod_private
-       ## mod_pubsub
 
 6. Restart the ejabberd daemon:
 
