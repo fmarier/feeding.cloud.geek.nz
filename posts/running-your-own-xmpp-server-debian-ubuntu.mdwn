@@ -15,7 +15,8 @@ My personal domain is `fmarier.org` and so I created the following DNS
 records:
 
     jabber-gw            CNAME    fmarier.org.
-    _xmpp-client._tcp    SRV      5 0 5222 jabber-gw.fmarier.org.
+    _xmpps-client._tcp   SRV      5 0 5223 jabber-gw.fmarier.org.
+    _xmpp-client._tcp    SRV      50 0 5222 jabber-gw.fmarier.org.
     _xmpp-server._tcp    SRV 	  5 0 5269 jabber-gw.fmarier.org.
 
 Then I went to get a free TLS certificate for the above.
@@ -131,6 +132,7 @@ permissions correctly:
 
        iptables -A INPUT -p udp --dport 3478 -j ACCEPT
        iptables -A INPUT -p tcp --dport 5222 -j ACCEPT
+       iptables -A INPUT -p tcp --dport 5223 -j ACCEPT
        iptables -A INPUT -p tcp --dport 5269 -j ACCEPT
 
 9. Optionally create a cronjob in `/etc/cron.d/restart-ejabberd`
@@ -186,6 +188,7 @@ federate with yours by putting the following in
           - "cheogram.com"
           - "conference.soprani.ca"
           - "jmp.chat"
+          - "eu.prod.push.monal-im.org"
 
     access:
       s2s:
