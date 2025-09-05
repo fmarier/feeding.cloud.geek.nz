@@ -26,10 +26,9 @@ The easiest way to get a certificate is to install [certbot](https://certbot.eff
 
     apt install certbot python3-certbot-apache
 
-Then, shutdown your existing webserver if you have one running and request
-a cert like this:
+Then, request a cert like this:
 
-    certbot --duplicate certonly --apache -d jabber-gw.fmarier.org -d fmarier.org
+    certbot --duplicate certonly --apache -d jabber-gw.fmarier.org -d fmarier.org -d pubsub.fmarier.org
 
 Once you have the cert, you can merge the private and public keys
 into the file that ejabberd expects:
