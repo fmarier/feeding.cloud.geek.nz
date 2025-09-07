@@ -165,12 +165,15 @@ and my own user needs to have read access to the secret keys.
 To create a new VPN, right-click on Network-Manager and add a new VPN
 connection of type "OpenVPN":
 
-* Gateway: `hafnarfjordur.fmarier.org`
-* Type: `Certificates (TLS)`
-* User Certificate: `/etc/openvpn/akranes.crt`
-* CA Certificate: `/etc/openvpn/ca.crt`
-* Private Key: `/etc/openvpn/akranes.key`
-* Available to all users: `NO`
+* General
+  * All users may connect to this network: `NO`
+  * Metered connection: `YES`
+* VPN
+  * Gateway: `hafnarfjordur.fmarier.org`
+  * Type: `Certificates (TLS)`
+  * User certificate: `/etc/openvpn/akranes.crt`
+  * CA certificate: `/etc/openvpn/ca.crt`
+  * User private key: `/etc/openvpn/akranes.key`
 
 then click the "Avanced" button and set the following:
 
@@ -188,6 +191,8 @@ then click the "Avanced" button and set the following:
      * Mode: `TLS-Auth`
      * Key File: `/etc/openvpn/ta.key`
      * Key Direction: `1`
+   * TLS version control:
+     * TLS min version: click "or highest"
 
 There are also compatible clients on [Android](/posts/using-openvpn-on-android-lollipop/), [iOS and OSX](/posts/using-openvpn-on-ios-and-osx/).
 
@@ -216,4 +221,4 @@ that will be offered to all clients.
 Is there anything else you have in your setup and that I should consider
 adding to mine?
 
-[[!tag security]] [[!tag debian]] [[!tag ubuntu]] [[!tag nzoss]] [[!tag sysadmin]] [[!tag openvpn]]
+[[!tag security]] [[!tag debian]] [[!tag ubuntu]] [[!tag sysadmin]] [[!tag openvpn]]
