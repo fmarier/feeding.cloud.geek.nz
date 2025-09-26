@@ -80,6 +80,7 @@ body {
 }
 
 input#searchbox {
+    background-color: #EEEED9;
     background-image: url('/wikiicons/search-bg.gif');
 }
 
