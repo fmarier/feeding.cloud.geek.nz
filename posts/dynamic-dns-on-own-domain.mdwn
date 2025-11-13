@@ -42,7 +42,7 @@ In order to update its IP address whenever it changes, I installed
 [inadyn](https://github.com/troglobit/inadyn) on each of my
 machines:
 
-    apt install inadyn
+    apt install inadyn ca-certificates
 
 I added the following to `/etc/inadyn.conf`:
 
@@ -53,6 +53,8 @@ I added the following to `/etc/inadyn.conf`:
            checkip-server = fmarier.org
            checkip-path = /whats-my-ip.shtml?machinename
     }
+    
+    ca-trust-file = /etc/ssl/certs/ca-certificates.crt
 
 and set the following in `/etc/default/inadyn`:
 
