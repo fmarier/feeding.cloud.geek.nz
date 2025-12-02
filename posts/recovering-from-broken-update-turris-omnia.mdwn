@@ -57,6 +57,14 @@ Finally, I rolled back to the exact state I was on before the 9.0.0 update:
     Current state saved as snapshot number 532
     Rolled back to snapshot 520
 
+## Full wipe
+
+As an aside, it turns out that the factory reset functionality is
+implemented as a brtfs rollback to a special _factory_ snapshot. This is why
+is so fast, but it also means that **doing a simple factory reset doesn't
+wipe the data on your router**. If you are planning to sell your device or
+otherwise dispose of it, you also need to **delete all btrfs snapshots**
+
 ## Conclusion
 
 While this update was very disappointing, especially since it's never
