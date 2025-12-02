@@ -1,0 +1,67 @@
+[[!meta title="Recovering from a broken update on the Turris Omnia"]]
+[[!meta date="2025-12-01T21:05:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+The recent [Turris OS update from 7.2.3 to
+9.0.0](https://forum.turris.cz/t/turris-os-9-0-is-out/22189) took down my
+WiFi entirely. The wired network still works fine, but wireless is
+completely broken.
+
+## Factory reset
+
+It turns out the Omnia has an extensive (and fast) [factory reset / recovery
+mode](https://docs.turris.cz/hw/omnia/rescue-modes/) via the hardware reset button.
+
+Unfortunately, the factory image didn't work for me, possibly because I
+[don't use the stock WiFi radios anymore](/posts/upgrading-wifi-cards-turris-omnia/).
+
+## Rolling back with schnapps
+
+Thanks to the fact that the Omnia uses a
+[btrfs](https://en.wikipedia.org/wiki/Btrfs) root filesystem, and the
+liberal use of [snapshots](https://docs.turris.cz/geek/schnapps/schnapps/)
+around updates, I was able to rollback to the pre-9.0.0 state.
+
+First, I connected to the router using ssh:
+
+    ssh root@192.168.1.1
+
+Then I listed the available snapshots:
+
+    $ schnapps list
+    # | Type      | Size        | Date                        | Description
+    ------+-----------+-------------+-----------------------------+------------------------------------
+      500 | post      |    15.98MiB | 2025-08-09 11:27:48 -0700   | Automatic post-update snapshot (TurrisOS 7.2.2 - hbs)
+      506 | pre       |    17.92MiB | 2025-09-12 03:44:32 -0700   | Automatic pre-update snapshot (TurrisOS 7.2.2 - hbs)
+      507 | post      |    17.88MiB | 2025-09-12 03:45:14 -0700   | Automatic post-update snapshot (TurrisOS 7.2.3 - hbs)
+      515 | time      |    20.03MiB | 2025-11-02 01:05:01 -0700   | Snapshot created by cron
+      516 | time      |    20.05MiB | 2025-11-09 01:05:01 -0800   | Snapshot created by cron
+      517 | time      |    20.29MiB | 2025-11-16 01:05:00 -0800   | Snapshot created by cron
+      518 | time      |    20.64MiB | 2025-11-23 01:05:01 -0800   | Snapshot created by cron
+      519 | time      |    20.83MiB | 2025-11-30 01:05:00 -0800   | Snapshot created by cron
+      520 | pre       |    87.91MiB | 2025-11-30 07:41:10 -0800   | Automatic pre-update snapshot (TurrisOS 7.2.3 - hbs)
+      521 | post      |   196.32MiB | 2025-11-30 07:48:11 -0800   | Automatic post-update snapshot (TurrisOS 9.0.0 - hbs)
+      523 | pre       |     4.44MiB | 2025-11-30 20:47:31 -0800   | Automatic pre-update snapshot
+      524 | post      |   224.00KiB | 2025-11-30 20:47:43 -0800   | Automatic post-update snapshot
+      525 | rollback  |   224.00KiB | 2025-12-01 04:56:32 +0000   | Rollback to snapshot factory
+      526 | pre       |     4.44MiB | 2025-11-30 21:04:19 -0800   | Automatic pre-update snapshot
+      527 | post      |   272.00KiB | 2025-11-30 21:04:31 -0800   | Automatic post-update snapshot
+      528 | rollback  |   272.00KiB | 2025-12-01 05:13:38 +0000   | Rollback to snapshot factory
+      529 | pre       |     4.52MiB | 2025-11-30 21:28:44 -0800   | Automatic pre-update snapshot
+      530 | single    |   208.00KiB |                             | 
+      531 | rollback  |   224.00KiB | 2025-12-01 05:29:47 +0000   | Rollback to snapshot factory
+
+Finally, I rolled back to the exact state I was on before the 9.0.0 update:
+
+    $ schnapps rollback 520
+    Current state saved as snapshot number 532
+    Rolled back to snapshot 520
+
+## Conclusion
+
+While this update was very disappointing, especially since it's never
+happened before with major updates on Turris OS, it made me discover just
+how great the recovery tools are. It would be pretty tricky to fully brick
+one of these devices.
+
+[[!tag turris]] [[!tag wifi]] [[!tag debian]]
