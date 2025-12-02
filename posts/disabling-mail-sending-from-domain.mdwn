@@ -46,4 +46,22 @@ I'm not sure why a mail server would correctly handle DKIM but not SPF
 since the former is more complicated. Maybe this is not really
 necessary and is merely a belt-and-suspender kind of approach.
 
+## Null MX
+
+If you look at the MX record for `example.com`:
+
+    $ dig MX example.com
+    example.com.		86400	IN	MX	0 .
+
+This odd-looking `MX` record is actually following
+[RFC7505](https://datatracker.ietf.org/doc/html/rfc7505) and is the correct
+way to indicate that a domain doesn't **accept** incoming emails.
+
+While this is the opposite of what I set out to do, the RFC suggests that
+some mail servers will refuse incoming emails claiming to be from domains
+with a Null `MX` record on the basis that legitimate email senders have
+valid return addresses.
+
+This sounds like a good idea to add to a domain that isn't sending emails.
+
 [[!tag sysadmin]] [[!tag debian]] [[!tag dns]] [[!tag email]]
