@@ -1,0 +1,4 @@
+[[!meta title="pages tagged golang"]]
+
+[[!inline pages="tagged(golang)" actions="no" archive="yes"
+feedshow=10]]
