@@ -1,0 +1,111 @@
+[[!meta title="Learning a new programming language with an LLM"]]
+[[!meta date="2025-12-07T16:15:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I started learning [Go](https://go.dev/) this year. First, I picked a [Perl project](https://launchpad.net/email-reminder) I wanted to rewrite,
+got a [good book](https://www.gopl.io/) and ignored AI tools since I thought they would [do nothing but interfere with learning](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4895486).
+Eventually though, I decided to experiment a bit and ended up finding a few ways to use AI assistants effectively even when learning
+something new.
+
+## Searching more efficiently
+
+The first use case that worked for me was search. Instead of searching on a traditional search engine and then ending up on [Stack Overflow](https://stackoverflow.com/),
+I could get the answer I was looking for directly in an AI side-window in my editor. Of course, that's bad news for Stack Overflow.
+
+I was however skeptical from the beginning since LLMs make mistakes, sometimes
+they making up function signatures or APIs that don't exist. Therefore
+I got into the habit of going to the
+[official standard library documentation](https://pkg.go.dev/) to double-check
+suggestions. For example, if the LLM suggests using
+[strings.SplitN](https://pkg.go.dev/strings#SplitN), I verify the function
+signature and behaviour carefully before using it. Basically, "**don't** trust
+and **do** verify."
+
+I stuck to the standard library in [my project](https://code.launchpad.net/~fmarier/email-reminder/+git/email-reminder/+ref/go-backend),
+but if an LLM recommends third-party dependencies for you, make sure they
+exist and that [Socket](https://socket.dev/search?e=go) doesn't flag them
+as malicious. Research has found that
+[5-20% of packages suggested by LLMs don't actually exist](https://arxiv.org/abs/2406.10279),
+making this a real attack vector (dubbed "slopsquatting").
+
+## Autocomplete is too distracting
+
+A step I took early on was to disable AI autocomplete in my editor. When
+learning a new language, you need to develop muscle memory for the syntax.
+Also, Go is no Java. There's not that much boilerplate to write in general.
+
+I found it quite distracting to see some almost correct code replace
+my thinking about the next step. I can see how one could go faster with
+these suggestions, but being a developer is not just about
+cranking out lines of code as fast as possible, it's also about constantly
+learning new things (and retaining them).
+
+## Asking about idiomatic code
+
+One of the most useful prompts when learning a new language is "Is this the
+most idiomatic way to do this in Go?". Large language models are good at
+recognizing patterns and can point out when you're writing code that works
+but doesn't follow the conventions of the language. This is especially
+valuable early on when you don't yet have a feel for what "good" code looks
+like in that language.
+
+It's usually pretty easy (at least for an experience developer) to tell when
+the LLM suggestion is actually counter productive or wrong. If it increases
+complexity or is harder to read/decode, it's probably not a good idea to do it.
+
+## Reviews
+
+One way a new dev gets better is through code review. If you have access to a
+friend who's an expert in the language you're learning, then you can definitely
+gain a lot by asking for feedback on your code.
+
+If you don't have access to such a valuable resource, or as a first step before
+you consult your friend, I found that AI-assisted code reviews can be useful:
+
+1. Get the model to write the review prompt for you. Describe what you want
+   reviewed and let it generate a detailed prompt.
+2. Feed that prompt to multiple models. They each have different answers
+   and will detect different problems.
+3. Be prepared to ignore 50% of what they recommend. Some suggestions
+   will be stylistic preferences, others will be wrong, or irrelevant.
+
+The value is in the other 50%: the suggestions that make you think about
+your code differently or catch genuine problems.
+
+Similarly for security reviews:
+
+- A lot of what they flag will need to be ignored (false positives, or
+  things that don't apply to your threat model).
+- Some of it may highlight areas for improvement that you hadn't
+  considered.
+- Occasionally, they will point out real vulnerabilities.
+
+But always keep in mind that AI chatbots are trained to be
+[people-pleasers](https://www.youtube.com/watch?v=W03Er73TEws) and often
+feel the need to suggest something when nothing was needed
+
+## An unexpected benefit
+
+One side effect of using AI assistants was that having them write the
+scaffolding for unit tests motivated me to increase my code coverage.
+Trimming unnecessary test cases and adding missing ones is pretty quick when
+the grunt work is already done, and I ended up testing more of my code
+(being a personal project written in my own time) than I might have otherwise.
+
+## Learning
+
+In the end, I continue to believe in the value of learning from quality
+books (I find reading paper-based most effective). In addition, I like
+to create [Anki](https://apps.ankiweb.net/) questions for common mistakes
+or things I find I have to look up often. Remembering something will
+always be faster than asking an AI tool.
+
+So my experience this year tells me that LLMs can supplement traditional
+time-tested learning techniques, but I don't believe it obsoletes them.
+
+P.S. I experimented with getting an LLM to ghost-write this post for me
+from an outline (+ a [detailed style guide](https://gist.github.com/fmarier/049184a4ee4b389b847fe571e31486aa))
+and I ended up having to rewrite at least 75% of it. It was largely a
+waste of time.
+
+[[!tag golang]] [[!tag programming]] [[!tag llm]]
