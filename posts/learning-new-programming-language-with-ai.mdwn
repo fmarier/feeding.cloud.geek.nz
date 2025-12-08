@@ -108,4 +108,4 @@ from an outline (+ a [detailed style guide](https://gist.github.com/fmarier/0491
 and I ended up having to rewrite at least 75% of it. It was largely a
 waste of time.
 
-[[!tag golang]] [[!tag programming]] [[!tag llm]]
+[[!tag golang]] [[!tag programming]] [[!tag llm]] [[!tag debian]]
