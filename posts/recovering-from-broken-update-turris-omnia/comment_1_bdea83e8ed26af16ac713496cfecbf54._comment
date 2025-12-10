@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ ip="77.48.47.2"
+ claimedauthor="Milan Zamazal"
+ subject="comment 1"
+ date="2025-12-02T22:55:27Z"
+ content="""
+The WiFi interfaces got renamed in 9.0.0; from the upgrade notification:
+
+Wi-Fi interfaces are renamed (from wlan[0-9](-[0-9])? to phy[0-9]ap[0-9]); Might break custom configurations
+
+Removing the WiFi networks and creating them again is one way that should help.
+"""]]
