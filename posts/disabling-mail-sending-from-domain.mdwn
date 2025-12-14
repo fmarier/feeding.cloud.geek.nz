@@ -64,4 +64,15 @@ valid return addresses.
 
 This sounds like a good idea to add to a domain that isn't sending emails.
 
+## CAA record
+
+A somewhat recent addition to the [`CAA` DNS record](https://en.wikipedia.org/wiki/DNS_Certification_Authority_Authorization) allows domain
+owners to prevent certificates authorities from issuing [S/MIME](https://en.wikipedia.org/wiki/S/MIME) certificates
+for their domains. Not really critical for a domain that's not supposed
+to send mail at all, but it's very simple to setup, so may as well.
+
+To do this, simply add the DNS record [recommended in RFC 9495](https://www.rfc-editor.org/rfc/rfc9495.html#section-5.2):
+
+    example.com.		86400	IN      CAA 0 issuemail ";"
+
 [[!tag sysadmin]] [[!tag debian]] [[!tag dns]] [[!tag email]]
