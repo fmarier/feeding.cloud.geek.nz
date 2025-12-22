@@ -1,0 +1,83 @@
+[[!meta title="LXC setup on Debian forky"]]
+[[!meta date="2025-12-21T18:45:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+Similar to what I [wrote for Ubuntu 18.04](https://feeding.cloud.geek.nz/posts/fedora31-lxc-setup-on-ubuntu-bionic/), here is how to setup an LXC container on Debian forky.
+
+## Installing the required packages
+
+Start by installing the necessary packages on the host:
+
+    apt install lxc libvirt-clients debootstrap
+
+## Network setup
+
+Ensure the `veth` kernel module is loaded by adding the following to
+`/etc/modules-load.d/lxc-local.conf`:
+
+    veth
+
+and then loading it manually for now:
+
+    modprobe veth
+
+Enable IPv4 forwarding by putting this in `/etc/sysctl.d/lxc-local.conf`:
+
+    net.ipv4.ip_forward=1
+
+and applying it:
+
+    sysctl -p /etc/sysctl.d/lxc-local.conf
+
+Restart the LXC network bridge:
+
+    systemctl restart lxc-net.service
+
+Ensure that container traffic is not blocked by the host firewall, for example by adding
+the following to `/etc/network/iptables.up.rules`:
+
+    -A FORWARD -d 10.0.3.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -s 10.0.3.0/24 -j ACCEPT
+    -A INPUT -d 224.0.0.251 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 239.255.255.250 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 10.0.3.255 -s 10.0.3.1 -j ACCEPT
+    -A INPUT -d 10.0.3.1 -s 10.0.3.0/24 -j ACCEPT
+
+and applying the rules:
+
+    iptables-apply
+
+## Creating a container
+
+To see all available images, run:
+
+    lxc-create -n foo --template=download -- --list
+
+and then create a Debian forky container using:
+
+    lxc-create -n forky -t download -- -d debian -r forky -a amd64
+
+Start and stop the container like this:
+
+    lxc-start -n forky
+    lxc-stop -n forky
+
+## Connecting to the container
+
+Attach to the running container's console:
+
+    lxc-attach -n forky
+
+Inside the container, you can change the root password by typing:
+
+    passwd
+
+and install some essential packages:
+
+    apt install openssh-server vim
+
+To find the container's IP address (for example, so that you can ssh to it from the host):
+
+    lxc-ls --fancy
+
+[[!tag debian]] [[!tag lxc]]
