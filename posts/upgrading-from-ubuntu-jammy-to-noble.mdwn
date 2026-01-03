@@ -1,0 +1,53 @@
+[[!meta title="Upgrading from Ubuntu 22.04 jammy to 24.04 noble"]]
+[[!meta date="2026-01-03T11:30:00.000-08:00"]]
+[[!meta license="[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/)"]]
+
+I recently performed an overdue Ubuntu 24.04 upgrade on a few machines and
+as with [past](/posts/upgrading-from-ubuntu-bionic-to-focal/)
+[upgrades](/posts/upgrading-from-ubuntu-focal-to-jammy/), I had to fix a few
+things after the fact.
+
+As usual, I keep any backports of packages I make for myself in my [noble
+PPA](https://launchpad.net/~fmarier/+archive/ubuntu/ppa?field.series_filter=noble).
+
+## AppArmor fix for Brave Beta & Nightly
+
+I had to modify the `brave` AppArmor profile in `/etc/apparmor.d/brave` in
+order to [enable proper sandboxing in Brave Beta &
+Nightly](https://gitlab.com/apparmor/apparmor/-/merge_requests/1776).
+
+## Network problems
+
+Surprisingly, `.local` resolution is still broken and I had to use my
+[work-around from the Ubuntu bionic
+days](/posts/upgrading-from-ubuntu-bionic-to-focal/#Network_problems).
+
+I put the following in `/etc/NetworkManager/conf.d/mdns.conf`:
+
+    [connection]
+    connection.mdns=1
+
+and in `/etc/systemd/resolved.conf.d/local.conf`:
+
+    [Resolve]
+    MulticastDNS=resolve
+
+## ssh agent problems
+
+I also had to keep my [ssh-agent fix from Ubuntu
+focal](/posts/upgrading-from-ubuntu-focal-to-jammy/#ssh_agent_problems)
+in `~/.bashrc`:
+
+    eval $(systemctl --user show-environment | grep SSH_AUTH_SOCK)
+    export SSH_AUTH_SOCK
+    export SSH_ASKPASS=/usr/bin/ssh-askpass
+
+I modified my existing bash alias:
+
+    alias ssh-add='ssh-add -c -t 14h'
+
+to remove the `-c` option since `ssh-add -c` is currently broken, possibly
+due to a [missing `DISPLAY` when the agent
+starts](https://wiki.archlinux.org/title/SSH_keys#ssh-agent_as_a_wrapper_program).
+
+[[!tag ubuntu]] [[!tag apparmor]] [[!tag brave]] [[!tag ssh]] [[!tag upgrade]]
